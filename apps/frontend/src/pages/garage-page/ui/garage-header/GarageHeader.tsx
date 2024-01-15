@@ -7,7 +7,7 @@ import { GarageActionButton } from "..";
 function GarageHeader() {
     const [hasCoupon,setHasCoupon] = useState<boolean>(true);
     
-    return <div className="flex justify-between items-center px-10 my-8">
+    return <div className="flex justify-between items-center ">
         <div>
             <span className="text-xs font-medium">522 visited</span>
             <div className="flex gap-2 items-center">
