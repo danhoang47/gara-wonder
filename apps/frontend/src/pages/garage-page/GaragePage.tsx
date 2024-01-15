@@ -1,3 +1,4 @@
+import { GarageHeader } from "./ui";
 
 
 export type GaragePageProps = {
@@ -6,7 +7,10 @@ export type GaragePageProps = {
 
 const GaragePage = ({}: GaragePageProps) => {
 
-    return (<></>);
+    return (<>
+    <GarageHeader/>
+    
+    </>);
 }
 
 export default GaragePage
