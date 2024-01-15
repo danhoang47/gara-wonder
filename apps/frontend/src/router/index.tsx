@@ -6,13 +6,14 @@ import {
 
 import App from "@/App";
 import { DefaultLayout } from "@/layouts";
-import { HomePage } from "@/pages";
+import { HomePage, GaragePage } from "@/pages";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
             <Route element={<DefaultLayout />}>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/garage/:garageId" element={<GaragePage />} />
             </Route>
         </Route>,
     ),
