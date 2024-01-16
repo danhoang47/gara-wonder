@@ -1,9 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
+import "./CategoryOption.styles.scss"
+
 import clsx from "clsx";
-import { useMemo } from "react";
 
 export type CategoryOptionProps = {
     category: {
@@ -39,16 +40,13 @@ function CategoryOption({ category }: CategoryOptionProps) {
         <div 
             role="radio" 
             className={clsx(
-                "flex flex-col items-center cursor-pointer transition px-2",
-                "hover:opacity-70",
-                isSelected && "border-b-2 border-black"
+                "flex flex-col items-center cursor-pointer transition px-2 relative py-1",
+                "CategoryOption",
+                isSelected && "CategoryOption--selected"
             )} 
             onClick={onCategoryOptionSelect}
             aria-label={`${category.value} option`}
         >
-            <div>
-                <FontAwesomeIcon icon={category.icon} />
-            </div>
             <p className="capitalize">{category.title}</p>
         </div>
     )

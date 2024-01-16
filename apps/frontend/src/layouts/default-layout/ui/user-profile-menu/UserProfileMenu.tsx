@@ -17,6 +17,7 @@ function UserProfileMenu() {
                 base: "right-8",
                 content: "px-0",
             }}
+            disableAnimation
         >
             <DropdownTrigger>
                 <Button
