@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/react";
 import { InputPlaceholder } from "..";
 
 function BookingForm() {
@@ -7,10 +8,11 @@ function BookingForm() {
             <p className="font-semibold text-2xl leading-5">Iplorem sum donor</p>
             <div className="flex flex-col gap-3">
                 <InputPlaceholder
-                    type="string"
+                    type="date"
                     placeholder="Select your date"
                     title="Date"
-                    onClick={() => {}} />
+                    canEdit={true}
+                    onClick={() => { }} />
                 <InputPlaceholder
                     type="string"
                     title="Car"
@@ -24,6 +26,22 @@ function BookingForm() {
                     onClick={() => { }}
                 />
             </div>
+            <div>
+                <div className="flex justify-between">
+                    <p className="text-default-400">Total</p>
+                    <p>$123</p>
+                </div>
+                <div className="flex justify-between">
+                    <p className="text-default-400">Tax</p>
+                    <p>$123</p>
+                </div>
+            </div>
+            <div className="border-t-2 border-zync-400" />
+            <div className="flex justify-between">
+                <p className="font-semibold text-xl">Total</p>
+                <p>$123</p>
+            </div>
+            <Button color="primary" radius="sm" disableAnimation>Booking Now</Button>
         </div>
     </div>
 }

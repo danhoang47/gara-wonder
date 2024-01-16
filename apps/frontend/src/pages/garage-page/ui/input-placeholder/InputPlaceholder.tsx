@@ -5,11 +5,12 @@ type InputProps = {
     value?: string,
     placeholder: string,
     title: string,
+    canEdit?:boolean
     onClick: () => void,
 };
-function InputPlaceHolder({ type, value, placeholder, title, onClick }: InputProps) {
+function InputPlaceHolder({ type, value, placeholder, title, canEdit=false, onClick }: InputProps) {
     return <Input
-        isReadOnly
+        isReadOnly={!canEdit}
         type={type}
         label={title}
         variant="bordered"
