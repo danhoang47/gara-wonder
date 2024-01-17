@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
 
 const HomePage = () => {
+
+    console.log("Home Page")
     return (
         <div id="home" className="px-10">
             <div className="TopBar flex my-8">
@@ -43,6 +45,9 @@ const HomePage = () => {
                         <p>Filter</p>
                     </Button>
                 </div>
+            </div>
+            <div className="GaraCards">
+
             </div>
         </div>
     );
