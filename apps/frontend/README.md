@@ -18,7 +18,7 @@ Eg: default-layout, section-list
 4. How to use hygen
 - Cd to apps/frontend
 - npx hygen any new --dir dirName --name componentName
-Eg: npx hygen nay new --dir layouts --name default-layout
+Eg: npx hygen any new --dir layouts --name default-layout
 
 ###SCSS
 [Following this rule from Airbnb](https://github.com/airbnb/css/blob/master/README.md)
