@@ -1,13 +1,10 @@
 import { useState } from "react";
 
 import { RegistrationSection } from "../GarageRegistrationPage";
-import { FieldErrors } from "react-hook-form";
-import { Garage } from "@/core/types";
 
-export default function useNavigation(errors: FieldErrors<Garage>) {
+export default function useNavigation() {
     const [currentSectionIndex, setCurrentSectionIndex] =
         useState<RegistrationSection>(RegistrationSection.BasicInformation);
-    const [hasNextButtonPressed, setNextButtonPressed] = useState<boolean>(false)
 
     const onBackButtonClicked = () => {
         if (currentSectionIndex !== RegistrationSection.BasicInformation) {
@@ -16,17 +13,10 @@ export default function useNavigation(errors: FieldErrors<Garage>) {
     };
 
     const onNextButtonClicked = () => {
-        if (!hasNextButtonPressed) {
-            setNextButtonPressed(true)
-        }
-
         if (
-            currentSectionIndex !== RegistrationSection.Additional &&
-            Object.keys(errors).length === 0 &&
-            hasNextButtonPressed
+            currentSectionIndex !== RegistrationSection.Additional
         ) {
             setCurrentSectionIndex((prev) => prev + 1);
-            setNextButtonPressed(false)
         }
     };
 
