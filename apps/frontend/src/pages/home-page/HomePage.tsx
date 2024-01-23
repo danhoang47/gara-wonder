@@ -6,7 +6,6 @@ import { Categories, SortBy } from "./ui";
 
 const HomePage = () => {
 
-    console.log("Home Page")
     return (
         <div id="home" className="px-10">
             <div className="TopBar flex my-8 items-center">
@@ -25,7 +24,7 @@ const HomePage = () => {
                     </Button>
                 </div>
             </div>
-            <div className="GaraCards">
+            <div>
 
             </div>
         </div>
