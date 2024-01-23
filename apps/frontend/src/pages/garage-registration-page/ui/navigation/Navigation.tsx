@@ -5,12 +5,14 @@ import { RegistrationSection } from "../../GarageRegistrationPage";
 import ProgressBar from "../progress-bar";
 
 export type NavigationProps = {
+    isNextButtonDisabled: boolean;
     currentSectionIndex: RegistrationSection;
     onNextButtonClicked: () => void;
     onBackButtonClicked: () => void;
 };
 
 export default function Navigation({
+    isNextButtonDisabled,
     currentSectionIndex,
     onBackButtonClicked,
     onNextButtonClicked,
@@ -66,6 +68,7 @@ export default function Navigation({
                     variant="solid"
                     className="px-8"
                     onPress={onNextButtonClicked}
+                    isDisabled={isNextButtonDisabled}
                     type="submit"
                 >
                     {nextButtonLabel}

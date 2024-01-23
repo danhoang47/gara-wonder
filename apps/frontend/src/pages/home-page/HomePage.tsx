@@ -24,7 +24,7 @@ const HomePage = () => {
                     </Button>
                 </div>
             </div>
-            <div className="GaraCards">
+            <div>
 
             </div>
         </div>

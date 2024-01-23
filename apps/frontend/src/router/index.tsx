@@ -13,11 +13,15 @@ const router = createBrowserRouter(
         <Route path="/" element={<App />}>
             <Route element={<DefaultLayout />}>
                 <Route path="/" element={<HomePage />} />
+<<<<<<< HEAD
                 <Route path="/garage/:garageId" element={<GaragePage />} />
                 <Route
                     path="/garage-registration"
                     element={<GarageRegistrationPage />}
                 />
+=======
+                <Route path="/garage-registration" element={<GarageRegistrationPage />} />
+>>>>>>> 803cd6b (add garage-registration)
             </Route>
         </Route>,
     ),

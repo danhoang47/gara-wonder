@@ -1,6 +1,7 @@
 import { useGarageForm, useNavigation } from "./hooks";
 
-import { BasicInformation, Navigation } from "./ui";
+import { BasicInformation } from "@/core/ui";
+import { Navigation } from "./ui";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const enum RegistrationSection {
