@@ -1,7 +1,6 @@
 import { SupportedChip, UnsupportedChip } from "@/core/ui";
-import { faCheck, faWrench, faX } from "@fortawesome/free-solid-svg-icons";
+import { faWrench } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Chip } from "@nextui-org/react";
 import { useState } from "react";
 
 const fakeData = [
@@ -68,7 +67,7 @@ function Services() {
                                     <p>
                                         Support all available from{" "}
                                         {service.support} to now{" "}
-                                        <span className="text-primary cursor-pointer">
+                                        <span className="text-primary cursor-pointer hover:text-primary-700">
                                             See all supported cars
                                         </span>
                                     </p>

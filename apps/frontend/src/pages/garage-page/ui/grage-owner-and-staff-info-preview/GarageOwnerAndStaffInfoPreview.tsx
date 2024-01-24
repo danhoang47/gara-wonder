@@ -23,19 +23,16 @@ function GarageOwnerAndStaffInfoPreview() {
                 <AvatarGroup isBordered max={3}>
                     {Array.from(new Array(3)).map((ava, index) => {
                         return (
-                            <div>
-                                <Avatar
-                                    key={index}
-                                    src="https://images.unsplash.com/broken"
-                                    classNames={{
-                                        base:
-                                            index < 1
-                                                ? "bg-zinc-500"
-                                                : "bg-zinc-300" +
-                                                  " cursor-pointer",
-                                    }}
-                                />
-                            </div>
+                            <Avatar
+                                key={index}
+                                src="https://images.unsplash.com/broken"
+                                classNames={{
+                                    base:
+                                        index < 1
+                                            ? "bg-zinc-500"
+                                            : "bg-zinc-300" + " cursor-pointer",
+                                }}
+                            />
                         );
                     })}
                 </AvatarGroup>
