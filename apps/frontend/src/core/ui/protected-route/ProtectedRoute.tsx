@@ -3,7 +3,7 @@ import { Route, useNavigate } from "react-router-dom";
 
 export type ProtectedRoute = ComponentProps<typeof Route> & {
     requiredLogin?: boolean,
-    hasRoles: string[]
+    hasRoles?: string[]
 }
 
 function ProtectedRoute({ requiredLogin, hasRoles, ...props }: ProtectedRoute) {

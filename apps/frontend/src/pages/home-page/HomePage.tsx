@@ -5,6 +5,7 @@ import { Button } from "@nextui-org/react";
 import { Categories, SortBy } from "./ui";
 
 const HomePage = () => {
+
     return (
         <div id="home" className="px-10">
             <div className="TopBar flex my-8 items-center">
@@ -22,6 +23,9 @@ const HomePage = () => {
                         <p>Filter</p>
                     </Button>
                 </div>
+            </div>
+            <div>
+
             </div>
         </div>
     );
