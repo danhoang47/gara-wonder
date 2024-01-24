@@ -17,7 +17,7 @@ function GaraSearch() {
     return (
         <div
             tabIndex={-1}
-            className="w-1/2 relative"
+            className="w-full relative"
             onFocus={onFocused}
             onBlur={onBlurred}
         >
