@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/react";
-import { InputPlaceholder } from "..";
+import { SelectInput } from "..";
 
 function BookingForm() {
     return (
@@ -9,20 +9,20 @@ function BookingForm() {
                     Iplorem sum donor
                 </p>
                 <div className="flex flex-col gap-3">
-                    <InputPlaceholder
+                    <SelectInput
                         type="date"
                         placeholder="Select your date"
                         title="Date"
                         canEdit={true}
                         onClick={() => {}}
                     />
-                    <InputPlaceholder
+                    <SelectInput
                         type="string"
                         title="Car"
                         placeholder="Select your Car"
                         onClick={() => {}}
                     />
-                    <InputPlaceholder
+                    <SelectInput
                         type="string"
                         title="Email"
                         placeholder="Select your Email"
