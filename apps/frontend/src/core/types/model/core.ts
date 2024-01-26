@@ -2,7 +2,7 @@ import { User } from "./user"
 
 export type Model = {
     _id: string,
-    createdAt: number,
+    createdAt: number, 
     updatedAt: number,
 }
 
