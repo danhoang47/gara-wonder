@@ -35,7 +35,7 @@ export function GarageRegistrationContextProvider({ children }: ContainerProps) 
     )
 }
 
-export function useGarageRegistration() {
+export function useGarageRegistrationContext() {
     return useContext(GarageRegistrationContext)
 }
 

@@ -1,34 +1,17 @@
+import { useState } from 'react'
 import { Input as TextField } from '@nextui-org/react'
-import { Control, useController } from 'react-hook-form'
 
-export type InputProps = React.ComponentProps<typeof TextField> & {
-    control: Control,
-    name: string,
-    isRequired?: boolean | string
-}
+export type InputProps = React.ComponentProps<typeof TextField>
 
-const Input = ({ control, name, isRequired = false, ...props }: InputProps) => {
-    const {
-        field,
-        fieldState: { invalid },
-    } = useController({
-        name,
-        control,
-        rules: {
-            required: isRequired
-        }
-    })
-
+// TODO: change name of this component to work with form
+const Input = (props: InputProps) => {
+    const [isTouched, setTouched] = useState<boolean>(false)
+   
     return (
         <TextField
             {...props}
-            onChange={field.onChange}
-            onBlur={field.onBlur}
-            value={field.value}
-            name={field.name}
-            inputRef={field.ref}
-            isInvalid={invalid}
-            defaultValue=''
+            onFocus={() => setTouched(true)}
+            errorMessage={isTouched && props.errorMessage}
         />
     )
 }

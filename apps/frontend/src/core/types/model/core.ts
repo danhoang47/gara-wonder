@@ -2,7 +2,11 @@ import { User } from "./user"
 
 export type Model = {
     _id: string,
+<<<<<<< HEAD
     createdAt: number,
+=======
+    createdAt: number, 
+>>>>>>> 74c5f295596f66020ff640b2611b5791924b65ff
     updatedAt: number,
 }
 
