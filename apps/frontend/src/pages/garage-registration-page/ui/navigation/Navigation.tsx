@@ -6,7 +6,7 @@ import ProgressBar from "../progress-bar";
 
 export type NavigationProps = {
     currentSectionIndex: RegistrationSection;
-    onNextButtonClicked: () => void;
+    onNextButtonClicked: (e: React.MouseEvent) => void;
     onBackButtonClicked: () => void;
 };
 
@@ -65,7 +65,7 @@ export default function Navigation({
                     color="primary"
                     variant="solid"
                     className="px-8"
-                    onPress={onNextButtonClicked}
+                    onClick={onNextButtonClicked}
                     type="submit"
                 >
                     {nextButtonLabel}

@@ -1,6 +1,10 @@
-import { useGarageForm, useNavigation } from "./hooks";
+import { useNavigation } from "./hooks";
 
-import { BasicInformation, Navigation } from "./ui";
+import { Address, BasicInformation, Navigation } from "./ui";
+import {
+    GarageRegistrationContextProvider,
+} from "./contexts";
+import { useForm } from "@/core/hooks";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const enum RegistrationSection {
@@ -11,34 +15,49 @@ export const enum RegistrationSection {
     Additional,
 }
 
+export type GarageFormState = {
+    name: string;
+    description: string;
+    street: string,
+    district: string,
+    province: string
+};
+
 const GarageRegistrationPage = () => {
-    const { onSubmit, register } = useGarageForm((data) => console.log(data))
+    const { formRef, onFormSubmit, register, onSubmitButtonPressed } =
+        useForm<GarageFormState>();
     const { currentSectionIndex, onBackButtonClicked, onNextButtonClicked } =
         useNavigation();
 
     const renderPageSection = () => {
         switch (currentSectionIndex) {
             case RegistrationSection.BasicInformation:
-                return (
-                    <BasicInformation register={register}/>
-                );
+                return <BasicInformation register={register} />;
+            case RegistrationSection.Address: 
+                return <Address register={register} />
             default:
                 throw new Error("Invalid Section");
         }
     };
 
+    console.log(currentSectionIndex)
     return (
-        <form
-            className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0"
-            onSubmit={onSubmit}
-        >
-            {renderPageSection()}
-            <Navigation
-                currentSectionIndex={currentSectionIndex}
-                onBackButtonClicked={onBackButtonClicked}
-                onNextButtonClicked={onNextButtonClicked}
-            />
-        </form>
+        <GarageRegistrationContextProvider>
+            <form
+                ref={formRef}
+                className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0"
+                onSubmit={onFormSubmit((data) => console.log(data))}
+            >
+                {renderPageSection()}
+                <Navigation
+                    currentSectionIndex={currentSectionIndex}
+                    onBackButtonClicked={onBackButtonClicked}
+                    onNextButtonClicked={onSubmitButtonPressed(
+                        onNextButtonClicked,
+                    )}
+                />
+            </form>
+        </GarageRegistrationContextProvider>
     );
 };
 
