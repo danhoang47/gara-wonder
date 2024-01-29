@@ -1,7 +1,7 @@
 import { Select as SelectField } from "@nextui-org/react";
 
 export type SelectProps<T> = React.ComponentProps<typeof SelectField<T>> & {
-    onValueChange: (keys: string | "all") => void;
+    onValueChange?: (keys: string | "all") => void;
     altOnValueChange?: (keys: string | "all") => void;
 };
 
@@ -23,7 +23,7 @@ function Select<T>({
                 if (items) {
                     const selectedKeys =
                         keys === "all" ? "all" : Array.from(keys).join(",");
-                    onValueChange(selectedKeys);
+                    onValueChange && onValueChange(selectedKeys);
                     altOnValueChange && altOnValueChange(selectedKeys)
                 }
             }}

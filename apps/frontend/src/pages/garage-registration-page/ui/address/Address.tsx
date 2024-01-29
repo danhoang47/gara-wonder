@@ -65,7 +65,7 @@ function Address({ register }: AddressProps) {
                         </SelectItem>
                     )}
                 </Select>
-                <Select
+                <Input
                     items={districts}
                     variant="bordered"
                     placeholder="Enter district"
@@ -74,13 +74,7 @@ function Address({ register }: AddressProps) {
                         required: "Garage's district must be provided",
                     })}
                     isRequired
-                >
-                    {(district) => (
-                        <SelectItem key={district.code}>
-                            {district.name}
-                        </SelectItem>
-                    )}
-                </Select>
+                />
                 <Input
                     variant="bordered"
                     placeholder="Enter your street"

@@ -1,9 +1,7 @@
 import { useNavigation } from "./hooks";
 
-import { Address, BasicInformation, Navigation } from "./ui";
-import {
-    GarageRegistrationContextProvider,
-} from "./contexts";
+import { Address, BasicInformation, Images, Navigation, Services } from "./ui";
+import { GarageRegistrationContextProvider } from "./contexts";
 import { useForm } from "@/core/hooks";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -33,8 +31,12 @@ const GarageRegistrationPage = () => {
         switch (currentSectionIndex) {
             case RegistrationSection.BasicInformation:
                 return <BasicInformation register={register} />;
-            case RegistrationSection.Address: 
-                return <Address register={register} />
+            case RegistrationSection.Address:
+                return <Address register={register} />;
+            case RegistrationSection.Services:
+                return <Services />;
+            case RegistrationSection.Images:
+                return <Images />;
             default:
                 throw new Error("Invalid Section");
         }
@@ -42,11 +44,7 @@ const GarageRegistrationPage = () => {
 
     return (
         <GarageRegistrationContextProvider>
-            <form
-                ref={formRef}
-                className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0"
-                onSubmit={onFormSubmit((data) => console.log(data))}
-            >
+            <div className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0">
                 {renderPageSection()}
                 <Navigation
                     currentSectionIndex={currentSectionIndex}
@@ -55,7 +53,7 @@ const GarageRegistrationPage = () => {
                         onNextButtonClicked,
                     )}
                 />
-            </form>
+            </div>
         </GarageRegistrationContextProvider>
     );
 };
