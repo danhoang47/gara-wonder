@@ -4,7 +4,7 @@ import { RegistrationSection } from "../GarageRegistrationPage";
 
 export default function useNavigation() {
     const [currentSectionIndex, setCurrentSectionIndex] =
-        useState<RegistrationSection>(RegistrationSection.BasicInformation);
+        useState<RegistrationSection>(RegistrationSection.Address);
     
     const onBackButtonClicked = () => {
         if (currentSectionIndex !== RegistrationSection.BasicInformation) {

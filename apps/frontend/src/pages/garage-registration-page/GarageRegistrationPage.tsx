@@ -18,9 +18,9 @@ export const enum RegistrationSection {
 export type GarageFormState = {
     name: string;
     description: string;
-    street: string,
-    district: string,
-    province: string
+    street: string;
+    district: string;
+    province: string;
 };
 
 const GarageRegistrationPage = () => {
@@ -40,7 +40,6 @@ const GarageRegistrationPage = () => {
         }
     };
 
-    console.log(currentSectionIndex)
     return (
         <GarageRegistrationContextProvider>
             <form

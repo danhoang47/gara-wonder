@@ -1,1 +1,1 @@
-export { default as queryProvince } from './queryProvince'
+export { default as getProvince } from './getProvince'
