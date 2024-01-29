@@ -1,6 +1,6 @@
 import { useNavigation } from "./hooks";
 
-import { Address, BasicInformation, Navigation } from "./ui";
+import { Address, BasicInformation, Navigation, Services } from "./ui";
 import {
     GarageRegistrationContextProvider,
 } from "./contexts";
@@ -35,6 +35,8 @@ const GarageRegistrationPage = () => {
                 return <BasicInformation register={register} />;
             case RegistrationSection.Address: 
                 return <Address register={register} />
+            case RegistrationSection.Services: 
+                return <Services />
             default:
                 throw new Error("Invalid Section");
         }
