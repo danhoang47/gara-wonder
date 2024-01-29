@@ -1,7 +1,7 @@
-import { SupportedChip, UnsupportedChip } from "@/core/ui";
 import { faWrench } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { SupportedChip } from "..";
 
 const fakeData = [
     {
@@ -57,11 +57,9 @@ function Services() {
                                     <p className="font-medium">
                                         Repairing services.
                                     </p>
-                                    {service.isSupported ? (
-                                        <SupportedChip />
-                                    ) : (
-                                        <UnsupportedChip />
-                                    )}
+                                    <SupportedChip
+                                        isSupport={service.isSupported}
+                                    />
                                 </div>
                                 <div className="text-sm text-zinc-500">
                                     <p>
