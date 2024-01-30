@@ -1,5 +1,4 @@
 import { useNavigation } from "./hooks";
-
 import { Address, BasicInformation, Images, Navigation, Services } from "./ui";
 import { GarageRegistrationContextProvider } from "./contexts";
 import { useForm } from "@/core/hooks";
