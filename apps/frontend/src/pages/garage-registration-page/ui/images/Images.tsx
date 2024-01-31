@@ -15,7 +15,7 @@ function Images() {
                 <div className="mb-2">
                     <p className="font-medium">Background Image</p>
                 </div>
-                <FileInput />
+                <FileInput selectionMode="single" onValueChange={(f) => setBackgroundImage(f)}/>
             </div>
             <div>
                 <div className="mb-2">
@@ -25,7 +25,7 @@ function Images() {
                     <div className="bg-slate-400">
 
                     </div>
-                    <FileInput />
+                    <FileInput selectionMode="multiple" onValueChange={(fs) => setImages(fs)}/>
                 </div>
             </div>
         </RegistrationSection>
