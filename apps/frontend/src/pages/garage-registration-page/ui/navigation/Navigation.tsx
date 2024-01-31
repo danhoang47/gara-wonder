@@ -40,13 +40,13 @@ export default function Navigation({
 
     return (
         <div
-            className="fixed bottom-0 w-full py-4"
+            className="fixed bottom-0 w-full py-4 bg-foreground-50 z-10"
             style={{
                 boxShadow: "0px -4px 10px 2px rgba(202, 202, 202, 0.26)",
             }}
         >
             <div className="flex justify-between container items-center mx-auto ">
-                <Button
+                <Button 
                     startContent={<FontAwesomeIcon icon={faAngleLeft} />}
                     variant="bordered"
                     className="px-8"

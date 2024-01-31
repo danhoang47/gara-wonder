@@ -6,6 +6,7 @@ export type BaseFileInputProps = {
     // TODO: add accept attribute for input
     type?: "all" | "image" | "excel";
     aspect?: "video" | "square";
+    showLabel?: boolean
 
 };
 
@@ -21,7 +22,7 @@ export type MultipleFileInputProps = BaseFileInputProps & {
 
 export type FileInputProps = SingleFileInputProps | MultipleFileInputProps
 
-function FileInput({ selectionMode, aspect = "video", onValueChange }: FileInputProps) {
+function FileInput({ showLabel = true, selectionMode, aspect = "video", onValueChange }: FileInputProps) {
     const id = useId();
 
     return (
@@ -48,7 +49,7 @@ function FileInput({ selectionMode, aspect = "video", onValueChange }: FileInput
             />
             <div className="mx-auto flex gap-2 items-center px-4 py-2 border-2 rounded-lg cursor-pointer">
                 <FontAwesomeIcon icon={faImage} />
-                <p>Image Upload</p>
+                {showLabel && <p>Image Upload</p>}
             </div>
         </label>
     );
