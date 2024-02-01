@@ -6,14 +6,14 @@ import ProgressBar from "../progress-bar";
 
 export type NavigationProps = {
     currentSectionIndex: RegistrationSection;
-    onNextButtonClicked: (e: React.MouseEvent) => void;
-    onBackButtonClicked: () => void;
+    onNext: (e: React.MouseEvent) => void;
+    onBack: () => void;
 };
 
 export default function Navigation({
     currentSectionIndex,
-    onBackButtonClicked,
-    onNextButtonClicked,
+    onBack,
+    onNext,
 }: NavigationProps) {
     const getSectionTitle = () => {
         switch (currentSectionIndex) {
@@ -46,11 +46,11 @@ export default function Navigation({
             }}
         >
             <div className="flex justify-between container items-center mx-auto ">
-                <Button 
+                <Button
                     startContent={<FontAwesomeIcon icon={faAngleLeft} />}
                     variant="bordered"
                     className="px-8"
-                    onPress={onBackButtonClicked}
+                    onPress={onBack}
                     isDisabled={isBackButtonDisabled}
                 >
                     Back
@@ -65,13 +65,13 @@ export default function Navigation({
                     color="primary"
                     variant="solid"
                     className="px-8"
-                    onClick={onNextButtonClicked}
+                    onClick={onNext}
                     type="submit"
                 >
                     {nextButtonLabel}
                 </Button>
             </div>
-            <ProgressBar currentSectionIndex={currentSectionIndex}/>
+            <ProgressBar currentSectionIndex={currentSectionIndex} />
         </div>
     );
 }

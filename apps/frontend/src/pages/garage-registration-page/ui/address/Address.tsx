@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
 import { SelectItem } from "@nextui-org/react";
-
-import { FieldRegister } from "@/core/hooks/useForm";
 import { Input, Select } from "@/core/ui";
 import RegistrationSection from "../registration-section";
-import { GarageFormState } from "../../GarageRegistrationPage";
 
 import provinces, { Province } from "./constants";
 
-export type AddressProps = {
-    register: FieldRegister<GarageFormState>;
-};
-
-function Address({ register }: AddressProps) {
+function Address() {
     const [selectedProvince, setSelectedProvince] = useState<Province>();
-    const [districts, setDistricts] = useState<Array<any>>([]);
+    const [districts, setDistricts] = useState<Array<string>>([]);
 
     useEffect(() => {
         let isStale = false;
@@ -49,9 +42,6 @@ function Address({ register }: AddressProps) {
                     variant="bordered"
                     placeholder="Select province"
                     label="Province"
-                    {...register("province", "combobox", {
-                        required: "Garage's province must be provided",
-                    })}
                     isRequired
                     altOnValueChange={(keys) => {
                         setSelectedProvince(
@@ -70,18 +60,12 @@ function Address({ register }: AddressProps) {
                     variant="bordered"
                     placeholder="Enter district"
                     label="District"
-                    {...register("district", "textbox", {
-                        required: "Garage's district must be provided",
-                    })}
                     isRequired
                 />
                 <Input
                     variant="bordered"
                     placeholder="Enter your street"
                     label="Street"
-                    {...register("street", "textbox", {
-                        required: "Garage's street address must be provided",
-                    })}
                     isRequired
                 />
             </div>

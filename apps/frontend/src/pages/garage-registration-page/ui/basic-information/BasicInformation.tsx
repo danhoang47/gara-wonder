@@ -1,14 +1,8 @@
 import { Textarea } from "@nextui-org/react";
 import { Input } from "@/core/ui";
 import { RegistrationSection } from "..";
-import { FieldRegister } from "@/core/hooks/useForm";
-import { GarageFormState } from "../../GarageRegistrationPage";
 
-export type BasicInformationProps = {
-    register: FieldRegister<GarageFormState>
-}
-
-export default function BasicInformation({ register }: BasicInformationProps) {
+export default function BasicInformation() {
 
     return (
         <RegistrationSection header="Basic Information" description="Some descriptive information about this part of registration">
@@ -20,7 +14,6 @@ export default function BasicInformation({ register }: BasicInformationProps) {
                     variant="bordered"
                     placeholder="Enter Garage Name"
                     label="Garage Name"
-                    {...register("name", "textbox", { required: "Garage's name must be provided" })}
                 />
                 <Textarea
                     variant="bordered"
@@ -28,7 +21,6 @@ export default function BasicInformation({ register }: BasicInformationProps) {
                     label="Description"
                     multiple
                     minRows={6}
-                    {...register("description")}
                 />
             </div>
         </RegistrationSection>

@@ -8,21 +8,26 @@ function Images() {
     const [images, setImages] = useState<File[]>();
 
     const onImageRemove = (fileName: string) => {
-        setImages(imgs => imgs?.filter(({ name }) => name !== fileName))
-    }
+        setImages((imgs) => imgs?.filter(({ name }) => name !== fileName));
+    };
 
     const onMultipleFileInputValueChange = (fs: File[]) => {
         if (!images) {
-            setImages(fs)
+            setImages(fs);
             return;
         }
 
-        const newFileInputNames = fs.map(({ name }) => name)
-        const currentFileInputNames = images.map(({ name }) => name)
-        const insertableFileInputNames = newFileInputNames.filter(name => !currentFileInputNames.includes(name))
-
-        setImages(prev => prev ? [...prev, ...fs.filter(({ name }) => insertableFileInputNames.includes(name))] : fs)
-    }
+        setImages((prev) =>
+            prev
+                ? [
+                      ...prev,
+                      ...fs.filter(({ name }) =>
+                          prev.some(({ name: n }) => n === name),
+                      ),
+                  ]
+                : fs,
+        );
+    };
 
     return (
         <RegistrationSection
@@ -34,24 +39,34 @@ function Images() {
                 <div className="mb-2">
                     <p className="font-medium">Background Image</p>
                 </div>
-                {backgroundImage ?
-                    <ImagePreview file={backgroundImage} onImageRemove={() => setBackgroundImage(undefined)}/> :
+                {backgroundImage ? (
+                    <ImagePreview
+                        file={backgroundImage}
+                        onImageRemove={() => setBackgroundImage(undefined)}
+                    />
+                ) : (
                     <FileInput
                         selectionMode="single"
                         onValueChange={(f) => setBackgroundImage(f)}
                     />
-                }
+                )}
             </div>
             <div className="mb-4">
                 <div className="mb-2">
                     <p className="font-medium">Other Images</p>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
-                    {images?.map(file => <ImagePreview key={file.name} file={file} onImageRemove={onImageRemove}/>)}
-                    <FileInput 
-                        selectionMode="multiple" 
-                        onValueChange={onMultipleFileInputValueChange} 
-                        showLabel={false} 
+                    {images?.map((file) => (
+                        <ImagePreview
+                            key={file.name}
+                            file={file}
+                            onImageRemove={onImageRemove}
+                        />
+                    ))}
+                    <FileInput
+                        selectionMode="multiple"
+                        onValueChange={onMultipleFileInputValueChange}
+                        showLabel={false}
                     />
                 </div>
             </div>

@@ -1,7 +1,6 @@
 import { useNavigation } from "./hooks";
 import { Address, BasicInformation, Images, Navigation, Services } from "./ui";
 import { GarageRegistrationContextProvider } from "./contexts";
-import { useForm } from "@/core/hooks";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const enum RegistrationSection {
@@ -21,17 +20,15 @@ export type GarageFormState = {
 };
 
 const GarageRegistrationPage = () => {
-    const { formRef, onFormSubmit, register, onSubmitButtonPressed } =
-        useForm<GarageFormState>();
     const { currentSectionIndex, onBackButtonClicked, onNextButtonClicked } =
         useNavigation();
 
     const renderPageSection = () => {
         switch (currentSectionIndex) {
             case RegistrationSection.BasicInformation:
-                return <BasicInformation register={register} />;
+                return <BasicInformation />;
             case RegistrationSection.Address:
-                return <Address register={register} />;
+                return <Address />;
             case RegistrationSection.Services:
                 return <Services />;
             case RegistrationSection.Images:
@@ -47,10 +44,8 @@ const GarageRegistrationPage = () => {
                 {renderPageSection()}
                 <Navigation
                     currentSectionIndex={currentSectionIndex}
-                    onBackButtonClicked={onBackButtonClicked}
-                    onNextButtonClicked={onSubmitButtonPressed(
-                        onNextButtonClicked,
-                    )}
+                    onBack={onBackButtonClicked}
+                    onNext={onNextButtonClicked}
                 />
             </div>
         </GarageRegistrationContextProvider>
