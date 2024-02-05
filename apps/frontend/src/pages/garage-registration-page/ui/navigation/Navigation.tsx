@@ -6,14 +6,16 @@ import ProgressBar from "../progress-bar";
 
 export type NavigationProps = {
     currentSectionIndex: RegistrationSection;
-    onNextButtonClicked: (e: React.MouseEvent) => void;
-    onBackButtonClicked: () => void;
+    allowContinue: boolean,
+    onBack: () => void;
+    onNext: () => void;
 };
 
 export default function Navigation({
     currentSectionIndex,
-    onBackButtonClicked,
-    onNextButtonClicked,
+    allowContinue,
+    onNext,
+    onBack
 }: NavigationProps) {
     const getSectionTitle = () => {
         switch (currentSectionIndex) {
@@ -40,7 +42,7 @@ export default function Navigation({
 
     return (
         <div
-            className="fixed bottom-0 w-full py-4"
+            className="fixed bottom-0 w-full py-4 bg-foreground-50 z-10"
             style={{
                 boxShadow: "0px -4px 10px 2px rgba(202, 202, 202, 0.26)",
             }}
@@ -50,7 +52,7 @@ export default function Navigation({
                     startContent={<FontAwesomeIcon icon={faAngleLeft} />}
                     variant="bordered"
                     className="px-8"
-                    onPress={onBackButtonClicked}
+                    onPress={onBack}
                     isDisabled={isBackButtonDisabled}
                 >
                     Back
@@ -65,13 +67,14 @@ export default function Navigation({
                     color="primary"
                     variant="solid"
                     className="px-8"
-                    onClick={onNextButtonClicked}
+                    onClick={onNext}
                     type="submit"
+                    isDisabled={!allowContinue}
                 >
                     {nextButtonLabel}
                 </Button>
             </div>
-            <ProgressBar currentSectionIndex={currentSectionIndex}/>
+            <ProgressBar currentSectionIndex={currentSectionIndex} />
         </div>
     );
 }

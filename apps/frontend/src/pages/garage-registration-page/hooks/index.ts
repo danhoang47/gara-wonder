@@ -1,2 +1,2 @@
 export { default as useNavigation } from './useNavigation'
-export { default as useGarageForm } from './useGarageForm'
+export { default as useGarageRegistrationContext } from './useGarageRegistrationContext'

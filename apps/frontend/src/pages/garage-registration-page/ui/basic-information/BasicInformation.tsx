@@ -1,17 +1,37 @@
 import { Textarea } from "@nextui-org/react";
 import { Input } from "@/core/ui";
 import { RegistrationSection } from "..";
-import { FieldRegister } from "@/core/hooks/useForm";
-import { GarageFormState } from "../../GarageRegistrationPage";
+import { useGarageRegistrationContext } from "../../hooks";
+import { useEffect, useState } from "react";
 
-export type BasicInformationProps = {
-    register: FieldRegister<GarageFormState>
-}
+export default function BasicInformation() {
+    const {
+        garageRegistrationState,
+        garageRegistrationErrors,
+        setGarageRegistrationStateValue,
+    } = useGarageRegistrationContext();
+    const [isNameInputTouched, setNameInputTouched] = useState<boolean>(false);
 
-export default function BasicInformation({ register }: BasicInformationProps) {
+    useEffect(() => {
+        setGarageRegistrationStateValue(
+            "name",
+            garageRegistrationState.name || "",
+        );
+        setGarageRegistrationStateValue(
+            "description",
+            garageRegistrationState.description || "",
+        );
+    }, [
+        garageRegistrationState.description,
+        garageRegistrationState.name,
+        setGarageRegistrationStateValue,
+    ]);
 
     return (
-        <RegistrationSection header="Basic Information" description="Some descriptive information about this part of registration">
+        <RegistrationSection
+            header="Basic Information"
+            description="Some descriptive information about this part of registration"
+        >
             <div className="mb-2">
                 <p className="font-medium">Basic Information</p>
             </div>
@@ -20,7 +40,19 @@ export default function BasicInformation({ register }: BasicInformationProps) {
                     variant="bordered"
                     placeholder="Enter Garage Name"
                     label="Garage Name"
-                    {...register("name", "textbox", { required: "Garage's name must be provided" })}
+                    value={garageRegistrationState.name}
+                    onValueChange={(name) => {
+                        setGarageRegistrationStateValue("name", name);
+                    }}
+                    onBlur={() => setNameInputTouched(true)}
+                    errorMessage={
+                        isNameInputTouched && garageRegistrationErrors.name
+                    }
+                    isInvalid={
+                        isNameInputTouched &&
+                        Boolean(garageRegistrationErrors.name)
+                    }
+                    isRequired
                 />
                 <Textarea
                     variant="bordered"
@@ -28,7 +60,15 @@ export default function BasicInformation({ register }: BasicInformationProps) {
                     label="Description"
                     multiple
                     minRows={6}
-                    {...register("description")}
+                    value={garageRegistrationState.description}
+                    onValueChange={(description) => {
+                        setGarageRegistrationStateValue(
+                            "description",
+                            description,
+                        );
+                    }}
+                    errorMessage={garageRegistrationErrors.description}
+                    isInvalid={Boolean(garageRegistrationErrors.description)}
                 />
             </div>
         </RegistrationSection>

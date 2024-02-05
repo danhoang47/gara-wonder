@@ -2,11 +2,7 @@ import { User } from "./user"
 
 export type Model = {
     _id: string,
-<<<<<<< HEAD
     createdAt: number,
-=======
-    createdAt: number, 
->>>>>>> 74c5f295596f66020ff640b2611b5791924b65ff
     updatedAt: number,
 }
 
@@ -22,9 +18,9 @@ export const enum Status {
 }
 
 export type Address = {
-    district: string,
-    city: string,
-    country: string,
+    district: District,
+    province: Province,
+    ward: Ward,
     streetAddress: string,
     longitude: string,
     latitude: string
@@ -40,4 +36,27 @@ Model & Address & {
     status: Status,
     openAt: number,
     closeAt: number,
+}
+
+
+export type Province = {
+    province_id: number;
+    province_name: string;
+    province_type: string;
+};
+
+export type District = {
+    district_id: string;
+    district_name: string;
+    district_type: string;
+    lat?: string;
+    lng?: string;
+    province_id: string;
+};
+
+export type Ward = {
+    ward_id: string;
+    ward_name: string;
+    district_id: string;
+    ward_type: string;
 }
