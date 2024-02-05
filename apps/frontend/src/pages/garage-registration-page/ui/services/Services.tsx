@@ -1,23 +1,21 @@
-import { Button, Tooltip } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import RegistrationSection from "../registration-section";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import ServiceTemplateModal from "./ServiceTemplateModal";
 import { useMemo, useState } from "react";
-import { brands, getBrandNamesByIds, getServiceNameById } from "./constants";
-
-export type ServiceRegister = {
-    id: string;
-    serviceId?: string;
-    brandIds?: Array<string> | "all";
-    lowestPrice: number;
-    highestPrice: number;
-};
+import { brands } from "./constants";
+import { Service } from "@/core/types";
+import ServiceCard from "./ServiceCard";
+import { useGarageRegistrationContext } from "../../hooks";
 
 export default function Services() {
+    const {
+        garageRegistrationState: { services },
+        setGarageRegistrationStateValue,
+    } = useGarageRegistrationContext();
     const [isServiceTemplateModalOpen, setServiceTemplateModalOpen] =
         useState<boolean>(false);
-    const [services, setServices] = useState<Array<ServiceRegister>>([]);
     const [selectedServiceIds, setSelectedServiceIds] = useState<string[]>([]);
     const [modalActionType, setModalActionType] = useState<"edit" | "create">(
         "create",
@@ -28,15 +26,16 @@ export default function Services() {
     const editedService = useMemo(
         () =>
             editedServiceId
-                ? services.find(({ id }) => id === editedServiceId)
+                ? services?.find(({ _id }) => _id === editedServiceId)
                 : undefined,
         [editedServiceId, services],
     );
 
-    const onModalSave = (service: ServiceRegister) => {
+    const onModalSave = (service: Partial<Service>) => {
         if (modalActionType === "edit") {
-            setServices((prev) =>
-                prev.map((s) => (s.id === service.id ? service : s)),
+            setGarageRegistrationStateValue(
+                "services",
+                services?.map((s) => (s._id === service._id ? service : s)),
             );
             setSelectedServiceIds((prev) => {
                 if (service?.serviceId && !prev.includes(service.serviceId)) {
@@ -46,7 +45,10 @@ export default function Services() {
                 return prev;
             });
         } else {
-            setServices((prev) => [...prev, service]);
+            setGarageRegistrationStateValue(
+                "services",
+                services ? [...services, service] : [service],
+            );
             setSelectedServiceIds((prev) =>
                 service?.serviceId ? [...prev, service.serviceId] : prev,
             );
@@ -56,10 +58,19 @@ export default function Services() {
         setEditedServiceId(undefined);
     };
 
-    const onEditServiceButtonPress = (id: string) => {
+    const onEditServiceButtonPress = (id: string | undefined) => {
         setEditedServiceId(id);
         setServiceTemplateModalOpen(true);
         setModalActionType("edit");
+    };
+
+    const onRemoveServiceButtonPress = (
+        service: Partial<Service> | undefined,
+    ) => {
+        setGarageRegistrationStateValue("services", services?.filter(({ _id }) => _id !== service?._id));
+        setSelectedServiceIds((prev) =>
+            prev.filter((serviceId) => serviceId !== service?.serviceId),
+        );
     };
 
     return (
@@ -74,9 +85,11 @@ export default function Services() {
                             onPress={() => {
                                 setModalActionType("create");
                                 setServiceTemplateModalOpen(true);
-                                setEditedServiceId(undefined)
+                                setEditedServiceId(undefined);
                             }}
-                            isDisabled={selectedServiceIds.length === brands.length}
+                            isDisabled={
+                                selectedServiceIds.length === brands.length
+                            }
                         >
                             Add Service
                         </Button>
@@ -84,45 +97,13 @@ export default function Services() {
                 }
                 description="Provide the services your garage will serves"
             >
-                {services.map((service) => (
-                    <div className="flex items-center mb-3 border rounded-xl p-4" key={service.id}>
-                        <div>
-                            <h3 className="font-medium">
-                                {getServiceNameById(service?.serviceId)}
-                            </h3>
-                            <p className="text-sm">
-                                Supported Brands:{" "}
-                                {getBrandNamesByIds(service?.brandIds)}
-                            </p>
-                        </div>
-                        <div className="ml-auto flex gap-2">
-                            <Tooltip content="Edit">
-                                <Button
-                                    isIconOnly
-                                    radius="full"
-                                    variant="bordered"
-                                    onPress={() =>
-                                        onEditServiceButtonPress(service.id)
-                                    }
-                                >
-                                    <FontAwesomeIcon icon={faPen} />
-                                </Button>
-                            </Tooltip>
-                            <Tooltip content="Remove">
-                                <Button
-                                    isIconOnly
-                                    radius="full"
-                                    variant="bordered"
-                                    onPress={() => {
-                                        setServices(prev => prev.filter(({ id }) => id !== service.id))
-                                        setSelectedServiceIds(prev => prev.filter(serviceId => serviceId !== service.serviceId))
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faXmark} />
-                                </Button>
-                            </Tooltip>
-                        </div>
-                    </div>
+                {services?.map((service) => (
+                    <ServiceCard
+                        key={service._id}
+                        service={service}
+                        onEditServiceButtonPress={onEditServiceButtonPress}
+                        onRemoveServiceButtonPress={onRemoveServiceButtonPress}
+                    />
                 ))}
             </RegistrationSection>
             <ServiceTemplateModal

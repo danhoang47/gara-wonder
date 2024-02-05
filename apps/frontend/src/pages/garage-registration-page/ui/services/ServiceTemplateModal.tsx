@@ -15,17 +15,17 @@ import {
 } from "@nextui-org/react";
 import { nanoid } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
-import { ServiceRegister } from "./Services";
 import { brands, services } from "./constants";
+import { Service } from "@/core/types";
 
 export type Brand = (typeof brands)[number];
 
 export type ServiceTemplateModalProps = {
     isOpen: boolean;
-    onModalSave: (data: ServiceRegister) => void;
+    onModalSave: (data: Partial<Service>) => void;
     onModalClose: () => void;
     type?: "edit" | "create";
-    service?: ServiceRegister;
+    service?: Partial<Service>;
     selectedServiceIds: string[];
 };
 
@@ -37,8 +37,8 @@ export default function ServiceTemplateModal({
     service = undefined,
     selectedServiceIds,
 }: ServiceTemplateModalProps) {
-    const [localService, setLocalService] = useState<ServiceRegister>({
-        id: nanoid(),
+    const [localService, setLocalService] = useState<Partial<Service>>({
+        _id: nanoid(),
         highestPrice: 100,
         lowestPrice: 0,
     });
@@ -48,7 +48,7 @@ export default function ServiceTemplateModal({
             setLocalService(service);
         } else {
             setLocalService({
-                id: nanoid(),
+                _id: nanoid(),
                 highestPrice: 100,
                 lowestPrice: 0,
             });
@@ -57,7 +57,7 @@ export default function ServiceTemplateModal({
 
     const resetLocalService = () =>
         setLocalService({
-            id: nanoid(),
+            _id: nanoid(),
             highestPrice: 100,
             lowestPrice: 0,
         });
@@ -88,7 +88,6 @@ export default function ServiceTemplateModal({
         }));
     };
 
-    console.log(selectedServiceIds);
     return (
         <Modal isOpen={isOpen} onClose={onModalClose} size="lg">
             <ModalContent className="min-h-96 flex-col">

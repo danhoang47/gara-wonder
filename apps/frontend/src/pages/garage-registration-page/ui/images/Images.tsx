@@ -1,28 +1,30 @@
 import { FileInput } from "@/core/ui";
 import RegistrationSection from "../registration-section";
-import { useState } from "react";
 import ImagePreview from "./ImagePreview";
+import { useGarageRegistrationContext } from "../../hooks";
 
 function Images() {
-    const [backgroundImage, setBackgroundImage] = useState<File>();
-    const [images, setImages] = useState<File[]>();
+    const { garageRegistrationState: {
+        backgroundImage,
+        images
+    }, setGarageRegistrationStateValue } = useGarageRegistrationContext();
 
     const onImageRemove = (fileName: string) => {
-        setImages((imgs) => imgs?.filter(({ name }) => name !== fileName));
+        setGarageRegistrationStateValue("images", images?.filter(({ name }) => name !== fileName));
     };
 
     const onMultipleFileInputValueChange = (fs: File[]) => {
         if (!images) {
-            setImages(fs);
+            setGarageRegistrationStateValue("images", fs);
             return;
         }
 
-        setImages((prev) =>
-            prev
+        setGarageRegistrationStateValue("images", 
+            images
                 ? [
-                      ...prev,
+                      ...images,
                       ...fs.filter(({ name }) =>
-                          prev.some(({ name: n }) => n === name),
+                      images.some(({ name: n }) => n === name),
                       ),
                   ]
                 : fs,
@@ -42,12 +44,12 @@ function Images() {
                 {backgroundImage ? (
                     <ImagePreview
                         file={backgroundImage}
-                        onImageRemove={() => setBackgroundImage(undefined)}
+                        onImageRemove={() => setGarageRegistrationStateValue("backgroundImage", undefined)}
                     />
                 ) : (
                     <FileInput
                         selectionMode="single"
-                        onValueChange={(f) => setBackgroundImage(f)}
+                        onValueChange={(f) => setGarageRegistrationStateValue("backgroundImage", f)}
                     />
                 )}
             </div>

@@ -6,14 +6,16 @@ import ProgressBar from "../progress-bar";
 
 export type NavigationProps = {
     currentSectionIndex: RegistrationSection;
-    onNext: (e: React.MouseEvent) => void;
+    allowContinue: boolean,
     onBack: () => void;
+    onNext: () => void;
 };
 
 export default function Navigation({
     currentSectionIndex,
-    onBack,
+    allowContinue,
     onNext,
+    onBack
 }: NavigationProps) {
     const getSectionTitle = () => {
         switch (currentSectionIndex) {
@@ -67,6 +69,7 @@ export default function Navigation({
                     className="px-8"
                     onClick={onNext}
                     type="submit"
+                    isDisabled={!allowContinue}
                 >
                     {nextButtonLabel}
                 </Button>

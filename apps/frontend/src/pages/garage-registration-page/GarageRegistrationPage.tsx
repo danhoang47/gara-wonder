@@ -20,8 +20,7 @@ export type GarageFormState = {
 };
 
 const GarageRegistrationPage = () => {
-    const { currentSectionIndex, onBackButtonClicked, onNextButtonClicked } =
-        useNavigation();
+    const { currentSectionIndex, allowContinue, onBackButtonClicked, onNextButtonClicked } = useNavigation();
 
     const renderPageSection = () => {
         switch (currentSectionIndex) {
@@ -39,17 +38,23 @@ const GarageRegistrationPage = () => {
     };
 
     return (
-        <GarageRegistrationContextProvider>
             <div className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0">
                 {renderPageSection()}
                 <Navigation
                     currentSectionIndex={currentSectionIndex}
+                    allowContinue={allowContinue}
                     onBack={onBackButtonClicked}
                     onNext={onNextButtonClicked}
                 />
             </div>
-        </GarageRegistrationContextProvider>
     );
 };
 
-export default GarageRegistrationPage;
+export default function GarageRegistrationPageWrapper() {
+
+    return (
+        <GarageRegistrationContextProvider>
+            <GarageRegistrationPage />
+        </GarageRegistrationContextProvider>
+    )
+}
