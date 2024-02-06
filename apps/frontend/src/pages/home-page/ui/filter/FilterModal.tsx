@@ -3,6 +3,9 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     Button,
+    ButtonGroup,
+    Checkbox,
+    CheckboxGroup,
     Divider,
     Modal,
     ModalBody,
@@ -47,12 +50,12 @@ function FilterModal({ isOpen = false, onDismiss, onSave }: FilterModalProps) {
         <Modal isOpen={isOpen} onOpenChange={onDismiss} size="3xl">
             <ModalContent>
                 <ModalHeader>
-                    <span>Filter</span>
+                    <span className="text-base">Filter</span>
                 </ModalHeader>
                 <Divider/>
-                <ModalBody className="pb-4">
+                <ModalBody className="pb-4 overflow-auto sm:max-h-[400px]">
                     <div className="pb-8 border-b">
-                        <div className="mb-3">
+                        <div className="mb-5">
                             <h3 className="text-xl font-bold">Price Range</h3>
                             <p className="text-zinc text-sm">This is not include tax and other fees</p>
                         </div>
@@ -81,7 +84,7 @@ function FilterModal({ isOpen = false, onDismiss, onSave }: FilterModalProps) {
                         </div>
                     </div>
                     <div className="pb-8 border-b">
-                        <div className="mb-3">
+                        <div className="mb-5">
                             <h3 className="text-xl font-bold">Rating</h3>
                             <p className="text-zinc text-sm">This is not include tax and other fees</p>
                         </div>
@@ -100,7 +103,7 @@ function FilterModal({ isOpen = false, onDismiss, onSave }: FilterModalProps) {
                         </div>
                     </div>
                     <div className="pb-8 border-b">
-                        <div className="mb-3">
+                        <div className="mb-5">
                             <h3 className="text-xl font-bold">Supported Brands</h3>
                             <p className="text-zinc text-sm">This is not include tax and other fees</p>
                         </div>
@@ -116,6 +119,40 @@ function FilterModal({ isOpen = false, onDismiss, onSave }: FilterModalProps) {
                                 </Button>
                             ))}
                         </div>
+                    </div>
+                    <div className="pb-8 border-b">
+                        <div className="mb-5">
+                            <h3 className="text-xl font-bold">Distances Radius</h3>
+                            <p className="text-zinc text-sm">This is not include tax and other fees</p>
+                        </div>
+                        <ButtonGroup className="flex bg-white" variant="solid">
+                            <Button className="grow h-auto py-6">
+                                <span className="font-semibold text-lg">1 Km</span>
+                            </Button>
+                            <Button className="grow h-auto py-6">
+                                <span className="font-semibold text-lg">5 Km</span>
+                            </Button>
+                            <Button className="grow h-auto py-6">
+                                <span className="font-semibold text-lg">10 Km</span>
+                            </Button>
+                            <Button className="grow h-auto py-6">
+                                <span className="font-semibold text-lg">10+ Km</span>
+                            </Button>
+                        </ButtonGroup>
+                    </div>
+                    <div className="pb-8">
+                        <div className="mb-5">
+                            <h3 className="text-xl font-bold">Additional Services</h3>
+                            <p className="text-zinc text-sm">This is not include tax and other fees</p>
+                        </div>
+                        <CheckboxGroup>
+                            <Checkbox value={"cafe"}>
+                                Has Cafe to waiting
+                            </Checkbox>
+                            <Checkbox value={"smokingArea"}>
+                                Has smoking area 
+                            </Checkbox>
+                        </CheckboxGroup>
                     </div>
                 </ModalBody>
                 <Divider />
