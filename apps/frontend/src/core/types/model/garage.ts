@@ -17,12 +17,12 @@ export type Garage = BusinessEntity & {
 
 export type GarageFilter = {
     priceRange?: {
-        from: number,
-        to: number,
+        from?: number,
+        to?: number,
     }
     ratings?: number[];
-    supportedBrands?: string[];
-    distance?: string[];
+    brands?: string[];
+    distance?: number;
     additional?: {
         hasCafe?: boolean;
         hasSmokingArea?: boolean;

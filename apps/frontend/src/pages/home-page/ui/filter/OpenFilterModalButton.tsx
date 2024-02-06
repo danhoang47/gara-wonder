@@ -13,7 +13,7 @@ export default function OpenFilterButton({
 }: OpenFilterButtonProps) {
     return (
         <Badge
-            content={numberOfActiveFilters}
+            content={numberOfActiveFilters || undefined}
             color="default"
             variant="faded"
             showOutline={false}
