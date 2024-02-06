@@ -1,4 +1,6 @@
 import { GarageFilter } from "@/core/types";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     Button,
     Divider,
@@ -7,6 +9,7 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Slider,
 } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 
@@ -16,6 +19,15 @@ export type FilterModalProps = {
     onSave: () => void;
 };
 
+const supportedBrands = [
+    "Mercedes",
+    "BMW",
+    "Porsche",
+    "Toyota",
+    "Honda",
+    "Lexus"
+]
+
 function FilterModal({ isOpen = false, onDismiss, onSave }: FilterModalProps) {
     const [filters, setFilters] = useState<GarageFilter>({});
     const numberOfSelectedFilter = useMemo(
@@ -24,14 +36,88 @@ function FilterModal({ isOpen = false, onDismiss, onSave }: FilterModalProps) {
         [Object.keys(filters).length],
     );
 
+    const conFilterValueChange = <K extends keyof GarageFilter>(key: K, value: GarageFilter[K]) => {
+        setFilters(prev => ({
+            ...prev,
+            [key]: value
+        }))
+    }
+
     return (
         <Modal isOpen={isOpen} onOpenChange={onDismiss} size="3xl">
             <ModalContent>
                 <ModalHeader>
                     <span>Filter</span>
                 </ModalHeader>
-                <Divider />
-                <ModalBody className="h-96"></ModalBody>
+                <Divider/>
+                <ModalBody className="pb-4">
+                    <div className="pb-8 border-b">
+                        <div className="mb-3">
+                            <h3 className="text-xl font-bold">Price Range</h3>
+                            <p className="text-zinc text-sm">This is not include tax and other fees</p>
+                        </div>
+                        <div className="flex"> 
+                            <Slider 
+                                step={1} 
+                                minValue={0} 
+                                maxValue={1000} 
+                                defaultValue={[100, 500]} 
+                                formatOptions={{style: "currency", currency: "USD"}}
+                                className="max-w px-12"
+                                classNames={{
+                                    filler: "bg-black",
+                                    track: "h-1",
+                                    thumb: "w-8 h-8 bg-white after:hidden"
+                                }}
+                                onChangeEnd={(values) => {
+                                    if (Array.isArray(values)) {
+                                        conFilterValueChange("priceRange", {
+                                            from: values[0],
+                                            to: values[1]
+                                        })
+                                    }
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className="pb-8 border-b">
+                        <div className="mb-3">
+                            <h3 className="text-xl font-bold">Rating</h3>
+                            <p className="text-zinc text-sm">This is not include tax and other fees</p>
+                        </div>
+                        <div className="flex gap-3"> 
+                            {[1, 2, 3, 4, 5].map(rating => (
+                                <Button 
+                                    endContent={<FontAwesomeIcon icon={faStar}/>} 
+                                    variant="bordered" 
+                                    radius="full"
+                                    className="border"
+                                    disableAnimation
+                                >
+                                    <span>{rating}</span>
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="pb-8 border-b">
+                        <div className="mb-3">
+                            <h3 className="text-xl font-bold">Supported Brands</h3>
+                            <p className="text-zinc text-sm">This is not include tax and other fees</p>
+                        </div>
+                        <div className="grid gap-3 grid-cols-3"> 
+                            {supportedBrands.map(brand => (
+                                <Button 
+                                    variant="bordered" 
+                                    radius="md"
+                                    className="py-8 border"
+                                    disableAnimation
+                                >
+                                    <span className="font-medium">{brand}</span>
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
+                </ModalBody>
                 <Divider />
                 <ModalFooter className="flex items-center">
                     {numberOfSelectedFilter && (
@@ -39,8 +125,8 @@ function FilterModal({ isOpen = false, onDismiss, onSave }: FilterModalProps) {
                             {numberOfSelectedFilter} items selected
                         </p>
                     )}
-                    <div className="ml-auto">
-                        <Button variant="light">
+                    <div className="ml-auto gap-1 flex">
+                        <Button variant="light" onPress={onDismiss}>
                             <span>Cancel</span>
                         </Button>
                         <Button

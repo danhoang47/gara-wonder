@@ -16,9 +16,11 @@ export type Garage = BusinessEntity & {
 };
 
 export type GarageFilter = {
-    lowestPrice?: number;
-    highestPrice?: number;
-    rating?: number[];
+    priceRange?: {
+        from: number,
+        to: number,
+    }
+    ratings?: number[];
     supportedBrands?: string[];
     distance?: string[];
     additional?: {
