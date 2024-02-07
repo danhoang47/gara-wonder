@@ -25,7 +25,6 @@ function Filter() {
     return (
         <>
             <OpenFilterButton
-                numberOfActiveFilters={0}
                 onPress={onOpenFilterButtonPress}
             />
             <FilterModal 

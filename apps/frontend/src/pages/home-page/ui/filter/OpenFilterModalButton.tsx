@@ -1,19 +1,23 @@
+import { useAppSelector } from "@/core/hooks";
+import { selectNumberOfActiveFilterSection } from "@/features/filter/filter.slice";
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge, Button } from "@nextui-org/react";
 
 export type OpenFilterButtonProps = {
-    numberOfActiveFilters?: number;
     onPress: () => void;
 };
 
 export default function OpenFilterButton({
-    numberOfActiveFilters,
     onPress,
 }: OpenFilterButtonProps) {
+    const numberOfActiveFilterSection = useAppSelector(
+        (state) => selectNumberOfActiveFilterSection(state.filter)
+    )
+
     return (
         <Badge
-            content={numberOfActiveFilters || undefined}
+            content={numberOfActiveFilterSection || undefined}
             color="default"
             variant="faded"
             showOutline={false}
