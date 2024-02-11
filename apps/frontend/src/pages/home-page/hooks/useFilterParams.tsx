@@ -12,7 +12,6 @@ const keys: Array<keyof GarageFilter> = [
     "distance",
 ];
 
-
 function useFilterParams() {
     const [urlSearchParams, setURLSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
@@ -43,14 +42,14 @@ function useFilterParams() {
                         Array.isArray(filterValue) &&
                         filterValue.length === 0
                     ) {
-                        prev.delete(key)
+                        prev.delete(key);
                     }
-                    valuableKeys.splice(valuableKeys.indexOf(key), 1)
+                    valuableKeys.splice(valuableKeys.indexOf(key), 1);
                     prev.set(key, JSON.stringify(filterValue));
                 }
             });
 
-            valuableKeys.forEach(key => prev.delete(key))
+            valuableKeys.forEach((key) => prev.delete(key));
 
             return prev;
         });
@@ -60,7 +59,7 @@ function useFilterParams() {
         dispatch(setFilter(filterParams));
     }, []);
 
-    return setFilterParams
+    return { filterParams, setFilterParams };
 }
 
 export default useFilterParams;

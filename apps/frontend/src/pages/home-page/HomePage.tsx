@@ -1,7 +1,7 @@
-import { Categories, Filter, SortBy } from "./ui";
+import Filter from "@/features/filter";
+import { Categories, GarageResults, SortBy } from "./ui";
 
 const HomePage = () => {
-
     return (
         <div id="home" className="px-10">
             <div className="TopBar flex my-8 items-center">
@@ -13,9 +13,7 @@ const HomePage = () => {
                     <Filter />
                 </div>
             </div>
-            <div>
-
-            </div>
+            <GarageResults />
         </div>
     );
 };

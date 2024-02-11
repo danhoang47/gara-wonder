@@ -1,6 +1,44 @@
+import { useState } from "react";
+import OpenFilterButton from "./OpenFilterModalButton";
+import FilterModal from "./FilterModal";
+import { useFilterParams } from "@/pages/home-page/hooks";
+import { useAppSelector } from "@/core/hooks";
 
+function Filter() {
+    const [isFilterOpen, setFilterOpen] = useState<boolean>();
+    const filter = useAppSelector(state => state.filter)
+    const { setFilterParams } = useFilterParams();
 
-export default function Filter() {
+    const onOpenFilterButtonPress = () => {
+        setFilterOpen(true);
+    };
 
-    return <div></div>
+    const onModalDismiss = () => {
+        setFilterOpen(false)
+    }
+
+    const onModalClearValue = () => {
+        setFilterParams({})
+    }
+ 
+    const onModalSave = () =>{
+        setFilterParams(filter)
+        setFilterOpen(false)
+    }
+
+    return (
+        <>
+            <OpenFilterButton
+                onPress={onOpenFilterButtonPress}
+            />
+            <FilterModal 
+                isOpen={isFilterOpen}
+                onDismiss={onModalDismiss}
+                onSave={onModalSave}
+                onClear={onModalClearValue}
+            />
+        </>
+    );
 }
+
+export default Filter;

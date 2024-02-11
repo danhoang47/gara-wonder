@@ -32,12 +32,12 @@ function FilterModal({
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onDismiss} size="3xl">
-            <ModalContent>
+            <ModalContent className="max-h-[90%]">
                 <ModalHeader>
                     <span className="text-base">Filter</span>
                 </ModalHeader>
                 <Divider />
-                <ModalBody className="pb-4 overflow-auto sm:max-h-[400px] md:max-h-[428px] lg:max-h-[680px]">
+                <ModalBody className="pb-4 overflow-auto">
                     <PriceRangeFilterSection />
                     <RatingFilterSection />
                     <BrandFilterSection />
