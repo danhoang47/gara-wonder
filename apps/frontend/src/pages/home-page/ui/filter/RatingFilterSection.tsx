@@ -19,6 +19,9 @@ export default function RatingFilterSection() {
         <FilterSection
             title="Price Range"
             description="This is not include tax and other fees"
+            classNames={{
+                contentWrapper: "gap-1"
+            }}
         >
             {RATINGS.map((rating) => (
                 <Button

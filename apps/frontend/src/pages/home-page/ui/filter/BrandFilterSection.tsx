@@ -23,6 +23,9 @@ export default function BrandFilterSection() {
         <FilterSection
             title="Supported Brands"
             description="This is not include tax and other fees"
+            classNames={{
+                contentWrapper: "grid grid-cols-3 gap-2"
+            }}
         >
             {supportedBrands.map((brand) => (
                 <Button

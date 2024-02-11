@@ -1,18 +1,22 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { GarageFilter } from "@/core/types";
+import { useAppDispatch } from "@/core/hooks";
+import { setFilter } from "@/features/filter/filter.slice";
+
+const keys: Array<keyof GarageFilter> = [
+    "priceRange",
+    "ratings",
+    "brands",
+    "additional",
+    "distance",
+];
+
 
 function useFilterParams() {
     const [urlSearchParams, setURLSearchParams] = useSearchParams();
+    const dispatch = useAppDispatch();
     const filterParams = useMemo<GarageFilter>(() => {
-        const keys: Array<keyof GarageFilter> = [
-            "priceRange",
-            "ratings",
-            "brands",
-            "additional",
-            "distance",
-        ];
-
         return keys.reduce<GarageFilter>((acc, key) => {
             const searchParam = urlSearchParams.get(key);
 
@@ -28,6 +32,8 @@ function useFilterParams() {
     }, [urlSearchParams]);
 
     const setFilterParams = (filters: GarageFilter) => {
+        const valuableKeys: string[] = [...keys];
+
         setURLSearchParams((prev) => {
             Object.keys(filters).forEach((key) => {
                 const filterValue = filters[key as keyof GarageFilter];
@@ -37,18 +43,24 @@ function useFilterParams() {
                         Array.isArray(filterValue) &&
                         filterValue.length === 0
                     ) {
-                        return;
+                        prev.delete(key)
                     }
-
+                    valuableKeys.splice(valuableKeys.indexOf(key), 1)
                     prev.set(key, JSON.stringify(filterValue));
                 }
             });
+
+            valuableKeys.forEach(key => prev.delete(key))
 
             return prev;
         });
     };
 
-    return [filterParams, setFilterParams] as const;
+    useEffect(() => {
+        dispatch(setFilter(filterParams));
+    }, []);
+
+    return setFilterParams
 }
 
 export default useFilterParams;

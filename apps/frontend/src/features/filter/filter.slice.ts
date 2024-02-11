@@ -23,11 +23,11 @@ const filterSlice = createSlice({
             const { key, value } = action.payload;
             state[key] = value;
         },
-        clearFilterValue(state) {
-            state = initialFilterState
+        clearFilterValue() {
+            return {}
         },
-        setFilter(state, action: PayloadAction<GarageFilter>) {
-            state = action.payload
+        setFilter(_, action: PayloadAction<GarageFilter>) {
+            return action.payload
         }
     }
 })

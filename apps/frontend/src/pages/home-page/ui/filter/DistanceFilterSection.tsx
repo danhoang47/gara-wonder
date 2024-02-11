@@ -37,7 +37,7 @@ export default function DistanceFilterSection() {
                         }}
                     >
                         <span className="font-semibold text-lg">
-                            {distanceRadius === -1 ? `${distanceRadius} Km+` : `${distanceRadius} Km`}
+                            {distanceRadius === -1 ? `10 Km+` : `${distanceRadius} Km`}
                         </span>
                     </Button>
                 ))}
