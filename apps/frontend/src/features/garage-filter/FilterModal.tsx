@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/react";
 import PriceRangeFilterSection from "./PriceRangeFilterSection";
 import RatingFilterSection from "./RatingFilterSection";
-import { clearFilterValue } from "@/features/filter/filter.slice";
+import { clearFilterValue } from "@/features/garage-filter/filter.slice";
 import { useAppDispatch } from "@/core/hooks";
 import BrandFilterSection from "./BrandFilterSection";
 import DistanceFilterSection from "./DistanceFilterSection";

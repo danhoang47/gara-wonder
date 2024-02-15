@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/core/hooks";
-import { selectNumberOfActiveFilterSection } from "@/features/filter/filter.slice";
+import { selectNumberOfActiveFilterSection } from "@/features/garage-filter/filter.slice";
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge, Button } from "@nextui-org/react";
@@ -25,11 +25,12 @@ export default function OpenFilterButton({
             <Button
                 variant="bordered"
                 color="default"
-                className="border-black border"
+                className="border"
+                radius="full"
                 onPress={onPress}
             >
                 <FontAwesomeIcon icon={faSliders} />
-                <span>Filter</span>
+                <span className="font-medium">Filter</span>
             </Button>
         </Badge>
     );

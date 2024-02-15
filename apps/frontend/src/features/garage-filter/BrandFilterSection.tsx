@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react";
 
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import FilterSection from "./FilterSection";
-import { setFilterValue } from "@/features/filter/filter.slice";
+import { setFilterValue } from "@/features/garage-filter/filter.slice";
 import clsx from "clsx";
 
 const supportedBrands = [

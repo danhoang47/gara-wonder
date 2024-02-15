@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GarageFilter } from "@/core/types";
 
-const initialFilterState: GarageFilter = {
+const initialGarageFilterState: GarageFilter = {
     priceRange: {
         from: undefined,
         to: undefined,
@@ -12,9 +12,9 @@ const initialFilterState: GarageFilter = {
     brands: [],
 };
 
-const filterSlice = createSlice({
+const garageFilterSlice = createSlice({
     name: "filter",
-    initialState: initialFilterState,
+    initialState: initialGarageFilterState,
     reducers: {
         setFilterValue<K extends keyof GarageFilter>(state: GarageFilter, action: PayloadAction<{
             key: K,
@@ -54,6 +54,6 @@ export const selectNumberOfActiveFilterSection = (state: GarageFilter) => {
     }, 0);
 }
 
-export const { setFilterValue, clearFilterValue, setFilter } = filterSlice.actions
+export const { setFilterValue, clearFilterValue, setFilter } = garageFilterSlice.actions
 
-export default filterSlice.reducer;
+export default garageFilterSlice.reducer;

@@ -2,7 +2,7 @@ import { Slider } from "@nextui-org/react";
 
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import FilterSection from "./FilterSection";
-import { setFilterValue } from "@/features/filter/filter.slice";
+import { setFilterValue } from "@/features/garage-filter/filter.slice";
 
 export default function PriceRangeFilterSection() {
     const priceRange = useAppSelector((state) => state.filter.priceRange)

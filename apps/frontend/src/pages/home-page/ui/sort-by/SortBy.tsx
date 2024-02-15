@@ -39,7 +39,7 @@ function SortBy() {
         } 
             
         return undefined;
-    }, [selectedSortByOptionSet])
+    }, [filterSearchParams])
 
     const onSortByMenuOpenChange = (isOpen: boolean) => {
         setSortByMenuOpen(isOpen)
