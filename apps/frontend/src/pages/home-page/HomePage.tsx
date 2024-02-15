@@ -1,5 +1,5 @@
 import Filter from "@/features/garage-filter";
-import { Categories, GarageResults, SortBy } from "./ui";
+import { Categories, Garages, SortBy } from "./ui";
 
 const HomePage = () => {
     return (
@@ -13,7 +13,7 @@ const HomePage = () => {
                     <Filter />
                 </div>
             </div>
-            <GarageResults />
+            <Garages />
         </div>
     );
 };

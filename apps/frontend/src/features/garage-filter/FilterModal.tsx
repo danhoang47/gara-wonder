@@ -14,6 +14,7 @@ import { useAppDispatch } from "@/core/hooks";
 import BrandFilterSection from "./BrandFilterSection";
 import DistanceFilterSection from "./DistanceFilterSection";
 import AdditionalServiceFilterSection from "./AdditionalServiceFilterSection";
+import { useEffect } from "react";
 
 export type FilterModalProps = {
     isOpen?: boolean;
@@ -26,12 +27,22 @@ function FilterModal({
     isOpen = false,
     onDismiss,
     onSave,
-    onClear
+    onClear,
 }: FilterModalProps) {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (isOpen) {
+            document.getElementById("root")!.classList.add("overflow-y-hidden")
+        } else {
+            document.getElementById("root")!.classList.remove("overflow-y-hidden")
+        }
+    }, [isOpen])
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onDismiss} size="3xl" scrollBehavior="inside">
+        <Modal isOpen={isOpen} onOpenChange={onDismiss} size="3xl" classNames={{
+            wrapper: "overflow-y-hidden"
+        }}>
             <ModalContent className="max-h-[90%]">
                 <ModalHeader>
                     <span className="text-base">Filter</span>
@@ -46,11 +57,14 @@ function FilterModal({
                 </ModalBody>
                 <Divider />
                 <ModalFooter className="flex items-center">
-                    <Button variant="light" onPress={() => {
-                        dispatch(clearFilterValue())
-                        onClear()
-                    }}>
-                            <p className="font-semibold text-base">Clear all</p>
+                    <Button
+                        variant="light"
+                        onPress={() => {
+                            dispatch(clearFilterValue());
+                            onClear();
+                        }}
+                    >
+                        <p className="font-semibold text-base">Clear all</p>
                     </Button>
                     <div className="ml-auto gap-1 flex">
                         <Button variant="light" onPress={onDismiss}>
