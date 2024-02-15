@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { GarageFilter } from "@/core/types";
 import { useAppDispatch } from "@/core/hooks";
-import { setFilter } from "@/features/filter/filter.slice";
+import { setFilter } from "@/features/garage-filter/filter.slice";
 
 const keys: Array<keyof GarageFilter> = [
     "priceRange",

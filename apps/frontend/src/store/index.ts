@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { filterReducer } from "@/features/filter";
+import { garageFilterReducer } from "@/features/garage-filter";
+import { toastsReducer } from "@/features/toasts";
 
 const store = configureStore({
     reducer: {
-        filter: filterReducer
+        filter: garageFilterReducer,
+        toasts: toastsReducer
     }
 })
 

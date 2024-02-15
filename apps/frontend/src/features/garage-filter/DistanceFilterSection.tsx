@@ -3,7 +3,7 @@ import { Button, ButtonGroup } from "@nextui-org/react";
 
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import FilterSection from "./FilterSection";
-import { setFilterValue } from "@/features/filter/filter.slice";
+import { setFilterValue } from "@/features/garage-filter/filter.slice";
 
 const distanceRadiuses: number[] = [1, 5, 10, -1];
 

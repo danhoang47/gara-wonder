@@ -2,7 +2,7 @@ import { Checkbox, CheckboxGroup } from "@nextui-org/react";
 
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import FilterSection from "./FilterSection";
-import { setFilterValue } from "@/features/filter/filter.slice";
+import { setFilterValue } from "@/features/garage-filter/filter.slice";
 import { GarageFilter } from "@/core/types";
 
 export default function AdditionalServiceFilterSection() {

@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/react";
 import PriceRangeFilterSection from "./PriceRangeFilterSection";
 import RatingFilterSection from "./RatingFilterSection";
-import { clearFilterValue } from "@/features/filter/filter.slice";
+import { clearFilterValue } from "@/features/garage-filter/filter.slice";
 import { useAppDispatch } from "@/core/hooks";
 import BrandFilterSection from "./BrandFilterSection";
 import DistanceFilterSection from "./DistanceFilterSection";
@@ -31,7 +31,7 @@ function FilterModal({
     const dispatch = useAppDispatch()
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onDismiss} size="3xl">
+        <Modal isOpen={isOpen} onOpenChange={onDismiss} size="3xl" scrollBehavior="inside">
             <ModalContent className="max-h-[90%]">
                 <ModalHeader>
                     <span className="text-base">Filter</span>

@@ -1,4 +1,4 @@
-import Filter from "@/features/filter";
+import Filter from "@/features/garage-filter";
 import { Categories, GarageResults, SortBy } from "./ui";
 
 const HomePage = () => {
