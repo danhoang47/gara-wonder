@@ -20,8 +20,11 @@ function FBSignInButton() {
     };
 
     return (  
-        <Button disableAnimation onPress={signIn} variant="bordered" className="h-12">
-            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/512px-Facebook_f_logo_%282021%29.svg.png" className="w-6"/>
+        <Button disableAnimation onPress={signIn} variant="bordered" className="h-12 relative">
+            <img 
+                className="absolute left-3 w-6" 
+                src="https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/512px-Facebook_f_logo_%282021%29.svg.png" 
+            />
             <span className="font-medium">Continue with Facebook</span>
         </Button>
     );

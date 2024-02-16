@@ -6,3 +6,4 @@ export { default as Input } from "./input";
 export { default as Select } from "./select";
 export { default as FileInput } from './file-input'
 export { default as FullPageLoad } from './full-page-load'
+export { default as Dialog } from './dialog'

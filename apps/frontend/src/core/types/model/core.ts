@@ -6,6 +6,13 @@ export type Model = {
     updatedAt: number,
 }
 
+export type Cursor = {
+    cursor?: string,
+    nextCursor?: string,
+    limit?: number,
+    total?: number,
+}
+
 export type Image = Model & {
     width: number,
     height: number,

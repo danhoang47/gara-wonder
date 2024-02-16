@@ -2,7 +2,7 @@ import { FirebaseOptions, initializeApp } from 'firebase/app'
 import { FacebookAuthProvider, GoogleAuthProvider, getAuth } from 'firebase/auth';
 
 const firebaseConfig: FirebaseOptions = {
-    apiKey: "AIzaSyCZxls8biGktfwT2IiedTMaYeJmeVRQTHY",
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: "garage-wonder.firebaseapp.com",
     projectId: "garage-wonder",
     storageBucket: "garage-wonder.appspot.com",

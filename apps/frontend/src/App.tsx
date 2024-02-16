@@ -11,10 +11,10 @@ function App() {
     const navigate = useNavigate();
 
     return (
-        <NextUIProvider navigate={navigate}>
+        <NextUIProvider navigate={navigate} className="h-full">
             <ReduxProvider store={store}>
                 <ModalContextProvider>
-                    <div className="light text-foreground bg-background">
+                    <div className="light text-foreground bg-background h-full">
                         <Outlet />
                     </div>
                 </ModalContextProvider>

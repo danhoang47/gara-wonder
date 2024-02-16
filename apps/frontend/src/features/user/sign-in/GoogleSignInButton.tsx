@@ -27,8 +27,11 @@ function GoogleSignInButton({
     };
 
     return (
-        <Button disableAnimation variant="bordered" onPress={signIn} className="h-12">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/24px-Google_%22G%22_logo.svg.png" />
+        <Button disableAnimation variant="bordered" onPress={signIn} className="h-12 relative">
+            <img 
+                className="absolute left-3"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/24px-Google_%22G%22_logo.svg.png" 
+            />
             <span className="font-medium">Continue with Google</span>
         </Button>
     );

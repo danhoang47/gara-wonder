@@ -3,8 +3,8 @@ import { Categories, Garages, SortBy } from "./ui";
 
 const HomePage = () => {
     return (
-        <div id="home" className="px-10">
-            <div className="TopBar flex my-8 items-center">
+        <div id="home" className="px-10 grow flex flex-col opacity-100 z-0">
+            <div className="TopBar flex items-center h-20">
                 <div className="">
                     <SortBy />
                 </div>

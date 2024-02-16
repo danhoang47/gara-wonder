@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useFilterParams } from ".";
+import useSWR from 'swr'
+
 import { Garage } from "@/core/types";
 
 export default function useGarages() {
-    const { filterParams } = useFilterParams();
-    const [garages, setGarages] = useState<Garage[]>();
-    const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
-
+    const { isLoading, error, data: garages } = useSWR<Garage[]>('', () => {
+        return []
+    });
     
+    return { garages, isLoading, error }
 }
