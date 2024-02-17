@@ -6,7 +6,14 @@ export type Model = {
     updatedAt: number,
 }
 
-export type Cursor = {
+export type Response<T> = {
+    statusCode: number;
+    message?: string;
+    data: T;
+    paging: Paging
+}
+
+export type Paging = {
     cursor?: string,
     nextCursor?: string,
     limit?: number,
@@ -29,8 +36,7 @@ export type Address = {
     province: Province,
     ward: Ward,
     streetAddress: string,
-    longitude: string,
-    latitude: string
+    coords: [number, number]
 }
 
 export type BusinessEntity = 
@@ -43,6 +49,7 @@ Model & Address & {
     status: Status,
     openAt: number,
     closeAt: number,
+    isVerify: boolean,
 }
 
 

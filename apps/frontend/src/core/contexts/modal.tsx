@@ -35,6 +35,7 @@ export default function ModalContextProvider({ children }: ContainerProps) {
                         title="Enable Location Tracking"
                         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut ex nisi. Quisque commodo sem et rhoncus hendrerit."
                         imageSrc="https://cdn-icons-png.flaticon.com/512/235/235861.png"
+                        showNegativeButton={false}
                     />
                 )
             default:

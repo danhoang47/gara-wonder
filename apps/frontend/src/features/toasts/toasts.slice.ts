@@ -1,5 +1,4 @@
 import { Toast } from "@/core/types";
-import store from "@/store";
 import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
 
 const toasts: Array<Toast> = [];
@@ -9,7 +8,7 @@ const toastsSlice = createSlice({
     initialState: toasts,
     reducers: {
         notify: {
-            prepare(toast: Toast) {
+            prepare(toast: Omit<Toast, "id">) {
                 return {
                     payload: {
                         ...toast,
@@ -18,14 +17,10 @@ const toastsSlice = createSlice({
                 };
             },
             reducer(state, action: PayloadAction<Toast>) {
-                state.splice(0, 0, action.payload)
-
-                setTimeout(() => {
-                   store.dispatch(remove(action.payload.id))
-                }, action.payload.delay)
+                state.splice(0, 0, action.payload);
             },
         },
-        remove(state, action: PayloadAction<string>) {
+        removeToast(state, action: PayloadAction<string>) {
             const id = action.payload;
 
             for (let index = 0; index < state.length; index++) {
@@ -38,6 +33,6 @@ const toastsSlice = createSlice({
     },
 });
 
-export const { notify, remove } = toastsSlice.actions;
+export const { notify, removeToast } = toastsSlice.actions;
 
 export default toastsSlice.reducer;

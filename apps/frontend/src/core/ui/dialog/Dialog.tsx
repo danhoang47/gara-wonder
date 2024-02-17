@@ -1,4 +1,10 @@
-import { Button, Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react";
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+} from "@nextui-org/react";
 
 export type DialogProps = {
     isOpen: boolean;
@@ -9,11 +15,12 @@ export type DialogProps = {
     alt?: string;
     title: string;
     description?: string;
+    showNegativeButton?: boolean;
     positiveLabel?: string;
     negativeLabel?: string;
     onPositivePress?: () => void;
     onNegativePress?: () => void;
-}
+};
 
 export default function Dialog({
     isOpen,
@@ -26,34 +33,59 @@ export default function Dialog({
     alt,
     negativeLabel = "Cancel",
     positiveLabel = "Got it",
+    showNegativeButton = true,
     onPositivePress,
-    onNegativePress
+    onNegativePress,
 }: DialogProps) {
-
     return (
         <Modal isOpen={isOpen} onClose={onClose} hideCloseButton>
             <ModalContent>
                 <ModalBody>
                     <div className="mt-4">
-                        {icon ? IconComponent : <img src={imageSrc} alt={alt || title} className="w-32 mx-auto"/>}
+                        {icon ? (
+                            IconComponent
+                        ) : (
+                            <img
+                                src={imageSrc}
+                                alt={alt || title}
+                                className="w-32 mx-auto"
+                            />
+                        )}
                     </div>
                     <div>
-                        <h4 className="font-bold text-center mb-3 text-lg">{title}</h4>
-                        {description && <p className="text-center text-foreground-500 leading-5">{description}</p>}
+                        <h4 className="font-bold text-center mb-3 text-lg">
+                            {title}
+                        </h4>
+                        {description && (
+                            <p className="text-center text-foreground-500 leading-5">
+                                {description}
+                            </p>
+                        )}
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button onPress={onNegativePress} variant="light" className="grow">
-                        {negativeLabel}
-                    </Button>
-                    <Button onPress={() => {
-                        onPositivePress && onPositivePress()
-                        onClose()
-                    }} className="bg-primary grow">
-                        <span className="text-white">{positiveLabel}</span>
+                    {showNegativeButton && (
+                        <Button
+                            onPress={onNegativePress}
+                            variant="light"
+                            className="grow"
+                        >
+                            {negativeLabel}
+                        </Button>
+                    )}
+                    <Button
+                        onPress={() => {
+                            onPositivePress && onPositivePress();
+                            onClose();
+                        }}
+                        className="bg-primary grow"
+                    >
+                        <span className="text-white text-base font-medium">
+                            {positiveLabel}
+                        </span>
                     </Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
-    )
+    );
 }
