@@ -1,7 +1,10 @@
+import { Link } from "@nextui-org/react";
 
 function BrandLogo() {
-    return (  
-        <h3>GaraWonder</h3>
+    return (
+        <Link href="/">
+            <h3>GaraWonder</h3>
+        </Link>
     );
 }
 

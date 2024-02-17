@@ -8,7 +8,7 @@ const DefaultLayout = () => {
     const shouldShowMiddleContent = location.pathname === '/'
 
     return (
-        <div data-testid={DefaultLayout.name} >
+        <div data-testid={DefaultLayout.name} className="h-full flex flex-col">
             <Header
                 leftContent={<BrandLogo />}
                 middleContent={shouldShowMiddleContent && <GaraSearch />}

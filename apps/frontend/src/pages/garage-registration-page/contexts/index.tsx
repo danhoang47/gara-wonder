@@ -1,7 +1,12 @@
 import { createContext, useState, useMemo, useCallback } from "react";
 
 import { ContainerProps, Garage } from "@/core/types";
-import { FieldConstraint } from "@/core/hooks/useForm";
+
+export type FieldConstraint = {
+    required?: string,
+    min?: [number, string],
+    max?: [number, string]
+}
 
 export type GarageRegistration = Partial<Omit<Garage, "images" | "backgroundImage">> & {
     backgroundImage?: File,

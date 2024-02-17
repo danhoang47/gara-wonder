@@ -19,7 +19,7 @@ const SortByButton = forwardRef<
             {...props}
             disableAnimation
         >
-            <span>{children}</span>
+            <span className="font-medium">{children}</span>
         </Button>
     )
 })

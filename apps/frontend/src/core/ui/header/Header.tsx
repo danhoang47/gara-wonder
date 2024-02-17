@@ -16,7 +16,7 @@ function Header({
     return (
         <div
             className={clsx(
-                "h-20 flex justify-between px-10 gap-2 border-b-1 sticky top-0 bg-white z-10",
+                "h-20 flex justify-between px-10 gap-2 border-b-1 sticky top-0 bg-white z-10 shrink-0",
                 className,
             )}
         >
