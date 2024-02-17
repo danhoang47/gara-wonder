@@ -4,6 +4,4 @@ export { default as Overlay } from "./overlay";
 export { default as BrandLogo } from './brand-logo'
 export { default as Input } from "./input";
 export { default as Select } from "./select";
-export { default as UnsupportedChip } from './unsupported-chip' 
-export { default as SupportedChip } from './supported-chip' 
 export { default as FileInput } from './file-input'
