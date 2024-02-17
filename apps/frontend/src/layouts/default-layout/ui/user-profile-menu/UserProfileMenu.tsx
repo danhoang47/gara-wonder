@@ -7,57 +7,52 @@ import {
     DropdownMenu,
     DropdownSection,
     DropdownTrigger,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
 } from "@nextui-org/react";
+import { useState } from "react";
 import userProfileMenuSections from "./constant";
 
 function UserProfileMenu() {
+    const [isOpen, setOpen] = useState<boolean>(false);
+
     return (
-        <Dropdown
-            classNames={{
-                base: "right-8",
-                content: "px-0",
-            }}
+        <Popover
             disableAnimation
+            placement="bottom-end"
+            triggerType="menu"
+            isOpen={isOpen}
+            onOpenChange={(open) => setOpen(open)}
         >
-            <DropdownTrigger>
+            <PopoverTrigger>
                 <Button
                     radius="full"
                     variant="bordered"
                     className="px-1 min-w-0 border"
+                    disableAnimation
                 >
                     <FontAwesomeIcon icon={faBars} className="px-2" />
                     <FontAwesomeIcon icon={faCircleUser} size="2x" />
                 </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-                aria-label="User menu"
-                classNames={{
-                    base: "px-0 py-2",
-                }}
-            >
+            </PopoverTrigger>
+            <PopoverContent aria-label="User menu" className="px-0 py-3">
                 {userProfileMenuSections.map((section, index) => (
-                    <DropdownSection
-                        key={index}
-                        showDivider={
-                            index !== userProfileMenuSections.length - 1
-                        }
-                    >
-                        {section.options.map(({ title, key }) => (
-                            <DropdownItem
+                    <div key={index} className="w-full">
+                        {section.options.map(({ component, key, title }) => (
+                            <div
                                 key={key}
                                 aria-label={title}
-                                classNames={{
-                                    base: "rounded-none p-0",
-                                    title: "hover:font-semibold py-2 px-4"
-                                }}
+                                className="py-2 px-3 hover:bg-default-300 cursor-pointer"
+                                onClick={() => setOpen(false)}
                             >
-                                {title}
-                            </DropdownItem>
+                                {component}
+                            </div>
                         ))}
-                    </DropdownSection>
+                    </div>
                 ))}
-            </DropdownMenu>
-        </Dropdown>
+            </PopoverContent>
+        </Popover>
     );
 }
 

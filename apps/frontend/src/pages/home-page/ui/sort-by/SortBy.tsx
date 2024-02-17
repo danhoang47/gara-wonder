@@ -39,7 +39,7 @@ function SortBy() {
         } 
             
         return undefined;
-    }, [selectedSortByOptionSet])
+    }, [filterSearchParams])
 
     const onSortByMenuOpenChange = (isOpen: boolean) => {
         setSortByMenuOpen(isOpen)
@@ -47,7 +47,7 @@ function SortBy() {
 
     return (
         <Dropdown 
-            classNames={{ base: "left-7"}}
+            placement="bottom-start"
             onOpenChange={onSortByMenuOpenChange} 
             disableAnimation   
         >

@@ -1,12 +1,16 @@
+import { SignInTrigger } from '@/features/user'
+
 const userProfileMenuSections = [
     {
         options: [
             {
                 key: "k1",
-                title: "Login",
+                component: <SignInTrigger />,
+                title: 'Sign in'
             },
             {
                 key: "k2",
+                component: <p>Register</p>,
                 title: "Register",
             },
         ],
@@ -15,10 +19,12 @@ const userProfileMenuSections = [
         options: [
             {
                 key: "k3",
+                component: <p>Become Garage Owner</p>,
                 title: "Become Garage Owner",
             },
             {
                 key: "k4",
+                component: <p>Help Center</p>,
                 title: "Help Center",
             },
         ],
