@@ -13,6 +13,13 @@ export type Response<T> = {
     paging: Paging
 }
 
+export const enum FetchStatus {
+    None = 0,
+    Fetching,
+    Fulfilled,
+    Rejected
+}
+
 export type Paging = {
     cursor?: string,
     nextCursor?: string,

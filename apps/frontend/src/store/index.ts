@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { garageFilterReducer } from "@/features/garage-filter";
 import { toastsReducer } from "@/features/toasts";
+import { userReducer } from "@/features/user";
 
 const store = configureStore({
     reducer: {
         filter: garageFilterReducer,
         toasts: toastsReducer,
+        user: userReducer
     }
 })
 

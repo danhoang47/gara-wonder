@@ -8,6 +8,9 @@ import {
     Services,
 } from "./ui";
 import { GarageRegistrationContextProvider } from "./contexts";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector, useModalContext } from "@/core/hooks";
+import { useEffect } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const enum RegistrationSection {
@@ -65,6 +68,17 @@ const GarageRegistrationPage = () => {
 };
 
 export default function GarageRegistrationPageWrapper() {
+    const navigate = useNavigate();
+    const { open } = useModalContext();
+    const user = useAppSelector(state => state.user.value)
+
+    useEffect(() => {
+        if (!user) {
+            open("signIn")
+            navigate("/")
+        }
+    }, [])
+
     return (
         <GarageRegistrationContextProvider>
             <GarageRegistrationPage />
