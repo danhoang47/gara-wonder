@@ -37,13 +37,13 @@ function AdditionalServices() {
                 </p>
                 <ul className="pl-8">
                     <li className="list-disc">
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>Opening time</p>
                             <TimeInput className="font-semibold text-xl" />
                         </div>
                     </li>
                     <li className="list-disc">
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <p>Closing time</p>
                             <TimeInput className="font-semibold text-xl" />
                         </div>

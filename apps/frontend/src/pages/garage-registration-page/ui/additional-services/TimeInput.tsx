@@ -2,24 +2,28 @@ import clsx from "clsx";
 import { useState } from "react";
 
 export type TimeInputProps = {
-    value?: number;
+    /**
+     * Eg: 13:40 => 1340
+     */
+    value?: string;
+    defaultValue?: string;
     onValueChange?: (time: number) => void;
     className?: string
 };
 
 function TimeInput({
-    value = new Date().getTime(),
+    value = '',
     onValueChange,
     className
 }: TimeInputProps) {
-    const [hour, setHour] = useState<number>();
-    const [minute, setMinute] = useState<number>();
+    const [hour, setHour] = useState<string>(value.substring(0, 2) || String(new Date().getHours()));
+    const [minute, setMinute] = useState<string>(value.substring(2) || String(new Date().getMinutes()));
 
     return (
-        <div className={clsx(className, "flex")}>
-            <input type="text" inputMode="numeric" value={hour} />
+        <div className={clsx(className, "flex items-center")}>
+            <input type="text" inputMode="numeric" value={hour} className="max-w-7 text-center outline-none"/>
             <span>:</span>
-            <input type="text" inputMode="numeric" value={minute} />
+            <input type="text" inputMode="numeric" value={minute} className="max-w-7 text-center outline-none"/>
         </div>
     );
 }
