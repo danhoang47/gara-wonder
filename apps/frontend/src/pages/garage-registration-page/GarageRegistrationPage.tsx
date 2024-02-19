@@ -41,7 +41,7 @@ const GarageRegistrationPage = () => {
     const renderPageSection = () => {
         switch (currentSectionIndex) {
             case RegistrationSection.BasicInformation:
-                return <AdditionalServices />;
+                return <BasicInformation />;
             case RegistrationSection.Address:
                 return <Address />;
             case RegistrationSection.Services:
@@ -71,17 +71,21 @@ const GarageRegistrationPage = () => {
 export default function GarageRegistrationPageWrapper() {
     const navigate = useNavigate();
     const { open } = useModalContext();
-    const user = useAppSelector(state => state.user.value)
+    const user = useAppSelector((state) => state.user.value);
 
     useEffect(() => {
         if (!user) {
-            open("signIn")
-            navigate("/")
+            open("signIn");
+            navigate("/");
         }
-        if (user.type === ActorType.GarageOwner || user.type === ActorType.GarageOwnerAndSupplier) {
-            navigate("/")
+        if (
+            !user.type ||
+            user.type === ActorType.GarageOwner ||
+            user.type === ActorType.GarageOwnerAndSupplier
+        ) {
+            navigate("/");
         }
-    }, [])
+    }, []);
 
     return (
         <GarageRegistrationContextProvider>

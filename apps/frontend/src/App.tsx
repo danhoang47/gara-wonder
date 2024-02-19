@@ -1,38 +1,44 @@
+import { useEffect } from "react";
 import { NextUIProvider } from "@nextui-org/react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged } from "firebase/auth";
 
 import { ModalContextProvider } from "./core/contexts";
 import Toasts from "./features/toasts";
 import { auth } from "./components/firebase";
 import { FetchStatus } from "./core/types";
-import { useAppDispatch, useAppSelector, useLoadingContext } from "./core/hooks";
+import {
+    useAppDispatch,
+    useAppSelector,
+    useLoadingContext,
+} from "./core/hooks";
 import { getUserById } from "./features/user/user.slice";
-import { useEffect } from "react";
 
 function App() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const status = useAppSelector(state => state.user.status)
+    const status = useAppSelector((state) => state.user.status);
     const { load, unload } = useLoadingContext();
 
     useEffect(() => {
-        onAuthStateChanged(auth, user => {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
-                dispatch(getUserById(user.uid))
+                dispatch(getUserById(user.uid));
             }
-        })
-    }, [])
+        });
+    }, []);
 
     useEffect(() => {
         if (status === FetchStatus.Fetching) {
-            load()
+            load();
         }
-        if (status === FetchStatus.Fulfilled || status === FetchStatus.Rejected) {
-            unload()
-    
+        if (
+            status === FetchStatus.Fulfilled ||
+            status === FetchStatus.Rejected
+        ) {
+            unload();
         }
-    }, [status])
+    }, [status]);
 
     return (
         <NextUIProvider navigate={navigate} className="h-full">

@@ -6,11 +6,8 @@ import providedAdditionalServices from "./constants";
 import TimeInput from "./TimeInput";
 
 function AdditionalServices() {
-    const {
-        garageRegistrationState,
-        garageRegistrationErrors,
-        setGarageRegistrationStateValue,
-    } = useGarageRegistrationContext();
+    const { garageRegistrationState, setGarageRegistrationStateValue } =
+        useGarageRegistrationContext();
 
     return (
         <RegistrationSection
@@ -23,6 +20,13 @@ function AdditionalServices() {
                 }
                 classNames={{
                     label: "text-foreground font-bold text-lg",
+                }}
+                defaultValue={garageRegistrationState.additionalServices}
+                onValueChange={(value) => {
+                    setGarageRegistrationStateValue(
+                        "additionalServices",
+                        value,
+                    );
                 }}
             >
                 {providedAdditionalServices.map((service) => (
@@ -39,13 +43,29 @@ function AdditionalServices() {
                     <li className="list-disc">
                         <div className="flex justify-between items-center">
                             <p>Opening time</p>
-                            <TimeInput className="font-semibold text-xl" />
+                            <TimeInput
+                                className="font-semibold text-xl"
+                                onValueChange={(time) =>
+                                    setGarageRegistrationStateValue(
+                                        "openAt",
+                                        time,
+                                    )
+                                }
+                            />
                         </div>
                     </li>
                     <li className="list-disc">
                         <div className="flex justify-between items-center">
                             <p>Closing time</p>
-                            <TimeInput className="font-semibold text-xl" />
+                            <TimeInput
+                                className="font-semibold text-xl"
+                                onValueChange={(time) =>
+                                    setGarageRegistrationStateValue(
+                                        "closeAt",
+                                        time,
+                                    )
+                                }
+                            />
                         </div>
                     </li>
                 </ul>

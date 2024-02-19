@@ -28,7 +28,7 @@ export const getUserById = createAsyncThunk("user/getUserById", async (uid: stri
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve({ _id: nanoid(), type: ActorType.User })
-        }, 5000)
+        }, 0)
     })
 }) 
 

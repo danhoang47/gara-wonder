@@ -42,16 +42,7 @@ const garageRegistrationConstraints: GarageRegistrationConstraints = {
         min: [3, "Garage's name is must be larger than 3 characters"],
         max: [100, "Garage's name is must be smaller than 100 characters"],
     },
-    province: {
-        required: "Province is required"
-    },
-    district: {
-        required: "District is required"
-    },
-    ward: {
-        required: "Ward is required"
-    },
-    streetAddress: {
+    address: {
         required: "Address is required"
     }
 };
