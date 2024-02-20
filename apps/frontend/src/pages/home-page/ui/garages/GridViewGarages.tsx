@@ -1,4 +1,5 @@
 import GarageSkeletonCard from "../garage-skeleton-card";
+import GarageCard from "./GarageCard";
 import { ViewModeGaragesProps } from "./Garages";
 
 export default function GridViewGarages({
@@ -17,15 +18,27 @@ export default function GridViewGarages({
         )
     }
 
+    // return (
+    //     <>
+    //         {
+    //             garages?.map(garage => (
+    //                 <div key={garage._id}>
+    //                     {garage.name}
+    //                 </div>
+    //             ))
+    //         }
+    //     </>
+    // )
     return (
         <>
-            {
-                garages?.map(garage => (
-                    <div key={garage._id}>
-                        {garage.name}
-                    </div>
-                ))
-            }
+            {Array.from(new Array(20)).map((_, index) => (
+                <GarageCard key={index} garage={{
+                    _id: "1",
+                    name: "Insert Garage Name Here",
+                    description: "Insert Description Here",
+                    address: "Address 16, Q1 District, HCM City",
+                }}/>
+            ))}
         </>
     )
 }
