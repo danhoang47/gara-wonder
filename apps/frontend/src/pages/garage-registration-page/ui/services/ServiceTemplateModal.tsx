@@ -26,7 +26,7 @@ export type ServiceTemplateModalProps = {
     onModalClose: () => void;
     type?: "edit" | "create";
     service?: Partial<Service>;
-    selectedServiceIds: string[];
+    selectedCategoryIds: string[];
 };
 
 export default function ServiceTemplateModal({
@@ -35,7 +35,7 @@ export default function ServiceTemplateModal({
     onModalClose,
     type = "create",
     service = undefined,
-    selectedServiceIds,
+    selectedCategoryIds,
 }: ServiceTemplateModalProps) {
     const [localService, setLocalService] = useState<Partial<Service>>({
         _id: nanoid(),
@@ -104,14 +104,14 @@ export default function ServiceTemplateModal({
 
                             setLocalService((prev) => ({
                                 ...prev,
-                                serviceId: selectedId[0],
+                                categoryId: selectedId[0],
                             }));
                         }}
                         isRequired
-                        disabledKeys={selectedServiceIds.filter(
-                            (id) => id !== service?.serviceId,
+                        disabledKeys={selectedCategoryIds.filter(
+                            (id) => id !== service?.categoryId,
                         )}
-                        selectedKeys={localService.serviceId}
+                        selectedKeys={localService.categoryId}
                     >
                         {(service) => (
                             <SelectItem key={service.id}>

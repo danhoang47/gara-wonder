@@ -3,7 +3,7 @@ import { BusinessEntity, Model } from "./core";
 export type Service = Partial<
     Model & {
         garageId: Garage["_id"];
-        serviceId: string;
+        categoryId: string;
         brandIds: string[] | "all";
         lowestPrice: number;
         highestPrice: number;

@@ -38,8 +38,8 @@ export default function Services() {
                 services?.map((s) => (s._id === service._id ? service : s)),
             );
             setSelectedServiceIds((prev) => {
-                if (service?.serviceId && !prev.includes(service.serviceId)) {
-                    return [...prev, service.serviceId];
+                if (service?.categoryId && !prev.includes(service.categoryId)) {
+                    return [...prev, service.categoryId];
                 }
 
                 return prev;
@@ -50,7 +50,7 @@ export default function Services() {
                 services ? [...services, service] : [service],
             );
             setSelectedServiceIds((prev) =>
-                service?.serviceId ? [...prev, service.serviceId] : prev,
+                service?.categoryId ? [...prev, service.categoryId] : prev,
             );
         }
 
@@ -69,7 +69,7 @@ export default function Services() {
     ) => {
         setGarageRegistrationStateValue("services", services?.filter(({ _id }) => _id !== service?._id));
         setSelectedServiceIds((prev) =>
-            prev.filter((serviceId) => serviceId !== service?.serviceId),
+            prev.filter((serviceId) => serviceId !== service?.categoryId),
         );
     };
 
@@ -111,7 +111,7 @@ export default function Services() {
                 onModalClose={() => setServiceTemplateModalOpen(false)}
                 onModalSave={onModalSave}
                 type={modalActionType}
-                selectedServiceIds={selectedServiceIds}
+                selectedCategoryIds={selectedServiceIds}
                 service={editedService}
             />
         </>

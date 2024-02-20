@@ -50,5 +50,7 @@ Model & {
     closeAt: string,
     isVerify: boolean,
     address: string,
-    latlng: [number, number]
+    location: {
+        coordinates: [number, number]
+    }
 }
