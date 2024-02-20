@@ -1,8 +1,9 @@
 import { Input } from "@nextui-org/react";
+import { useEffect } from "react";
+import { Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 
 import RegistrationSection from "../registration-section";
 import { useGarageRegistrationContext } from "../../hooks";
-import { useEffect } from "react";
 import { useDebouncedValue } from "@/core/hooks";
 
 const googleMapUri =
@@ -24,9 +25,9 @@ function Address() {
     const debouncedAddress = useDebouncedValue(address, 500);
     const center = latlng
         ? {
-              lat: latlng[0],
-              lng: latlng[1],
-          }
+            lat: latlng[0],
+            lng: latlng[1],
+        }
         : defaultLatLng;
 
     useEffect(() => {
@@ -51,7 +52,6 @@ function Address() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedAddress]);
 
-    console.log(center);
     return (
         <RegistrationSection
             header={"Address"}
@@ -73,7 +73,18 @@ function Address() {
                     value={address}
                 />
                 <div className="h-80 w-full">
-                    
+                    {<Map
+                        mapId={"36cc488b1b7a7759"}
+                        defaultCenter={center}
+                        center={center}
+                        defaultZoom={10}
+                        onDrag={(event) => {
+                            const latlng = event.map.getCenter()
+                            setGarageRegistrationStateValue("latlng", [latlng?.lat()!, latlng?.lng()!])
+                        }}
+                    >
+                        <AdvancedMarker position={center} />
+                    </Map>}
                 </div>
             </div>
         </RegistrationSection>

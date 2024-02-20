@@ -78,13 +78,13 @@ export default function GarageRegistrationPageWrapper() {
             open("signIn");
             navigate("/");
         }
-        if (
-            !user.type ||
-            user.type === ActorType.GarageOwner ||
-            user.type === ActorType.GarageOwnerAndSupplier
-        ) {
-            navigate("/");
-        }
+        // if (
+        //     !user.type ||
+        //     user.type === ActorType.GarageOwner ||
+        //     user.type === ActorType.GarageOwnerAndSupplier
+        // ) {
+        //     navigate("/");
+        // }
     }, []);
 
     return (

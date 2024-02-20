@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { NextUIProvider } from "@nextui-org/react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
+import { APIProvider } from '@vis.gl/react-google-maps'
 
 import { ModalContextProvider } from "./core/contexts";
 import Toasts from "./features/toasts";
@@ -41,14 +42,16 @@ function App() {
     }, [status]);
 
     return (
-        <NextUIProvider navigate={navigate} className="h-full">
-            <ModalContextProvider>
-                <div className="light text-foreground bg-background h-full">
-                    <Outlet />
-                </div>
-                <Toasts />
-            </ModalContextProvider>
-        </NextUIProvider>
+        <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+            <NextUIProvider navigate={navigate} className="h-full">
+                <ModalContextProvider>
+                    <div className="light text-foreground bg-background h-full">
+                        <Outlet/>
+                    </div>
+                    <Toasts />
+                </ModalContextProvider>
+            </NextUIProvider>
+        </APIProvider>  
     );
 }
 
