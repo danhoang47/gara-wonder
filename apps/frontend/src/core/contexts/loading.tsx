@@ -12,18 +12,18 @@ export const LoadingContext = createContext<LoadingContextType>({} as LoadingCon
 export default function LoadingContextProvider({ children }: ContainerProps) {
     const [isLoading, setLoading] = useState<boolean>(false);
 
-    const load = () => {
+    const load = useCallback(() => {
         setLoading(true)
-    }
+    }, [])
 
-    const unload = () => {
+    const unload = useCallback(() => {
         setLoading(false)
-    }
+    }, [])
 
-    const loadingContextValue = {
+    const loadingContextValue = useMemo(() => ({
         load,
         unload
-    }
+    }), [load, unload])
 
     return (
         <LoadingContext.Provider value={loadingContextValue}>

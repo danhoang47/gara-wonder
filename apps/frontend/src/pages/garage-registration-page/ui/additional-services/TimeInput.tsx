@@ -9,40 +9,41 @@ export type TimeInputProps = {
     defaultValue?: string;
     onValueChange: (time: string) => void;
     className?: string;
-    clockBase?: 12 | 24
+    clockBase?: 12 | 24;
 };
 
 function TimeInput({ value = "", onValueChange, className }: TimeInputProps) {
+    const [defaultHour, defaultMinute] = value.split(":");
     const [hour, setHour] = useState<string>(
-        value.substring(0, 2) || String(new Date().getHours()),
+        defaultHour || String(new Date().getHours()),
     );
     const [minute, setMinute] = useState<string>(
-        value.substring(2) || String(new Date().getMinutes()),
+        defaultMinute || String(new Date().getMinutes()),
     );
-
+    
     const onTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value; 
+        const value = e.target.value;
         const newTime = value.substring(value.length - 2);
-        const type = e.target.getAttribute("data-type") as "hour" | "minute"
+        const type = e.target.getAttribute("data-type") as "hour" | "minute";
 
-        if (!value.match(/^[0-9]+$/) || !type) return
+        if (!value.match(/^[0-9]+$/) || !type) return;
 
         if (type === "hour") {
             if (Number.parseInt(newTime) > 24) return;
-            
-            setHour(newTime.length === 1 ? `0${newTime}` : newTime)
+
+            setHour(newTime.length === 1 ? `0${newTime}` : newTime);
         }
         if (type === "minute") {
-            
             if (Number.parseInt(newTime) > 60) return;
 
-            setMinute(newTime.length === 1 ? `0${newTime}` : newTime)
+            setMinute(newTime.length === 1 ? `0${newTime}` : newTime);
         }
-    }
+    };
 
     useEffect(() => {
-        onValueChange(hour + minute)
-    }, [hour, minute])
+        onValueChange(`${hour}:${minute}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hour, minute]);
 
     return (
         <div className={clsx(className, "flex items-center")}>

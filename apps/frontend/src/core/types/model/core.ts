@@ -6,7 +6,7 @@ export type Model = {
     updatedAt: number,
 }
 
-export type Response<T> = {
+export type Response<T = unknown> = {
     statusCode: number;
     message?: string;
     data: T;

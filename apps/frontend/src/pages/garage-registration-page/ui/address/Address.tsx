@@ -23,7 +23,7 @@ function Address() {
     } = useGarageRegistrationContext();
     const { address, latlng } = garageRegistrationState;
     const debouncedAddress = useDebouncedValue(address, 500);
-    const center = latlng
+    const position = latlng
         ? {
             lat: latlng[0],
             lng: latlng[1],
@@ -52,6 +52,7 @@ function Address() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedAddress]);
 
+    console.log(position)
     return (
         <RegistrationSection
             header={"Address"}
@@ -73,18 +74,19 @@ function Address() {
                     value={address}
                 />
                 <div className="h-80 w-full">
-                    {<Map
+                    <Map
                         mapId={"36cc488b1b7a7759"}
-                        defaultCenter={center}
-                        center={center}
-                        defaultZoom={10}
+                        defaultCenter={position}
+                        defaultZoom={14}
                         onDrag={(event) => {
                             const latlng = event.map.getCenter()
-                            setGarageRegistrationStateValue("latlng", [latlng?.lat()!, latlng?.lng()!])
+                            if (latlng) {
+                                setGarageRegistrationStateValue("latlng", [latlng.lat(), latlng.lng()])
+                            }
                         }}
                     >
-                        <AdvancedMarker position={center} />
-                    </Map>}
+                        <AdvancedMarker position={position} />
+                    </Map>
                 </div>
             </div>
         </RegistrationSection>

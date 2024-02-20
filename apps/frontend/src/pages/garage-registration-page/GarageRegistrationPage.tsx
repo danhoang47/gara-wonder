@@ -9,9 +9,9 @@ import {
 } from "./ui";
 import { GarageRegistrationContextProvider } from "./contexts";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector, useModalContext } from "@/core/hooks";
+import { useAppSelector, useLoadingContext, useModalContext } from "@/core/hooks";
 import { useEffect } from "react";
-import { ActorType } from "@/core/types";
+import { initGarage } from "@/api";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const enum RegistrationSection {
@@ -37,6 +37,16 @@ const GarageRegistrationPage = () => {
         onBackButtonClicked,
         onNextButtonClicked,
     } = useNavigation();
+    const user = useAppSelector((state) => state.user.value);
+    const { load, unload } = useLoadingContext()
+
+    // useEffect(() => {
+    //     load()
+
+    //     initGarage().then(() => {
+    //         unload()
+    //     })
+    // }, [load, unload])
 
     const renderPageSection = () => {
         switch (currentSectionIndex) {
@@ -78,14 +88,7 @@ export default function GarageRegistrationPageWrapper() {
             open("signIn");
             navigate("/");
         }
-        // if (
-        //     !user.type ||
-        //     user.type === ActorType.GarageOwner ||
-        //     user.type === ActorType.GarageOwnerAndSupplier
-        // ) {
-        //     navigate("/");
-        // }
-    }, []);
+    }, [navigate, open, user]);
 
     return (
         <GarageRegistrationContextProvider>

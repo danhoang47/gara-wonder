@@ -17,15 +17,16 @@ export default function GridViewGarages({
         )
     }
 
-    return (
-        <>
-            {
-                garages?.map(garage => (
-                    <div key={garage._id}>
-                        {garage.name}
-                    </div>
-                ))
-            }
-        </>
-    )
+    // TODO: implement from api
+    // return (
+    //     <>
+    //         {
+    //             garages?.map(garage => (
+    //                 <div key={garage._id}>
+    //                     {garage.name}
+    //                 </div>
+    //             ))
+    //         }
+    //     </>
+    // )
 }
