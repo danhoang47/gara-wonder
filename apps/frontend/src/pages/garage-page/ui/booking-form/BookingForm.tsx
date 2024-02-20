@@ -5,7 +5,7 @@ function BookingForm() {
     return (
         <div className="px-5 py-8 border-zinc-200 border-2 rounded-md">
             <div className="flex flex-col gap-6">
-                <p className="font-semibold text-2xl leading-5">
+                <p className="font-semibold text-xl leading-5">
                     Iplorem sum donor
                 </p>
                 <div className="flex flex-col gap-3">
