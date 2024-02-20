@@ -31,16 +31,8 @@ export const enum Status {
     InActive = 0,
 }
 
-export type Address = {
-    district: District,
-    province: Province,
-    ward: Ward,
-    streetAddress: string,
-    coords: [number, number]
-}
-
 export type BusinessEntity = 
-Model & Address & {
+Model & {
     userId: User["_id"],
     name: string,
     description: string,
@@ -50,6 +42,8 @@ Model & Address & {
     openAt: number,
     closeAt: number,
     isVerify: boolean,
+    address: string,
+    latlng: [number, number]
 }
 
 

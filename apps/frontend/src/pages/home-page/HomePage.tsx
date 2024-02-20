@@ -1,6 +1,8 @@
 import Filter from "@/features/garage-filter";
 import { Categories, Garages, SortBy } from "./ui";
 
+import "./HomePage.styles.scss"
+
 const HomePage = () => {
     return (
         <div id="home" className="px-10 grow flex flex-col opacity-100 z-0">
