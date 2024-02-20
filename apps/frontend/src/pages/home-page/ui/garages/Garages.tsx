@@ -14,60 +14,81 @@ import useViewMode from "../../hooks/useViewMode";
 export type ViewModeGaragesProps = {
     isLoading: boolean;
     error?: any;
-    garages?: Garage[]
-}
+    garages?: Garage[];
+};
 
 function Garages() {
     const [viewMode, onViewModeChange] = useViewMode();
     const { open } = useModalContext();
     const { isLoading, error, garages } = useGarages();
-    const changeViewModeButtonLabel = viewMode === "grid" ? "Map view" : "List view"
-    const changeViewModeButtonIcon = viewMode === "grid" ?  faMapLocationDot : faList;
+    const changeViewModeButtonLabel =
+        viewMode === "grid" ? "Map view" : "List view";
+    const changeViewModeButtonIcon =
+        viewMode === "grid" ? faMapLocationDot : faList;
 
     const requestLocationPermission = () => {
-        navigator.permissions.query({ name: "geolocation" }).then(status => {
+        navigator.permissions.query({ name: "geolocation" }).then((status) => {
             const { state } = status;
 
             if (state !== "granted") {
-                open("location")
-                navigator.geolocation.getCurrentPosition(position => {
+                open("location");
+                navigator.geolocation.getCurrentPosition((position) => {
                     // TODO: set position to global context
-                })
+                });
             }
-        })
-    }
+        });
+    };
 
     const renderGarages = () => {
         const props: ViewModeGaragesProps = {
             isLoading,
             error,
-            garages
-        }
+            garages,
+        };
 
-        switch(viewMode) {
-            case "grid": return <GridViewGarages {...props}/>
-            case "map": return <MapViewGarages {...props}/>
-            default: 
-                throw new Error("Invalid View Mode")
+        switch (viewMode) {
+            case "grid":
+                return <GridViewGarages {...props} />;
+            case "map":
+                return <MapViewGarages {...props} />;
+            default:
+                throw new Error("Invalid View Mode");
         }
-    }
+    };
 
     useEffect(() => {
-        requestLocationPermission()
-    }, [])
+        requestLocationPermission();
+    }, []);
 
     return (
-        <div className={clsx(viewMode === "grid" ? "grid grid-cols-4 gap-3" : "-mx-10", "grow")}>
-            {renderGarages()}
-            <Button 
-                className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black"
-                endContent={<FontAwesomeIcon icon={changeViewModeButtonIcon} className="text-white"/>}
-                onPress={() => onViewModeChange(viewMode === "grid" ? "map" : "grid")}
-                disableAnimation
+        <>
+            <div
+                className={clsx(
+                    viewMode === "grid" ? "grid md:grid-cols-2 gap-3 sm:grid-cols-1 lg:grid-cols-4" : "-mx-10",
+                    "grow",
+                )}
             >
-                <span className="font-medium text-white">{changeViewModeButtonLabel}</span>
+                {renderGarages()}
+            </div>
+            <Button
+                className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black z-10 shadow-sm"
+                endContent={
+                    <FontAwesomeIcon
+                        icon={changeViewModeButtonIcon}
+                        className="text-white"
+                    />
+                }
+                onPress={() =>
+                    onViewModeChange(viewMode === "grid" ? "map" : "grid")
+                }
+                disableAnimation
+                variant="solid"
+            >
+                <span className="font-medium text-white">
+                    {changeViewModeButtonLabel}
+                </span>
             </Button>
-        </div>
+        </>
     );
 }
 

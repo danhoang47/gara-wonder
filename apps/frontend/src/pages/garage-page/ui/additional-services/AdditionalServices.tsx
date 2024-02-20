@@ -1,27 +1,27 @@
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+import * as icons from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 const fakeData = [
     {
         id: "1",
-        additionalServicesName: "Serving drinks while waiting ",
-        icon: faCoffee,
+        name: "Serving drinks while waiting ",
+        icon: "faCoffee",
     },
     {
         id: "1",
-        additionalServicesName: "Serving drinks while waiting ",
-        icon: faCoffee,
+        name: "Serving drinks while waiting ",
+        icon: "faCoffee",
     },
     {
         id: "1",
-        additionalServicesName: "Serving drinks while waiting ",
-        icon: faCoffee,
+        name: "Serving drinks while waiting ",
+        icon: "faCoffee",
     },
     {
         id: "1",
-        additionalServicesName: "Serving drinks while waiting ",
-        icon: faCoffee,
+        name: "Serving drinks while waiting ",
+        icon: "faCoffee",
     },
 ];
 function AdditionalServices() {
@@ -37,8 +37,10 @@ function AdditionalServices() {
                 {additionalServices.map((service, index) => {
                     return (
                         <div className="flex items-center gap-4" key={index}>
-                            <FontAwesomeIcon icon={service.icon} />
-                            <p>{service.additionalServicesName}</p>
+                            <FontAwesomeIcon
+                                icon={icons[service.icon as any]}
+                            />
+                            <p>{service.name}</p>
                         </div>
                     );
                 })}

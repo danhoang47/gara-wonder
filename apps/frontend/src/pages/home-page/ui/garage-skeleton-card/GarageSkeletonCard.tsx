@@ -1,7 +1,5 @@
 import { Card, Skeleton } from "@nextui-org/react";
 
-import "./GarageSkeletonCard.styles.scss";
-
 function GarageSkeletonCard() {
     return (
         <Card className="gap-2 rounded-none shadow-none">

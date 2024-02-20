@@ -5,32 +5,40 @@ import { SupportedChip } from "..";
 
 const fakeData = [
     {
-        service: "repair",
-        isSupported: true,
+        name: "service 1",
+        status: true,
         support: "2010",
-        min: "10",
-        max: "100",
+        lowestPrice: "10",
+        highestPrice: "100",
+        brand: "Mercedes",
+        description: "This is a detail of service 1",
     },
     {
-        service: "repair",
-        isSupported: false,
+        name: "service 1",
+        status: false,
         support: "2010",
-        min: "10",
-        max: "100",
+        lowestPrice: "10",
+        highestPrice: "100",
+        brand: "Mercedes",
+        description: "This is a detail of service 1",
     },
     {
-        service: "repair",
-        isSupported: true,
+        name: "service 1",
+        status: true,
         support: "2010",
-        min: "10",
-        max: "100",
+        lowestPrice: "10",
+        highestPrice: "100",
+        brand: "Mercedes",
+        description: "This is a detail of service 1",
     },
     {
-        service: "repair",
-        isSupported: true,
+        name: "service 1",
+        status: true,
         support: "2010",
-        min: "10",
-        max: "100",
+        lowestPrice: "10",
+        highestPrice: "100",
+        brand: "Mercedes",
+        description: "This is a detail of service 1",
     },
 ];
 
@@ -57,14 +65,11 @@ function Services() {
                                     <p className="font-medium">
                                         Repairing services.
                                     </p>
-                                    <SupportedChip
-                                        isSupport={service.isSupported}
-                                    />
+                                    <SupportedChip isSupport={service.status} />
                                 </div>
                                 <div className="text-sm text-zinc-500">
                                     <p>
-                                        Support all available from{" "}
-                                        {service.support} to now{" "}
+                                        {service.description}{" "}
                                         <span className="text-primary cursor-pointer hover:text-primary-700">
                                             See all supported cars
                                         </span>
@@ -74,7 +79,7 @@ function Services() {
                         </div>
                         <div>
                             <p className="font-semibold">
-                                {service.min}$ - {service.max}$
+                                {service.lowestPrice}$ - {service.highestPrice}$
                             </p>
                         </div>
                     </div>
