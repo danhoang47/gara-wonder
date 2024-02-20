@@ -13,6 +13,7 @@ export type Service = Partial<
 // TODO: need certificate of business registration images
 export type Garage = BusinessEntity & {
     services: Service[];
+    additionalServices: string[];
 };
 
 export type GarageFilter = {

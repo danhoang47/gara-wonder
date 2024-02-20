@@ -1,1 +1,1 @@
-export { default as getProvince } from './getProvince'
+export * from './garages'

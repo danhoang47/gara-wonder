@@ -14,6 +14,7 @@ function FullPageLoad() {
                             base: "absolute inset-1/2",
                             track: "stroke-default"
                         }}
+                        aria-label="Loading"
                     />
                 </div>,
                 document.body,

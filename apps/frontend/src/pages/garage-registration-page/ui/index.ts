@@ -4,3 +4,5 @@ export { default as BasicInformation } from './basic-information'
 export { default as Address } from './address'
 export { default as Services } from './services'
 export { default as Images } from './images'
+export { default as AdditionalServices } from './additional-services'
+

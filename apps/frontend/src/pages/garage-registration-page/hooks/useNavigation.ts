@@ -25,10 +25,10 @@ export default function useNavigation() {
     const onNextButtonClicked = () => {
         const nextSectionIndex = currentSectionIndex + 1
 
-        if (currentSectionIndex === RegistrationSection.Images) {
+        if (currentSectionIndex === RegistrationSection.Additional) {
             console.log(garageRegistrationState)
         }
-        if (currentSectionIndex !== RegistrationSection.Images) {
+        if (currentSectionIndex !== RegistrationSection.Additional) {
             setCurrentSectionIndex(nextSectionIndex);
             setPyPassedSectionIndexes(prev => [...prev, currentSectionIndex])
         }

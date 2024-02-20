@@ -1,6 +1,17 @@
 import { useNavigation } from "./hooks";
-import { Address, BasicInformation, Images, Navigation, Services } from "./ui";
+import {
+    AdditionalServices,
+    Address,
+    BasicInformation,
+    Images,
+    Navigation,
+    Services,
+} from "./ui";
 import { GarageRegistrationContextProvider } from "./contexts";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector, useLoadingContext, useModalContext } from "@/core/hooks";
+import { useEffect } from "react";
+import { initGarage } from "@/api";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const enum RegistrationSection {
@@ -20,7 +31,22 @@ export type GarageFormState = {
 };
 
 const GarageRegistrationPage = () => {
-    const { currentSectionIndex, allowContinue, onBackButtonClicked, onNextButtonClicked } = useNavigation();
+    const {
+        currentSectionIndex,
+        allowContinue,
+        onBackButtonClicked,
+        onNextButtonClicked,
+    } = useNavigation();
+    const user = useAppSelector((state) => state.user.value);
+    const { load, unload } = useLoadingContext()
+
+    // useEffect(() => {
+    //     load()
+
+    //     initGarage().then(() => {
+    //         unload()
+    //     })
+    // }, [load, unload])
 
     const renderPageSection = () => {
         switch (currentSectionIndex) {
@@ -32,29 +58,41 @@ const GarageRegistrationPage = () => {
                 return <Services />;
             case RegistrationSection.Images:
                 return <Images />;
+            case RegistrationSection.Additional:
+                return <AdditionalServices />;
             default:
                 throw new Error("Invalid Section");
         }
     };
 
     return (
-            <div className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0">
-                {renderPageSection()}
-                <Navigation
-                    currentSectionIndex={currentSectionIndex}
-                    allowContinue={allowContinue}
-                    onBack={onBackButtonClicked}
-                    onNext={onNextButtonClicked}
-                />
-            </div>
+        <div className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0">
+            {renderPageSection()}
+            <Navigation
+                currentSectionIndex={currentSectionIndex}
+                allowContinue={allowContinue}
+                onBack={onBackButtonClicked}
+                onNext={onNextButtonClicked}
+            />
+        </div>
     );
 };
 
 export default function GarageRegistrationPageWrapper() {
+    const navigate = useNavigate();
+    const { open } = useModalContext();
+    const user = useAppSelector((state) => state.user.value);
+
+    useEffect(() => {
+        if (!user) {
+            open("signIn");
+            navigate("/");
+        }
+    }, [navigate, open, user]);
 
     return (
         <GarageRegistrationContextProvider>
             <GarageRegistrationPage />
         </GarageRegistrationContextProvider>
-    )
+    );
 }
