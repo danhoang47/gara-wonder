@@ -48,48 +48,39 @@ function GarageImagesPreview() {
     }
     return (
         <div className="relative">
-            <div className="flex h-[25rem] gap-1">
-                <div className=" relative w-1/2 h-full bg-default-300">
+            <div className=" hidden md:flex h-[25rem] gap-1">
+                <div className=" relative w-1/2 h-full">
                     <img
                         src={staticImages[0].url}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full pb-1 object-cover"
                     />
                 </div>
 
                 <div className="flex gap-1 w-1/2">
-                    <div className="flex flex-col gap-1 w-1/2">
-                        <div className="w-full h-1/2 bg-default-300">
-                            <img
-                                src={staticImages[0].url}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div className="w-full h-1/2 bg-default-300">
-                            <img
-                                src={staticImages[0].url}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
+                    <div className="flex flex-col  w-1/2">
+                        <img
+                            src={staticImages[0].url}
+                            className="w-full h-1/2 pb-1 object-cover"
+                        />
+
+                        <img
+                            src={staticImages[0].url}
+                            className="w-full h-1/2 pb-1 object-cover"
+                        />
                     </div>
-                    <div className="flex flex-col gap-1 w-1/2">
-                        <div className="w-full h-1/3 bg-default-300">
-                            <img
-                                src={staticImages[0].url}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div className="w-full h-1/3 bg-default-300">
-                            <img
-                                src={staticImages[0].url}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div className="w-full h-1/3 bg-default-300">
-                            <img
-                                src={staticImages[0].url}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
+                    <div className="flex flex-col  w-1/2">
+                        <img
+                            src={staticImages[0].url}
+                            className="w-full h-1/3 pb-1 object-cover"
+                        />
+                        <img
+                            src={staticImages[0].url}
+                            className="w-full h-1/3 pb-1 object-cover"
+                        />
+                        <img
+                            src={staticImages[0].url}
+                            className="w-full h-1/3 pb-1 object-cover"
+                        />
                     </div>
                 </div>
             </div>
