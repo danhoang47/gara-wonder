@@ -1,6 +1,6 @@
-import { SignInTrigger } from '@/features/user'
+import { SignInTrigger, SignOutTrigger } from '@/features/user'
 
-const userProfileMenuSections = [
+export const guestProfileMenuSections = [
     {
         options: [
             {
@@ -31,4 +31,14 @@ const userProfileMenuSections = [
     },
 ];
 
-export default userProfileMenuSections
+export const userProfileMenuSections = [
+    {
+        options: [
+            {
+                key: "k1",
+                component: <SignOutTrigger />,
+                title: 'Sign in'
+            }
+        ],
+    },
+]

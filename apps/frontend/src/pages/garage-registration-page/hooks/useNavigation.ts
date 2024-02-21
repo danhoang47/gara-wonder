@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { RegistrationSection } from "../GarageRegistrationPage";
 import { useGarageRegistrationContext } from ".";
+import { GarageRegistration } from "../contexts";
 
-export default function useNavigation() {
+export default function useNavigation(onEnd: (garage: GarageRegistration) => void) {
     const [currentSectionIndex, setCurrentSectionIndex] =
         useState<RegistrationSection>(RegistrationSection.BasicInformation);
     const [byPassedSectionIndexes, setPyPassedSectionIndexes] = useState<RegistrationSection[]>([])
@@ -26,7 +27,7 @@ export default function useNavigation() {
         const nextSectionIndex = currentSectionIndex + 1
 
         if (currentSectionIndex === RegistrationSection.Additional) {
-            console.log(garageRegistrationState)
+            onEnd(garageRegistrationState)
         }
         if (currentSectionIndex !== RegistrationSection.Additional) {
             setCurrentSectionIndex(nextSectionIndex);

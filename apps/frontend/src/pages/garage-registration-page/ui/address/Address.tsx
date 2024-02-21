@@ -26,8 +26,8 @@ function Address() {
     const [center, setCenter] = useState<google.maps.LatLngLiteral>()
     const position = location
         ? {
-            lat: location.coordinates[0],
-            lng: location.coordinates[1],
+            lat: location.coordinates[1],
+            lng: location.coordinates[0],
         }
         : defaultLatLng;
 
@@ -42,7 +42,7 @@ function Address() {
                 if (!isStale) {
                     const { lat, lng } = data.results[0].geometry.location;
                     setGarageRegistrationStateValue("location", {
-                        coordinates: [lat, lng]
+                        coordinates: [lng, lat]
                     });
                     setCenter({
                         lat,

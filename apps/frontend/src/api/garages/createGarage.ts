@@ -1,9 +1,10 @@
 import axios from "axios";
 
-import { baseUrl } from ".";
+import { baseGaragesUrl } from ".";
+import { Model, Response } from "@/core/types";
 import { GarageRegistration } from "@/pages/garage-registration-page/contexts";
 
-export default async function createGarage(garage: GarageRegistration) {
+export default async function createGarage(garage: GarageRegistration): Promise<Response> {
     try {   
         const formData = new FormData();
 
@@ -13,12 +14,31 @@ export default async function createGarage(garage: GarageRegistration) {
             if (value instanceof File) {
                 return;
             }
+
+            if (typeof value === "string" || typeof value === "number") {
+                formData.append(key, String(value))
+                return
+            }
+
+            if (Array.isArray(value)) {
+                value.forEach(val => {
+                    if (typeof val === "object" && "_id" in val) {
+                        delete val._id
+                    }
+                })
+            }
             
-            formData.append(key, JSON.stringify(value))
+            formData.append(key, JSON.stringify(value).replace(/\s+/g, ''))
         })
 
-        console.log(formData)
+        const result = await axios.post<Response>(baseGaragesUrl + "/createGarage", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+
+        return result.data
     } catch (error) {
-        throw new Error(JSON.stringify(error))
+        throw new Error("Server Error")
     }
 }

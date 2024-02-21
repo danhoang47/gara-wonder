@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { BrandLogo, Header } from "@/core/ui";
 import { BecomeGaraOwnerLink, UserProfileMenu, GaraSearch } from "./ui";
 import { useAppSelector } from "@/core/hooks";
-import { ActorType } from "@/core/types";
+import { Role } from "@/core/types";
 import { useMemo } from "react";
 
 const DefaultLayout = () => {
@@ -13,9 +13,9 @@ const DefaultLayout = () => {
     const shouldShowGarageRegistrationLink = useMemo(() => {
         if (!user) return true;
         
-        const { type } = user;
+        const { role } = user;
         
-        return type !== ActorType.GarageOwner && type !== ActorType.GarageOwnerAndSupplier
+        return role !== Role.GarageOwner
     }, [user])
 
     return (

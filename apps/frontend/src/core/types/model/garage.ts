@@ -10,10 +10,17 @@ export type Service = Partial<
     }
 >;
 
+export type Category = Model & {
+    name: string,
+    description: string,
+    icon: string,
+}
+
 // TODO: need certificate of business registration images
 export type Garage = BusinessEntity & {
     services: Service[];
     additionalServices: string[];
+    defaultSlot: number;
 };
 
 export type GarageFilter = {

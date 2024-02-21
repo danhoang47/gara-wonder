@@ -8,6 +8,8 @@ import { brands } from "./constants";
 import { Service } from "@/core/types";
 import ServiceCard from "./ServiceCard";
 import { useGarageRegistrationContext } from "../../hooks";
+import useSWR from "swr";
+import { getCategories } from "@/api";
 
 export default function Services() {
     const {
@@ -16,13 +18,14 @@ export default function Services() {
     } = useGarageRegistrationContext();
     const [isServiceTemplateModalOpen, setServiceTemplateModalOpen] =
         useState<boolean>(false);
-    const [selectedServiceIds, setSelectedServiceIds] = useState<string[]>([]);
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
     const [modalActionType, setModalActionType] = useState<"edit" | "create">(
         "create",
     );
     const [editedServiceId, setEditedServiceId] = useState<string | undefined>(
         undefined,
     );
+    const { isLoading: isCategoriesLoading, data: categories } = useSWR("category", getCategories)
     const editedService = useMemo(
         () =>
             editedServiceId
@@ -37,7 +40,7 @@ export default function Services() {
                 "services",
                 services?.map((s) => (s._id === service._id ? service : s)),
             );
-            setSelectedServiceIds((prev) => {
+            setSelectedCategoryIds((prev) => {
                 if (service?.categoryId && !prev.includes(service.categoryId)) {
                     return [...prev, service.categoryId];
                 }
@@ -49,7 +52,7 @@ export default function Services() {
                 "services",
                 services ? [...services, service] : [service],
             );
-            setSelectedServiceIds((prev) =>
+            setSelectedCategoryIds((prev) =>
                 service?.categoryId ? [...prev, service.categoryId] : prev,
             );
         }
@@ -68,7 +71,7 @@ export default function Services() {
         service: Partial<Service> | undefined,
     ) => {
         setGarageRegistrationStateValue("services", services?.filter(({ _id }) => _id !== service?._id));
-        setSelectedServiceIds((prev) =>
+        setSelectedCategoryIds((prev) =>
             prev.filter((serviceId) => serviceId !== service?.categoryId),
         );
     };
@@ -88,7 +91,7 @@ export default function Services() {
                                 setEditedServiceId(undefined);
                             }}
                             isDisabled={
-                                selectedServiceIds.length === brands.length
+                                selectedCategoryIds.length === brands.length
                             }
                         >
                             Add Service
@@ -108,10 +111,12 @@ export default function Services() {
             </RegistrationSection>
             <ServiceTemplateModal
                 isOpen={isServiceTemplateModalOpen}
+                isCategoriesLoading={isCategoriesLoading}
+                categories={categories}
                 onModalClose={() => setServiceTemplateModalOpen(false)}
                 onModalSave={onModalSave}
                 type={modalActionType}
-                selectedCategoryIds={selectedServiceIds}
+                selectedCategoryIds={selectedCategoryIds}
                 service={editedService}
             />
         </>
