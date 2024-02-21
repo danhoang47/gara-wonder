@@ -49,38 +49,46 @@ function GarageImagesPreview() {
     return (
         <div className="relative">
             <div className=" hidden md:flex h-[25rem] gap-1">
-                <div className=" relative w-1/2 h-full">
+                <div className="relative w-1/2 h-full cursor-pointer">
                     <img
                         src={staticImages[0].url}
-                        className="w-full h-full pb-1 object-cover"
+                        className="w-full h-full object-cover"
                     />
+                    <div className="absolute top-0 w-full h-full mb-1 hover:bg-slate-700 opacity-30 transition-all" />
                 </div>
 
                 <div className="flex gap-1 w-1/2">
-                    <div className="flex flex-col  w-1/2">
-                        <img
-                            src={staticImages[0].url}
-                            className="w-full h-1/2 pb-1 object-cover"
-                        />
-
-                        <img
-                            src={staticImages[0].url}
-                            className="w-full h-1/2 pb-1 object-cover"
-                        />
+                    <div className="flex flex-col w-1/2 gap-1 overflow-hidden">
+                        <div className="relative w-full h-1/2 cursor-pointer">
+                            <img
+                                src={staticImages[0].url}
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute top-0 w-full h-full hover:bg-slate-700 opacity-30 transition-all" />
+                        </div>
+                        <div className="relative w-full h-1/2 cursor-pointer">
+                            <img
+                                src={staticImages[0].url}
+                                className="w-full h-full object-cover "
+                            />
+                            <div className="absolute top-0 w-full h-full hover:bg-slate-700 opacity-30 transition-all" />
+                        </div>
                     </div>
-                    <div className="flex flex-col  w-1/2">
-                        <img
-                            src={staticImages[0].url}
-                            className="w-full h-1/3 pb-1 object-cover"
-                        />
-                        <img
-                            src={staticImages[0].url}
-                            className="w-full h-1/3 pb-1 object-cover"
-                        />
-                        <img
-                            src={staticImages[0].url}
-                            className="w-full h-1/3 pb-1 object-cover"
-                        />
+                    <div className="flex flex-col w-1/2 gap-1 overflow-hidden">
+                        <div className="relative w-full h-1/2 cursor-pointer">
+                            <img
+                                src={staticImages[0].url}
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute top-0 w-full h-full hover:bg-slate-700 opacity-30 transition-all" />
+                        </div>
+                        <div className="relative w-full h-1/2 cursor-pointer">
+                            <img
+                                src={staticImages[0].url}
+                                className="w-full h-full object-cover "
+                            />
+                            <div className="absolute top-0 w-full h-full hover:bg-slate-700 opacity-30 transition-all" />
+                        </div>
                     </div>
                 </div>
             </div>
