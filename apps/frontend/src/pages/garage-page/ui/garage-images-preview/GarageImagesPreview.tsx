@@ -41,7 +41,7 @@ const staticImages = [
 ];
 
 function GarageImagesPreview() {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [previewImage, setPreviewImage] = useState<boolean>(false);
     if (isLoading) {
         return <ImagesSkeleton />;

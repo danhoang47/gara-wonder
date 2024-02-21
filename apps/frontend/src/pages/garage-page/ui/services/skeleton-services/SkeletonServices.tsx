@@ -11,14 +11,14 @@ function SkeletonServices() {
                         className="flex justify-between w-full items-center"
                     >
                         <div className="relative flex items-center gap-2">
-                            <Skeleton className="w-6 h-9 bg-default-300" />
+                            <Skeleton className="w-6 h-9 " />
                             <div className="flex min-w-80 flex-col gap-1">
-                                <Skeleton className="w-40 h-4 bg-default-300" />
-                                <Skeleton className="w-full h-4 bg-default-300" />
+                                <Skeleton className="w-40 h-4 " />
+                                <Skeleton className="w-full h-4 " />
                             </div>
                         </div>
                         <div>
-                            <Skeleton className="w-20 h-4 bg-default-300" />
+                            <Skeleton className="w-20 h-4 " />
                         </div>
                     </div>
                 ))}
