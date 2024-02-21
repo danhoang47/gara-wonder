@@ -1,6 +1,7 @@
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import AdditonalSkeleton from "./additional-skeleton";
 
 const fakeData = [
     {
@@ -26,6 +27,8 @@ const fakeData = [
 ];
 function AdditionalServices() {
     const [additionalServices, setAdditionalServices] = useState(fakeData);
+    const [isLoading, setIsLoading] = useState(true);
+
     return (
         <div>
             <div className="pb-4">
@@ -33,18 +36,25 @@ function AdditionalServices() {
                     Additional Services
                 </p>
             </div>
-            <div className="flex flex-col gap-4">
-                {additionalServices.map((service, index) => {
-                    return (
-                        <div className="flex items-center gap-4" key={index}>
-                            <FontAwesomeIcon
-                                icon={icons[service.icon as any]}
-                            />
-                            <p>{service.name}</p>
-                        </div>
-                    );
-                })}
-            </div>
+            {isLoading ? (
+                <AdditonalSkeleton />
+            ) : (
+                <div className="flex flex-col gap-4">
+                    {additionalServices.map((service, index) => {
+                        return (
+                            <div
+                                className="flex items-center gap-4"
+                                key={index}
+                            >
+                                <FontAwesomeIcon
+                                    icon={icons[service.icon as any]}
+                                />
+                                <p>{service.name}</p>
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }
