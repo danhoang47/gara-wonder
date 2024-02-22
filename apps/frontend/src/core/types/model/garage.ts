@@ -31,8 +31,5 @@ export type GarageFilter = {
     ratings?: number[];
     brands?: string[];
     distance?: number;
-    additional?: {
-        hasCafe?: boolean;
-        hasSmokingArea?: boolean;
-    };
+    additional?: string[];
 };

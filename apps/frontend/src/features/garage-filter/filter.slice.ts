@@ -7,7 +7,7 @@ const initialGarageFilterState: GarageFilter = {
         to: undefined,
     },
     distance: undefined,
-    additional: undefined,
+    additional: [],
     ratings: [],
     brands: [],
 };
