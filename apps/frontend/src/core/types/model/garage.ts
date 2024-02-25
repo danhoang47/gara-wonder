@@ -14,6 +14,10 @@ export type Brand = Model & {
     name: string
 }
 
+export type AdditionalService = Model & {
+    name: string
+}
+
 export type Rule = Model & {
     name: string,
     description?: string,
@@ -35,13 +39,12 @@ export type Rating = {
 // TODO: need certificate of business registration images
 export type Garage = BusinessEntity & {
     services: Service[];
-    additionalServices: string[];
+    additionalServices: AdditionalService[];
     defaultSlot: number;
     checkIn?: string;
     checkOut?: string;
     rules?: Rule[],
     rating: Rating,
-
 };
 
 export type GarageFilter = {
