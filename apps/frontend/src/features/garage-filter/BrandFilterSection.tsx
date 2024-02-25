@@ -1,22 +1,17 @@
 
 import { Button } from "@nextui-org/react";
+import useSWR from "swr";
+import clsx from "clsx";
 
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import FilterSection from "./FilterSection";
 import { setFilterValue } from "@/features/garage-filter/filter.slice";
-import clsx from "clsx";
+import { getBrands } from "@/api";
 
-const supportedBrands = [
-    "Mercedes",
-    "BMW",
-    "Porsche",
-    "Toyota",
-    "Honda",
-    "Lexus",
-];
 
 export default function BrandFilterSection() {
     const brands = useAppSelector((state) => state.filter.brands)
+    const { isLoading, data: supportedBrands } = useSWR("brands", getBrands)
     const dispatch = useAppDispatch();
 
     return (
@@ -27,26 +22,26 @@ export default function BrandFilterSection() {
                 contentWrapper: "grid grid-cols-3 gap-2"
             }}
         >
-            {supportedBrands.map((brand) => (
+            {supportedBrands?.map((brand) => (
                 <Button
-                    key={brand}
+                    key={brand._id}
                     variant="bordered"
                     radius="md"
                     className={clsx(
                         "py-8",
-                        brands?.includes(brand) &&
+                        brands?.includes(brand._id) &&
                         "border-black",
                     )}
                     disableAnimation
                     onPress={() => {
                         if (
                             brands &&
-                            brands.includes(brand)
+                            brands.includes(brand._id)
                         ) {
                             dispatch(setFilterValue({
                                 key: "brands",
                                 value: brands.filter(
-                                    (b) => b !== brand,
+                                    (b) => b !== brand._id,
                                 ),
                             }));
                             return;
@@ -54,12 +49,12 @@ export default function BrandFilterSection() {
 
                         dispatch(setFilterValue({
                             key: "brands",
-                            value: [...(brands || []), brand],
+                            value: [...(brands || []), brand._id],
                         }));
                     }}
                 >
                     <span className="font-medium text-medium">
-                        {brand}
+                        {brand.name}
                     </span>
                 </Button>
             ))}

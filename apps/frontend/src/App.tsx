@@ -31,15 +31,15 @@ function App() {
 
     useEffect(() => {
         if (status === FetchStatus.Fetching) {
-            load();
+            load("login");
         }
         if (
             status === FetchStatus.Fulfilled ||
             status === FetchStatus.Rejected
         ) {
-            unload();
+            unload("login");
         }
-    }, [status]);
+    }, [load, status, unload]);
 
     return (
         <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>

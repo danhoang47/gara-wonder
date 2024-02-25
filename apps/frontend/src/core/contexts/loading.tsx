@@ -3,21 +3,28 @@ import { ContainerProps } from "../types";
 import { FullPageLoad } from "../ui";
 
 export type LoadingContextType = {
-    load: () => void;
-    unload: () => void;
+    load: (id: string) => void;
+    unload: (id: string) => void;
 }
 
 export const LoadingContext = createContext<LoadingContextType>({} as LoadingContextType);
 
 export default function LoadingContextProvider({ children }: ContainerProps) {
-    const [isLoading, setLoading] = useState<boolean>(false);
+    const [loadMap, setLoadMap] = useState<Record<string, boolean>>({});
+    const isLoading = useMemo(() => Object.values(loadMap).some(isLoading => isLoading), [loadMap])
 
-    const load = useCallback(() => {
-        setLoading(true)
+    const load = useCallback((id: string) => {
+        setLoadMap(prev => ({
+            ...prev,
+            [id]: true
+        }))
     }, [])
 
-    const unload = useCallback(() => {
-        setLoading(false)
+    const unload = useCallback((id: string) => {
+        setLoadMap(prev => ({
+            ...prev,
+            [id]: false
+        }))
     }, [])
 
     const loadingContextValue = useMemo(() => ({

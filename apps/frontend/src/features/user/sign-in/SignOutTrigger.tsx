@@ -10,9 +10,9 @@ function SignOutTrigger() {
     return (
         <p
             onClick={() => {
-                load()
+                load("signOut")
                 dispatch(signout())
-                auth.signOut().finally(() => unload())
+                auth.signOut().finally(() => unload("signOut"))
             }}
         >
             Sign Out

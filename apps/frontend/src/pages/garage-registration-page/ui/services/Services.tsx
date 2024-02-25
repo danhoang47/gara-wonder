@@ -4,12 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import ServiceTemplateModal from "./ServiceTemplateModal";
 import { useMemo, useState } from "react";
-import { brands } from "./constants";
 import { Service } from "@/core/types";
 import ServiceCard from "./ServiceCard";
 import { useGarageRegistrationContext } from "../../hooks";
 import useSWR from "swr";
-import { getCategories } from "@/api";
+import { getBrands, getCategories } from "@/api";
 
 export default function Services() {
     const {
@@ -26,6 +25,7 @@ export default function Services() {
         undefined,
     );
     const { isLoading: isCategoriesLoading, data: categories } = useSWR("category", getCategories)
+    const { isLoading: isBrandsLoading, data: brands } = useSWR("brands", getBrands)
     const editedService = useMemo(
         () =>
             editedServiceId
@@ -91,7 +91,7 @@ export default function Services() {
                                 setEditedServiceId(undefined);
                             }}
                             isDisabled={
-                                selectedCategoryIds.length === brands.length
+                                selectedCategoryIds.length === (categories?.length || 0)
                             }
                         >
                             Add Service
@@ -104,6 +104,8 @@ export default function Services() {
                     <ServiceCard
                         key={service._id}
                         service={service}
+                        categoryName={categories?.find(({ _id }) => service.categoryId === _id)?.name}
+                        supportedBrands={service.brandIds === "all" ? "All" : brands?.filter(({ _id }) => service.brandIds?.includes(_id)).map(brand => brand.name).join(', ')}
                         onEditServiceButtonPress={onEditServiceButtonPress}
                         onRemoveServiceButtonPress={onRemoveServiceButtonPress}
                     />
@@ -113,6 +115,8 @@ export default function Services() {
                 isOpen={isServiceTemplateModalOpen}
                 isCategoriesLoading={isCategoriesLoading}
                 categories={categories}
+                isBrandsLoading={isBrandsLoading}
+                brands={brands}
                 onModalClose={() => setServiceTemplateModalOpen(false)}
                 onModalSave={onModalSave}
                 type={modalActionType}

@@ -4,14 +4,16 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./Carousel.styles.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import clsx from "clsx";
 
 export type CarouselProps<T> = {
     items: T[];
     renderItem: (item: T, index: number) => React.ReactNode;
     startIndex?: number;
+    classNames?: Partial<Record<"wrapper" | "item" | "base" | "button",string>>
 };
 
-function Carousel<T>({ items, renderItem, startIndex = 0 }: CarouselProps<T>) {
+function Carousel<T>({ items, renderItem, startIndex = 0, classNames }: CarouselProps<T>) {
     const [index, setIndex] = useState<number>(startIndex);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -37,15 +39,11 @@ function Carousel<T>({ items, renderItem, startIndex = 0 }: CarouselProps<T>) {
         }
     }, [containerRef, index]);
 
-    useEffect(() => {
-        
-    }, [containerRef])
-
     return (
-        <div className="carouselWrapper">
+        <div className={clsx("carouselWrapper", classNames?.wrapper)}>
             <div className="carousel" ref={containerRef}>
                 {items.map((value, index) => (
-                    <div key={index} data-index={index} className="carouselItem">
+                    <div key={index} data-index={index} className={clsx("h-full shrink-0 snap-center", classNames?.item)}>
                         {renderItem(value, index)}
                     </div>
                 ))}
@@ -55,8 +53,9 @@ function Carousel<T>({ items, renderItem, startIndex = 0 }: CarouselProps<T>) {
                 radius="full"
                 disableAnimation
                 size="sm"
-                className="absolute top-1/2 -translate-y-1/2 left-2"
+                className={clsx("absolute top-1/2 -translate-y-1/2 left-2", classNames?.button)}
                 onPress={onBackPress}
+                isDisabled={index === 0}
             >
                 <FontAwesomeIcon icon={faAngleLeft} />
             </Button>
@@ -65,8 +64,9 @@ function Carousel<T>({ items, renderItem, startIndex = 0 }: CarouselProps<T>) {
                 radius="full"
                 disableAnimation
                 size="sm"
-                className="absolute top-1/2 -translate-y-1/2 right-2"
+                className={clsx("absolute top-1/2 -translate-y-1/2 right-2", classNames?.button)}
                 onPress={onNextPress}
+                isDisabled={index === items.length - 1}
             >
                 <FontAwesomeIcon icon={faAngleRight} />
             </Button>

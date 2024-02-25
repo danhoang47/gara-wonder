@@ -1,5 +1,5 @@
 import GarageSkeletonCard from "../garage-skeleton-card";
-import GarageCard from "./GarageCard";
+import GarageCard from "../garage-card";
 import { ViewModeGaragesProps } from "./Garages";
 
 export default function GridViewGarages({
