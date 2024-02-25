@@ -40,7 +40,7 @@ export const enum Status {
 
 export type BusinessEntity = 
 Model & {
-    ownerId: User["_id"],
+    userId: User["_id"],
     name: string,
     description: string,
     backgroundImage: Image,

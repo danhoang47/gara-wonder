@@ -56,7 +56,9 @@ function useFilterParams() {
     };
 
     useEffect(() => {
-        dispatch(setFilter(filterParams));
+        if (Object.keys(filterParams).length) {
+            dispatch(setFilter(filterParams));
+        }
     }, []);
 
     return { filterParams, setFilterParams };

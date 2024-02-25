@@ -10,11 +10,11 @@ import { LoadingContextProvider } from './core/contexts';
 import './index.scss'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <ReduxProvider store={store}>
       <LoadingContextProvider>
         <RouterProvider router={router} />
       </LoadingContextProvider>
     </ReduxProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )
