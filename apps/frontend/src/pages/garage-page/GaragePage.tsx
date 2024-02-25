@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import {
     AdditionalServices,
     BookingForm,
@@ -7,8 +8,18 @@ import {
     GarageOwnerAndStaffInfoPreview,
     Services,
 } from "./ui";
+import { useContext, useEffect, useState } from "react";
+import { LoadingContext } from "@/core/contexts/loading";
 
 const GaragePage = () => {
+    const { garageId } = useParams();
+    const { load, unload } = useContext(LoadingContext);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // load();
+        if (isLoading) load();
+    }, [isLoading]);
     return (
         <div className="px-10 py-8">
             <div className="">
