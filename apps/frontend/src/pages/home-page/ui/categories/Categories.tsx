@@ -1,17 +1,20 @@
-import CategoryOption from "../category-option";
+import useSWR from "swr";
 
-import categories from './constant'
+import CategoryOption from "../category-option";
+import { getCategories } from "@/api";
 
 function Categories() {
+    const { isLoading, data: categories} = useSWR("category", getCategories)
+
     return (
         <div
             className="flex-grow flex justify-center gap-2"
             role="radiogroup"
         >
-            {categories.map(category => (
+            {categories?.map(category => (
                 <CategoryOption 
                     category={category} 
-                    key={category.key} 
+                    key={category._id} 
                 />
             ))}
         </div>

@@ -1,5 +1,5 @@
 import { Input } from "@nextui-org/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 
 import RegistrationSection from "../registration-section";
@@ -21,12 +21,13 @@ function Address() {
         garageRegistrationErrors,
         setGarageRegistrationStateValue,
     } = useGarageRegistrationContext();
-    const { address, latlng } = garageRegistrationState;
+    const { address, location } = garageRegistrationState;
     const debouncedAddress = useDebouncedValue(address, 500);
-    const position = latlng
+    const [center, setCenter] = useState<google.maps.LatLngLiteral>()
+    const position = location
         ? {
-            lat: latlng[0],
-            lng: latlng[1],
+            lat: location.coordinates[1],
+            lng: location.coordinates[0],
         }
         : defaultLatLng;
 
@@ -40,7 +41,13 @@ function Address() {
 
                 if (!isStale) {
                     const { lat, lng } = data.results[0].geometry.location;
-                    setGarageRegistrationStateValue("latlng", [lat, lng]);
+                    setGarageRegistrationStateValue("location", {
+                        coordinates: [lng, lat]
+                    });
+                    setCenter({
+                        lat,
+                        lng
+                    })
                 }
             }
         };
@@ -52,7 +59,6 @@ function Address() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedAddress]);
 
-    console.log(position)
     return (
         <RegistrationSection
             header={"Address"}
@@ -77,12 +83,19 @@ function Address() {
                     <Map
                         mapId={"36cc488b1b7a7759"}
                         defaultCenter={position}
+                        center={center}
                         defaultZoom={14}
                         onDrag={(event) => {
+                            setCenter(undefined)
                             const latlng = event.map.getCenter()
                             if (latlng) {
-                                setGarageRegistrationStateValue("latlng", [latlng.lat(), latlng.lng()])
+                                setGarageRegistrationStateValue("location", {
+                                    coordinates:  [latlng.lat(), latlng.lng()]
+                                });
                             }
+                        }}
+                        onDragend={() => {
+                            setCenter(position)
                         }}
                     >
                         <AdvancedMarker position={position} />

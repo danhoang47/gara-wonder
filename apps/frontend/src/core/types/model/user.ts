@@ -1,8 +1,7 @@
-import { Shop } from ".";
 import { Image, Model } from "./core";
 import { Garage } from "./garage";
 
-export const enum ActorType {
+export const enum Role {
     User = 1,
     GarageOwner = 2,
     Supplier = 3,
@@ -10,10 +9,16 @@ export const enum ActorType {
 }
 
 export type User = Model & {
-    type: ActorType,
-    citizenId: string,
-    frontSideCitizenIdCardImage: Image,
-    backSideCitizenIdCardImage: Image,
-    favoriteGarageIds: Garage["_id"][],
-    favoriteShopIds: Shop["_id"][],
+    role: Role,
+    uid: string, 
+    email?: string,
+    emailVerified: boolean,
+    displayName: string, 
+    isAnonymous?: boolean,
+    photoURL: string, 
+    phoneNumber?: string
+    citizenId?: string,
+    frontSideCitizenIdCardImage?: Image,
+    backSideCitizenIdCardImage?: Image,
+    favoriteGarageIds?: Garage["_id"][],
 }

@@ -45,7 +45,7 @@ const garageRegistrationConstraints: GarageRegistrationConstraints = {
     address: {
         required: "Address is required"
     },
-    latlng: {
+    location: {
         required: ""
     }
 };

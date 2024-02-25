@@ -1,18 +1,13 @@
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import "./CategoryOption.styles.scss"
 
 import clsx from "clsx";
+import { Category } from "@/core/types";
 
 export type CategoryOptionProps = {
-    category: {
-        key: string,
-        title: string,
-        value: string,
-        icon: IconProp
-    }
+    category: Category
 }
 
 function CategoryOption({ category }: CategoryOptionProps) {
@@ -20,16 +15,16 @@ function CategoryOption({ category }: CategoryOptionProps) {
     const isSelected = useMemo(() => {
         const filteredCategory = filterSearchParams.get("category")
 
-        return filteredCategory === category.value
+        return filteredCategory === category._id
     }, [filterSearchParams])
 
 
     const onCategoryOptionSelect = () => {
         setFilterSearchParams(prev => {
-            if (prev.get("category") === category.value) {
+            if (prev.get("category") === category._id) {
                 prev.delete("category")
             } else {
-                prev.set("category", category.value)
+                prev.set("category", category._id)
             }
 
             return prev;
@@ -45,9 +40,9 @@ function CategoryOption({ category }: CategoryOptionProps) {
                 isSelected && "CategoryOption--selected"
             )} 
             onClick={onCategoryOptionSelect}
-            aria-label={`${category.value} option`}
+            aria-label={`${category.name} option`}
         >
-            <p className="capitalize">{category.title}</p>
+            <p className="capitalize">{category.name}</p>
         </div>
     )
 }

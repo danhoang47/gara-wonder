@@ -2,20 +2,18 @@ import { faBars, faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     Button,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownSection,
-    DropdownTrigger,
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@nextui-org/react";
 import { useState } from "react";
-import userProfileMenuSections from "./constant";
+import { userProfileMenuSections, guestProfileMenuSections } from "./constant";
+import { useAppSelector } from "@/core/hooks";
 
 function UserProfileMenu() {
     const [isOpen, setOpen] = useState<boolean>(false);
+    const user = useAppSelector(state => state.user.value)
+    const profileMenuOptions = user ? userProfileMenuSections : guestProfileMenuSections
 
     return (
         <Popover
@@ -37,13 +35,13 @@ function UserProfileMenu() {
                 </Button>
             </PopoverTrigger>
             <PopoverContent aria-label="User menu" className="px-0 py-3">
-                {userProfileMenuSections.map((section, index) => (
+                {profileMenuOptions.map((section, index) => (
                     <div key={index} className="w-full">
                         {section.options.map(({ component, key, title }) => (
                             <div
                                 key={key}
                                 aria-label={title}
-                                className="py-2 px-3 hover:bg-default-300 cursor-pointer"
+                                className="py-2 px-3 hover:bg-default-300 cursor-pointer min-w-40"
                                 onClick={() => setOpen(false)}
                             >
                                 {component}

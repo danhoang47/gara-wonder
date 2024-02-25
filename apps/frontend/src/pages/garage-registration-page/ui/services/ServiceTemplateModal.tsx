@@ -15,27 +15,31 @@ import {
 } from "@nextui-org/react";
 import { nanoid } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
-import { brands, services } from "./constants";
-import { Service } from "@/core/types";
+import { brands } from "./constants";
+import { Category, Service } from "@/core/types";
 
 export type Brand = (typeof brands)[number];
 
 export type ServiceTemplateModalProps = {
     isOpen: boolean;
+    categories?: Category[],
+    isCategoriesLoading?: boolean,
     onModalSave: (data: Partial<Service>) => void;
     onModalClose: () => void;
     type?: "edit" | "create";
     service?: Partial<Service>;
-    selectedServiceIds: string[];
+    selectedCategoryIds: string[];
 };
 
 export default function ServiceTemplateModal({
     isOpen,
+    categories,
+    isCategoriesLoading,
     onModalSave,
     onModalClose,
     type = "create",
     service = undefined,
-    selectedServiceIds,
+    selectedCategoryIds,
 }: ServiceTemplateModalProps) {
     const [localService, setLocalService] = useState<Partial<Service>>({
         _id: nanoid(),
@@ -95,27 +99,28 @@ export default function ServiceTemplateModal({
                 <Divider className="mb-4" />
                 <ModalBody className="flex flex-column gap-4 flex-wrap pb-20 px-6">
                     <Select
-                        items={services}
-                        placeholder="Select service type"
-                        label="Service Type"
+                        items={categories}
+                        isLoading={isCategoriesLoading}
+                        placeholder="Select category"
+                        label="Category"
                         variant="bordered"
                         onSelectionChange={(keys) => {
-                            const selectedId = Array.from(keys) as string[];
+                            const selectedId = Array.from(keys)[0] as string
 
                             setLocalService((prev) => ({
                                 ...prev,
-                                serviceId: selectedId[0],
+                                categoryId: selectedId,
                             }));
                         }}
                         isRequired
-                        disabledKeys={selectedServiceIds.filter(
-                            (id) => id !== service?.serviceId,
+                        disabledKeys={selectedCategoryIds.filter(
+                            (id) => id !== service?.categoryId,
                         )}
-                        selectedKeys={localService.serviceId}
+                        selectedKeys={[localService.categoryId] as Iterable<string>}
                     >
-                        {(service) => (
-                            <SelectItem key={service.id}>
-                                {service.title}
+                        {(category) => (
+                            <SelectItem key={category._id}>
+                                {category.name}
                             </SelectItem>
                         )}
                     </Select>

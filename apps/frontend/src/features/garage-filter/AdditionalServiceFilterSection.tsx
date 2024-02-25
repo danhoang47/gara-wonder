@@ -4,11 +4,13 @@ import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import FilterSection from "./FilterSection";
 import { setFilterValue } from "@/features/garage-filter/filter.slice";
 import { GarageFilter } from "@/core/types";
+import additionalServices from './constants'
 
 export default function AdditionalServiceFilterSection() {
     const additional = useAppSelector((state) => state.filter.additional);
     const dispatch = useAppDispatch();
 
+    console.log(additional)
     return (
         <FilterSection
             title="Additional Services"
@@ -16,28 +18,20 @@ export default function AdditionalServiceFilterSection() {
         >
             <CheckboxGroup
                 onValueChange={(data) => {
-                    const hasCafe = data.some((v) => v === "hasCafe");
-                    const hasSmokingArea = data.some(
-                        (v) => v === "hasSmokingArea",
-                    );
-
                     dispatch(
                         setFilterValue({
                             key: "additional",
-                            value: {
-                                hasCafe,
-                                hasSmokingArea,
-                            },
+                            value: data
                         }),
                     );
                 }}
-                value={Object.keys(additional || {}).filter(
-                    (key) =>
-                        additional?.[key as keyof GarageFilter["additional"]],
-                )}
+                value={additional}
             >
-                <Checkbox value={"hasCafe"}>Has Cafe to waiting</Checkbox>
-                <Checkbox value={"hasSmokingArea"}>Has smoking area</Checkbox>
+                {
+                    additionalServices.map(({ id, text }) => (
+                        <Checkbox key={id} value={id}>{text}</Checkbox>
+                    ))
+                }
             </CheckboxGroup>
         </FilterSection>
     );

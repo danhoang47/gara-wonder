@@ -7,11 +7,12 @@ import {
     Navigation,
     Services,
 } from "./ui";
-import { GarageRegistrationContextProvider } from "./contexts";
+import { GarageRegistration, GarageRegistrationContextProvider } from "./contexts";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector, useLoadingContext, useModalContext } from "@/core/hooks";
+import { useAppDispatch, useAppSelector, useLoadingContext, useModalContext } from "@/core/hooks";
 import { useEffect } from "react";
-import { initGarage } from "@/api";
+import { createGarage, initGarage, uploadGarageImages } from "@/api";
+import { notify } from "@/features/toasts/toasts.slice";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const enum RegistrationSection {
@@ -36,17 +37,19 @@ const GarageRegistrationPage = () => {
         allowContinue,
         onBackButtonClicked,
         onNextButtonClicked,
-    } = useNavigation();
+    } = useNavigation(onRegistrationFinish);
     const user = useAppSelector((state) => state.user.value);
-    const { load, unload } = useLoadingContext()
+    const navigate = useNavigate()
+    const { load, unload } = useLoadingContext();
+    const dispatch = useAppDispatch()
 
-    // useEffect(() => {
-    //     load()
+    useEffect(() => {
+        load()
 
-    //     initGarage().then(() => {
-    //         unload()
-    //     })
-    // }, [load, unload])
+        initGarage().then(() => {
+            unload()
+        })
+    }, [load, unload])
 
     const renderPageSection = () => {
         switch (currentSectionIndex) {
@@ -64,6 +67,35 @@ const GarageRegistrationPage = () => {
                 throw new Error("Invalid Section");
         }
     };
+
+    async function onRegistrationFinish(garage: GarageRegistration) {
+        load()
+
+        garage.userId = user?._id
+
+        uploadGarageImages(garage.backgroundImage, garage.images)
+        try {
+            const result = await createGarage(garage)
+
+            if (result.statusCode === 200) {
+                dispatch(notify({
+                    type: "success",
+                    title: "Register Garage",
+                    description: "Successfully register your garage"
+                }))
+                
+            }
+        } catch (error) {
+            dispatch(notify({
+                type: "failure",
+                title: "Register Garage",
+                description: "Some error occured, please try again later"
+            }))
+        } finally {
+            unload()
+            navigate("/")
+        }
+    }
 
     return (
         <div className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0">
