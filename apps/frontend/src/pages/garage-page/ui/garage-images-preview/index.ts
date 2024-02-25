@@ -1,1 +1,1 @@
-export{default} from "./GarageImagesPreview";
+export { default } from "./GarageImagesPreview";
