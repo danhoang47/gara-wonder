@@ -2,7 +2,6 @@ import { auth } from "@/components/firebase";
 import { useAppDispatch, useLoadingContext } from "@/core/hooks";
 import { signout } from "../user.slice";
 
-
 function SignOutTrigger() {
     const dispatch = useAppDispatch();
     const { load, unload } = useLoadingContext()
@@ -10,9 +9,11 @@ function SignOutTrigger() {
     return (
         <p
             onClick={() => {
-                load("signOut")
-                dispatch(signout())
-                auth.signOut().finally(() => unload("signOut"))
+                load("signOut")    
+                auth.signOut().finally(() => {
+                    dispatch(signout()) 
+                    unload("signOut")
+                })
             }}
         >
             Sign Out

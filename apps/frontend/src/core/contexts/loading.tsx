@@ -21,10 +21,11 @@ export default function LoadingContextProvider({ children }: ContainerProps) {
     }, [])
 
     const unload = useCallback((id: string) => {
-        setLoadMap(prev => ({
-            ...prev,
-            [id]: false
-        }))
+        setLoadMap(prev => {
+            const newLoadMap = {...prev}
+            delete newLoadMap[id]
+            return newLoadMap
+        })
     }, [])
 
     const loadingContextValue = useMemo(() => ({

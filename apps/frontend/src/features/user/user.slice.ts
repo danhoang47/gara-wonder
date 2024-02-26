@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { FetchStatus, User } from '@/core/types'
-import { getUser } from '@/api'
+import { FetchStatus, Response, User } from '@/core/types'
+import { getUser, signup } from '@/api'
+import { AxiosError, HttpStatusCode } from 'axios'
+import { auth } from '@/components/firebase'
 
 export type UserSliceState = {
     status: FetchStatus,
@@ -33,18 +35,30 @@ const userSlice = createSlice({
                 value: action.payload
             }
         }).addCase(getUserById.rejected, (state, action) => {
-            state.status = FetchStatus.Rejected
+            if (action.payload) {
+                state.status = FetchStatus.Fulfilled,
+                state.value = action.payload as User
+            } else {
+                state.status = FetchStatus.Rejected
+            }
         })
     }
 })
 
-export const getUserById = createAsyncThunk("user/getUserById", async (id: string) => {
+export const getUserById = createAsyncThunk("user/getUserById", async (id: string, { rejectWithValue }) => {
     try {
         return (await getUser(id)).data
-    } catch (error: unknown) {
-        throw new Error("ERROR")
+    } catch (_error: unknown) {
+        const error = JSON.parse((_error as Error).message) as Response
+
+        if (error.statusCode === HttpStatusCode.NotFound) {
+            const user = await signup(auth.currentUser!)
+            return rejectWithValue(user)
+        } else {
+            throw new Error("ERROR")
+        }
     }
-}) 
+})
 
 export const { signout } = userSlice.actions
 
