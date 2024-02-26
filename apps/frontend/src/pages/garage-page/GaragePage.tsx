@@ -1,4 +1,7 @@
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import useSWRImmutable from "swr/immutable";
+
 import {
     AdditionalServices,
     BookingForm,
@@ -8,25 +11,34 @@ import {
     GarageOwnerAndStaffInfoPreview,
     Services,
 } from "./ui";
-import { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "@/core/contexts/loading";
+import { getBasicGarageInfo } from "@/api";
 
 const GaragePage = () => {
     const { garageId } = useParams();
     const { load, unload } = useContext(LoadingContext);
-    const [isLoading, setIsLoading] = useState(true);
-
+    const { isLoading: isInfoLoading, data: basicInfo } = useSWRImmutable(
+        garageId,
+        getBasicGarageInfo,
+    );
     useEffect(() => {
-        // load();
-        if (isLoading) load();
-    }, [isLoading]);
+        if (isInfoLoading) load();
+        else unload();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isInfoLoading]);
     return (
         <div className="px-10 py-8">
             <div className="">
-                <GarageHeader />
+                <GarageHeader
+                    name={basicInfo?.data[0].name}
+                    address={basicInfo?.data[0].address}
+                />
             </div>
             <div className="my-6">
-                <GarageImagesPreview />
+                <GarageImagesPreview
+                    backgroundImage={basicInfo?.data[0].backgroundImage}
+                />
             </div>
             <div className="my-6 block w-full gap-4 md:flex">
                 <div className="w-full shrink-0 min-w-[25rem] md:max-w-[35rem] md:w-2/5 md:order-2">
@@ -40,10 +52,17 @@ const GaragePage = () => {
                         <Services />
                     </div>
                     <div className="border-b-1 pb-8 border-zinc-300">
-                        <AdditionalServices />
+                        <AdditionalServices
+                            additionalServices={
+                                basicInfo?.data[0].additionalServices
+                            }
+                            isLoading={isInfoLoading}
+                        />
                     </div>
                     <div className="">
-                        <Description />
+                        <Description
+                            description={basicInfo?.data[0].description}
+                        />
                     </div>
                 </div>
             </div>

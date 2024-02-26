@@ -1,10 +1,12 @@
 import axios from "axios";
-import { baseUrl } from ".";
-import { Response } from "@/core/types";
+import { baseGaragesUrl } from ".";
+import { Garage, Response } from "@/core/types";
 
-export default async function getGarageServices(id: string): Promise<Response> {
+export default async function getGarageServices(
+    api: string,
+): Promise<Response<Garage["services"]>> {
     try {
-        const result = await axios.get<Response>(`${baseUrl}/service/${id}`);
+        const result = await axios.get(`${baseGaragesUrl}/${api}`);
         return result.data;
     } catch (error) {
         throw new Error(JSON.stringify(error));

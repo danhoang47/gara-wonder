@@ -4,7 +4,7 @@ import { Chip } from "@nextui-org/react";
 
 import { GarageActionButton } from "..";
 
-function GarageHeader() {
+function GarageHeader({ name, address }: { name?: string; address?: string }) {
     const [hasCoupon, setHasCoupon] = useState<boolean>(true);
 
     return (
@@ -12,18 +12,14 @@ function GarageHeader() {
             <div>
                 <span className="text-xs font-medium">522 visited</span>
                 <div className="flex gap-2 items-center">
-                    <p className="font-semibold text-2xl">
-                        Detail and Repairing Garage Da Nang
-                    </p>
+                    <p className="font-semibold text-2xl">{name}</p>
                     {hasCoupon && (
                         <Chip color="primary" radius="sm" size="sm">
                             Coupon
                         </Chip>
                     )}
                 </div>
-                <span className="text-xs font-medium">
-                    Khu do thi FPT, Hoa Hai, Ngu Hanh Son, Da Nang{" "}
-                </span>
+                <span className="text-xs font-medium">{address} </span>
             </div>
             <GarageActionButton />
         </div>
