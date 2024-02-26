@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { SupportedChip } from "..";
 import SkeletonServices from "./skeleton-services";
+import { getGarageServices } from "@/api";
+import useSWRImmutable from "swr/immutable";
+import { useParams } from "react-router-dom";
 
 const fakeData = [
     {
@@ -44,8 +47,10 @@ const fakeData = [
 ];
 
 function Services() {
+    const { garageId } = useParams();
     const [serviceList, setServiceList] = useState(fakeData);
-    const [isLoading, setIsLoading] = useState(true);
+    const { isLoading: isServicesLoading, data: servicesList } =
+        useSWRImmutable(`service/${garageId}`, getGarageServices);
 
     return (
         <div>
@@ -55,11 +60,11 @@ function Services() {
                     All services this garage have
                 </p>
             </div>
-            {isLoading ? (
+            {isServicesLoading ? (
                 <SkeletonServices />
             ) : (
                 <div className="flex flex-col gap-4">
-                    {serviceList.map((service, index) => (
+                    {servicesList?.data.map((service, index) => (
                         <div
                             key={index}
                             className="flex justify-between w-full items-center"
@@ -69,7 +74,7 @@ function Services() {
                                 <div>
                                     <div className="flex items-center">
                                         <p className="font-medium">
-                                            Repairing services.
+                                            {service.category.name}
                                         </p>
                                         <SupportedChip
                                             isSupport={service.status}
@@ -77,7 +82,7 @@ function Services() {
                                     </div>
                                     <div className="text-sm text-zinc-500">
                                         <p>
-                                            {service.description}{" "}
+                                            {service.category.description}{" "}
                                             <span className="text-primary cursor-pointer hover:text-primary-700">
                                                 See all supported cars
                                             </span>
