@@ -7,6 +7,7 @@ export type Service = Partial<
         brandIds: string[] | "all";
         lowestPrice: number;
         highestPrice: number;
+        isSupported: boolean;
     }
 >;
 

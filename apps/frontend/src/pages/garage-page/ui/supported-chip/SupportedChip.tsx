@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chip } from "@nextui-org/react";
 import clsx from "clsx";
 
-function SupportedChip({ isSupport }: { isSupport: boolean }) {
+function SupportedChip({ isSupport }: { isSupport?: boolean }) {
     return (
         <Chip
             className={clsx(
