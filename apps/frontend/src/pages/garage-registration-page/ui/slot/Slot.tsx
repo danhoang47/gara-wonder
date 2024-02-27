@@ -15,7 +15,7 @@ function Slot() {
             header="Slot"
             description="Config your slot you can serve per day"
         >
-            <div className="mb-2 flex justify-between">
+            <div className="mb-2 flex justify-between items-center">
                 <div>
                     <p className="font-medium">Insert your slot</p>
                     <span className="text-small text-foreground-400">Don't worry, you can modify it later</span>

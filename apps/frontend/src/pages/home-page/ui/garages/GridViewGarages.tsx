@@ -2,6 +2,8 @@ import GarageSkeletonCard from "../garage-skeleton-card";
 import GarageCard from "../garage-card";
 import { ViewModeGaragesProps } from "./Garages";
 
+import "./Garages.styles.scss"
+
 export default function GridViewGarages({
     garages,
     isLoading,
@@ -18,17 +20,6 @@ export default function GridViewGarages({
         )
     }
 
-    // return (
-    //     <>
-    //         {
-    //             garages?.map(garage => (
-    //                 <div key={garage._id}>
-    //                     {garage.name}
-    //                 </div>
-    //             ))
-    //         }
-    //     </>
-    // )
     return (
         <>
             {Array.from(new Array(20)).map((_, index) => (

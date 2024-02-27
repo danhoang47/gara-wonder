@@ -12,17 +12,19 @@ import {
     ModalHeader,
     ModalBody,
     Divider,
+    Switch,
 } from "@nextui-org/react";
 import { nanoid } from "@reduxjs/toolkit";
-import { useEffect, useState } from "react";
-import { Brand, Category, Service } from "@/core/types";
+import { useEffect, useMemo, useState } from "react";
+import { Brand, Category, EstimateType, Service } from "@/core/types";
+import EstimateDurationGroup from "./EstimateDurationGroup";
 
 export type ServiceTemplateModalProps = {
     isOpen: boolean;
-    categories?: Category[],
-    isCategoriesLoading?: boolean,
-    isBrandsLoading?: boolean,
-    brands?: Brand[],
+    categories?: Category[];
+    isCategoriesLoading?: boolean;
+    isBrandsLoading?: boolean;
+    brands?: Brand[];
     onModalSave: (data: Partial<Service>) => void;
     onModalClose: () => void;
     type?: "edit" | "create";
@@ -46,7 +48,16 @@ export default function ServiceTemplateModal({
         _id: nanoid(),
         highestPrice: 100,
         lowestPrice: 0,
+        estimationType: EstimateType.Exact,
+        estimateDuration: undefined,
+        brandIds: "all",
+        categoryId: undefined
     });
+    const { categoryId, brandIds } = localService;
+    const isSaveButtonDisabled = useMemo<boolean>(
+        () => !categoryId || !brandIds,
+        [categoryId, brandIds],
+    );
 
     useEffect(() => {
         if (type === "edit" && service) {
@@ -96,17 +107,22 @@ export default function ServiceTemplateModal({
     return (
         <Modal isOpen={isOpen} onClose={onModalClose} size="lg">
             <ModalContent className="min-h-96 flex-col">
-                <ModalHeader className="px-6">Add Service</ModalHeader>
+                <ModalHeader className="px-6 justify-center">
+                    <p className="text-base">Add Service</p>
+                </ModalHeader>
                 <Divider className="mb-4" />
-                <ModalBody className="flex flex-column gap-4 flex-wrap pb-20 px-6">
+                <ModalBody className="flex flex-column gap-4 flex-wrap pb-6 px-6">
                     <Select
                         items={categories}
                         isLoading={isCategoriesLoading}
                         placeholder="Select category"
                         label="Category"
                         variant="bordered"
+                        classNames={{
+                            trigger: "border",
+                        }}
                         onSelectionChange={(keys) => {
-                            const selectedId = Array.from(keys)[0] as string
+                            const selectedId = Array.from(keys)[0] as string;
 
                             setLocalService((prev) => ({
                                 ...prev,
@@ -117,7 +133,11 @@ export default function ServiceTemplateModal({
                         disabledKeys={selectedCategoryIds.filter(
                             (id) => id !== service?.categoryId,
                         )}
-                        selectedKeys={localService?.categoryId ? [localService?.categoryId] : undefined}
+                        selectedKeys={
+                            localService?.categoryId
+                                ? [localService?.categoryId]
+                                : undefined
+                        }
                     >
                         {(category) => (
                             <SelectItem key={category._id}>
@@ -126,12 +146,23 @@ export default function ServiceTemplateModal({
                         )}
                     </Select>
                     <Select
-                        items={[{ _id: "all", createdAt: 0, updatedAt: 0, name: "Select All" }, ...(brands || [])]}
+                        items={[
+                            {
+                                _id: "all",
+                                createdAt: 0,
+                                updatedAt: 0,
+                                name: "Select All",
+                            },
+                            ...(brands || []),
+                        ]}
                         isLoading={isBrandsLoading}
                         placeholder="Select supported brands"
                         label="Supported Brands"
                         selectionMode="multiple"
                         variant="bordered"
+                        classNames={{
+                            trigger: "border",
+                        }}
                         selectedKeys={localService.brandIds}
                         renderValue={renderBrandSelectValue}
                         onSelectionChange={(keys) => {
@@ -181,6 +212,9 @@ export default function ServiceTemplateModal({
                                     lowestPrice: Number(price),
                                 }))
                             }
+                            classNames={{
+                                inputWrapper: "border",
+                            }}
                         />
                         <div className="w-12 text-center">
                             <FontAwesomeIcon icon={faMinus} />
@@ -199,13 +233,50 @@ export default function ServiceTemplateModal({
                                     highestPrice: Number(price),
                                 }))
                             }
+                            classNames={{
+                                inputWrapper: "border",
+                            }}
                         />
                     </div>
+                    <div className="flex space-between items-center gap-2 p-3 border-2 rounded-medium">
+                        <div>
+                            <p className="font-medium">Provided Evaluation</p>
+                            <span className="text-sm text-default-400">
+                                Evaluation will send to customer to provide
+                                information about the service
+                            </span>
+                        </div>
+                        <div>
+                            <Switch
+                                defaultSelected
+                                onValueChange={(isSelected) =>
+                                    setLocalService((prev) => ({
+                                        ...prev,
+                                        isProvidedEvaluation: isSelected,
+                                    }))
+                                }
+                                isSelected={Boolean(
+                                    localService.isProvidedEvaluation,
+                                )}
+                            />
+                        </div>
+                    </div>
+                    <EstimateDurationGroup
+                        estimateType={localService.estimationType}
+                        estimateDuration={localService.estimateDuration}
+                        onChange={(et, ed) =>
+                            setLocalService((prev) => ({
+                                ...prev,
+                                estimationType: et,
+                                estimateDuration: ed,
+                            }))
+                        }
+                    />
                 </ModalBody>
                 <Divider />
                 <ModalFooter className="mt-auto px-6">
                     <Button
-                        color="danger"
+                        color="default"
                         variant="light"
                         onPress={() => {
                             onModalClose();
@@ -220,6 +291,7 @@ export default function ServiceTemplateModal({
                             onModalSave(localService);
                             resetLocalService();
                         }}
+                        isDisabled={isSaveButtonDisabled}
                     >
                         Save
                     </Button>
