@@ -6,6 +6,7 @@ import {
     Images,
     Navigation,
     Services,
+    Slot,
 } from "./ui";
 import { GarageRegistration, GarageRegistrationContextProvider } from "./contexts";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ export const enum RegistrationSection {
     BasicInformation = 0,
     Address,
     Services,
+    Slot,
     Images,
     Additional,
 }
@@ -59,6 +61,8 @@ const GarageRegistrationPage = () => {
                 return <Address />;
             case RegistrationSection.Services:
                 return <Services />;
+            case RegistrationSection.Slot:
+                return <Slot />
             case RegistrationSection.Images:
                 return <Images />;
             case RegistrationSection.Additional:

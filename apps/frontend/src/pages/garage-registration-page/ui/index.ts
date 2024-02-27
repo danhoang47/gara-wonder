@@ -5,4 +5,5 @@ export { default as Address } from './address'
 export { default as Services } from './services'
 export { default as Images } from './images'
 export { default as AdditionalServices } from './additional-services'
+export { default as Slot } from './slot'
 
