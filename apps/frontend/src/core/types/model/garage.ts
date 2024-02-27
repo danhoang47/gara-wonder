@@ -1,5 +1,12 @@
 import { BusinessEntity, Model } from "./core";
 
+export enum EstimateType {
+    SameDay = 0,
+    Exact,
+    InRange,
+    UnEstimated,
+}
+
 export type Service = Partial<
     Model & {
         garageId: Garage["_id"];
@@ -8,6 +15,9 @@ export type Service = Partial<
         lowestPrice: number;
         highestPrice: number;
         isSupported: boolean;
+        isProvidedEvaluation?: boolean;
+        estimationType: EstimateType;
+        estimateDuration?: [number | null, number | null];
     }
 >;
 

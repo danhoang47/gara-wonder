@@ -17,15 +17,23 @@ export default function Services() {
     } = useGarageRegistrationContext();
     const [isServiceTemplateModalOpen, setServiceTemplateModalOpen] =
         useState<boolean>(false);
-    const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>(
+        [],
+    );
     const [modalActionType, setModalActionType] = useState<"edit" | "create">(
         "create",
     );
     const [editedServiceId, setEditedServiceId] = useState<string | undefined>(
         undefined,
     );
-    const { isLoading: isCategoriesLoading, data: categories } = useSWR("category", getCategories)
-    const { isLoading: isBrandsLoading, data: brands } = useSWR("brands", getBrands)
+    const { isLoading: isCategoriesLoading, data: categories } = useSWR(
+        "category",
+        getCategories,
+    );
+    const { isLoading: isBrandsLoading, data: brands } = useSWR(
+        "brands",
+        getBrands,
+    );
     const editedService = useMemo(
         () =>
             editedServiceId
@@ -70,7 +78,10 @@ export default function Services() {
     const onRemoveServiceButtonPress = (
         service: Partial<Service> | undefined,
     ) => {
-        setGarageRegistrationStateValue("services", services?.filter(({ _id }) => _id !== service?._id));
+        setGarageRegistrationStateValue(
+            "services",
+            services?.filter(({ _id }) => _id !== service?._id),
+        );
         setSelectedCategoryIds((prev) =>
             prev.filter((serviceId) => serviceId !== service?.categoryId),
         );
@@ -80,32 +91,52 @@ export default function Services() {
         <>
             <RegistrationSection
                 header={
-                    <div className="flex justify-between">
-                        <span>Services</span>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <span>Services</span>
+                            <p className="text-sm text-foreground font-normal">
+                                Provide the services your garage will serves
+                            </p>
+                        </div>
                         <Button
                             variant="bordered"
                             startContent={<FontAwesomeIcon icon={faPlus} />}
+                            className="border"
                             onPress={() => {
                                 setModalActionType("create");
                                 setServiceTemplateModalOpen(true);
                                 setEditedServiceId(undefined);
                             }}
                             isDisabled={
-                                selectedCategoryIds.length === (categories?.length || 0)
+                                selectedCategoryIds.length ===
+                                (categories?.length || 0)
                             }
                         >
                             Add Service
                         </Button>
                     </div>
                 }
-                description="Provide the services your garage will serves"
             >
                 {services?.map((service) => (
                     <ServiceCard
                         key={service._id}
                         service={service}
-                        categoryName={categories?.find(({ _id }) => service.categoryId === _id)?.name}
-                        supportedBrands={service.brandIds === "all" ? "All" : brands?.filter(({ _id }) => service.brandIds?.includes(_id)).map(brand => brand.name).join(', ')}
+                        categoryName={
+                            categories?.find(
+                                ({ _id }) => service.categoryId === _id,
+                            )?.name
+                        }
+                        supportedBrands={
+                            service.brandIds === "all"
+                                ? "All"
+                                : brands
+                                      ?.filter(
+                                          ({ _id }) =>
+                                              service.brandIds?.includes(_id),
+                                      )
+                                      .map((brand) => brand.name)
+                                      .join(", ")
+                        }
                         onEditServiceButtonPress={onEditServiceButtonPress}
                         onRemoveServiceButtonPress={onRemoveServiceButtonPress}
                     />

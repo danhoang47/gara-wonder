@@ -35,7 +35,7 @@ function Stepper({
         variant: "bordered",
         className: clsx(classNames?.button, "border"),
         size: size
-    }), [disabled, classNames?.button])
+    }), [classNames?.button, size])
 
     const onStepBack = () => {
         const currentValue = value || defaultValue || 1;
@@ -52,7 +52,9 @@ function Stepper({
             <Button {...buttonProps} onPress={onStepBack} isDisabled={disabled || value === min}>
                 <FontAwesomeIcon icon={faMinus}/>
             </Button>
-            <p contentEditable={disabled && allowKeyboard} className={clsx("outline-none", classNames?.text)}>{value || defaultValue}</p>
+            <div className={classNames?.text}>
+                <p contentEditable={disabled && allowKeyboard} className={clsx("outline-none text-center")}>{value || defaultValue}</p>
+            </div>
             <Button {...buttonProps} onPress={onStepNext} isDisabled={disabled || value === max}>
                 <FontAwesomeIcon icon={faPlus}/>
             </Button>
