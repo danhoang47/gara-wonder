@@ -44,10 +44,10 @@ const GarageRegistrationPage = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        load()
+        load("registrationInitLoad")
 
         initGarage().then(() => {
-            unload()
+            unload("registrationInitLoad")
         })
     }, [load, unload])
 
@@ -69,9 +69,9 @@ const GarageRegistrationPage = () => {
     };
 
     async function onRegistrationFinish(garage: GarageRegistration) {
-        load()
+        load("registrationSaveLoad")
 
-        garage.userId = user?._id
+        garage.ownerId = user?._id
 
         uploadGarageImages(garage.backgroundImage, garage.images)
         try {
@@ -92,7 +92,7 @@ const GarageRegistrationPage = () => {
                 description: "Some error occured, please try again later"
             }))
         } finally {
-            unload()
+            unload("registrationSaveLoad")
             navigate("/")
         }
     }

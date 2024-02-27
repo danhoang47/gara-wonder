@@ -1,3 +1,4 @@
+import { useEffect, lazy, Suspense } from "react";
 import {
     Button,
     Divider,
@@ -7,14 +8,15 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@nextui-org/react";
-import PriceRangeFilterSection from "./PriceRangeFilterSection";
-import RatingFilterSection from "./RatingFilterSection";
-import { clearFilterValue } from "@/features/garage-filter/filter.slice";
+
 import { useAppDispatch } from "@/core/hooks";
-import BrandFilterSection from "./BrandFilterSection";
-import DistanceFilterSection from "./DistanceFilterSection";
-import AdditionalServiceFilterSection from "./AdditionalServiceFilterSection";
-import { useEffect } from "react";
+import { clearFilterValue } from "@/features/garage-filter/filter.slice";
+
+const PriceRangeFilterSection = lazy(() => import("./PriceRangeFilterSection"));
+const RatingFilterSection = lazy(() => import("./RatingFilterSection"));
+const BrandFilterSection = lazy(() => import("./BrandFilterSection"));
+const DistanceFilterSection = lazy(() => import("./DistanceFilterSection"));
+const AdditionalServiceFilterSection = lazy(() => import("./AdditionalServiceFilterSection"));
 
 export type FilterModalProps = {
     isOpen?: boolean;
@@ -49,11 +51,13 @@ function FilterModal({
                 </ModalHeader>
                 <Divider />
                 <ModalBody className="pb-4 overflow-auto">
-                    <PriceRangeFilterSection />
-                    <RatingFilterSection />
-                    <BrandFilterSection />
-                    <DistanceFilterSection />
-                    <AdditionalServiceFilterSection />
+                    <Suspense>
+                        <PriceRangeFilterSection />
+                        <RatingFilterSection />
+                        <BrandFilterSection />
+                        <DistanceFilterSection />
+                        <AdditionalServiceFilterSection />
+                    </Suspense>
                 </ModalBody>
                 <Divider />
                 <ModalFooter className="flex items-center">

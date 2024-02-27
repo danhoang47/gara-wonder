@@ -29,7 +29,7 @@ export default function ModalContextProvider({ children }: ContainerProps) {
                 );
             case "location":
                 return (
-                    <Dialog 
+                    <Dialog
                         isOpen={isModalOpen}
                         onClose={onModalClose}
                         title="Enable Location Tracking"
@@ -37,21 +37,23 @@ export default function ModalContextProvider({ children }: ContainerProps) {
                         imageSrc="https://cdn-icons-png.flaticon.com/512/235/235861.png"
                         showNegativeButton={false}
                     />
-                )
+                );
             default:
                 return undefined;
         }
     };
 
+    const open = useCallback((type: ModalType) => {
+        setCurrentModalType(type);
+        setModalOpen(true);
+        return;
+    }, []);
+
     const modalContextValue = useMemo(
         () => ({
-            open: (type: ModalType) => {
-                setCurrentModalType(type);
-                setModalOpen(true)
-                return;
-            },
+            open,
         }),
-        [setCurrentModalType],
+        [open],
     );
 
     return (

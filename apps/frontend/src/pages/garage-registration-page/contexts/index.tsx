@@ -8,9 +8,10 @@ export type FieldConstraint = {
     max?: [number, string]
 }
 
-export type GarageRegistration = Partial<Omit<Garage, "images" | "backgroundImage">> & {
+export type GarageRegistration = Partial<Omit<Garage, "images" | "backgroundImage" | "additionalServices">> & {
     backgroundImage?: File,
-    images?: File[]
+    images?: File[],
+    additionalServices: string[]
 }
 
 export type GarageRegistrationErrors = {
@@ -24,8 +25,6 @@ export type GarageRegistrationContextType = {
         value: GarageRegistration[K],
     ) => void;
     garageRegistrationErrors: GarageRegistrationErrors;
-    // TODO: Need implement 
-    // validateGarageState: () => void;
 };
 
 const GarageRegistrationContext = createContext<GarageRegistrationContextType>(

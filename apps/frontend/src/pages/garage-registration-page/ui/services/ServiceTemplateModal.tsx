@@ -15,15 +15,14 @@ import {
 } from "@nextui-org/react";
 import { nanoid } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
-import { brands } from "./constants";
-import { Category, Service } from "@/core/types";
-
-export type Brand = (typeof brands)[number];
+import { Brand, Category, Service } from "@/core/types";
 
 export type ServiceTemplateModalProps = {
     isOpen: boolean;
     categories?: Category[],
     isCategoriesLoading?: boolean,
+    isBrandsLoading?: boolean,
+    brands?: Brand[],
     onModalSave: (data: Partial<Service>) => void;
     onModalClose: () => void;
     type?: "edit" | "create";
@@ -35,6 +34,8 @@ export default function ServiceTemplateModal({
     isOpen,
     categories,
     isCategoriesLoading,
+    isBrandsLoading,
+    brands,
     onModalSave,
     onModalClose,
     type = "create",
@@ -116,7 +117,7 @@ export default function ServiceTemplateModal({
                         disabledKeys={selectedCategoryIds.filter(
                             (id) => id !== service?.categoryId,
                         )}
-                        selectedKeys={[localService.categoryId] as Iterable<string>}
+                        selectedKeys={localService?.categoryId ? [localService?.categoryId] : undefined}
                     >
                         {(category) => (
                             <SelectItem key={category._id}>
@@ -125,7 +126,8 @@ export default function ServiceTemplateModal({
                         )}
                     </Select>
                     <Select
-                        items={brands}
+                        items={[{ _id: "all", createdAt: 0, updatedAt: 0, name: "Select All" }, ...(brands || [])]}
+                        isLoading={isBrandsLoading}
                         placeholder="Select supported brands"
                         label="Supported Brands"
                         selectionMode="multiple"
@@ -159,8 +161,8 @@ export default function ServiceTemplateModal({
                         isRequired
                     >
                         {(brand) => (
-                            <SelectItem key={brand.key}>
-                                {brand.title}
+                            <SelectItem key={brand._id}>
+                                {brand.name}
                             </SelectItem>
                         )}
                     </Select>
