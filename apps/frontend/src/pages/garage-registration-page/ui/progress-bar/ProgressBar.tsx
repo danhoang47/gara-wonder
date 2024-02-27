@@ -10,7 +10,11 @@ function ProgressBar({ currentSectionIndex }: ProgressBarProps) {
             className={`absolute bottom-0 w-full origin-left h-1 bg-primary transition-transform`}
             role="progressbar"
             style={{
-                transform: `scaleX(${(currentSectionIndex + 1) * 0.2})`,
+                transform: `scaleX(${
+                    (currentSectionIndex + 1) *
+                    (1 /
+                        Math.round(Object.keys(RegistrationSection).length / 2))
+                })`,
             }}
         />
     );

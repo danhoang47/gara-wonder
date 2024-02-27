@@ -80,7 +80,9 @@ export function GarageRegistrationContextProvider({
     children,
 }: ContainerProps) {
     const [garageRegistrationState, setGarageRegistrationState] =
-        useState<GarageRegistration>({});
+        useState<GarageRegistration>({
+            defaultSlot: 10
+        });
     const [garageRegistrationErrors, setGarageRegistrationErrors] =
         useState<GarageRegistrationErrors>({});
 

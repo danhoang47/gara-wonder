@@ -85,6 +85,8 @@ function Address() {
                         defaultCenter={position}
                         center={center}
                         defaultZoom={14}
+                        mapTypeId={"roadmap"}
+                        disableDefaultUI
                         onDrag={(event) => {
                             setCenter(undefined)
                             const latlng = event.map.getCenter()

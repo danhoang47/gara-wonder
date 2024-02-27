@@ -6,6 +6,7 @@ import {
     Images,
     Navigation,
     Services,
+    Slot,
 } from "./ui";
 import { GarageRegistration, GarageRegistrationContextProvider } from "./contexts";
 import { useNavigate } from "react-router-dom";
@@ -15,10 +16,11 @@ import { createGarage, initGarage, uploadGarageImages } from "@/api";
 import { notify } from "@/features/toasts/toasts.slice";
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const enum RegistrationSection {
+export enum RegistrationSection {
     BasicInformation = 0,
     Address,
     Services,
+    Slot,
     Images,
     Additional,
 }
@@ -59,6 +61,8 @@ const GarageRegistrationPage = () => {
                 return <Address />;
             case RegistrationSection.Services:
                 return <Services />;
+            case RegistrationSection.Slot:
+                return <Slot />
             case RegistrationSection.Images:
                 return <Images />;
             case RegistrationSection.Additional:
@@ -71,7 +75,7 @@ const GarageRegistrationPage = () => {
     async function onRegistrationFinish(garage: GarageRegistration) {
         load("registrationSaveLoad")
 
-        garage.ownerId = user?._id
+        garage.userId = user?._id
 
         uploadGarageImages(garage.backgroundImage, garage.images)
         try {

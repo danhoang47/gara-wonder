@@ -27,7 +27,8 @@ export default function useNavigation(onEnd: (garage: GarageRegistration) => voi
         const nextSectionIndex = currentSectionIndex + 1
 
         if (currentSectionIndex === RegistrationSection.Additional) {
-            onEnd(garageRegistrationState)
+            // onEnd(garageRegistrationState)
+            console.log(garageRegistrationState)
         }
         if (currentSectionIndex !== RegistrationSection.Additional) {
             setCurrentSectionIndex(nextSectionIndex);

@@ -29,6 +29,8 @@ export default function Navigation({
                 return "Images";
             case RegistrationSection.Services:
                 return "Services";
+            case RegistrationSection.Slot:
+                return "Slot"
             default:
                 throw new Error("Invalid RegistrationSection");
         }
