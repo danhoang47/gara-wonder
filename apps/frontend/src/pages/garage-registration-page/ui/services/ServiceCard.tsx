@@ -1,17 +1,20 @@
 import { Service } from "@/core/types";
-import { getBrandNamesByIds, getServiceNameById } from "./constants";
 import { Button, Tooltip } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export type ServiceCardProps = {
     service: Partial<Service>;
+    categoryName?: string,
+    supportedBrands?: string,
     onEditServiceButtonPress: (id: string | undefined) => void;
     onRemoveServiceButtonPress: (service: Partial<Service> | undefined) => void;
 };
 
 export default function ServiceCard({
     service,
+    categoryName,
+    supportedBrands,
     onEditServiceButtonPress,
     onRemoveServiceButtonPress,
 }: ServiceCardProps) {
@@ -22,10 +25,10 @@ export default function ServiceCard({
         >
             <div>
                 <h3 className="font-medium">
-                    {getServiceNameById(service?.serviceId)}
+                    {categoryName}
                 </h3>
                 <p className="text-sm">
-                    Supported Brands: {getBrandNamesByIds(service?.brandIds)}
+                    Supported Brands: {supportedBrands}
                 </p>
             </div>
             <div className="ml-auto flex gap-2">

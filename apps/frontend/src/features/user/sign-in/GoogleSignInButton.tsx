@@ -3,7 +3,7 @@ import { User, signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from '@/components/firebase'
 
 export type GoogleSignInButtonProps = {
-    onSuccess: (user: User) => void;
+    onSuccess: () => void;
     onError: () => void;
 }
 
@@ -13,8 +13,11 @@ function GoogleSignInButton({
 }: GoogleSignInButtonProps) {
     const signIn = async () => {
         try {
-            const result = await signInWithPopup(auth, googleAuthProvider);
-            onSuccess(result.user)
+            googleAuthProvider.setCustomParameters({
+                prompt: "select_account"
+            })
+            await signInWithPopup(auth, googleAuthProvider);
+            onSuccess()
         } catch (error) {
             onError()
         }

@@ -1,13 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-
-import { FetchStatus, User } from '@/core/types'
+import { FetchStatus, Response, User } from '@/core/types'
 import { getUser, signup } from '@/api'
 import { HttpStatusCode } from 'axios'
 import { auth } from '@/components/firebase'
 
 export type UserSliceState = {
     status: FetchStatus,
-    statusCode?: number,
     value?: User
 }
 
@@ -19,7 +17,7 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        signout() {
+        signOut() {
             return {
                 status: FetchStatus.None,
                 value: undefined
@@ -35,32 +33,31 @@ const userSlice = createSlice({
                 value: action.payload
             }
         }).addCase(getUserById.rejected, (state, action) => {
-            state.status = FetchStatus.Rejected
+            if (action.payload) {
+                state.status = FetchStatus.Fulfilled,
+                state.value = action.payload as User
+            } else {
+                state.status = FetchStatus.Rejected
+            }
         })
     }
 })
 
-// TODO: replace to the real api
-export const getUserById = createAsyncThunk("user/getUserById", async (id: string) => {
+export const getUserById = createAsyncThunk("user/getUserById", async (id: string, { rejectWithValue }) => {
     try {
         return (await getUser(id)).data
-    } catch (error: unknown) {
-        if (typeof error === "object" && error && "message" in error) {
-            const message = error.message as string
-            
-            if (Number.parseInt(message) === HttpStatusCode.NotFound) {
-                const user = auth.currentUser
+    } catch (_error: unknown) {
+        const error = JSON.parse((_error as Error).message) as Response
 
-                if (user) {
-                    return (await getUser(id)).data
-                }
-            }
+        if (error.statusCode === HttpStatusCode.NotFound) {
+            const user = await signup(auth.currentUser!)
+            return rejectWithValue(user)
+        } else {
+            throw new Error("ERROR")
         }
-
-        throw new Error("ERROR")
     }
-}) 
+})
 
-export const { signout } = userSlice.actions
+export const { signOut } = userSlice.actions
 
 export default userSlice.reducer;

@@ -1,21 +1,33 @@
-import CategoryOption from "../category-option";
+import useSWR from "swr";
 
-import categories from './constant'
+import CategoryOption from "../category-option";
+import { getCategories } from "@/api";
+import { Carousel } from "@/core/ui";
 
 function Categories() {
+    const { isLoading, data: categories } = useSWR("category", getCategories, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
+
     return (
         <div
-            className="flex-grow flex justify-center gap-2"
+            className="flex-grow flex justify-center gap-2 px-"
             role="radiogroup"
         >
-            {categories.map(category => (
-                <CategoryOption 
-                    category={category} 
-                    key={category.key} 
-                />
-            ))}
+            <Carousel
+                items={categories || []}
+                classNames={{
+                    item: "w-auto",
+                    wrapper: "px-10",
+                }}
+                renderItem={(category) => (
+                    <CategoryOption category={category} key={category._id} />
+                )}
+            />
         </div>
-    )
+    );
 }
 
 export default Categories;

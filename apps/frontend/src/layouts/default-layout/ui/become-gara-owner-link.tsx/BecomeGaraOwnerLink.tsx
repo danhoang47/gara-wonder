@@ -6,8 +6,6 @@ function BecomeGaraOwnerLink() {
     const user = useAppSelector(state => state.user.value)
     const { open } = useModalContext();
 
-    
-
     return (
         <Link 
             href="/garage-registration" 

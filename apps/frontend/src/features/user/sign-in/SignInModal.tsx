@@ -7,10 +7,8 @@ import {
     ModalContent, 
     ModalHeader 
 } from "@nextui-org/react";
-import { User } from "firebase/auth";
 
 import { useAppDispatch } from "@/core/hooks";
-import { getUserById } from "../user.slice";
 import { notify } from "@/features/toasts/toasts.slice";
 import GoogleSignInButton from "./GoogleSignInButton";
 import FBSignInButton from "./FBSignInButton";
@@ -23,11 +21,6 @@ export type SignInModalProps = {
 
 function SignInModal({ isOpen, onClose }: SignInModalProps) {
     const dispatch = useAppDispatch()
-
-    const onSuccess = (user: User) => {
-        dispatch(getUserById(user.uid))
-        onClose()
-    }
 
     const onError = () => {
         dispatch(notify({
@@ -62,7 +55,7 @@ function SignInModal({ isOpen, onClose }: SignInModalProps) {
                     </Button>
                     <Divider  className="my-4"/>
                     <div className="flex flex-col gap-2">
-                        <GoogleSignInButton onSuccess={onSuccess} onError={onError}/>
+                        <GoogleSignInButton onSuccess={onClose} onError={onError}/>
                         <FBSignInButton />
                     </div>
                 </ModalBody>

@@ -52,5 +52,6 @@ Model & {
     address: string,
     location: {
         coordinates: [number, number]
-    }
+    },
+    staff: Array<User["_id"]>
 }

@@ -1,47 +1,51 @@
-import { Skeleton } from "@nextui-org/react";
 import { useState } from "react";
-import { OpenImagesButton } from "..";
+import { useParams } from "react-router-dom";
+import useSWRImmutable from "swr/immutable";
 
-function GarageImagesPreview() {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+import { Image } from "@/core/types";
+import { OpenImagesButton } from "..";
+import ImagesSkeleton from "./images-skeleton";
+import { getGarageImages } from "@/api";
+
+function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
+    const { garageId } = useParams();
+
     const [previewImage, setPreviewImage] = useState<boolean>(false);
+    const { isLoading: isImageLoading, data: images } = useSWRImmutable(
+        `images/${garageId}`,
+        getGarageImages,
+    );
+    if (isImageLoading) {
+        return <ImagesSkeleton />;
+    }
 
     return (
         <div className="relative">
-            {isLoading && (
-                <div className="flex h-[25rem] gap-1">
-                    <Skeleton
-                        disableAnimation
-                        className="w-1/2 h-full bg-default-300"
+            <div className=" hidden md:flex h-[25rem] gap-1">
+                <div className="relative w-1/2 h-full cursor-pointer">
+                    <img
+                        src={backgroundImage?.url}
+                        className="w-full h-full object-cover"
                     />
-                    <div className="flex gap-1 w-1/2">
-                        <div className="flex flex-col gap-1 w-1/2">
-                            <Skeleton
-                                disableAnimation
-                                className="w-full h-1/2 bg-default-300"
-                            />
-                            <Skeleton
-                                disableAnimation
-                                className="w-full h-1/2 bg-default-300"
-                            />
-                        </div>
-                        <div className="flex flex-col gap-1 w-1/2">
-                            <Skeleton
-                                disableAnimation
-                                className="w-full h-1/3 bg-default-300"
-                            />
-                            <Skeleton
-                                disableAnimation
-                                className="w-full h-1/3 bg-default-300"
-                            />
-                            <Skeleton
-                                disableAnimation
-                                className="w-full h-1/3 bg-default-300"
-                            />
-                        </div>
-                    </div>
+                    <div className="absolute top-0 w-full h-full mb-1 hover:bg-slate-700 opacity-30 transition-all" />
                 </div>
-            )}
+                <div className="grid relative grid-cols-2 w-1/2 gap-1">
+                    {images?.data.map((img: Image, index) => {
+                        return (
+                            <div
+                                className="relative cursor-pointer min-h-0"
+                                key={index}
+                            >
+                                <img
+                                    src={img.url}
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute top-0 w-full h-full hover:bg-slate-700 opacity-30 transition-all" />
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
             <OpenImagesButton onClick={() => setPreviewImage(!previewImage)} />
         </div>
     );
