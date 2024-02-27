@@ -1,13 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-
 import { FetchStatus, Response, User } from '@/core/types'
 import { getUser, signup } from '@/api'
-import { AxiosError, HttpStatusCode } from 'axios'
+import { HttpStatusCode } from 'axios'
 import { auth } from '@/components/firebase'
 
 export type UserSliceState = {
     status: FetchStatus,
-    statusCode?: number,
     value?: User
 }
 
@@ -19,7 +17,7 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        signout() {
+        signOut() {
             return {
                 status: FetchStatus.None,
                 value: undefined
@@ -60,6 +58,6 @@ export const getUserById = createAsyncThunk("user/getUserById", async (id: strin
     }
 })
 
-export const { signout } = userSlice.actions
+export const { signOut } = userSlice.actions
 
 export default userSlice.reducer;

@@ -11,9 +11,10 @@ export type CarouselProps<T> = {
     renderItem: (item: T, index: number) => React.ReactNode;
     startIndex?: number;
     classNames?: Partial<Record<"wrapper" | "item" | "base" | "button", string>>
+    showNavigationOnHover?: boolean
 };
 
-function Carousel<T>({ items, renderItem, startIndex = 0, classNames }: CarouselProps<T>) {
+function Carousel<T>({ items, renderItem, startIndex = 0, classNames, showNavigationOnHover = true }: CarouselProps<T>) {
     const [index, setIndex] = useState<number>(startIndex);
     const [maxIndex, setMaxIndex] = useState<number>(-1);
     const containerRef = useRef<HTMLDivElement>(null);
