@@ -3,20 +3,16 @@ import { useParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 
 import { Image } from "@/core/types";
-import { OpenImagesButton } from "..";
+import { ImagesOverlay, OpenImagesButton } from "..";
 import ImagesSkeleton from "./images-skeleton";
 import { getGarageImages } from "@/api";
 
-function GarageImagesPreview({
-    backgroundImage,
-    openPreview,
-}: {
-    backgroundImage?: Image;
-    openPreview: () => void;
-}) {
+function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
     const { garageId } = useParams();
 
     const [refImage, setRefImage] = useState<Image["_id"] | null>(null);
+    const [previewImage, setPreviewImage] = useState<boolean>(false);
+
     const { isLoading: isImageLoading, data: images } = useSWRImmutable(
         `images/${garageId}`,
         getGarageImages,
@@ -26,11 +22,11 @@ function GarageImagesPreview({
     }
 
     return (
-        <div className="relative">
+        <div className="">
             <div className=" hidden md:flex h-[25rem] gap-1">
                 <div
                     className="relative w-1/2 h-full cursor-pointer"
-                    onClick={() => openPreview()}
+                    onClick={() => setPreviewImage(!previewImage)}
                 >
                     <img
                         src={backgroundImage?.url}
@@ -44,7 +40,7 @@ function GarageImagesPreview({
                             <div
                                 className="relative cursor-pointer min-h-0"
                                 key={index}
-                                onClick={() => openPreview()}
+                                onClick={() => setPreviewImage(!previewImage)}
                             >
                                 <img
                                     src={img.url}
@@ -56,7 +52,14 @@ function GarageImagesPreview({
                     })}
                 </div>
             </div>
-            <OpenImagesButton openGallery={openPreview} />
+            <OpenImagesButton
+                openGallery={() => setPreviewImage(!previewImage)}
+            />
+            <ImagesOverlay
+                isOpen={previewImage}
+                closeGallery={() => setPreviewImage(false)}
+                imageRef={refImage}
+            />
         </div>
     );
 }

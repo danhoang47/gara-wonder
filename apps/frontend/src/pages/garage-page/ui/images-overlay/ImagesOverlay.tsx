@@ -4,9 +4,11 @@ import clsx from "clsx";
 function ImagesOverlay({
     isOpen,
     imageRef,
+    closeGallery,
 }: {
     isOpen: boolean;
     imageRef?: Image["_id"];
+    closeGallery: () => void;
 }) {
     return (
         <div
