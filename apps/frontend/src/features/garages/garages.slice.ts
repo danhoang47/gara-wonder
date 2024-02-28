@@ -33,25 +33,25 @@ const garagesSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(getListGararges.pending, (state) => {
+            .addCase(getListGarages.pending, (state) => {
                 state.fetchingStatus = FetchStatus.Fetching
             })
-            .addCase(getListGararges.fulfilled, (state, action) => {
+            .addCase(getListGarages.fulfilled, (state, action) => {
                 const { data: garages, nextCursor, total } = action.payload
                 state.fetchingStatus = FetchStatus.Fulfilled
                 state.garages = garages
                 state.nextCursor = nextCursor,
                 state.total = total
             })
-            .addCase(getListGararges.rejected, (state) => {
+            .addCase(getListGarages.rejected, (state) => {
                 state.fetchingStatus = FetchStatus.Rejected
             })
     }
 })
 
-export const getListGararges = createAsyncThunk("garages/getGarages", async (params?: GarageQueryParams) => {
+export const getListGarages = createAsyncThunk("garages/getGarages", async (params?: GarageQueryParams) => {
     try {
-        const result = await getGarages({...params, limit: 1});
+        const result = await getGarages({...params, limit: 10});
         return result
     } catch(err) {
         throw new Error()

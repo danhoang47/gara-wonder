@@ -1,24 +1,27 @@
 import { WithOwnerGarage } from "@/api/garages/getGarages";
-import { Garage } from "@/core/types";
 import { Carousel } from "@/core/ui";
-import { Avatar, Card, CardBody, CardHeader, Link } from "@nextui-org/react";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Avatar, Button, Card, CardBody, CardHeader, Link } from "@nextui-org/react";
 import clsx from "clsx";
 import { memo } from "react";
 
 export type GarageCardProps = {
     garage: WithOwnerGarage;
+    className?: string;
+    carouselType?: "square" | "rectangle"
 };
 
 const ellipsisClassName = "overflow-x-hidden text-ellipsis whitespace-nowrap";
 
 // eslint-disable-next-line react-refresh/only-export-components
-function GarageCard({ garage }: GarageCardProps) {
-    const { name, description, address, _id, backgroundImage, images } = garage;
+function GarageCard({ garage, className, carouselType = "square" }: GarageCardProps) {
+    const { name, description, address, _id, backgroundImage, images, owner } = garage;
     const renderedImages = [backgroundImage, ...images]
 
     return (
-        <Card className="gap-2 shadow-none">
-            <CardHeader className="square p-0 rounded-xl overflow-hidden">
+        <Card className={clsx("gap-2 shadow-none relative", className)}>
+            <CardHeader className={clsx("p-0 rounded-xl overflow-hidden", carouselType)}>
                 <Carousel
                     items={renderedImages}
                     classNames={{
@@ -40,6 +43,7 @@ function GarageCard({ garage }: GarageCardProps) {
                     <div className="w-[calc(100%-3rem)]">
                         <Link
                             href={`/garage/${_id}`}
+                            target="_blank"
                             className={clsx(
                                 "font-semibold text-foreground whitespace-nowrap",
                                 ellipsisClassName,
@@ -54,12 +58,15 @@ function GarageCard({ garage }: GarageCardProps) {
                         <p className="text-sm text-default-500">{address}</p>
                     </div>
                     <Avatar
-                        src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                        src={owner.photoURL}
                         className="shrink-0"
                     />
                 </div>
                 <p>{}</p>
             </CardBody>
+            <Button isIconOnly radius="full" className="absolute top-3 right-3 z-10">
+                <FontAwesomeIcon icon={faHeart} size="lg"/>
+            </Button>
         </Card>
     );
 }

@@ -66,7 +66,7 @@ function Garages() {
     }, []);
 
     return (
-        <div className="garages">
+        <div className="garages flex-1">
             {renderGarages()}
             <Button
                 className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black z-10 shadow-sm"
