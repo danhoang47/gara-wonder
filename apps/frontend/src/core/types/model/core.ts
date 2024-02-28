@@ -6,11 +6,10 @@ export type Model = {
     updatedAt: number,
 }
 
-export type Response<T = unknown> = {
+export type Response<T = unknown> = Partial<Paging> & {
     statusCode: number;
     message?: string;
     data: T;
-    paging: Paging
 }
 
 export const enum FetchStatus {

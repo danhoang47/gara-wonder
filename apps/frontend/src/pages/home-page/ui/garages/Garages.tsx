@@ -2,25 +2,29 @@ import { useEffect } from "react";
 import { Button } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapLocationDot, faList } from "@fortawesome/free-solid-svg-icons";
-import clsx from "clsx";
 
-import { Garage } from "@/core/types";
+import { FetchStatus } from "@/core/types";
 import { useModalContext } from "@/core/hooks";
 import { useGarages } from "../../hooks";
 import MapViewGarages from "./MapViewGarages";
 import GridViewGarages from "./GridViewGarages";
 import useViewMode from "../../hooks/useViewMode";
 
+import "./Garages.styles.scss"
+import { WithOwnerGarage } from "@/api/garages/getGarages";
+
 export type ViewModeGaragesProps = {
     isLoading: boolean;
+    isReload: boolean;
     error?: any;
-    garages?: Garage[];
+    garages?: WithOwnerGarage[];
+    onNext: () => void;
 };
 
 function Garages() {
     const [viewMode, onViewModeChange] = useViewMode();
     const { open } = useModalContext();
-    const { isLoading, error, garages } = useGarages();
+    const { garages, fetchingStatus, isReload, onNext } = useGarages(viewMode);
     const changeViewModeButtonLabel =
         viewMode === "grid" ? "Map view" : "List view";
     const changeViewModeButtonIcon =
@@ -41,14 +45,15 @@ function Garages() {
 
     const renderGarages = () => {
         const props: ViewModeGaragesProps = {
-            isLoading,
-            error,
+            isLoading: fetchingStatus === FetchStatus.Fetching,
+            isReload,
             garages,
+            onNext
         };
 
         switch (viewMode) {
             case "grid":
-                return <GridViewGarages {...props} />;
+                return <GridViewGarages {...props}/>;
             case "map":
                 return <MapViewGarages {...props} />;
             default:
@@ -61,15 +66,8 @@ function Garages() {
     }, []);
 
     return (
-        <>
-            <div
-                className={clsx(
-                    viewMode === "grid" ? "grid md:grid-cols-2 gap-3 sm:grid-cols-1 lg:grid-cols-4" : "-mx-10",
-                    "grow",
-                )}
-            >
-                {renderGarages()}
-            </div>
+        <div className="garages">
+            {renderGarages()}
             <Button
                 className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black z-10 shadow-sm"
                 endContent={
@@ -88,7 +86,7 @@ function Garages() {
                     {changeViewModeButtonLabel}
                 </span>
             </Button>
-        </>
+        </div>
     );
 }
 

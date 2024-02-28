@@ -72,7 +72,7 @@ function Carousel<T>({ items, renderItem, startIndex = 0, classNames, showNaviga
                 radius="full"
                 disableAnimation
                 size="sm"
-                className={clsx("absolute top-1/2 -translate-y-1/2 left-2", classNames?.button)}
+                className={clsx("absolute top-1/2 -translate-y-1/2 left-2 border", classNames?.button)}
                 onPress={onBackPress}
                 isDisabled={index === 0}
             >
@@ -83,7 +83,7 @@ function Carousel<T>({ items, renderItem, startIndex = 0, classNames, showNaviga
                 radius="full"
                 disableAnimation
                 size="sm"
-                className={clsx("absolute top-1/2 -translate-y-1/2 right-2", classNames?.button)}
+                className={clsx("absolute top-1/2 -translate-y-1/2 right-2 border", classNames?.button)}
                 onPress={onNextPress}
                 isDisabled={index === maxIndex}
             >

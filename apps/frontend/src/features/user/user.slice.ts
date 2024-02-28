@@ -6,7 +6,8 @@ import { auth } from '@/components/firebase'
 
 export type UserSliceState = {
     status: FetchStatus,
-    value?: User
+    value?: User,
+    token?: string,
 }
 
 const initialState: UserSliceState = {
@@ -22,16 +23,20 @@ const userSlice = createSlice({
                 status: FetchStatus.None,
                 value: undefined
             }
+        },
+        setUserToken(state, action) {
+            state.token = action.payload
+        },
+        setEmptyUser(state) {
+            state.status = FetchStatus.Fulfilled
         }
     },
     extraReducers(builder) {
         builder.addCase(getUserById.pending, (state) => {
             state.status = FetchStatus.Fetching
-        }).addCase(getUserById.fulfilled, (_, action) => {
-            return {
-                status: FetchStatus.Fulfilled,
-                value: action.payload
-            }
+        }).addCase(getUserById.fulfilled, (state, action) => {
+            state.status = FetchStatus.Fulfilled,
+            state.value = action.payload as User
         }).addCase(getUserById.rejected, (state, action) => {
             if (action.payload) {
                 state.status = FetchStatus.Fulfilled,
@@ -58,6 +63,6 @@ export const getUserById = createAsyncThunk("user/getUserById", async (id: strin
     }
 })
 
-export const { signOut } = userSlice.actions
+export const { signOut, setUserToken, setEmptyUser } = userSlice.actions
 
 export default userSlice.reducer;

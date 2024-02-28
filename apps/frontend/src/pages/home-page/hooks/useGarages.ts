@@ -1,34 +1,100 @@
-import { useAppSelector, usePrevious } from "@/core/hooks";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useMemo } from "react";
-import useSWR from "swr";
-import { getGarages } from "@/api";
+import equal from 'deep-equal'
 
-export default function useGarages() {
-    const filter = useAppSelector((state) => state.filter);
-    const user = useAppSelector((state) => state.user.value);
+import { useFilterParams } from ".";
+import { useAppDispatch, useAppSelector, usePrevious } from "@/core/hooks";
+
+import { WithOwnerGarage } from "@/api/garages/getGarages";
+import { getListGararges, reloadGarages, unloadGarages } from "@/features/garages/garages.slice";
+import { FetchStatus, GarageQueryParams } from "@/core/types";
+import { ViewMode } from "./useViewMode";
+
+type AdditionalParams = {
+    sortBy?: string,
+    category?: string,
+    lat?: string,
+    lng?: string,
+}
+
+const keys: (keyof GarageQueryParams)[] = [
+    "sortBy", "category", "lat", "lng", "priceRange",
+    "ratings", "brands", "additional","distance"
+]
+
+const useDeserializeGarageParams = (): GarageQueryParams => {
+    const token = useAppSelector(state => state.user.token)
+    const { filterParams } = useFilterParams()
     const [searchParams] = useSearchParams();
-    const [sortBy, categoryId, lng, lat] = useMemo(
-        () => [
-            searchParams.get("sortBy"),
-            searchParams.get("category"),
-            searchParams.get("lng"),
-            searchParams.get("lat"),
-        ],
-        [searchParams],
-    );
-    const filterParams = usePrevious({
-        ...filter,
-        sortBy,
-        categoryId,
-        lng,
-        lat,
-    });
+    const params = keys.reduce((acc, key) => {
+        const value = searchParams.get(key)
 
-    // same params (filter, user, categoryId, lng, lat) => append
-    // diff params => reload
+        if (value) {
+            return {
+                ...acc,
+                [key]: value
+            }
+        }
 
-    // useSWR("/garages", () => getGarages(categoryId, filter, sortBy, undefined, lat, lng))
+        return acc
+    }, {} as AdditionalParams)
+    const memoizedParams = useMemo(() => ({
+        ...filterParams, ...params, token
+    }), [filterParams, params, token])
 
-    return { garages: [], isLoading: false, error: null, isReload: false };
+    return memoizedParams
+}
+
+
+export default function useGarages(viewMode: ViewMode) {
+    const dispatch = useAppDispatch();
+    const {  
+        isReload, 
+        fetchingStatus, 
+        garages: newGarages,
+        nextCursor
+    } = useAppSelector(state => state.garages)
+    const status = useAppSelector(state => state.user.status)
+
+    const [garages, setGarages] = useState<WithOwnerGarage[]>([]);
+    const [cursor, setCursor] = useState<string>();
+    const queryParams = useDeserializeGarageParams()
+    const prevQueryParams = usePrevious(queryParams);
+    const isSameQueryParams = equal(queryParams, prevQueryParams)
+
+    useEffect(() => {
+        if (!isSameQueryParams) {
+            dispatch(reloadGarages())
+        }
+    }, [isSameQueryParams])
+
+    useEffect(() => {
+        if (fetchingStatus === FetchStatus.Fulfilled) {
+            if (isReload) {
+                setGarages(newGarages)
+                dispatch(unloadGarages())
+            } else {
+                setGarages(garages => garages.concat(newGarages))
+            }
+        }
+
+    }, [fetchingStatus])
+
+    useEffect(() => {
+        if (status === FetchStatus.Fulfilled) {
+            dispatch(getListGararges({ ...queryParams, cursor }))
+        }
+    }, [JSON.stringify(queryParams), status, cursor])
+
+    const onNext = () => {
+        if (!nextCursor) return;
+
+        if (viewMode === "grid") {
+            setCursor(nextCursor)
+        } else {
+            // TODO: implement fetch next for mapview
+        }
+    }
+    
+    return { garages, fetchingStatus, isReload, onNext };
 }

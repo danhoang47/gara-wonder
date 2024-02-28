@@ -1,35 +1,38 @@
+import { useInfiniteScroll } from "@/core/hooks";
+import { ViewModeGaragesProps } from "./Garages";
 import GarageSkeletonCard from "../garage-skeleton-card";
 import GarageCard from "../garage-card";
-import { ViewModeGaragesProps } from "./Garages";
-
-import "./Garages.styles.scss"
 
 export default function GridViewGarages({
-    garages,
     isLoading,
-    error
+    isReload,
+    garages,
+    onNext
 }: ViewModeGaragesProps) {
+    const ref = useInfiniteScroll(onNext)
 
-    if (isLoading) {
+    const renderLoadingGarages = () => {
         return (
             <>
-                {Array.from(new Array(20)).map((_, index) => (
-                    <GarageSkeletonCard key={index} />
-                ))}
+                {
+                    Array.from(new Array(10)).map((_, index) => (
+                        <GarageSkeletonCard key={index} />
+                    ))
+                }
             </>
         )
     }
 
     return (
-        <>
-            {Array.from(new Array(20)).map((_, index) => (
-                <GarageCard key={index} garage={{
-                    _id: "1",
-                    name: "Insert Garage Name Here",
-                    description: "Insert Description Here",
-                    address: "Address 16, Q1 District, HCM City",
-                }}/>
-            ))}
-        </>
+        <div className="gridViewGaragesWrapper">
+            <div className="gridViewGarages">
+                {isReload && renderLoadingGarages()}
+                {garages?.map((garage) => (
+                    <GarageCard key={garage._id} garage={garage} />
+                ))}
+                {isLoading && renderLoadingGarages()}
+            </div>
+            <div ref={ref} className="h-10" />
+        </div>
     )
 }

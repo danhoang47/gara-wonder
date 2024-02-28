@@ -104,9 +104,17 @@ export default function ServiceTemplateModal({
         }));
     };
 
+    useEffect(() => {
+        if (isOpen) {
+            document.getElementById("root")!.classList.add("overflow-y-hidden")
+        } else {
+            document.getElementById("root")!.classList.remove("overflow-y-hidden")
+        }
+    }, [isOpen])
+
     return (
         <Modal isOpen={isOpen} onClose={onModalClose} size="lg">
-            <ModalContent className="min-h-96 flex-col">
+            <ModalContent className="max-h-[90%] flex-col flex-nowrap">
                 <ModalHeader className="px-6 justify-center">
                     <p className="text-base">Add Service</p>
                 </ModalHeader>

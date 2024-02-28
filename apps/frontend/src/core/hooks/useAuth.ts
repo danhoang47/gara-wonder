@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector, useLoadingContext } from ".";
 import { onAuthStateChanged } from "firebase/auth";
-import { getUserById } from "@/features/user/user.slice";
+import { getUserById, setEmptyUser, setUserToken } from "@/features/user/user.slice";
 import { auth } from "@/components/firebase";
 import { FetchStatus } from "../types";
 
@@ -13,7 +13,12 @@ export default function useAuth() {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                dispatch(getUserById(user.uid));
+                user.getIdToken().then(token => {
+                    dispatch(setUserToken(token))
+                    dispatch(getUserById(user.uid))
+                })
+            } else {
+                dispatch(setEmptyUser())
             }
         });
     }, []);
