@@ -7,10 +7,16 @@ import { OpenImagesButton } from "..";
 import ImagesSkeleton from "./images-skeleton";
 import { getGarageImages } from "@/api";
 
-function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
+function GarageImagesPreview({
+    backgroundImage,
+    openPreview,
+}: {
+    backgroundImage?: Image;
+    openPreview: () => void;
+}) {
     const { garageId } = useParams();
 
-    const [previewImage, setPreviewImage] = useState<boolean>(false);
+    const [refImage, setRefImage] = useState<Image["_id"] | null>(null);
     const { isLoading: isImageLoading, data: images } = useSWRImmutable(
         `images/${garageId}`,
         getGarageImages,
@@ -22,7 +28,10 @@ function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
     return (
         <div className="relative">
             <div className=" hidden md:flex h-[25rem] gap-1">
-                <div className="relative w-1/2 h-full cursor-pointer">
+                <div
+                    className="relative w-1/2 h-full cursor-pointer"
+                    onClick={() => openPreview()}
+                >
                     <img
                         src={backgroundImage?.url}
                         className="w-full h-full object-cover"
@@ -35,6 +44,7 @@ function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
                             <div
                                 className="relative cursor-pointer min-h-0"
                                 key={index}
+                                onClick={() => openPreview()}
                             >
                                 <img
                                     src={img.url}
@@ -46,7 +56,7 @@ function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
                     })}
                 </div>
             </div>
-            <OpenImagesButton onClick={() => setPreviewImage(!previewImage)} />
+            <OpenImagesButton openGallery={openPreview} />
         </div>
     );
 }

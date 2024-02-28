@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 
@@ -9,6 +9,7 @@ import {
     GarageHeader,
     GarageImagesPreview,
     GarageOwnerAndStaffInfoPreview,
+    ImagesOverlay,
     Services,
 } from "./ui";
 import { LoadingContext } from "@/core/contexts/loading";
@@ -17,6 +18,9 @@ import { getBasicGarageInfo } from "@/api";
 const GaragePage = () => {
     const { garageId } = useParams();
     const { load, unload } = useContext(LoadingContext);
+
+    const [previewImage, setPreviewImage] = useState<boolean>(false);
+
     const { isLoading: isInfoLoading, data: basicInfo } = useSWRImmutable(
         garageId,
         getBasicGarageInfo,
@@ -27,8 +31,11 @@ const GaragePage = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInfoLoading]);
+    useEffect(() => {
+        console.log(previewImage);
+    }, [previewImage]);
     return (
-        <div className="px-10 py-8">
+        <div className="px-10 py-8 ">
             <div className="">
                 <GarageHeader
                     name={basicInfo?.data[0].name}
@@ -37,6 +44,9 @@ const GaragePage = () => {
             </div>
             <div className="my-6">
                 <GarageImagesPreview
+                    openPreview={() => {
+                        setPreviewImage(!previewImage);
+                    }}
                     backgroundImage={basicInfo?.data[0].backgroundImage}
                 />
             </div>
@@ -69,6 +79,7 @@ const GaragePage = () => {
                     </div>
                 </div>
             </div>
+            <ImagesOverlay isOpen={previewImage} />
         </div>
     );
 };
