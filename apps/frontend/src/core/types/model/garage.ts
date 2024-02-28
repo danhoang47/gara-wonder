@@ -1,4 +1,4 @@
-import { BusinessEntity, Model } from "./core";
+import { BusinessEntity, Model, Paging } from "./core";
 
 export enum EstimateType {
     SameDay = 0,
@@ -68,3 +68,11 @@ export type GarageFilter = {
     distance?: number;
     additional?: string[];
 };
+
+export type GarageQueryParams = GarageFilter & Paging & {
+    sortBy?: string,
+    category?: string,
+    token?: string,
+    lat?: string,
+    lng?: string,
+}

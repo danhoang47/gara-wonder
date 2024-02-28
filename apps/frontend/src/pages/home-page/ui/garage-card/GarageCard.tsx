@@ -1,3 +1,4 @@
+import { WithOwnerGarage } from "@/api/garages/getGarages";
 import { Garage } from "@/core/types";
 import { Carousel } from "@/core/ui";
 import { Avatar, Card, CardBody, CardHeader, Link } from "@nextui-org/react";
@@ -5,32 +6,28 @@ import clsx from "clsx";
 import { memo } from "react";
 
 export type GarageCardProps = {
-    garage: Garage;
+    garage: WithOwnerGarage;
 };
 
 const ellipsisClassName = "overflow-x-hidden text-ellipsis whitespace-nowrap";
 
 // eslint-disable-next-line react-refresh/only-export-components
 function GarageCard({ garage }: GarageCardProps) {
-    const { name, description, address, _id } = garage;
+    const { name, description, address, _id, backgroundImage, images } = garage;
+    const renderedImages = [backgroundImage, ...images]
 
     return (
         <Card className="gap-2 shadow-none">
             <CardHeader className="square p-0 rounded-xl overflow-hidden">
                 <Carousel
-                    items={[
-                        "https://nextui.org/images/hero-card-complete.jpeg",
-                        "https://nextui.org/images/album-cover.png",
-                        "https://nextui.org/images/hero-card-complete.jpeg",
-                        "https://nextui.org/images/album-cover.png"
-                    ]}
+                    items={renderedImages}
                     classNames={{
                         item: "w-full"
                     }}
-                    renderItem={(item) => (
-                        <div className="h-full">
+                    renderItem={(image) => (
+                        <div className="h-full" key={image._id}>
                             <img
-                                src={item}
+                                src={image.url}
                                 className="object-cover h-full w-full"
                                 loading="lazy"
                             />
@@ -40,7 +37,7 @@ function GarageCard({ garage }: GarageCardProps) {
             </CardHeader>
             <CardBody className="flex w-full p-0">
                 <div className="flex mb-2 justify-between gap-2">
-                    <div className="">
+                    <div className="w-[calc(100%-3rem)]">
                         <Link
                             href={`/garage/${_id}`}
                             className={clsx(
@@ -51,7 +48,7 @@ function GarageCard({ garage }: GarageCardProps) {
                         >
                             {name}
                         </Link>
-                        <p className="text-sm text-default-500">
+                        <p className={clsx("text-sm text-default-500", ellipsisClassName)}>
                             {description}
                         </p>
                         <p className="text-sm text-default-500">{address}</p>
