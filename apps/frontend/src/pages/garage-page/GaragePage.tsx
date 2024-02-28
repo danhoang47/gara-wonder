@@ -22,8 +22,8 @@ const GaragePage = () => {
         getBasicGarageInfo,
     );
     useEffect(() => {
-        if (isInfoLoading) load();
-        else unload();
+        if (isInfoLoading) load("garage-detail");
+        else unload("garage-detail");
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInfoLoading]);
