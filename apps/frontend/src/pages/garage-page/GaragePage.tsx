@@ -22,8 +22,8 @@ const GaragePage = () => {
         getBasicGarageInfo,
     );
     useEffect(() => {
-        if (isInfoLoading) load();
-        else unload();
+        if (isInfoLoading) load("garage-detail");
+        else unload("garage-detail");
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInfoLoading]);
@@ -46,7 +46,10 @@ const GaragePage = () => {
                 </div>
                 <div className="w-full flex flex-col gap-[30px]">
                     <div className="border-b-1 pb-8 border-zinc-300">
-                        <GarageOwnerAndStaffInfoPreview />
+                        <GarageOwnerAndStaffInfoPreview
+                            garageOwner={basicInfo?.data[0].userId}
+                            staff={basicInfo?.data[0].staff}
+                        />
                     </div>
                     <div className="border-b-1 pb-8 border-zinc-300">
                         <Services />

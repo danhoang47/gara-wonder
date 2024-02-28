@@ -58,8 +58,6 @@ export type Garage = BusinessEntity & {
     rating: Rating;
 };
 
-export type GarageBasicInfo = Omit<Garage, "services" | "images">;
-
 export type GarageFilter = {
     priceRange?: {
         from?: number;

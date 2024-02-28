@@ -1,52 +1,77 @@
-import { Avatar, AvatarGroup } from "@nextui-org/react";
+import useSWRImmutable from "swr/immutable";
 
-function GarageOwnerAndStaffInfoPreview() {
+import { getUser } from "@/api";
+import { Garage } from "@/core/types";
+import { Avatar, AvatarGroup } from "@nextui-org/react";
+import { GarageBasicInfo } from "@/api/garages/getBasicGarageInfo";
+
+function GarageOwnerAndStaffInfoPreview({
+    garageOwner,
+    staff,
+}: {
+    garageOwner?: Garage["userId"];
+    staff?: GarageBasicInfo["staff"];
+}) {
+    const { data: ownerDetail } = useSWRImmutable(garageOwner, getUser);
+
     return (
         <div className="flex gap-8">
             <div className="flex gap-3">
-                <AvatarGroup isBordered>
+                <div className="shrink-0">
                     <Avatar
-                        src="https://images.unsplash.com/broken"
+                        isBordered
+                        src={ownerDetail?.data.photoURL}
                         classNames={{
                             base: "bg-primary cursor-pointer",
                         }}
                     />
-                </AvatarGroup>
+                </div>
                 <div>
                     <p className="text-sm text-gray-500">Garage Owner</p>
                     <p className="font-medium text-black">
-                        Mr. Lorem Ipsum Dolor
+                        {ownerDetail?.data?.displayName}
                     </p>
                 </div>
             </div>
             <div className="flex gap-3">
-                <AvatarGroup isBordered max={3}>
-                    {Array.from(new Array(3)).map((ava, index) => {
-                        return (
-                            <Avatar
-                                key={index}
-                                src="https://images.unsplash.com/broken"
-                                classNames={{
-                                    base:
-                                        index < 1
-                                            ? "bg-zinc-500"
-                                            : "bg-zinc-300" + " cursor-pointer",
-                                }}
-                            />
-                        );
-                    })}
-                </AvatarGroup>
+                <div className="shrink-0">
+                    <AvatarGroup isBordered max={3}>
+                        {staff?.slice(0, 3).map((ava, index) => {
+                            return (
+                                <Avatar
+                                    key={index}
+                                    src={ava.photoURL}
+                                    fallback="https://images.unsplash.com/broken"
+                                    classNames={{
+                                        base:
+                                            index < 1
+                                                ? "bg-zinc-500"
+                                                : "bg-zinc-300" +
+                                                  " cursor-pointer",
+                                    }}
+                                />
+                            );
+                        })}
+                    </AvatarGroup>
+                </div>
                 <div>
                     <p className="text-sm text-gray-500">Garage Staff</p>
                     <p className="font-medium text-black">
-                        {Array.from(new Array(3)).map((user, index) => {
+                        {staff?.slice(0, 3).map((user, index) => {
                             if (index == 0)
-                                return <span key={index}>Mr.A</span>;
+                                return (
+                                    <span key={index}>{user.displayName}</span>
+                                );
                             else {
-                                return <span key={index}>, Mr.A</span>;
+                                return (
+                                    <span key={index}>
+                                        , {user.displayName}
+                                    </span>
+                                );
                             }
-                        })}{" "}
-                        and 10 more
+                        })}
+                        {(staff?.length as number) > 3 &&
+                            ` and ${(staff?.length as number) - 3} more`}
                     </p>
                 </div>
             </div>
