@@ -5,7 +5,7 @@ import * as path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react()],
+    plugins: [react(), mkcert()],
     test: {
         globals: true,
         environment: "jsdom",

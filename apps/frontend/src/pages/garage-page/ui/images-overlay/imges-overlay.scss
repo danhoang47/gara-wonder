@@ -1,0 +1,8 @@
+.grid-wraper {
+    display: grid;
+    gap: 0.25rem;
+    grid-template-columns: repeat(2, 1fr);
+    & .grid-element:nth-child(3n + 1) {
+        grid-column: span 2;
+    }
+}
