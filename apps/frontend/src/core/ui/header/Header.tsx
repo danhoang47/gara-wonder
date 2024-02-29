@@ -1,5 +1,6 @@
 import { StylableProps } from "@/core/types";
 import clsx from "clsx";
+import { useLocation } from "react-router-dom";
 
 export type HeaderProps = StylableProps & {
     leftContent?: React.ReactNode;
@@ -13,11 +14,16 @@ function Header({
     middleContent,
     className,
 }: HeaderProps) {
+    const location = useLocation();
+
     return (
         <div
             className={clsx(
-                "h-20 flex justify-between px-10 gap-2 border-b-1 sticky top-0 bg-white z-10 shrink-0",
+                "h-20 flex justify-between gap-2 border-b-1 sticky top-0 bg-white z-10 shrink-0",
                 className,
+                location.pathname.includes("garage")
+                    ? "container mx-auto"
+                    : " px-10",
             )}
         >
             <div className="flex items-center justify-start flex-1 h-full">
