@@ -1,6 +1,6 @@
 import { WithOwnerGarage } from "@/api/garages/getGarages";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import GarageCard from "../garage-card";
 import clsx from "clsx";
 

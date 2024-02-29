@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import equal from "deep-equal";
 
@@ -53,7 +53,7 @@ const useDeserializeGarageParams = (): GarageQueryParams => {
         () => ({
             ...filterParams,
             ...params,
-            token,
+            token
         }),
         [filterParams, params, token],
     );
@@ -109,8 +109,6 @@ export default function useGarages(viewMode: ViewMode) {
             setCursor(nextCursor);
         }
     };
-
-    console.log(nextCursor)
 
     return { garages, fetchingStatus, isReload, onNext };
 }
