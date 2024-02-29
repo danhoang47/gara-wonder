@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 
@@ -10,23 +10,37 @@ import { getGarageImages } from "@/api";
 function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
     const { garageId } = useParams();
 
-    const [refImage, setRefImage] = useState<Image["_id"] | null>(null);
+    const [refImage, setRefImage] = useState<Image["_id"] | undefined>("");
     const [previewImage, setPreviewImage] = useState<boolean>(false);
 
     const { isLoading: isImageLoading, data: images } = useSWRImmutable(
         `images/${garageId}`,
         getGarageImages,
     );
+
+    useEffect(() => {
+        const root = document.getElementById("root")!;
+
+        if (previewImage) {
+            root.classList.add("overflow-hidden");
+        } else {
+            root.classList.remove("overflow-hidden");
+        }
+    }, [previewImage]);
+
     if (isImageLoading) {
         return <ImagesSkeleton />;
     }
 
     return (
         <div className="">
-            <div className=" hidden md:flex h-[25rem] gap-1">
+            <div className="relative hidden md:flex h-[25rem] gap-1">
                 <div
                     className="relative w-1/2 h-full cursor-pointer"
-                    onClick={() => setPreviewImage(!previewImage)}
+                    onClick={() => {
+                        setPreviewImage(!previewImage);
+                        setRefImage(backgroundImage?._id);
+                    }}
                 >
                     <img
                         src={backgroundImage?.url}
@@ -40,7 +54,10 @@ function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
                             <div
                                 className="relative cursor-pointer min-h-0"
                                 key={index}
-                                onClick={() => setPreviewImage(!previewImage)}
+                                onClick={() => {
+                                    setPreviewImage(!previewImage);
+                                    setRefImage(img._id);
+                                }}
                             >
                                 <img
                                     src={img.url}
@@ -51,13 +68,17 @@ function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
                         );
                     })}
                 </div>
+                <OpenImagesButton
+                    openGallery={() => setPreviewImage(!previewImage)}
+                />
             </div>
-            <OpenImagesButton
-                openGallery={() => setPreviewImage(!previewImage)}
-            />
             <ImagesOverlay
+                images={images?.data}
                 isOpen={previewImage}
-                closeGallery={() => setPreviewImage(false)}
+                closeGallery={() => {
+                    setPreviewImage(false);
+                    setRefImage("");
+                }}
                 imageRef={refImage}
             />
         </div>

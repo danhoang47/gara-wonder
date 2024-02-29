@@ -10,7 +10,7 @@ import {
     GarageImagesPreview,
     GarageOwnerAndStaffInfoPreview,
     Services,
-} from "./ui";
+} from "./ui"; 
 import { LoadingContext } from "@/core/contexts/loading";
 import { getBasicGarageInfo } from "@/api";
 
@@ -29,7 +29,7 @@ const GaragePage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInfoLoading]);
     return (
-        <div className="px-10 py-8 ">
+        <div className="container mx-auto">
             <div className="">
                 <GarageHeader
                     name={basicInfo?.data[0].name}
