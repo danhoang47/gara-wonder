@@ -14,7 +14,7 @@ function App() {
         <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
             <NextUIProvider navigate={navigate} className="h-full">
                 <ModalContextProvider>
-                    <div className=" relative light text-foreground bg-background min-h-full">
+                    <div className=" relative light text-foreground bg-background h-full">
                         <Outlet />
                     </div>
                     <Toasts />

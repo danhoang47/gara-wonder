@@ -7,7 +7,7 @@ import { getCategoryById } from "@/api";
 
 function CategoryDetail({ service }: { service: Service }) {
     const { isLoading: isCategoryLoading, data: categoryData } =
-        useSWRImmutable(`/${service.categoryId}`, getCategoryById);
+        useSWRImmutable(`${service.categoryId}`, getCategoryById);
     return (
         <div>
             <div className="flex items-center">
