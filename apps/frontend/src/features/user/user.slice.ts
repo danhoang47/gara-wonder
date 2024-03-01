@@ -18,17 +18,18 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        signOut() {
-            return {
-                status: FetchStatus.None,
-                value: undefined
-            }
+        signOut(state) {
+            state.status = FetchStatus.None
+            state.value = undefined
+            state.token = undefined
         },
         setUserToken(state, action) {
             state.token = action.payload
         },
         setEmptyUser(state) {
-            state.status = FetchStatus.Fulfilled
+            state.status = FetchStatus.None
+            state.value = undefined
+            state.token = undefined
         }
     },
     extraReducers(builder) {

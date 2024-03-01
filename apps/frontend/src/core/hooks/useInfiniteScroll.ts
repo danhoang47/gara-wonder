@@ -20,7 +20,7 @@ export default function useInfiniteScroll(cb: () => void, options: IntersectionO
         observer.observe(element)
 
         return () => observer.unobserve(element)
-    }, [ref])
+    }, [ref, cb, options])
 
     return ref
 }

@@ -1,33 +1,41 @@
-import axios from "axios";
-
-import { baseGaragesUrl } from '.' 
-import { Garage, GarageFilter, GarageQueryParams, Paging, Response, User } from "@/core/types";
+import { baseGaragesUrl } from ".";
+import { Garage, GarageQueryParams, Response, User } from "@/core/types";
 
 export type WithOwnerGarage = Omit<Garage, "userId"> & {
-    owner: User,
-    isFavorited: boolean
-}
+    owner: User;
+    isFavorite: boolean;
+    price: {
+        from: number;
+        to: number;
+    };
+};
 
 export default async function getGarages(
-    queryParams?: GarageQueryParams
+    queryParams?: GarageQueryParams,
 ): Promise<Response<WithOwnerGarage[]>> {
-    const authHeader = queryParams?.token ? { "Authorization": `Bearer ${queryParams.token}` } : {}
-    const cloned = { ...queryParams }
+    const authHeader: HeadersInit = queryParams?.token
+        ? { Authorization: `Bearer ${queryParams.token}` }
+        : {};
+    const cloned = {
+        ...queryParams,
+        lat: queryParams?.lat ? Number.parseFloat(queryParams.lat) : undefined,
+        lng: queryParams?.lng ? Number.parseFloat(queryParams.lng) : undefined,
+    };
 
-    delete cloned.token
+    delete cloned.token;
 
-    console.log(cloned)
-    try {   
-        const result = await axios.get<Response<WithOwnerGarage[]>>(baseGaragesUrl, {
+    try {
+        const result = await fetch(baseGaragesUrl + "/home", {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                ...authHeader
+                ...authHeader,
             },
-            params: cloned
-        }) 
+            body: JSON.stringify(cloned),
+        });
 
-        return result.data
+        return (await result.json()) as Response<WithOwnerGarage[]>;
     } catch (error) {
-        throw new Error(JSON.stringify(error))
+        throw new Error(JSON.stringify(error));
     }
 }

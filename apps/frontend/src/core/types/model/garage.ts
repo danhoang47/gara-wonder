@@ -17,7 +17,7 @@ export type Service = Partial<
         isSupported: boolean;
         isProvidedEvaluation?: boolean;
         estimationType: EstimateType;
-        estimateDuration?: [number | null, number | null];
+        estimateDuration?: [number | null, number | null] | null;
     }
 >;
 
