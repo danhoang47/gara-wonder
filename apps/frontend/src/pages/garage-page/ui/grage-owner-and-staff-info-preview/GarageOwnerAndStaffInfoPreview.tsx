@@ -15,8 +15,8 @@ function GarageOwnerAndStaffInfoPreview({
     const { data: ownerDetail } = useSWRImmutable(garageOwner, getUser);
 
     return (
-        <div className="flex gap-8">
-            <div className="flex gap-3">
+        <div className="flex gap-2 pt-5 md:pt-0">
+            <div className="flex gap-3 min-w-40">
                 <div className="shrink-0">
                     <Avatar
                         isBordered

@@ -18,6 +18,7 @@ export type Order = Model & {
     evaluationId: Evaluation["_id"],
     carId: Car["_id"],
     serviceIds: string[],
+    orderTime: number,
     handOverTime?: number,
     pickUpTime?: number,
     totalPrice: number,
