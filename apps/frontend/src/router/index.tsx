@@ -5,12 +5,14 @@ import {
 } from "react-router-dom";
 
 import App from "@/App";
-import { DefaultLayout } from "@/layouts";
+import { DefaultLayout, GarageLayout } from "@/layouts";
 import {
     HomePage,
     GarageRegistrationPage,
     GaragePage,
     BookPage,
+    GarageManagePage,
+    GeneralDashboard,
 } from "@/pages";
 
 const router = createBrowserRouter(
@@ -24,6 +26,11 @@ const router = createBrowserRouter(
                     path="garage-registration"
                     element={<GarageRegistrationPage />}
                 />
+            </Route>
+            <Route path="garage-manage" element={<GarageLayout />}>
+                <Route element={<GarageManagePage />}>
+                    <Route path="" element={<GeneralDashboard />} />
+                </Route>
             </Route>
         </Route>,
     ),
