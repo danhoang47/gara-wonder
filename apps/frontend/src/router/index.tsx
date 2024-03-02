@@ -27,11 +27,11 @@ const router = createBrowserRouter(
                     element={<GarageRegistrationPage />}
                 />
             </Route>
-            <Route element={<GarageLayout />}>
-                <Route
-                    path="garage-management/:garageId"
-                    element={<GarageManagePage />}
-                >
+            <Route
+                path="garage-management/:garageId"
+                element={<GarageLayout />}
+            >
+                <Route element={<GarageManagePage />}>
                     <Route path="" element={<GeneralDashboard />} />
                 </Route>
             </Route>

@@ -1,5 +1,5 @@
 function GeneralDashboard() {
-    return <></>;
+    return <>1</>;
 }
 
 export default GeneralDashboard;
