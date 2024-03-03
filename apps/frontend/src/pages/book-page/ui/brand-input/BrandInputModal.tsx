@@ -51,6 +51,8 @@ function BrandInputModal({
         () => brands?.find((brand) => brand._id === localCar.brandId),
         [brands, localCar.brandId],
     );
+    const disabledSaveButton = Object.keys(localCar).length < 3
+    console.log(localCar)
 
     useEffect(() => {
         if (!localCar?.brandId || !selectedBrand) return;
@@ -132,18 +134,25 @@ function BrandInputModal({
                         value={localCar.releaseYear?.toString()}
                         isDisabled={Boolean(!localCar.brandId)}
                         onValueChange={(value) => {
-                            setLocalCar((prev) => ({
+                            setLocalCar(prev => ({
                                 ...prev,
-                                releaseYear: Number.parseInt(value),
-                            }));
+                                "releaseYear": Number.parseInt(value)
+                            }))
                         }}
                     />
                 </ModalBody>
                 <ModalFooter>
-                    <div>
+                    <div className="flex gap-2">
+                        <Button
+                            variant="light"
+                            onPress={onDismiss}
+                        >
+                            <p className="text-default-400">Cancel</p>
+                        </Button>
                         <Button
                             className="bg-foreground"
                             onPress={() => onSave && onSave(localCar)}
+                            isDisabled={disabledSaveButton}
                         >
                             <p className="text-background">Save</p>
                         </Button>

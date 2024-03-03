@@ -41,9 +41,10 @@ const Calendar = ({
         [year, month],
     );
 
+    console.log(thisMonth.toDate())
     const rows = useMemo(() => {
-        const firstSunday = moment();
-        thisMonth.startOf("month").day(0);
+        const firstSunday = thisMonth.clone().startOf("month").day(0);
+        console.log(firstSunday.toDate())
         const dateOfMonth = firstSunday.toDate().getDate();
         const datesInMonth: Date[] = Array.from(new Array(NUMBER_OF_CELL)).map(
             (_, index) => {
@@ -67,7 +68,7 @@ const Calendar = ({
                 {renderHeader ? (
                     renderHeader(thisMonth.toDate())
                 ) : (
-                    <p className="text-center font-semibold">{thisMonth.format("YYYY/MM")}</p>
+                    <p className="text-center font-semibold">{thisMonth.format("MMMM YYYY")}</p>
                 )}
             </div>
             <div className="flex flex-row">

@@ -8,7 +8,9 @@ import BrandInputModal from "./BrandInputModal";
 
 export default function BrandInput() {
     const {
-        order: { car },
+        order: { 
+            car, 
+        },
         setOrderValue,
     } = useOrderContext();
 

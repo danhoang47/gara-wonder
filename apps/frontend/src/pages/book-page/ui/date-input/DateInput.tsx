@@ -59,6 +59,8 @@ export default function DateInput() {
                                 setLocalOrderTime(date?.getTime());
                             }}
                             selectedDate={selectedDate}
+                            defaultYear={2024}
+                            defaultMonth={0}
                         />
                     </ModalBody>
                     <ModalFooter>

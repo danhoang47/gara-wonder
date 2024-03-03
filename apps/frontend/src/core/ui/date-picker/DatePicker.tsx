@@ -33,27 +33,19 @@ export type MultipleModeProps = DatePickerBaseProps & {
 export type DatePickerProps = SingleModeProps | MultipleModeProps;
 
 function DatePicker({
-    defaultYear,
-    defaultMonth,
+    defaultYear = new Date().getFullYear(),
+    defaultMonth = new Date().getMonth(),
     mode,
     selectedDate,
     onSelectedChange,
 }: DatePickerProps) {
-    const [action, setAction] = useState<"next" | "back">();
     const [year, setYear] = useState<number>(
-        defaultYear || new Date().getFullYear(),
+        defaultYear,
     );
     const [month, setMonth] = useState<number>(
-        defaultMonth || new Date().getMonth(),
+        defaultMonth,
     );
-    const renderedCalendar = useMemo(() => {
-        return [
-            { year: 2024, month: 0 },
-            { year: 2024, month: 1 },
-            { year: 2024, month: 2 },
-        ];
-    }, [year, month]);
-
+   
     const onDateSelected = (date: Date) => {
         if (mode === "single") {
             if (selectedDate && isTwoDateSame(date, selectedDate)) {
@@ -80,40 +72,32 @@ function DatePicker({
         }
     };
 
+    console.log(year, month)
     return (
-        <Carousel
-            items={renderedCalendar}
-            classNames={{
-                item: "w-full",
-            }}
-            startIndex={1}
-            renderItem={({ year, month }) => (
-                <Calendar
-                    key={year + month}
-                    year={year}
-                    month={month}
-                    disablePastDates
-                    renderDate={(date, disabled) => (
-                        <CalendarCell
-                            key={date.getTime()}
-                            date={date}
-                            disabled={disabled}
-                            onClick={onDateSelected}
-                            classNames={{
-                                base: "cursor-pointer",
-                                wrapper: clsx(
-                                    "rounded-full hover:bg-default",
-                                    checkIfDateSelected(date)
-                                        ? "bg-foreground text-background hover:bg-foreground"
-                                        : undefined,
-                                ),
-                            }}
-                        />
-                    )}
-                />
-            )}
-            onNavigate={(type) => setAction(type)}
-        />
+        <div>
+            <Calendar
+                year={year}
+                month={month}
+                disablePastDates
+                renderDate={(date, disabled) => (
+                    <CalendarCell
+                        key={date.getTime()}
+                        date={date}
+                        disabled={disabled}
+                        onClick={onDateSelected}
+                        classNames={{
+                            base: "cursor-pointer",
+                            wrapper: clsx(
+                                "rounded-full hover:bg-default",
+                                checkIfDateSelected(date)
+                                    ? "bg-foreground text-background hover:bg-foreground"
+                                    : undefined,
+                            ),
+                        }}
+                    />
+                )}
+            />
+        </div>
     );
 }
 

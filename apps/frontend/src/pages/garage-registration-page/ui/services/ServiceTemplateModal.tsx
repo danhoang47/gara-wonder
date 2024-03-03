@@ -113,13 +113,13 @@ export default function ServiceTemplateModal({
     }, [isOpen])
 
     return (
-        <Modal isOpen={isOpen} onClose={onModalClose} size="lg">
+        <Modal isOpen={isOpen} onClose={onModalClose} size="lg" scrollBehavior="inside">
             <ModalContent className="max-h-[90%] flex-col flex-nowrap">
                 <ModalHeader className="px-6 justify-center">
                     <p className="text-base">Add Service</p>
                 </ModalHeader>
                 <Divider className="mb-4" />
-                <ModalBody className="flex flex-column gap-4 flex-wrap pb-6 px-6">
+                <ModalBody className="flex gap-4 pb-6 px-6">
                     <Select
                         items={categories}
                         isLoading={isCategoriesLoading}

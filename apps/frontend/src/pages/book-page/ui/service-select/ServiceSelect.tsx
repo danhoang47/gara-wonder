@@ -1,39 +1,37 @@
-import { useEffect, useState } from "react";
 import { Select, SelectItem } from "@nextui-org/react";
 import useSWRImmutable from "swr/immutable";
 
-import { getCategoryById, getGarageServices } from "@/api";
-import { Category } from "@/core/types";
+import { getGarageServices } from "@/api";
+import { useOrderContext } from "../../hooks";
+import { useMemo } from "react";
 
 export default function ServiceSelect() {
-    const [isCategoriesLoading, setCategoriesLoading] = useState<boolean>(true)
-    const [categories, setCategories] = useState<Category[]>()
+    const { order, setOrderValue } = useOrderContext()
 
     const { isLoading: isServicesLoading, data: services } =
         useSWRImmutable(`service/65db44c8cb29a95ec677b0a2`, getGarageServices);
-    
-    useEffect(() => {
-        if (!services) return;
-
-        const getCategories = async () => {
-            const result = await Promise.all(services.data.map(service => {
-                return getCategoryById(service.categoryId!)
-            }))
-            setCategoriesLoading(false)
-            setCategories(result)
+    const renderedServices = useMemo(() => {
+        const { car } = order
+       
+        return car ? services?.data.filter(service => {
+            if (service.brandIds === "all") {
+                return true
+            } 
+            return service.brandIds?.includes(car.brandId!)
+        }) : services?.data
+    }, [order, services])
+    const selectedKeys = useMemo(() => {
+        if (order.serviceIds?.length === services?.data.length) {
+            return "all"
         }
 
-        getCategories();
-    }, [services])
-
-    const getServiceSelectItemLabel = (categoryId?: string) => {
-        return categories?.find(category => category._id === categoryId)?.name
-    }
-
+        return order.serviceIds
+    }, [order])
+    
     return (
         <Select
-            items={services?.data || []}
-            isLoading={isCategoriesLoading && isServicesLoading}
+            items={renderedServices || []}
+            isLoading={isServicesLoading}
             placeholder="Select services"
             label="Services"
             selectionMode="multiple"
@@ -45,10 +43,20 @@ export default function ServiceSelect() {
             }}
             isRequired
             disallowEmptySelection
+            isDisabled={renderedServices?.length === 0}
+            selectedKeys={selectedKeys}
+            onSelectionChange={(keys) => {
+                if (keys === "all") {
+                    setOrderValue("serviceIds", services?.data.map(service => service._id!))
+                } else {
+                    const _ids = Array.from(keys).map(v => v) as string[]
+                    setOrderValue("serviceIds", _ids)
+                }
+            }}
         >
             {(service) => (
                 <SelectItem key={service._id!}>
-                    {getServiceSelectItemLabel(service.categoryId)}
+                    {service.category.name}
                 </SelectItem>
             )}
         </Select>
