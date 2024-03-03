@@ -47,7 +47,7 @@ function FilterModal({
         }}>
             <ModalContent className="max-h-[90%]">
                 <ModalHeader>
-                    <span className="text-base">Filter</span>
+                    <p className="text-base flex-grow">Filter</p>
                 </ModalHeader>
                 <Divider />
                 <ModalBody className="pb-4 overflow-auto">

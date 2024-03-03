@@ -1,10 +1,9 @@
-import { getCategoryById, getGarageServices } from "@/api";
-import { Category } from "@/core/types";
-import { Select, SelectItem } from "@nextui-org/react";
-import { nanoid } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
+import { Select, SelectItem } from "@nextui-org/react";
 import useSWRImmutable from "swr/immutable";
 
+import { getCategoryById, getGarageServices } from "@/api";
+import { Category } from "@/core/types";
 
 export default function ServiceSelect() {
     const [isCategoriesLoading, setCategoriesLoading] = useState<boolean>(true)
@@ -28,9 +27,7 @@ export default function ServiceSelect() {
     }, [services])
 
     const getServiceSelectItemLabel = (categoryId?: string) => {
-        if (!categories || !categoryId) return ""
-
-        return categories.find(({ _id }) => _id === categoryId)?.name
+        return categories?.find(category => category._id === categoryId)?.name
     }
 
     return (
@@ -50,7 +47,7 @@ export default function ServiceSelect() {
             disallowEmptySelection
         >
             {(service) => (
-                <SelectItem key={service._id || nanoid()}>
+                <SelectItem key={service._id!}>
                     {getServiceSelectItemLabel(service.categoryId)}
                 </SelectItem>
             )}

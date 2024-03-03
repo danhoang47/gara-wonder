@@ -10,22 +10,27 @@ export type CarouselProps<T> = {
     items: T[];
     renderItem: (item: T, index: number) => React.ReactNode;
     startIndex?: number;
-    classNames?: Partial<Record<"wrapper" | "item" | "base" | "button", string>>
-    showNavigationOnHover?: boolean
+    classNames?: Partial<Record<"wrapper" | "item" | "base" | "button", string>>;
+    showNavigationOnHover?: boolean;
+    onNavigate?: (type: "back" | "next") => void;
 };
 
-function Carousel<T>({ items, renderItem, startIndex = 0, classNames, showNavigationOnHover = true }: CarouselProps<T>) {
+function Carousel<T>({ items, renderItem, startIndex = 0, classNames, onNavigate }: CarouselProps<T>) {
     const [index, setIndex] = useState<number>(startIndex);
     const [maxIndex, setMaxIndex] = useState<number>(-1);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const onBackPress = () => {
-        setIndex(index - 1);
+        if (index !== 0) {
+            setIndex(index - 1);
+            onNavigate && onNavigate("back")
+        }
     };
 
     const onNextPress = () => {
         if (index < maxIndex) {
             setIndex(index + 1);
+            onNavigate && onNavigate("next")
         }
     };
 

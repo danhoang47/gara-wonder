@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react";
 
 import DateInput from "../date-input";
-import BrandSelect from "../brand-select";
+import BrandSelect from "../brand-input";
 import ServiceSelect from "../service-select";
 import PayTypeGroup from "../pay-type-group";
 
