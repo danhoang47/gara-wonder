@@ -29,7 +29,7 @@ const GaragePage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInfoLoading]);
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto mt-4">
             <div className="">
                 <GarageHeader
                     name={basicInfo?.data[0].name}

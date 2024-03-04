@@ -1,10 +1,14 @@
 import axios from "axios";
 import { baseGaragesUrl } from ".";
-import { Garage, Response } from "@/core/types";
+import { Category, Garage, Response, Service } from "@/core/types";
+
+export type WithCategoryService = Omit<Service, "categoryId"> & {
+    category: Category
+}
 
 export default async function getGarageServices(
     api: string,
-): Promise<Response<Garage["services"]>> {
+): Promise<Response<WithCategoryService[]>> {
     try {
         const result = await axios.get(`${baseGaragesUrl}/${api}`);
         return result.data;

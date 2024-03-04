@@ -7,27 +7,36 @@ export const enum ProcessStatus {
     Complete
 }
 
-export const enum PayType {
-    Cash = 0,
-    Banking,
+export enum PayType {
+    PayAsReceive = 0,
+    PayFirst,
+}
+
+export enum OrderStatus {
+    Pending = 0,
+    Accepted,
+    Canceled,
+    Rejected
 }
 
 export type Order = Model & {
     garageId: Garage["_id"],
     userId: User["_id"],
-    evaluationId: Evaluation["_id"],
-    carId: Car["_id"],
+    evaluationId?: Evaluation["_id"],
+    car: Car,
     serviceIds: string[],
+    orderTime: number,
     handOverTime?: number,
     pickUpTime?: number,
     totalPrice: number,
-    status: ProcessStatus,
-    hasPaid: boolean,
+    status?: ProcessStatus,
+    hasPaid?: boolean,
     paymentId?: string,
-    payType: PayType
+    payType: PayType,
+    orderStatus?: OrderStatus 
 }
 
-export type Car = Model & {
+export type Car = {
     brandId: string,
     model: string,
     releaseYear: number,

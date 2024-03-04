@@ -47,6 +47,12 @@ export type Rating = {
     valuePoint: number;
 };
 
+export type DateSlot = {
+    date: number,
+    slot: number,
+    numberOfOrder: number,
+}
+
 // TODO: need certificate of business registration images
 export type Garage = BusinessEntity & {
     services: Service[];
@@ -56,6 +62,8 @@ export type Garage = BusinessEntity & {
     checkOut?: string;
     rules?: Rule[];
     rating: Rating;
+    enableInstantBooking?: boolean,
+    dateSlots?: DateSlot[]
 };
 
 export type GarageFilter = {

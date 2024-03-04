@@ -4,9 +4,9 @@ import GarageMarker from "../garage-marker/GarageMarker";
 import { useSearchParams } from "react-router-dom";
 
 type Position = {
-    lat?: string | null,
-    lng?: string | null 
-}
+    lat?: string | null;
+    lng?: string | null;
+};
 
 const DEFAULT_CENTER = {
     lat: 15.9895821,
@@ -19,9 +19,11 @@ export default function MapViewGarages({ garages }: ViewModeGaragesProps) {
         lat: searchParams.get("lat"),
         lng: searchParams.get("lng"),
     };
-
-    const onCenterChange = (lat: number | undefined, lng: number | undefined) => {
-        if (!lat || !lng) return
+    const onCenterChange = (
+        lat: number | undefined,
+        lng: number | undefined,
+    ) => {
+        if (!lat || !lng) return;
 
         setSearchParams((prev) => {
             prev.set("lat", lat.toString());
@@ -47,12 +49,12 @@ export default function MapViewGarages({ garages }: ViewModeGaragesProps) {
                 mapTypeId={"roadmap"}
                 disableDefaultUI
                 onZoomChanged={(event) => {
-                    const { lat, lng } = event.detail.center
-                    onCenterChange(lat, lng)
+                    const { lat, lng } = event.detail.center;
+                    onCenterChange(lat, lng);
                 }}
                 onDragend={(event: MapEvent) => {
-                   const latlng = event.map.getCenter()
-                   onCenterChange(latlng?.lat(), latlng?.lng())
+                    const latlng = event.map.getCenter();
+                    onCenterChange(latlng?.lat(), latlng?.lng());
                 }}
             >
                 {garages?.map((garage) => (

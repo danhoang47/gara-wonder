@@ -10,22 +10,35 @@ export type CarouselProps<T> = {
     items: T[];
     renderItem: (item: T, index: number) => React.ReactNode;
     startIndex?: number;
-    classNames?: Partial<Record<"wrapper" | "item" | "base" | "button", string>>
-    showNavigationOnHover?: boolean
+    classNames?: Partial<
+        Record<"wrapper" | "item" | "base" | "button", string>
+    >;
+    showNavigationOnHover?: boolean;
+    onNavigate?: (type: "back" | "next") => void;
 };
 
-function Carousel<T>({ items, renderItem, startIndex = 0, classNames, showNavigationOnHover = true }: CarouselProps<T>) {
+function Carousel<T>({
+    items,
+    renderItem,
+    startIndex = 0,
+    classNames,
+    onNavigate,
+}: CarouselProps<T>) {
     const [index, setIndex] = useState<number>(startIndex);
     const [maxIndex, setMaxIndex] = useState<number>(-1);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const onBackPress = () => {
-        setIndex(index - 1);
+        if (index !== 0) {
+            setIndex(index - 1);
+            onNavigate && onNavigate("back");
+        }
     };
 
     const onNextPress = () => {
         if (index < maxIndex) {
             setIndex(index + 1);
+            onNavigate && onNavigate("next");
         }
     };
 
@@ -33,15 +46,21 @@ function Carousel<T>({ items, renderItem, startIndex = 0, classNames, showNaviga
         if (containerRef.current) {
             const { current } = containerRef;
             const { width } = current.getBoundingClientRect();
-            const child = current.querySelector('[data-index="0"]')
-            
-            if (child) {
-                const childWidth = child.getBoundingClientRect().width
-                const maxIndex = (childWidth * items.length) / width
+            const child = current.querySelector('[data-index="0"]');
 
-                setMaxIndex(() => {
-                    return Number.isInteger(maxIndex) ? maxIndex - 1 : Math.floor(maxIndex)
-                })
+            if (child) {
+                const childWidth = child.getBoundingClientRect().width || width;
+                const maxIndex = (childWidth * items.length) / width;
+
+                if (Number.isNaN(maxIndex)) {
+                    setMaxIndex(items.length - 1);
+                } else {
+                    setMaxIndex(() => {
+                        return Number.isInteger(maxIndex)
+                            ? maxIndex - 1
+                            : Math.floor(maxIndex);
+                    });
+                }
             }
         }
     }, [containerRef, items.length]);
@@ -53,16 +72,23 @@ function Carousel<T>({ items, renderItem, startIndex = 0, classNames, showNaviga
 
             current.scroll({
                 behavior: "smooth",
-                left: index * width
-            })
+                left: index * width,
+            });
         }
-    }, [containerRef, index])
+    }, [containerRef, index]);
 
     return (
         <div className={clsx("carouselWrapper", classNames?.wrapper)}>
             <div className="carousel" ref={containerRef}>
                 {items.map((value, index) => (
-                    <div key={index} data-index={index} className={clsx("h-full shrink-0 snap-center", classNames?.item)}>
+                    <div
+                        key={index}
+                        data-index={index}
+                        className={clsx(
+                            "h-full shrink-0 snap-center",
+                            classNames?.item,
+                        )}
+                    >
                         {renderItem(value, index)}
                     </div>
                 ))}
@@ -72,7 +98,10 @@ function Carousel<T>({ items, renderItem, startIndex = 0, classNames, showNaviga
                 radius="full"
                 disableAnimation
                 size="sm"
-                className={clsx("absolute top-1/2 -translate-y-1/2 left-2 border", classNames?.button)}
+                className={clsx(
+                    "absolute top-1/2 -translate-y-1/2 left-2 border",
+                    classNames?.button,
+                )}
                 onPress={onBackPress}
                 isDisabled={index === 0}
             >
@@ -83,7 +112,10 @@ function Carousel<T>({ items, renderItem, startIndex = 0, classNames, showNaviga
                 radius="full"
                 disableAnimation
                 size="sm"
-                className={clsx("absolute top-1/2 -translate-y-1/2 right-2 border", classNames?.button)}
+                className={clsx(
+                    "absolute top-1/2 -translate-y-1/2 right-2 border",
+                    classNames?.button,
+                )}
                 onPress={onNextPress}
                 isDisabled={index === maxIndex}
             >

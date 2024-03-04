@@ -1,0 +1,17 @@
+.datePickerCarousel {
+    display: flex;
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    height: 100%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    > div {
+        flex-shrink: 0;
+        scroll-snap-align: center;
+    }
+    
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

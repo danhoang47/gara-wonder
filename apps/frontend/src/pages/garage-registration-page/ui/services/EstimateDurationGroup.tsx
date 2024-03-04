@@ -6,7 +6,7 @@ import { useMemo } from "react";
 
 export type EstimateDurationGroupProps = {
     estimateType?: EstimateType;
-    estimateDuration?: [number | null, number | null];
+    estimateDuration?: [number | null, number | null] | null;
     onChange?: (
         estimateType: EstimateType,
         estimateDuration: [number | null, number | null],
@@ -72,8 +72,8 @@ function EstimateDurationGroup({
                                     ])
                                 }
                                 max={
-                                    estimateDuration &&
-                                    (estimateDuration[1] || undefined)
+                                    estimateDuration ?
+                                    (estimateDuration[1] || undefined) : undefined
                                 }
                             />
                         </div>
@@ -96,8 +96,8 @@ function EstimateDurationGroup({
                                     ])
                                 }
                                 min={
-                                    estimateDuration &&
-                                    (estimateDuration[0] || undefined)
+                                    estimateDuration ?
+                                    (estimateDuration[0] || undefined) : undefined
                                 }
                             />
                         </div>

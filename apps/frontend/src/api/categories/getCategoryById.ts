@@ -3,10 +3,10 @@ import axios from "axios";
 import { baseCategoriesUrl } from ".";
 import { Response, Category } from "@/core/types";
 
-export default async function getCategoryById(api: string): Promise<Category> {
+export default async function getCategoryById(id: string): Promise<Category> {
     try {
         const result = (
-            await axios.get<Response<Category>>(baseCategoriesUrl + api)
+            await axios.get<Response<Category>>(baseCategoriesUrl + `/${id}`)
         ).data;
         return result.data;
     } catch (error) {
