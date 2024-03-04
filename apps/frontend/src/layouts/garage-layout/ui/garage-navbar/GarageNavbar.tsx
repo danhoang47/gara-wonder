@@ -26,7 +26,10 @@ function GarageNavbar() {
                     );
                 }
                 return (
-                    <div className="font-semibold cursor-pointer text-default-400">
+                    <div
+                        className="font-semibold cursor-pointer text-default-400"
+                        key={index}
+                    >
                         <Dropdown classNames={{ content: "min-w-[7.5rem]" }}>
                             <DropdownTrigger>
                                 <div

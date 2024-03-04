@@ -1,7 +1,7 @@
 export const navList = [
     { title: "General", link: "" },
     { title: "Calendar", link: "calendar" },
-    { title: "Booking Orders", link: "booking-orders" },
+    { title: "Orders", link: "orders" },
     { title: "Accessories List", link: "" },
     { title: "Message", link: "" },
     {
