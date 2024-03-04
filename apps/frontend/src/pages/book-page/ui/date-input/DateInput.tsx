@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import {
     Button,
+    Input,
     Modal,
     ModalBody,
     ModalContent,
@@ -10,6 +11,7 @@ import {
 
 import { DatePicker } from "@/core/ui";
 import { useOrderContext } from "../../hooks";
+import moment from "moment";
 
 export default function DateInput() {
     const [isDatePickerModalOpen, setDatePickerModalOpen] =
@@ -24,6 +26,12 @@ export default function DateInput() {
     const selectedDate = useMemo(() => {
         return localOrderTime ? new Date(localOrderTime) : undefined;
     }, [localOrderTime]);
+    const isOrderTimeInvalid = useMemo(() => {
+        if (!orderTime) return false
+
+        // TODO: need to set start of this date
+        return new Date(orderTime).getDate() > new Date().getDate()
+    }, [orderTime])
 
     return (
         <>
@@ -44,13 +52,32 @@ export default function DateInput() {
             <Modal
                 isOpen={isDatePickerModalOpen}
                 onOpenChange={() => setDatePickerModalOpen(false)}
+                hideCloseButton
             >
                 <ModalContent>
-                    <ModalHeader className="flex-col">
-                        <p>Pick Date</p>
-                        <span className="text-sm text-default-400 font-normal">
-                            Select a date to fix your car
-                        </span>
+                    <ModalHeader className="justify-between">
+                        <div className="">
+                            <p className="shrink-0">Pick Date</p>
+                            <span className="text-small text-default-400 font-normal">Select a date to fix your car</span>
+                        </div>
+                        <Input 
+                            label="Order Date"
+                            placeholder="YYYY/MM/dd"
+                            variant="bordered"
+                            value={moment(localOrderTime).format("YYYY/MM/DD")}
+                            classNames={{
+                                base: "max-w-44",
+                                inputWrapper: "border data-[focus=true]:border-2"
+                            }}
+                            isInvalid={isOrderTimeInvalid}
+                            onValueChange={(value) => {
+                                const orderDate = moment(value, "YYYY MM DD")
+                                if (value.length === 10 && orderDate.isValid()) {
+                                    setLocalOrderTime(orderDate.toDate().getTime())
+                                }
+                            }}
+                            isClearable
+                        />
                     </ModalHeader>
                     <ModalBody>
                         <DatePicker
@@ -64,12 +91,18 @@ export default function DateInput() {
                         />
                     </ModalBody>
                     <ModalFooter>
-                        <div>
+                        <div className="flex gap-2">
+                            <Button
+                                variant="light"
+                                onPress={() => setDatePickerModalOpen(false)}
+                            >
+                                <p className="text-default-400">Cancel</p>
+                            </Button>
                             <Button
                                 className="bg-foreground"
-                                onPress={() =>{
-                                    setOrderValue("orderTime", localOrderTime)
-                                    setDatePickerModalOpen(false)
+                                onPress={() => {
+                                    setOrderValue("orderTime", localOrderTime);
+                                    setDatePickerModalOpen(false);
                                 }}
                             >
                                 <p className="text-background">Save</p>

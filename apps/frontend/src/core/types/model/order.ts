@@ -8,8 +8,8 @@ export const enum ProcessStatus {
 }
 
 export enum PayType {
-    Cash = 0,
-    Banking,
+    PayAsReceive = 0,
+    PayFirst,
 }
 
 export enum OrderStatus {

@@ -1,9 +1,13 @@
 import { isTwoDateSame } from "@/utils";
 import Calendar from "../calendar";
 import CalendarCell from "../calendar/CalendarCell";
-import Carousel from "../carousel";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
+import DateNavigation from "./DateNavigation";
+
+import "./DatePicker.styles.scss";
+import { usePrevious } from "@/core/hooks";
+
 export type DateRange = {
     from?: Date;
     to?: Date;
@@ -16,6 +20,7 @@ export type DatePickerBaseProps = {
     disabledDates?: Date[];
     defaultYear?: number;
     defaultMonth?: number;
+    disallowEmptySelection?: boolean;
 };
 
 export type SingleModeProps = DatePickerBaseProps & {
@@ -37,19 +42,16 @@ function DatePicker({
     defaultMonth = new Date().getMonth(),
     mode,
     selectedDate,
+    disallowEmptySelection = false,
     onSelectedChange,
 }: DatePickerProps) {
-    const [year, setYear] = useState<number>(
-        defaultYear,
-    );
-    const [month, setMonth] = useState<number>(
-        defaultMonth,
-    );
-   
+    const [year, setYear] = useState<number>(defaultYear);
+    const [month, setMonth] = useState<number>(defaultMonth);
+
     const onDateSelected = (date: Date) => {
         if (mode === "single") {
             if (selectedDate && isTwoDateSame(date, selectedDate)) {
-                onSelectedChange(undefined);
+                if (!disallowEmptySelection) onSelectedChange(undefined);
             } else {
                 onSelectedChange(date);
             }
@@ -72,31 +74,46 @@ function DatePicker({
         }
     };
 
-    console.log(year, month)
     return (
-        <div>
-            <Calendar
-                year={year}
-                month={month}
-                disablePastDates
-                renderDate={(date, disabled) => (
-                    <CalendarCell
-                        key={date.getTime()}
-                        date={date}
-                        disabled={disabled}
-                        onClick={onDateSelected}
-                        classNames={{
-                            base: "cursor-pointer",
-                            wrapper: clsx(
-                                "rounded-full hover:bg-default",
-                                checkIfDateSelected(date)
-                                    ? "bg-foreground text-background hover:bg-foreground"
-                                    : undefined,
-                            ),
-                        }}
-                    />
-                )}
+        <div className="relative">
+            <DateNavigation
+                onBackPress={() => {
+                    setMonth(month - 1);
+                }}
+                onNextPress={() => {
+                    setMonth(month + 1);
+                }}
             />
+            <div className="datePickerCarousel">
+                <Calendar
+                    year={year}
+                    month={month}
+                    disablePastDates
+                    classNames={{
+                        wrapper: "calendar shrink-0",
+                    }}
+                    disabledDates={[new Date("2024/1/1")]}
+                    renderDate={(date, disabled) => (
+                        <CalendarCell
+                            key={date.getTime()}
+                            date={date}
+                            disabled={disabled}
+                            onClick={onDateSelected}
+                            classNames={{
+                                base: "cursor-pointer",
+                                wrapper: clsx(
+                                    "rounded-full border border-transparent hover:border-foreground",
+                                    checkIfDateSelected(date)
+                                        ? "bg-foreground text-background hover:bg-foreground"
+                                        : undefined,
+                                    disabled &&
+                                        "text-default-400 hover:border-background cursor-not-allowed line-through",
+                                ),
+                            }}
+                        />
+                    )}
+                />
+            </div>
         </div>
     );
 }

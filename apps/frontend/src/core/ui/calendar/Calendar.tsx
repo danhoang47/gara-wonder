@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import moment from "moment";
 import CalendarCell from "./CalendarCell";
+import clsx from "clsx";
 
 const NUMBER_OF_CELL = 35;
 const NUMBER_OF_COLUMN = 7;
@@ -35,6 +36,7 @@ const Calendar = ({
     renderDate,
     renderHeader,
     onDateClick,
+    classNames
 }: CalendarProps) => {
     const thisMonth = useMemo(
         () => moment().year(year).month(month),
@@ -63,8 +65,8 @@ const Calendar = ({
     }, [thisMonth]);
 
     return (
-        <div className="w-full">
-            <div className="mb-2">
+        <div className={clsx("w-full", classNames?.wrapper)}>
+            <div className="flex items-center justify-center  h-8">
                 {renderHeader ? (
                     renderHeader(thisMonth.toDate())
                 ) : (

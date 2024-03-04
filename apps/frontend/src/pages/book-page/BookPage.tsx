@@ -1,4 +1,4 @@
-import OrderContextProvider from "./context/order-context";
+import OrderContextProvider from "./context/OrderContext";
 import { OrderInfo } from "./ui";
 
 function BookPage() {

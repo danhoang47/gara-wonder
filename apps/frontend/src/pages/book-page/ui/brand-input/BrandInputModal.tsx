@@ -51,8 +51,7 @@ function BrandInputModal({
         () => brands?.find((brand) => brand._id === localCar.brandId),
         [brands, localCar.brandId],
     );
-    const disabledSaveButton = Object.keys(localCar).length < 3
-    console.log(localCar)
+    const disabledSaveButton = Object.keys(localCar).length < 3;
 
     useEffect(() => {
         if (!localCar?.brandId || !selectedBrand) return;
@@ -120,6 +119,7 @@ function BrandInputModal({
                                 setLocalCar((prev) => ({ ...prev, model }));
                             }
                         }}
+                        selectedKeys={localCar.model && [localCar.model]}
                     >
                         {(item) => (
                             <SelectItem key={item.model}>
@@ -134,19 +134,16 @@ function BrandInputModal({
                         value={localCar.releaseYear?.toString()}
                         isDisabled={Boolean(!localCar.brandId)}
                         onValueChange={(value) => {
-                            setLocalCar(prev => ({
+                            setLocalCar((prev) => ({
                                 ...prev,
-                                "releaseYear": Number.parseInt(value)
-                            }))
+                                releaseYear: Number.parseInt(value),
+                            }));
                         }}
                     />
                 </ModalBody>
                 <ModalFooter>
                     <div className="flex gap-2">
-                        <Button
-                            variant="light"
-                            onPress={onDismiss}
-                        >
+                        <Button variant="light" onPress={onDismiss}>
                             <p className="text-default-400">Cancel</p>
                         </Button>
                         <Button

@@ -4,7 +4,7 @@ import { useOrderContext } from "../../hooks";
 import { PayType } from "@/core/types";
 
 export default function PayTypeGroup() {
-    const { order: { payType = PayType.Cash }, setOrderValue } = useOrderContext()
+    const { order: { payType = PayType.PayAsReceive }, setOrderValue } = useOrderContext()
 
     return (
         <RadioGroup
@@ -16,11 +16,11 @@ export default function PayTypeGroup() {
                 setOrderValue("payType", Number.parseInt(value))
             }}
         >
-            <UniformRadio description="Pay by cash when you receive the car" value={PayType.Cash.toString()}>
-                <p className="font-medium">Pay by cash</p>
+            <UniformRadio description="Pay by cash when you receive the car" value={PayType.PayAsReceive.toString()}>
+                <p className="font-medium">Pay at receive</p>
             </UniformRadio>
-            <UniformRadio description="Support multiple banking platforms" value={PayType.Banking.toString()}>
-                <p className="font-medium">Pay by internet banking</p>
+            <UniformRadio description="Support multiple banking platforms" value={PayType.PayFirst.toString()}>
+                <p className="font-medium">Pay first</p>
             </UniformRadio>
         </RadioGroup>
     )

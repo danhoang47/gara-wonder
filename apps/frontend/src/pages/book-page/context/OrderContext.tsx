@@ -1,7 +1,7 @@
-import { Car, ContainerProps, Order } from "@/core/types";
+import { ContainerProps, Order } from "@/core/types";
 import { createContext, useMemo, useState } from "react";
 
-export type OrderInfo = Partial<Omit<Order, "car"> & { car: Partial<Car> }>
+export type OrderInfo = Partial<Order>
 
 export type OrderContextType = {
     order: OrderInfo

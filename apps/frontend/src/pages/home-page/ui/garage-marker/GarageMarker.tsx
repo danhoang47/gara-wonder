@@ -17,18 +17,15 @@ function GarageMarker({ garage }: GarageMarkerProps) {
 
     return (
         <AdvancedMarker
+            ref={(ref) => {
+                console.log(ref?.getBoundingClientRect())
+            }}
             position={{
                 lat: location.coordinates[1],
                 lng: location.coordinates[0],
             }}
             className="cursor-pointer relative"
-            onClick={(event) => {
-                const ev = event.domEvent;
-
-                console.log(ev.target)
-
-                setOpenGarageCard((prev) => !prev)
-            }}
+            onClick={() => setOpenGarageCard((prev) => !prev)}
         >
             <div
                 className={clsx(
@@ -39,12 +36,12 @@ function GarageMarker({ garage }: GarageMarkerProps) {
                     if (ref) {
                         const { top } = ref.getBoundingClientRect();
                         setShouldShowBottom(() => {
-                            if ((top - 160 - CARD_HEIGHT) > 0) {
+                            if (top - 160 - CARD_HEIGHT > 0) {
                                 return false;
                             }
 
-                            return true
-                        })
+                            return true;
+                        });
                     }
                 }}
             >
@@ -63,7 +60,10 @@ function GarageMarker({ garage }: GarageMarkerProps) {
                 <GarageCard
                     garage={garage}
                     carouselType="rectangle"
-                    className={clsx("absolute left-1/2 -translate-x-1/2 w-72 p-2", shouldShowBottom ? "top-10" : "bottom-10")}
+                    className={clsx(
+                        "absolute left-1/2 -translate-x-1/2 w-72 p-2",
+                        shouldShowBottom ? "top-10" : "bottom-10",
+                    )}
                 />
             )}
         </AdvancedMarker>
