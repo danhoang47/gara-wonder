@@ -43,10 +43,8 @@ const Calendar = ({
         [year, month],
     );
 
-    console.log(thisMonth.toDate())
     const rows = useMemo(() => {
         const firstSunday = thisMonth.clone().startOf("month").day(0);
-        console.log(firstSunday.toDate())
         const dateOfMonth = firstSunday.toDate().getDate();
         const datesInMonth: Date[] = Array.from(new Array(NUMBER_OF_CELL)).map(
             (_, index) => {

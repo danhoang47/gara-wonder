@@ -1,10 +1,15 @@
 import { ContainerProps, Order } from "@/core/types";
-import { createContext, useEffect, useMemo, useState } from "react";
+import {
+    createContext,
+    useCallback,
+    useMemo,
+    useState,
+} from "react";
 
 export type OrderInfo = Partial<Order>;
 
 export type OrderContextType = {
-    order: OrderInfo;
+    order: Order;
     setOrderValue: <K extends keyof OrderInfo>(
         key: K,
         value: OrderInfo[K],
@@ -16,24 +21,24 @@ export const OrderContext = createContext<OrderContextType>(
 );
 
 export default function OrderContextProvider({ children }: ContainerProps) {
-    const [order, setOrder] = useState<OrderInfo>({} as OrderInfo);
+    const [order, setOrder] = useState<Order>({} as Order);
 
-    const setOrderValue = <K extends keyof OrderInfo>(
-        k: K,
-        v: OrderInfo[K],
-    ) => {
-        setOrder((prev) => ({
-            ...prev,
-            [k]: v,
-        }));
-    };
+    const setOrderValue = useCallback(
+        <K extends keyof OrderInfo>(k: K, v: OrderInfo[K]) => {
+            setOrder((prev) => ({
+                ...prev,
+                [k]: v,
+            }));
+        },
+        [],
+    );
 
     const orderContextValue = useMemo(
         () => ({
             order,
             setOrderValue,
         }),
-        [order],
+        [order, setOrderValue],
     );
 
     return (

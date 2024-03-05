@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit'
 import { Order } from '@/core/types'
 
 const ordersAdapter = createEntityAdapter<Order, string>({
@@ -9,7 +9,17 @@ const cartSlice = createSlice({
     name: "cart",
     initialState: ordersAdapter.getInitialState(),
     reducers: {
-        orderAdded: ordersAdapter.addOne,
+        orderAdded: {
+            prepare(order: Order) {
+                return {
+                    payload: {
+                        ...order,
+                        _id: nanoid()
+                    }
+                }
+            },
+            reducer: ordersAdapter.addOne
+        },
         orderRemoved: ordersAdapter.removeOne,
         orderReceived: (state, action: PayloadAction<Order[]>) => {
             ordersAdapter.setAll(state, action.payload)

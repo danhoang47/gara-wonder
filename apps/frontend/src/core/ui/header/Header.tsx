@@ -17,7 +17,7 @@ function Header({
     const location = useLocation();
 
     return (
-        <div className="border-b-1 sticky top-0 bg-white z-10 shrink-0">
+        <div className="border-b-1 sticky top-0 bg-white z-20 shrink-0">
             <div
                 className={clsx(
                     "h-20 flex justify-between gap-2",

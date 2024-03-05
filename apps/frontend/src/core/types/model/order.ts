@@ -32,7 +32,7 @@ export type Order = Model & {
     status?: ProcessStatus,
     hasPaid?: boolean,
     paymentId?: string,
-    payType: PayType,
+    payType?: PayType,
     orderStatus?: OrderStatus 
 }
 
