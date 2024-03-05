@@ -1,7 +1,28 @@
 import { Button } from "@nextui-org/react";
-import { SelectInput } from "..";
+import BrandInput from "./brand-input";
+import ServiceSelect from "./service-select";
+import SelectInput from "./select-input";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { useOrderContext } from "../../hooks";
 
 function BookingForm() {
+    const { garageId } = useParams();
+    const navigate = useNavigate();
+    const { order, setOrderValue } = useOrderContext();
+    useEffect(() => {
+        setOrderValue("garageId", garageId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [garageId]);
+    const onSave = () => {
+        console.log(order);
+        navigate("/book", order);
+    };
+    const validateForm = useMemo<boolean>(() => {
+        if (order.car?.brandId && order.orderTime && order.serviceIds)
+            return false;
+        return true;
+    }, [order]);
     return (
         <div className="px-5 py-8 border-zinc-200 border-2 rounded-md">
             <div className="flex flex-col gap-6">
@@ -16,18 +37,8 @@ function BookingForm() {
                         canEdit={true}
                         onClick={() => {}}
                     />
-                    <SelectInput
-                        type="string"
-                        title="Car"
-                        placeholder="Select your Car"
-                        onClick={() => {}}
-                    />
-                    <SelectInput
-                        type="string"
-                        title="Email"
-                        placeholder="Select your Email"
-                        onClick={() => {}}
-                    />
+                    <BrandInput />
+                    <ServiceSelect />
                 </div>
                 <div>
                     <div className="flex justify-between">
@@ -44,7 +55,13 @@ function BookingForm() {
                     <p className="font-semibold text-xl">Total</p>
                     <p>$123</p>
                 </div>
-                <Button color="primary" radius="sm" disableAnimation>
+                <Button
+                    color="primary"
+                    radius="sm"
+                    isDisabled={validateForm}
+                    disableAnimation
+                    onClick={onSave}
+                >
                     Booking Now
                 </Button>
             </div>
