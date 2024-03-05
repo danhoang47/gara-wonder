@@ -8,9 +8,9 @@ export type GarageBasicInfo = Omit<Garage, "services" | "images" | "staff"> & {
 
 export default async function getBasicGarageInfo(
     id: string,
-): Promise<Response<GarageBasicInfo>> {
+): Promise<Response<GarageBasicInfo[]>> {
     try {
-        const result = await axios.get<Response<GarageBasicInfo>>(
+        const result = await axios.get<Response<GarageBasicInfo[]>>(
             `${baseGaragesUrl}/basicInfo/${id}`,
         );
         return result.data;
