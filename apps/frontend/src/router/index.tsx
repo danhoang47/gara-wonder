@@ -13,6 +13,7 @@ import {
     BookPage,
     GarageManagePage,
     GeneralDashboard,
+    CartPage,
 } from "@/pages";
 
 const router = createBrowserRouter(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
                 <Route path="" element={<HomePage />} />
                 <Route path="garage/:garageId" element={<GaragePage />} />
                 <Route path="book" element={<BookPage />} />
+                <Route path="cart" element={<CartPage />} />
                 <Route
                     path="garage-registration"
                     element={<GarageRegistrationPage />}
