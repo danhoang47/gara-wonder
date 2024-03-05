@@ -1,20 +1,16 @@
 import { isTwoDateSame } from "@/utils";
 import Calendar from "../calendar";
 import CalendarCell from "../calendar/CalendarCell";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import DateNavigation from "./DateNavigation";
 
 import "./DatePicker.styles.scss";
-import { usePrevious } from "@/core/hooks";
 
 export type DateRange = {
     from?: Date;
     to?: Date;
 };
-
-const MAX_MONTH = 11;
-const MIN_MONTH = 0;
 
 export type DatePickerBaseProps = {
     disabledDates?: Date[];

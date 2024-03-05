@@ -12,8 +12,10 @@ import { useAppSelector } from "@/core/hooks";
 
 function UserProfileMenu() {
     const [isOpen, setOpen] = useState<boolean>(false);
-    const user = useAppSelector(state => state.user.value)
-    const profileMenuOptions = user ? userProfileMenuSections : guestProfileMenuSections
+    const user = useAppSelector((state) => state.user.value);
+    const profileMenuOptions = user
+        ? userProfileMenuSections
+        : guestProfileMenuSections;
 
     return (
         <Popover
@@ -31,7 +33,16 @@ function UserProfileMenu() {
                     disableAnimation
                 >
                     <FontAwesomeIcon icon={faBars} className="px-2" />
-                    <FontAwesomeIcon icon={faCircleUser} size="2x" />
+                    {user ? (
+                        <div className="w-[28px] h-[28px] rounded-full overflow-hidden">
+                            <img
+                                src={user.photoURL}
+                                className="w-full h-full"
+                            />
+                        </div>
+                    ) : (
+                        <FontAwesomeIcon icon={faCircleUser} size="2x" />
+                    )}
                 </Button>
             </PopoverTrigger>
             <PopoverContent aria-label="User menu" className="px-0 py-3">
