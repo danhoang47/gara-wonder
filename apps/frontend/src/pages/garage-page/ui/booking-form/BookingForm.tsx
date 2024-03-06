@@ -25,6 +25,8 @@ function BookingForm() {
     }, [garageId, setOrderValue]);
 
     const onBookPress = () => {
+        console.log(order);
+
         navigate("/book", {
             state: order,
         });
@@ -55,11 +57,11 @@ function BookingForm() {
 
     return (
         <div className="px-5 py-8 border-zinc-200 border-2 rounded-md">
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 ">
                 <p className="font-semibold text-xl leading-5">
                     Booking Services
                 </p>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 relative">
                     <SelectInput
                         type="date"
                         placeholder="Select your date"
