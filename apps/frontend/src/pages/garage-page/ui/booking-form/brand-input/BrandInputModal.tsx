@@ -69,61 +69,65 @@ function BrandInputModal({
     }, [localCar?.brandId, selectedBrand]);
 
     return (
-        <div className="w-[30rem] p-3">
-            <Select
-                items={brands || []}
-                selectionMode="single"
-                label="Brand"
-                placeholder="Select Brand"
-                variant="bordered"
-                isLoading={isBrandLoading}
-                disallowEmptySelection
-                onSelectionChange={(keys) => {
-                    if (keys !== "all") {
-                        const brandId = Array.from(keys)[0].toString();
-                        setLocalCar((prev) => ({ ...prev, brandId }));
-                    }
-                }}
-                selectedKeys={localCar?.brandId && [localCar.brandId]}
-            >
-                {(brand) => (
-                    <SelectItem key={brand._id}>{brand.name}</SelectItem>
-                )}
-            </Select>
-            <Select
-                items={models}
-                selectionMode="single"
-                label="Model"
-                placeholder="Select Model"
-                variant="bordered"
-                isLoading={isModelLoading}
-                disallowEmptySelection
-                isDisabled={Boolean(!localCar.brandId)}
-                onSelectionChange={(keys) => {
-                    if (keys !== "all") {
-                        const model = Array.from(keys)[0].toString();
-                        setLocalCar((prev) => ({ ...prev, model }));
-                    }
-                }}
-                selectedKeys={localCar.model && [localCar.model]}
-            >
-                {(item) => (
-                    <SelectItem key={item.model}>{item.model}</SelectItem>
-                )}
-            </Select>
-            <Input
-                label="Release Year"
-                placeholder="Release Year"
-                variant="bordered"
-                value={localCar.releaseYear?.toString()}
-                isDisabled={Boolean(!localCar.brandId)}
-                onValueChange={(value) => {
-                    setLocalCar((prev) => ({
-                        ...prev,
-                        releaseYear: Number.parseInt(value),
-                    }));
-                }}
-            />
+        <div className="w-[30rem] p-5">
+            <p className="text-lg font-bold">Edit Your Car</p>
+            <div className="flex flex-col gap-3 pt-5">
+                <Select
+                    items={brands || []}
+                    selectionMode="single"
+                    label="Brand"
+                    placeholder="Select Brand"
+                    variant="bordered"
+                    isLoading={isBrandLoading}
+                    disallowEmptySelection
+                    onSelectionChange={(keys) => {
+                        if (keys !== "all") {
+                            const brandId = Array.from(keys)[0].toString();
+                            setLocalCar((prev) => ({ ...prev, brandId }));
+                        }
+                    }}
+                    selectedKeys={localCar?.brandId && [localCar.brandId]}
+                >
+                    {(brand) => (
+                        <SelectItem key={brand._id}>{brand.name}</SelectItem>
+                    )}
+                </Select>
+                <Select
+                    items={models}
+                    selectionMode="single"
+                    label="Model"
+                    placeholder="Select Model"
+                    variant="bordered"
+                    isLoading={isModelLoading}
+                    disallowEmptySelection
+                    isDisabled={Boolean(!localCar.brandId)}
+                    onSelectionChange={(keys) => {
+                        if (keys !== "all") {
+                            const model = Array.from(keys)[0].toString();
+                            setLocalCar((prev) => ({ ...prev, model }));
+                        }
+                    }}
+                    selectedKeys={localCar.model && [localCar.model]}
+                >
+                    {(item) => (
+                        <SelectItem key={item.model}>{item.model}</SelectItem>
+                    )}
+                </Select>
+
+                <Input
+                    label="Release Year"
+                    placeholder="Release Year"
+                    variant="bordered"
+                    value={localCar.releaseYear?.toString()}
+                    isDisabled={Boolean(!localCar.brandId)}
+                    onValueChange={(value) => {
+                        setLocalCar((prev) => ({
+                            ...prev,
+                            releaseYear: Number.parseInt(value),
+                        }));
+                    }}
+                />
+            </div>
             <div className="flex gap-2 pt-3 justify-end">
                 <Button variant="light" onPress={onDismiss}>
                     <p className="text-default-400">Cancel</p>

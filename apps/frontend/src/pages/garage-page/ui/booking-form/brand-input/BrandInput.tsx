@@ -79,6 +79,7 @@ function BrandInput() {
                     <BrandInputModal
                         onDismiss={onModalDismiss}
                         onSave={onModalSave}
+                        car={car}
                         isBrandLoading={isBrandsLoading}
                         brands={brands}
                     />
