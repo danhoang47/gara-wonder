@@ -6,9 +6,20 @@ import {
     DropdownMenu,
     DropdownTrigger,
 } from "@nextui-org/react";
+import { useMemo } from "react";
+import clsx from "clsx";
 function GarageNavbar() {
     const location = useLocation();
-    console.log(location);
+    console.log(location.pathname);
+    const indicateRoute = useMemo(() => {
+        const list = navList.filter((el) => {
+            if (location.pathname.includes(el.link) && el.link !== "") {
+                return el.title as string;
+            }
+        });
+        if (list[0]?.link) return list[0]?.link;
+        return "";
+    }, [location]);
 
     return (
         <div className="flex items-center justify-between min-w-[40rem]">
@@ -16,7 +27,12 @@ function GarageNavbar() {
                 if (!nav.children) {
                     return (
                         <Link
-                            className="font-semibold cursor-pointer text-default-400 hover:text-default-500 "
+                            className={clsx(
+                                "font-semibold cursor-pointer  hover:text-default-500",
+                                indicateRoute == nav.link
+                                    ? "text-primary font-bold"
+                                    : "text-default-400",
+                            )}
                             key={index}
                             to={nav.link}
                             relative="path"
