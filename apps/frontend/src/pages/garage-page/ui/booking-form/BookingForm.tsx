@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/react";
 import BrandInput from "./brand-input";
 import ServiceSelect from "./service-select";
 import SelectInput from "./select-input";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useOrderContext } from "../../hooks";
 import { useAppDispatch } from "@/core/hooks";
@@ -13,20 +13,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function BookingForm() {
-    const { garageId } = useParams();
     const navigate = useNavigate();
-    const { order, setOrderValue } = useOrderContext();
+    const { order } = useOrderContext();
     const [isDomReady, setDomReady] = useState<boolean>(false);
     const [hasAddedToCart, setAddedToCart] = useState<boolean>(false);
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        setOrderValue("garageId", garageId);
-    }, [garageId, setOrderValue]);
-
     const onBookPress = () => {
-        console.log(order);
-
         navigate("/book", {
             state: order,
         });
@@ -38,7 +31,7 @@ function BookingForm() {
     };
 
     const validateForm = useMemo<boolean>(() => {
-        if (order.car?.brandId && order.orderTime && order.serviceIds)
+        if (order.car?.brandId && order.orderTime && order?.serviceIds?.length !== 0)
             return false;
         return true;
     }, [order]);
@@ -62,13 +55,7 @@ function BookingForm() {
                     Booking Services
                 </p>
                 <div className="flex flex-col gap-3 relative">
-                    <SelectInput
-                        type="date"
-                        placeholder="Select your date"
-                        title="Date"
-                        canEdit={true}
-                        onClick={() => {}}
-                    />
+                    <SelectInput />
                     <BrandInput />
                     <ServiceSelect />
                 </div>

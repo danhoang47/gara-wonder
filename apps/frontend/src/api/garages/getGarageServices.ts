@@ -1,6 +1,6 @@
 import axios from "axios";
 import { baseGaragesUrl } from ".";
-import { Category, Garage, Response, Service } from "@/core/types";
+import { Category, Response, Service } from "@/core/types";
 
 export type WithCategoryService = Omit<Service, "categoryId"> & {
     category: Category

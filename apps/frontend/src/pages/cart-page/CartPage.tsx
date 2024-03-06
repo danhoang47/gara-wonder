@@ -1,48 +1,21 @@
-import { Order, PayType } from "@/core/types";
+import { Order } from "@/core/types";
 import { Table } from "./ui";
 import { useMemo } from "react";
 import { Column } from "./ui/table/Table";
 import { Tab, Tabs } from "@nextui-org/react";
-
-const data: Order[] = [
-    {
-        _id: "1",
-        car: {
-            brandId: "test",
-            model: "LongLongLongLongLong C200",
-            plateNumber: "",
-            releaseYear: 2019,
-        },
-        garageId: "1",
-        orderTime: new Date().getTime(),
-        payType: PayType.PayAsReceive,
-        serviceIds: ["1"],
-        totalPrice: 200200200200200,
-        userId: "1",
-        createdAt: new Date().getTime(),
-        updatedAt: new Date().getTime(),
-    },
-];
+import { useAppSelector } from "@/core/hooks";
+import { selectOrders } from "@/features/cart/cart.slice";
+import OrderCard from "./ui/order-card";
 
 function CartPage() {
-
+    const orders = useAppSelector((state) => selectOrders(state.cart));
     const columns = useMemo<Column<Order>[]>(
         () => [
             {
-                key: "serivce",
+                key: "service",
                 name: "Dịch vụ",
-                onRender(item) {
-                    return (
-                        <div className="flex gap-2">
-                            <div className="w-1/4 h-20">
-                                <img
-                                    className="object-cover h-full w-full"
-                                    src="https://images.unsplash.com/photo-1551522435-a13afa10f103?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwZ2FyYWdlfGVufDB8fDB8fHww"
-                                />
-                            </div>
-                            <div>{item.car.model}</div>
-                        </div>
-                    );
+                onRender(order) {
+                    return <OrderCard key={order._id} order={order} />;
                 },
                 className: "w-1/2",
             },
@@ -65,12 +38,12 @@ function CartPage() {
                 },
             },
         ],
-        [data],
+        [],
     );
 
     return (
         <div className="container mx-auto">
-            <div className="my-6">
+            <div className="my-8">
                 <h1 className="font-semibold text-2xl">Giỏ Hàng</h1>
                 <span className="text-small text-default-400">
                     Nostrud nisi tempor deserunt voluptate sint proident irure
@@ -93,11 +66,11 @@ function CartPage() {
                     </Tabs>
                 </div>
                 <Table
-                    items={data}
+                    items={orders}
                     columns={columns}
                     classNames={{
                         headerWrapper: "border-b border-default-400",
-                        header: "font-semibold py-4",
+                        header: "font-semibold py-4 flex-grow",
                         row: "py-2",
                     }}
                 />

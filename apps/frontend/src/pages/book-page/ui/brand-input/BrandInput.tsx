@@ -20,7 +20,7 @@ export default function BrandInput() {
         getBrands,
     );
 
-    const onModalSave = (car: Partial<Car>) => {
+    const onModalSave = (car: Car) => {
         setOrderValue("car", car);
         setBrandModalOpen(false);
     };
@@ -56,6 +56,7 @@ export default function BrandInput() {
                 onSave={onModalSave}
                 isBrandLoading={isBrandsLoading}
                 brands={brands}
+                car={car}
             />
         </>
     );
