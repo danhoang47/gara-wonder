@@ -4,27 +4,41 @@ import DateInput from "../date-input";
 import BrandSelect from "../brand-input";
 import ServiceSelect from "../service-select";
 import PayTypeGroup from "../pay-type-group";
-import { useAppDispatch, useAppSelector } from "@/core/hooks";
-import { useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector, useModalContext } from "@/core/hooks";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useOrderContext } from "../../hooks";
-import { orderAdded, orderUpdated } from "@/features/cart/cart.slice";
-
+import { orderUpdated } from "@/features/cart/cart.slice";
+import createOrder from "@/api/order/createOrders";
 
 function OrderInfo() {
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const { order } = useOrderContext();
-    const { token } = useAppSelector(state => state.user)
-    const dispatch = useAppDispatch()
+    const { open } = useModalContext();
+    const { token } = useAppSelector((state) => state.user);
+    const dispatch = useAppDispatch();
+    const user = useAppSelector((state) => state.user.value);
 
     const onConfirmButtonPress = () => {
-        const type = searchParams.get("type")
+        const type = searchParams.get("type");
+
+        if (!token) {
+            open("signIn");
+        }
 
         if (type === "edit") {
-            dispatch(orderUpdated(order))        
+            dispatch(orderUpdated(order));
+            navigate("/cart");
         } else {
-            // TODO: book
+            createOrder(
+                {
+                    ...order,
+                    userId: user?._id || "",
+                },
+                token,
+            );
         }
-    }
+    };
 
     return (
         <div>
@@ -43,11 +57,15 @@ function OrderInfo() {
                     className="mt-8"
                     onPress={onConfirmButtonPress}
                 >
-                    <p>{token ? "Sign in to continue your booking" : "Book now"}</p>
+                    <p>
+                        {token
+                            ? "Sign in to continue your booking"
+                            : "Book now"}
+                    </p>
                 </Button>
             </div>
         </div>
-    )
+    );
 }
 
 export default OrderInfo;

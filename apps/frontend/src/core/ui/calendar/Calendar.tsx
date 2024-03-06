@@ -25,18 +25,18 @@ export type CalendarProps = {
 };
 
 const checkIfPastDate = (date: Date, month: number) => {
-    return moment().month(month).isSame(date);
+    return moment(date).isBefore(moment().month(month));
 };
 
 const Calendar = ({
     year,
     month,
     disabledDates = [],
-    disablePastDates = true, // done
+    disablePastDates = true,
     renderDate,
     renderHeader,
     onDateClick,
-    classNames
+    classNames,
 }: CalendarProps) => {
     const thisMonth = useMemo(
         () => moment().year(year).month(month),
@@ -68,7 +68,9 @@ const Calendar = ({
                 {renderHeader ? (
                     renderHeader(thisMonth.toDate())
                 ) : (
-                    <p className="text-center font-semibold">{thisMonth.format("MMMM YYYY")}</p>
+                    <p className="text-center font-semibold">
+                        {thisMonth.format("MMMM YYYY")}
+                    </p>
                 )}
             </div>
             <div className="flex flex-row">
@@ -85,11 +87,11 @@ const Calendar = ({
                             renderDate ? (
                                 renderDate(
                                     date,
-                                    (disablePastDates &&
-                                        checkIfPastDate(date, month)) ||
-                                        disabledDates.some((disabledDate) =>
+                                    checkIfPastDate(date, month) ||
+                                        (disabledDates.some((disabledDate) =>
                                             moment(disabledDate).isSame(date),
-                                        ),
+                                        ) &&
+                                            disablePastDates),
                                 )
                             ) : (
                                 <CalendarCell
