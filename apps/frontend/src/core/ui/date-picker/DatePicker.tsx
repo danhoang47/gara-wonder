@@ -103,7 +103,7 @@ function DatePicker({
                                         ? "bg-foreground text-background hover:bg-foreground"
                                         : undefined,
                                     disabled &&
-                                        "text-default-400 hover:border-background cursor-not-allowed line-through",
+                                        "text-default-400 hover:border-transparent cursor-not-allowed line-through",
                                 ),
                             }}
                         />
