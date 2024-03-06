@@ -3,25 +3,44 @@ import useSWRImmutable from "swr/immutable";
 
 import useOrderContext from "@/pages/garage-page/hooks/useOrderContext";
 import { getGarageServices } from "@/api";
+import { useMemo } from "react";
 
 export default function ServiceSelect() {
-    const { setOrderValue } = useOrderContext();
-
+    const { order, setOrderValue } = useOrderContext();
     const { isLoading: isServicesLoading, data: services } = useSWRImmutable(
-        `service/65db44c8cb29a95ec677b0a2`,
+        `service/${order.garageId}`,
         getGarageServices,
     );
+    const renderedServices = useMemo(() => {
+        const { car } = order;
+
+        return car
+            ? services?.data.filter((service) => {
+                  if (service.brandIds === "all") {
+                      return true;
+                  }
+                  return service.brandIds?.includes(car.brandId!);
+              })
+            : services?.data;
+    }, [order, services]);
+    const selectedKeys = useMemo(() => {
+        if (order.serviceIds?.length === services?.data.length) {
+            return "all";
+        }
+
+        return order.serviceIds;
+    }, [order.serviceIds, services?.data.length]);
 
     return (
         <Select
-            items={services?.data || []}
+            items={renderedServices || []}
             isLoading={isServicesLoading}
             placeholder="Select services"
             label="Services"
             selectionMode="multiple"
             variant="bordered"
             isRequired
-            disallowEmptySelection
+            selectedKeys={selectedKeys}
             color="primary"
             onSelectionChange={(keys) => {
                 if (keys === "all") {

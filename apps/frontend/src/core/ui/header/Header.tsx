@@ -33,7 +33,7 @@ function Header({
                 <div className="flex items-center justify-center flex-1 h-full">
                     {middleContent}
                 </div>
-                <div className="flex items-center justify-end  flex-1 h-full gap-2">
+                <div className="flex items-center justify-end  flex-1 h-full gap-4">
                     {rightContent}
                 </div>
             </div>

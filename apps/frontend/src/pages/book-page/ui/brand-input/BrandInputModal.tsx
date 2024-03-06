@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 
 export type BrandInputModalProps = {
     isOpen?: boolean;
-    onSave?: (car: Partial<Car>) => void;
+    onSave?: (car: Car) => void;
     onDismiss?: () => void;
     car?: Car;
     brands?: Brand[];
@@ -44,7 +44,7 @@ function BrandInputModal({
     brands,
     isBrandLoading,
 }: BrandInputModalProps) {
-    const [localCar, setLocalCar] = useState<Partial<Car>>(car);
+    const [localCar, setLocalCar] = useState<Car>(car);
     const [isModelLoading, setModelLoading] = useState<boolean>();
     const [models, setModels] = useState<Model[]>([]);
     const selectedBrand = useMemo(

@@ -5,6 +5,7 @@ import {
     useMemo,
     useState,
 } from "react";
+import { useParams } from "react-router-dom";
 
 export type OrderInfo = Partial<Order>;
 
@@ -21,7 +22,8 @@ export const OrderContext = createContext<OrderContextType>(
 );
 
 export default function OrderContextProvider({ children }: ContainerProps) {
-    const [order, setOrder] = useState<Order>({} as Order);
+    const { garageId } = useParams()
+    const [order, setOrder] = useState<Order>({ garageId } as Order);
 
     const setOrderValue = useCallback(
         <K extends keyof OrderInfo>(k: K, v: OrderInfo[K]) => {

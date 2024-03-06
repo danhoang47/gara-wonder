@@ -2,11 +2,6 @@ import { Brand, Car } from "@/core/types";
 import {
     Button,
     Input,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
     Select,
     SelectItem,
 } from "@nextui-org/react";
@@ -14,8 +9,7 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 
 export type BrandInputModalProps = {
-    isOpen?: boolean;
-    onSave?: (car: Partial<Car>) => void;
+    onSave?: (car: Car) => void;
     onDismiss?: () => void;
     car?: Car;
     brands?: Brand[];
@@ -37,14 +31,13 @@ const getModalUrl = (brandName: string) => {
 };
 
 function BrandInputModal({
-    isOpen,
     onSave,
     onDismiss,
     car = {} as Car,
     brands,
     isBrandLoading,
 }: BrandInputModalProps) {
-    const [localCar, setLocalCar] = useState<Partial<Car>>(car);
+    const [localCar, setLocalCar] = useState<Car>(car);
     const [isModelLoading, setModelLoading] = useState<boolean>();
     const [models, setModels] = useState<Model[]>([]);
     const selectedBrand = useMemo(
@@ -77,7 +70,6 @@ function BrandInputModal({
 
     return (
         <div className="w-[30rem] p-3">
-            {" "}
             <Select
                 items={brands || []}
                 selectionMode="single"

@@ -5,11 +5,9 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-    Select,
-    SelectItem,
 } from "@nextui-org/react";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWRImmutable from "swr/immutable";
 import BrandInputModal from "./BrandInputModal";
 
@@ -34,7 +32,7 @@ function BrandInput() {
         getBrands,
     );
 
-    const onModalSave = (car: Partial<Car>) => {
+    const onModalSave = (car: Car) => {
         setOrderValue("car", car);
         setIsBrandOpen(false);
     };

@@ -1,7 +1,7 @@
 import clsx from "clsx";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
-export enum SortedOrder {
+enum SortedOrder {
     ASC = 0,
     DESC,
 }

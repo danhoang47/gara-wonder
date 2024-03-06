@@ -24,7 +24,9 @@ const cartSlice = createSlice({
         orderReceived: (state, action: PayloadAction<Order[]>) => {
             ordersAdapter.setAll(state, action.payload)
         },
-        orderUpdated: ordersAdapter.updateOne
+        orderUpdated(state, action: PayloadAction<Order>) {
+            return ordersAdapter.upsertOne(state, action)
+        }
     }
 })
 
@@ -34,5 +36,9 @@ export const {
     orderRemoved,
     orderUpdated
 } = cartSlice.actions
+
+export const { 
+    selectAll: selectOrders
+} = ordersAdapter.getSelectors()
 
 export default cartSlice.reducer
