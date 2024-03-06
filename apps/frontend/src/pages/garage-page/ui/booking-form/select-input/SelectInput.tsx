@@ -8,15 +8,8 @@ import { DatePicker } from "@/core/ui";
 import { useState } from "react";
 import { useOrderContext } from "@/pages/garage-page/hooks";
 
-type InputProps = {
-    type: string;
-    value?: string;
-    placeholder: string;
-    title: string;
-    canEdit?: boolean;
-    onClick: () => void;
-};
-function SelectInput({ placeholder, title }: InputProps) {
+
+function SelectInput() {
     const { setOrderValue } = useOrderContext();
     const [localOrderTime, setLocalOrderTime] = useState<number>();
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
@@ -31,7 +24,14 @@ function SelectInput({ placeholder, title }: InputProps) {
             onClose={() => setDatePickerOpen(false)}
         >
             <PopoverTrigger onClick={() => setDatePickerOpen(true)}>
-                <div className="h-[56px] border-2 rounded-xl"></div>
+                <div className="h-[56px] border-2 rounded-xl hover:border-default-400 transition-colors px-3 py-2">
+                    <p className="text-sm text-primary">Date</p>
+                    <p className="text-sm">
+                        {localOrderTime
+                            ? new Date(localOrderTime).toDateString()
+                            : "Select your date"}
+                    </p>
+                </div>
             </PopoverTrigger>
             <PopoverContent>
                 <div className="w-[400px] pt-2">

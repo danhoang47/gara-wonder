@@ -1,10 +1,17 @@
 import { getBrands } from "@/api";
 import { Brand, Car } from "@/core/types";
 import { useOrderContext } from "@/pages/garage-page/hooks";
-import { Select, SelectItem } from "@nextui-org/react";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    Select,
+    SelectItem,
+} from "@nextui-org/react";
 
 import { useEffect, useState } from "react";
 import useSWRImmutable from "swr/immutable";
+import BrandInputModal from "./BrandInputModal";
 
 export type BrandInputModalProps = {
     brands?: Brand[];
@@ -15,43 +22,72 @@ export type Model = {
     model: string;
 };
 
-function BrandInputModal() {
-    const { setOrderValue } = useOrderContext();
-    const [localCar, setLocalCar] = useState<Partial<Car>>({});
+function BrandInput() {
+    const {
+        order: { car },
+        setOrderValue,
+    } = useOrderContext();
 
+    const [isBrandOpen, setIsBrandOpen] = useState<boolean>(false);
     const { isLoading: isBrandsLoading, data: brands } = useSWRImmutable(
         "brands",
         getBrands,
     );
-    useEffect(() => {
-        setOrderValue("car", localCar);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [localCar]);
+
+    const onModalSave = (car: Partial<Car>) => {
+        setOrderValue("car", car);
+        setIsBrandOpen(false);
+    };
+
+    const onModalDismiss = () => {
+        setIsBrandOpen(false);
+    };
+
+    const getCarLabel = () => {
+        const selectedBrand = brands?.find(
+            (brand) => brand._id === car?.brandId,
+        );
+        if (selectedBrand?.name) {
+            if (car?.model) {
+                if (car.releaseYear) {
+                    return `${selectedBrand?.name} ${car?.model} ${car?.releaseYear}`;
+                }
+                return `${selectedBrand?.name} ${car?.model}`;
+            }
+            return `${selectedBrand?.name}`;
+        }
+        return "Select your Car";
+    };
     return (
         <>
-            <Select
-                items={brands || []}
-                selectionMode="single"
-                label="Brand"
-                placeholder="Select Brand"
-                variant="bordered"
-                isLoading={isBrandsLoading}
-                disallowEmptySelection
-                onSelectionChange={(keys) => {
-                    if (keys !== "all") {
-                        const brandId = Array.from(keys)[0].toString();
-                        setLocalCar((prev) => ({ ...prev, brandId }));
-                    }
-                }}
-                selectedKeys={localCar?.brandId && [localCar.brandId]}
-                color="primary"
+            <Popover
+                placement="bottom-end"
+                triggerScaleOnOpen={false}
+                offset={-2}
+                triggerType="grid"
+                isOpen={isBrandOpen}
+                onClose={() => setIsBrandOpen(false)}
             >
-                {(brand) => (
-                    <SelectItem key={brand._id}>{brand.name}</SelectItem>
-                )}
-            </Select>
+                <PopoverTrigger onClick={() => setIsBrandOpen(true)}>
+                    <div className="h-[56px] border-2 rounded-xl hover:border-default-400 transition-colors px-3 py-2">
+                        <p className="text-sm text-primary">Date</p>
+                        <p className="text-sm">
+                            {getCarLabel() ? getCarLabel() : "Choose your car"}
+                        </p>
+                    </div>
+                </PopoverTrigger>
+
+                <PopoverContent>
+                    <BrandInputModal
+                        onDismiss={onModalDismiss}
+                        onSave={onModalSave}
+                        isBrandLoading={isBrandsLoading}
+                        brands={brands}
+                    />
+                </PopoverContent>
+            </Popover>
         </>
     );
 }
 
-export default BrandInputModal;
+export default BrandInput;
