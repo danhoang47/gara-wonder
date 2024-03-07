@@ -1,11 +1,12 @@
 import { isTwoDateSame } from "@/utils";
 import Calendar from "../calendar";
 import CalendarCell from "../calendar/CalendarCell";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import DateNavigation from "./DateNavigation";
 
 import "./DatePicker.styles.scss";
+import { usePrevious } from "@/core/hooks";
 
 export type DateRange = {
     from?: Date;
@@ -41,8 +42,17 @@ function DatePicker({
     disallowEmptySelection = false,
     onSelectedChange,
 }: DatePickerProps) {
+    const [index, setIndex] = useState<number>(0);
     const [year, setYear] = useState<number>(defaultYear);
     const [month, setMonth] = useState<number>(defaultMonth);
+    const previousMonth = usePrevious(month);
+    const renderedMonth = useMemo(() => {
+        if (!previousMonth) return [month]
+
+        if (previousMonth < month) return [previousMonth, month]
+        else return [month, previousMonth]
+    }, [month])
+    const carouselRef = useRef<HTMLDivElement>(null)
 
     const onDateSelected = (date: Date) => {
         if (mode === "single") {
@@ -70,6 +80,42 @@ function DatePicker({
         }
     };
 
+    useLayoutEffect(() => {
+        if (!carouselRef.current || !previousMonth) return;
+
+        const { current } = carouselRef;
+        const { width } = current.getBoundingClientRect();
+
+        if (previousMonth > month) {
+            current.scroll({
+                behavior: "instant",
+                left: width,
+            })   
+            current.scroll({
+                behavior: "smooth",
+                left: 0
+            })
+        } else {
+            current.scroll({
+                behavior: "smooth",
+                left: width
+            })
+        }
+    }, [carouselRef, month])
+
+    useEffect(() => {
+        if (!carouselRef.current) return;
+
+        const onScrollend = () => {
+            
+        }
+
+        const { current } = carouselRef
+        current.addEventListener("scrollend", onScrollend)
+
+        return () => current.removeEventListener("scrollend", onScrollend)
+    }, [carouselRef])
+
     return (
         <div className="relative">
             <DateNavigation
@@ -80,35 +126,38 @@ function DatePicker({
                     setMonth(month + 1);
                 }}
             />
-            <div className="datePickerCarousel">
-                <Calendar
-                    year={year}
-                    month={month}
-                    disablePastDates
-                    classNames={{
-                        wrapper: "calendar shrink-0",
-                    }}
-                    disabledDates={[new Date("2024/1/1")]}
-                    renderDate={(date, disabled) => (
-                        <CalendarCell
-                            key={date.getTime()}
-                            date={date}
-                            disabled={disabled}
-                            onClick={onDateSelected}
-                            classNames={{
-                                base: "cursor-pointer",
-                                wrapper: clsx(
-                                    "rounded-full border border-transparent hover:border-foreground",
-                                    checkIfDateSelected(date)
-                                        ? "bg-foreground text-background hover:bg-foreground"
-                                        : undefined,
-                                    disabled &&
-                                        "text-default-400 hover:border-transparent cursor-not-allowed line-through",
-                                ),
-                            }}
-                        />
-                    )}
-                />
+            <div className="datePickerCarousel" ref={carouselRef}>
+                {renderedMonth?.map(month => (
+                    <Calendar
+                        key={month}
+                        year={year}
+                        month={month}
+                        // disablePastDates
+                        classNames={{
+                            wrapper: "calendar shrink-0",
+                        }}
+                        disabledDates={[{ from: undefined, to: new Date() }]}
+                        renderDate={(date, disabled) => (
+                            <CalendarCell
+                                key={date.getTime()}
+                                date={date}
+                                disabled={disabled}
+                                onClick={onDateSelected}
+                                classNames={{
+                                    base: "cursor-pointer",
+                                    wrapper: clsx(
+                                        "rounded-full border border-transparent hover:border-foreground",
+                                        checkIfDateSelected(date)
+                                            ? "bg-foreground text-background hover:bg-foreground"
+                                            : undefined,
+                                        disabled &&
+                                            "text-default-400 hover:border-transparent cursor-not-allowed line-through",
+                                    ),
+                                }}
+                            />
+                        )}
+                    />
+                ))}
             </div>
         </div>
     );
