@@ -15,14 +15,18 @@ function Header({
     className,
 }: HeaderProps) {
     const location = useLocation();
+    const isLandingPage = location.pathname === "/"
 
     return (
-        <div className="border-b-1 sticky top-0 bg-white z-20 shrink-0">
+        <div className={clsx(
+            "sticky top-0 z-20 shrink-0 bg-white", 
+            isLandingPage || "border-b-1"
+        )}>
             <div
                 className={clsx(
                     "h-20 flex justify-between gap-2",
                     className,
-                    location.pathname.includes("garage")
+                    location.pathname.includes("garage/")
                         ? "container mx-auto"
                         : " px-10",
                 )}

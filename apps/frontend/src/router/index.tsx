@@ -14,13 +14,15 @@ import {
     GarageManagePage,
     GeneralDashboard,
     CartPage,
+    LandingPage,
 } from "@/pages";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
             <Route element={<DefaultLayout />}>
-                <Route path="" element={<HomePage />} />
+                <Route path="" element={<LandingPage />} />
+                <Route path="garage" element={<HomePage />} />
                 <Route path="garage/:garageId" element={<GaragePage />} />
                 <Route path="book" element={<BookPage />} />
                 <Route path="cart" element={<CartPage />} />
