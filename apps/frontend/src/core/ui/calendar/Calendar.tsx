@@ -2,18 +2,25 @@ import { useMemo } from "react";
 import moment from "moment";
 import CalendarCell from "./CalendarCell";
 import clsx from "clsx";
+import { isInRange, isTwoDateSame } from "@/utils";
 
 const NUMBER_OF_CELL = 35;
 const NUMBER_OF_COLUMN = 7;
 
 const columns = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
+export type DateRange = {
+    from?: Date | number,
+    to: Date | number
+}
+
+export type DisabledDate = Date | number | string | DateRange
+
 export type CalendarProps = {
     year: number;
     month: number;
-    disabledDates?: Date[];
+    disabledDates?: DisabledDate[];
     renderDate?: (date: Date, disabled: boolean) => React.ReactNode;
-    disablePastDates?: boolean;
     renderHeader?: (date: Date) => React.ReactNode;
     classNames?: Partial<
         Record<
@@ -24,15 +31,45 @@ export type CalendarProps = {
     onDateClick?: (dates: Date) => void;
 };
 
-const checkIfPastDate = (date: Date, month: number) => {
-    return moment(date).isBefore(moment().month(month));
+const checkIfDateDisabled = (date: Date, disabledDates?: DisabledDate[]) => {
+    if (!disabledDates) return true;
+
+    for (const disabledDate of disabledDates) {
+        const startOfDate = moment(new Date(date)).startOf("day")
+
+        if (
+            typeof disabledDate === "string" || 
+            typeof disabledDate === "number" || 
+            disabledDate instanceof Date
+        ) {
+            const startOfDisabledDate = moment(new Date(disabledDate)).startOf("day");
+
+            if (isTwoDateSame(startOfDate, startOfDisabledDate)) {
+                return true;
+            }
+        } else {
+            let startOfDisabledFromDate = disabledDate?.from && moment(disabledDate?.from).startOf("day") 
+            let startOfDisabledToDate = moment(disabledDate?.to).startOf("day")
+
+            if (
+                startOfDisabledFromDate && 
+                isInRange(startOfDate, startOfDisabledFromDate, startOfDisabledToDate)
+            ) {
+                return true;
+            } 
+            if (startOfDate.isBefore(startOfDisabledToDate)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 };
 
 const Calendar = ({
     year,
     month,
     disabledDates = [],
-    disablePastDates = true,
     renderDate,
     renderHeader,
     onDateClick,
@@ -87,20 +124,13 @@ const Calendar = ({
                             renderDate ? (
                                 renderDate(
                                     date,
-                                    checkIfPastDate(date, month) ||
-                                        (disabledDates.some((disabledDate) =>
-                                            moment(disabledDate).isSame(date),
-                                        ) &&
-                                            disablePastDates),
+                                    checkIfDateDisabled(date, disabledDates),
                                 )
                             ) : (
                                 <CalendarCell
                                     key={date.getTime()}
                                     date={date}
-                                    disabled={
-                                        disablePastDates &&
-                                        checkIfPastDate(date, month)
-                                    }
+                                    disabled={checkIfDateDisabled(date, disabledDates)}
                                     onClick={onDateClick}
                                 />
                             ),
