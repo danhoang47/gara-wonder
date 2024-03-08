@@ -1,16 +1,21 @@
-export const navList = [
-    { title: "General", link: "" },
-    { title: "Calendar", link: "calendar" },
-    { title: "Orders", link: "orders" },
-    { title: "Accessories List", link: "" },
-    { title: "Message", link: "" },
+export type navType = {
+    title: string;
+    link: string;
+    children?: navType[];
+};
+
+export const navList: navType[] = [
+    { title: "Tổng quan", link: "" },
+    { title: "Lịch", link: "calendar" },
+    { title: "Đơn sửa chữa", link: "orders" },
+    { title: "Tin nhắn", link: "message" },
     {
-        title: "Details",
+        title: "Chi tiết",
         link: "",
         children: [
-            { title: "Review", link: "" },
-            { title: "Income", link: "" },
-            { title: "Staff", link: "" },
+            { title: "Review", link: "review" },
+            { title: "Thu nhập", link: "income" },
+            { title: "Nhân viên", link: "staff" },
         ],
     },
 ];
