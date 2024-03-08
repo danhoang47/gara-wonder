@@ -9,11 +9,11 @@ function OrderDetail() {
         <div className="pt-10">
             <p className="text-3xl font-bold">Chi tiết đơn hàng</p>
 
-            <div className="grid grid-cols-10 gap-4 pt-10">
-                <div className="col-span-7 flex flex-col gap-5">
+            <div className="grid grid-cols-12 gap-4 pt-10">
+                <div className="col-span-9 flex flex-col gap-5">
                     {/* Evaluation */}
                     <Evaluation />
-                    {/* Book Information */}
+                    {/* User Information */}
                     <div className="px-5 py-5 border-2 rounded-lg flex flex-col gap-3">
                         <p className="text-xl font-bold">Thông tin đơn hàng</p>
                         <div className="w-full h-1 border-t-2" />
@@ -34,10 +34,15 @@ function OrderDetail() {
                             </div>
                         </div>
                     </div>
+                    {/* Service Information */}
+                    <div className="px-5 py-5 border-2 rounded-lg flex flex-col gap-3">
+                        <p className="text-xl font-bold">Thông tin dịch vụ</p>
+                        <div className="w-full h-1 border-t-2" />
+                    </div>
                 </div>
-                <div className="w-full col-span-3">
+                <div className="w-full col-span-3 flex flex-col gap-4">
                     {/* Report button */}
-                    <div className="px-5 py-5 border-2 rounded-lg ">
+                    <div className="p-5 border-2 rounded-lg ">
                         <p className="text-sm font-bold">
                             If you have any issues with the correct booking, you
                             can report it to the admin here
@@ -53,6 +58,63 @@ function OrderDetail() {
                         >
                             Report
                         </Button>
+                    </div>
+                    {/* Summary */}
+                    <div className="px-5 py-10 border-2 rounded-lg flex flex-col gap-4">
+                        <p className="text-xl font-bold">Tổng quát</p>
+                        <div className="w-full h-1 border-t-2" />
+                        <div className="flex justify-between">
+                            <p className="text-sm text-default-400">
+                                Ngày lấy xe
+                            </p>
+                            <p className="text-sm font-bold">
+                                Mon , 4 Feb 2024 -10:00
+                            </p>
+                        </div>
+                        <div className="flex justify-between">
+                            <p className="text-sm text-default-400">
+                                Ngày trả xe
+                            </p>
+                            <p className="text-sm font-bold">1 Xe</p>
+                        </div>
+                        <div className="flex justify-between">
+                            <p className="text-sm text-default-400">
+                                Tổng số lượng xe
+                            </p>
+                            <p className="text-sm font-bold">
+                                Thu , 48 Feb 2024 -15:00
+                            </p>
+                        </div>
+                        <div className="w-full h-1 border-t-2" />
+                        <p className="text-lg font-bold">Giá chi tiết</p>
+
+                        <div className="flex justify-between">
+                            <p className="text-sm text-default-400">
+                                Giá sửa chửa
+                            </p>
+                            <p className="text-sm font-bold">USD 200</p>
+                        </div>
+                        <div className="flex justify-between">
+                            <p className="text-sm text-default-400">
+                                Giá dịch vụ
+                            </p>
+                            <p className="text-sm font-bold">USD 80</p>
+                        </div>
+                        <div className="flex justify-between">
+                            <p className="text-sm text-default-400">
+                                Thời gian kéo dài
+                            </p>
+                            <p className="text-sm font-bold">1 ngày</p>
+                        </div>
+                        <div className="flex justify-between">
+                            <p className="text-sm text-default-400">Thuế</p>
+                            <p className="text-sm font-bold">USD 0</p>
+                        </div>
+                        <div className="w-full h-1 border-t-2" />
+                        <div className="flex justify-between">
+                            <p className="font-bold text-xl">Tổng cộng</p>
+                            <p className="font-bold text-lg">USD 280.00</p>
+                        </div>
                     </div>
                 </div>
             </div>
