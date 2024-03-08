@@ -100,7 +100,7 @@ const Calendar = ({
     }, [thisMonth]);
 
     return (
-        <div className={clsx("w-full", classNames?.wrapper)}>
+        <div className={clsx("max-w-full", classNames?.wrapper)}>
             <div className="flex items-center justify-center  h-8">
                 {renderHeader ? (
                     renderHeader(thisMonth.toDate())
