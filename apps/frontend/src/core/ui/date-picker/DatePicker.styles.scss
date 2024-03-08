@@ -1,5 +1,6 @@
 .datePickerCarousel {
     display: flex;
+    gap: 12px;
     scroll-snap-type: x mandatory;
     overflow-x: auto;
     height: 100%;
@@ -8,7 +9,6 @@
 
     > div {
         flex-shrink: 0;
-        scroll-snap-align: center;
     }
     
     &::-webkit-scrollbar {

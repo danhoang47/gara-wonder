@@ -54,3 +54,10 @@ Model & {
     },
     staff: Array<User["_id"]>
 }
+
+
+export type DateRange = {
+    from?: Date;
+    to?: Date;
+};
+
