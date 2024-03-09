@@ -27,11 +27,11 @@ export default function DateInput() {
         return localOrderTime ? new Date(localOrderTime) : undefined;
     }, [localOrderTime]);
     const isOrderTimeInvalid = useMemo(() => {
-        if (!orderTime) return false
+        if (!orderTime) return false;
 
         // TODO: need to set start of this date
-        return new Date(orderTime).getDate() > new Date().getDate()
-    }, [orderTime])
+        return new Date(orderTime).getDate() > new Date().getDate();
+    }, [orderTime]);
 
     return (
         <>
@@ -58,22 +58,30 @@ export default function DateInput() {
                     <ModalHeader className="justify-between">
                         <div className="">
                             <p className="shrink-0">Pick Date</p>
-                            <span className="text-small text-default-400 font-normal">Select a date to fix your car</span>
+                            <span className="text-small text-default-400 font-normal">
+                                Select a date to fix your car
+                            </span>
                         </div>
-                        <Input 
+                        <Input
                             label="Order Date"
                             placeholder="YYYY/MM/dd"
                             variant="bordered"
                             value={moment(localOrderTime).format("YYYY/MM/DD")}
                             classNames={{
                                 base: "max-w-44",
-                                inputWrapper: "border data-[focus=true]:border-2"
+                                inputWrapper:
+                                    "border data-[focus=true]:border-2",
                             }}
                             isInvalid={isOrderTimeInvalid}
                             onValueChange={(value) => {
-                                const orderDate = moment(value, "YYYY MM DD")
-                                if (value.length === 10 && orderDate.isValid()) {
-                                    setLocalOrderTime(orderDate.toDate().getTime())
+                                const orderDate = moment(value, "YYYY MM DD");
+                                if (
+                                    value.length === 10 &&
+                                    orderDate.isValid()
+                                ) {
+                                    setLocalOrderTime(
+                                        orderDate.toDate().getTime(),
+                                    );
                                 }
                             }}
                             isClearable
@@ -87,7 +95,7 @@ export default function DateInput() {
                             }}
                             selectedDate={selectedDate}
                             defaultYear={2024}
-                            defaultMonth={0}
+                            defaultMonth={new Date().getMonth()}
                         />
                     </ModalBody>
                     <ModalFooter>
@@ -101,9 +109,10 @@ export default function DateInput() {
                             <Button
                                 className="bg-foreground"
                                 onPress={() => {
-                                    setOrderValue("orderTime", localOrderTime);
+                                    setOrderValue("orderTime", localOrderTime!);
                                     setDatePickerModalOpen(false);
                                 }}
+                                disabled={Boolean(!localOrderTime)}
                             >
                                 <p className="text-background">Save</p>
                             </Button>

@@ -36,7 +36,7 @@ function ImagesOverlay({
                 isOpen ? "block" : "hidden",
             )}
         >
-            <div className=" sticky flex justify-between items-center bg-background top-0 p-4">
+            <div className="container mx-auto sticky flex justify-between items-center bg-background top-0 py-4">
                 <div
                     className="h-10 flex justify-center items-center  w-10 rounded-full hover:bg-gray-300 transition-background cursor-pointer"
                     onClick={closeGallery}
@@ -55,7 +55,7 @@ function ImagesOverlay({
                 </div>
             </div>
             <div className="grid-wraper mx-auto w-1/2 h-full">
-                {images.map((img: Image, index) => (
+                {images?.map((img: Image, index) => (
                     <div className="grid-element" key={index} id={img._id}>
                         <img src={img.url} alt="" className="w-full h-full" />
                     </div>
