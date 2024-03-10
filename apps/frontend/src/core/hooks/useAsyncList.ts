@@ -1,16 +1,26 @@
-import { Fetcher, Key } from 'swr';
-import equal from 'deep-equal'
-import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite'
-import { usePrevious } from '.';
+import { useEffect, useMemo } from "react";
+import { usePrevious } from ".";
+import deepEqual from "deep-equal";
+import useSWR from "swr";
+import { Response } from "../types";
 
-export default function useAsyncList<K extends Key, T, D = unknown>(
-    getKey: SWRInfiniteKeyLoader<K>,
-    fetcher: Fetcher<T, K>,
-    dependency: D
+export default function useAsyncList<T>(
+    getKey: string | (() => string),
+    setter: (data: T[]) => void,
+    dependencies: React.DependencyList,
+    fetcher: () => Promise<Response<T[]>>,
 ) {
-    const previousDependency = usePrevious(dependency)
-    const isReload = equal(dependency, previousDependency)
-    const { isLoading, error, data } = useSWRInfinite(getKey, fetcher)
+    const previousDependencies = usePrevious(dependencies);
+    const isReload = useMemo(() => {
+        return deepEqual(previousDependencies, dependencies);
+    }, [dependencies, previousDependencies]);
+    const { isLoading, data: response } = useSWR(getKey, fetcher);
 
-    return { isReload, isLoading, error, data }
+    useEffect(() => {
+        if (isLoading) {
+            setter(response?.data || []);
+        }
+    }, [response?.data, isLoading, setter]);
+
+    return { isReload, response };
 }

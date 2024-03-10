@@ -1,4 +1,4 @@
-import { Model } from ".";
+import { Model, OrderStatus } from ".";
 
 export const enum NotificationType {
     Order = 0,
@@ -9,12 +9,6 @@ export const enum NotificationType {
 export type NotificationBase = Model & {
     userId: string;
 };
-
-export const enum OrderStatus {
-    Pending = 0,
-    Accepted,
-    Rejected,
-}
 
 export type OrderNotification = NotificationBase & {
     type: NotificationType.Order;

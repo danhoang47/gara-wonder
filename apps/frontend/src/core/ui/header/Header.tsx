@@ -40,7 +40,7 @@ function Header({
                 <div className="flex items-center justify-center flex-1 h-full">
                     {middleContent}
                 </div>
-                <div className="flex items-center justify-end  flex-1 h-full gap-4">
+                <div className="flex basis-auto items-center justify-end flex-1 h-full gap-1">
                     {rightContent}
                 </div>
             </div>

@@ -5,6 +5,7 @@ import { toastsReducer } from "@/features/toasts";
 import { userReducer } from "@/features/user";
 import { garageReducer } from "@/features/garages";
 import { cartReducer } from "@/features/cart";
+import { notificationsReducer } from "@/features/notifications";
 
 const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
         user: userReducer,
         garages: garageReducer,
         cart: cartReducer,
+        notifications: notificationsReducer
     }
 })
 
