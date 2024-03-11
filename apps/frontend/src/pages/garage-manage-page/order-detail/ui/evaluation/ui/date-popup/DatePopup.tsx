@@ -8,7 +8,7 @@ function DatePopup({
     pickDate,
 }: {
     closeModal: () => void;
-    setDate: (date?: number) => void;
+    setDate: (date: number) => void;
     pickDate?: number;
 }) {
     return (
@@ -43,7 +43,7 @@ function DatePopup({
                 <DatePicker
                     mode="single"
                     onSelectedChange={(date) => {
-                        setDate(date?.getTime());
+                        setDate(date?.getTime() as number);
                     }}
                     defaultYear={2024}
                     defaultMonth={new Date().getMonth()}

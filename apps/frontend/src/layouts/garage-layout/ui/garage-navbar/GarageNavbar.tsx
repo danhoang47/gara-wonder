@@ -60,7 +60,7 @@ function GarageNavbar() {
                                     <DropdownItem key={index}>
                                         <Link
                                             className="font-semibold cursor-pointer text-default-400 hover:text-default-600 "
-                                            to={nav.link}
+                                            to={sub.link}
                                             relative="path"
                                         >
                                             {sub.title}
