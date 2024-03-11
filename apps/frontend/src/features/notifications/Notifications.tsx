@@ -19,7 +19,6 @@ function Notifications() {
     const [isNotificationsOpen, setNotificationsOpen] =
         useState<boolean>(false);
 
-    console.log(hasAllRead)
     return (
         <Popover
             isOpen={isNotificationsOpen && Boolean(user)}

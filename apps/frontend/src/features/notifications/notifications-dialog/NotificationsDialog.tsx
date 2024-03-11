@@ -7,7 +7,7 @@ import NotificationCard from "../notification-card";
 import { notificationUpsert, notificationsReceived, selectNotifications } from "../notifications.slice";
 
 const DEFAULT_PAGING: Paging = {
-    limit: 1
+    limit: 10
 }
 
 function NotificationsDialog() {
@@ -48,10 +48,9 @@ function NotificationsDialog() {
     }
 
     const onRenderNotifications = () => {
-        // TODO: need backend enhanced logic
-        // if (isReload) {
-        //     return <>{onRenderLoading()}</>
-        // } 
+        if (isReload && isLoading) {
+            return <>{onRenderLoading()}</>
+        } 
         return (
             <>
                 {notifications?.map(notification => (
@@ -62,7 +61,6 @@ function NotificationsDialog() {
         )
     }
 
-    console.log(notifications)
     return (
         <div className="w-full flex flex-col">
             <div className="flex py-4 px-6 justify-between items-center border-b">
@@ -71,8 +69,10 @@ function NotificationsDialog() {
                     Đánh dấu là đã đọc
                 </p>
             </div>
-            <div className="max-h-[70vh] overflow-y-auto">
-                {onRenderNotifications()}
+            <div className="max-h-[70vh] overflow-y-auto" ref={ref}>
+                <div>
+                    {onRenderNotifications()}
+                </div>
                 <div className="h-1"/>
             </div>
         </div>
