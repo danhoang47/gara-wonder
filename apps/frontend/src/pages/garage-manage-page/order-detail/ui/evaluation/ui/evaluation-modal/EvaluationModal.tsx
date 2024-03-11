@@ -1,7 +1,5 @@
-import { DatePicker } from "@/core/ui";
 import {
     Button,
-    Input,
     Popover,
     PopoverContent,
     PopoverTrigger,
@@ -15,7 +13,7 @@ function EvaluationModal({ closeModal }: { closeModal: () => void }) {
     const [localOrderTime, setLocalOrderTime] = useState<number>();
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
 
-    const setDate = (date) => {
+    const setDate = (date: number) => {
         setLocalOrderTime(date);
     };
 

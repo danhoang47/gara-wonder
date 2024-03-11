@@ -1,0 +1,33 @@
+.chart-wrapper {
+    height: 340px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 500px) {
+    .chart-wrapper {
+        height: 340px;
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .chart-wrapper {
+        height: 340px;
+        width: 100%;
+    }
+}
+
+@media (min-width: 992px) {
+    .chart-wrapper {
+        height: 340px;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .chart-wrapper {
+        height: 340px;
+        width: 100%;
+    }
+}
