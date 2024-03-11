@@ -22,16 +22,14 @@ function GarageNavbar() {
     }, [location]);
 
     return (
-        <div className="flex items-center justify-between min-w-[40rem]">
+        <div className="flex items-center justify-center gap-4">
             {navList.map((nav, index) => {
                 if (!nav.children) {
                     return (
                         <Link
                             className={clsx(
-                                "font-semibold cursor-pointer  hover:text-default-500",
-                                indicateRoute == nav.link
-                                    ? "text-primary font-bold"
-                                    : "text-default-400",
+                                "cursor-pointer hover:text-default-500 text-default-400",
+                                indicateRoute === nav.link && "text-medium text-foreground",
                             )}
                             key={index}
                             to={nav.link}
@@ -43,13 +41,13 @@ function GarageNavbar() {
                 }
                 return (
                     <div
-                        className="font-semibold cursor-pointer text-default-400"
+                        className="cursor-pointer text-default-400"
                         key={index}
                     >
                         <Dropdown classNames={{ content: "min-w-[7.5rem]" }}>
                             <DropdownTrigger>
                                 <div
-                                    className="font-semibold cursor-pointer text-default-400 hover:text-default-600 "
+                                    className="cursor-pointer text-default-400 hover:text-default-600 "
                                     key={index}
                                 >
                                     {nav.title}
@@ -59,7 +57,7 @@ function GarageNavbar() {
                                 {nav.children.map((sub, index) => (
                                     <DropdownItem key={index}>
                                         <Link
-                                            className="font-semibold cursor-pointer text-default-400 hover:text-default-600 "
+                                            className="cursor-pointer text-default-400 hover:text-default-600 "
                                             to={sub.link}
                                             relative="path"
                                         >
