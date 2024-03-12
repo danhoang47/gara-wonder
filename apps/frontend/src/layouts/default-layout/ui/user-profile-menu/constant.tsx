@@ -1,4 +1,5 @@
 import { SignInTrigger, SignOutTrigger } from '@/features/user'
+import { Link } from '@nextui-org/react';
 
 export const guestProfileMenuSections = [
     {
@@ -38,7 +39,12 @@ export const userProfileMenuSections = [
                 key: "k1",
                 component: <SignOutTrigger />,
                 title: 'Sign in'
+            },
+            {
+                key: "k2",
+                component: <Link href="/garage-management/65db44c8cb29a95ec677b0a2">Your garage</Link>,
+                title: "Your garage"
             }
         ],
-    },
+    }
 ]

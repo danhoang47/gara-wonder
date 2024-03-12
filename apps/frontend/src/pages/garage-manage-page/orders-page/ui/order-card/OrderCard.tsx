@@ -1,10 +1,12 @@
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chip, Tooltip } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 
 function OrderCard() {
+    const navigate = useNavigate();
     return (
-        <div className="cursor-pointer">
+        <div className="cursor-pointer" onClick={() => navigate("./1")}>
             <div className=" border-2 rounded-md p-5 hover:border-default-600 hover:shadow-lg transition-colors">
                 <div className="relative">
                     <div className="flex gap-5">
