@@ -21,16 +21,13 @@ function Notifications() {
         useState<boolean>(false);
     const { isLoading, isReload, onNext } = useNotifications()
 
-    useEffect(() => {
-        document.addEventListener("scroll", () => setNotificationsOpen(false))
-    }, [])
-
     return (
         <Popover
             isOpen={isNotificationsOpen && Boolean(user)}
             onOpenChange={(open) => {
                 setNotificationsOpen(open);
             }}
+            triggerType="dialog"
         >
             <PopoverTrigger>
                 <Button
