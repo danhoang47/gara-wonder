@@ -1,10 +1,43 @@
-import { useInfiniteScroll } from "@/core/hooks";
+import { useAppSelector, useInfiniteScroll } from "@/core/hooks";
 import NotificationSkeleton from "../notification-skeleton";
+import NotificationCard from "../notification-card";
+import {  selectNotifications } from "../notifications.slice";
 
-function NotificationsDialog() {
-    const ref = useInfiniteScroll(() => {
-        console.log("end");
-    });
+export type NotificationsDialogProps = {
+    isLoading: boolean,
+    isReload: boolean,
+    onNext: () => void;
+}
+
+function NotificationsDialog({
+    isLoading,
+    isReload,
+    onNext
+}: NotificationsDialogProps) {
+    const notifications = useAppSelector(state => selectNotifications(state.notifications));
+    const ref = useInfiniteScroll(onNext);
+
+    const onRenderLoading = () => {
+        return <>
+            {Array.from(new Array(10)).map((_, index) => (
+                <NotificationSkeleton key={index} />
+            ))}
+        </>
+    }
+
+    const onRenderNotifications = () => {
+        if (isReload && isLoading) {
+            return <>{onRenderLoading()}</>
+        } 
+        return (
+            <>
+                {notifications?.map(notification => (
+                    <NotificationCard key={notification._id} notification={notification}/>
+                ))}
+                {isLoading && onRenderLoading()}
+            </>
+        )
+    }
 
     return (
         <div className="w-full flex flex-col">
@@ -15,10 +48,10 @@ function NotificationsDialog() {
                 </p>
             </div>
             <div className="max-h-[70vh] overflow-y-auto">
-                {Array.from(new Array(20)).map((_, index) => (
-                    <NotificationSkeleton key={index} />
-                ))}
-                <div ref={ref} className="h-1"/>
+                <div>
+                    {onRenderNotifications()}
+                </div>
+                <div ref={ref} className="h-2"/>
             </div>
         </div>
     );

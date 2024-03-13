@@ -22,14 +22,14 @@ function GarageNavbar() {
     }, [location]);
 
     return (
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-6">
             {navList.map((nav, index) => {
                 if (!nav.children) {
                     return (
                         <Link
                             className={clsx(
-                                "cursor-pointer hover:text-default-500 text-default-400",
-                                indicateRoute === nav.link && "text-medium text-foreground",
+                                "font-medium text-small cursor-pointer hover:text-default-500",
+                                indicateRoute !== nav.link && "text-default-400"
                             )}
                             key={index}
                             to={nav.link}
@@ -47,7 +47,7 @@ function GarageNavbar() {
                         <Dropdown classNames={{ content: "min-w-[7.5rem]" }}>
                             <DropdownTrigger>
                                 <div
-                                    className="cursor-pointer text-default-400 hover:text-default-600 "
+                                    className="font-medium text-small cursor-pointer text-default-400 hover:text-default-600 "
                                     key={index}
                                 >
                                     {nav.title}
