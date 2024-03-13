@@ -116,13 +116,13 @@ const Calendar = ({
             <div className="flex flex-row">
                 {columns.map((column) => (
                     <div key={column} className={clsx("basis-[calc(100%/7)] py-2", classNames?.weekDayWrapper)}>
-                        <p className="text-center text-default-400">{column}</p>
+                        <p className="text-default-400">{column}</p>
                     </div>
                 ))}
             </div>
-            <div className="">
+            <div className="flex flex-col grow">
                 {rows.map((row, index) => (
-                    <div className="flex" key={index}>
+                    <div className="flex grow" key={index}>
                         {row.map((date) =>
                             renderDate ? (
                                 renderDate(
