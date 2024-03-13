@@ -19,7 +19,10 @@ const DefaultLayout = () => {
     }, [user]);
 
     return (
-        <div data-testid={DefaultLayout.name} className="h-full flex flex-col overflow-hidden">
+        <div
+            data-testid={DefaultLayout.name}
+            className="flex flex-col relative"
+        >
             <Header
                 leftContent={<BrandLogo />}
                 middleContent={<></>}
