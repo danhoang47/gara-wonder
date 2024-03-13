@@ -24,6 +24,7 @@ export type Order = Model & {
     userId: User["_id"],
     evaluationId?: Evaluation["_id"],
     car: Car,
+    isAccepted: boolean,
     serviceIds: string[],
     orderTime: number,
     handOverTime?: number,

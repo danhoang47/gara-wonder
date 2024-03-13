@@ -7,7 +7,7 @@ export const enum NotificationType {
 }
 
 export type NotificationBase = Model & {
-    userId: string;
+    userId?: string;
 };
 
 export type OrderNotification = NotificationBase & {
@@ -16,6 +16,8 @@ export type OrderNotification = NotificationBase & {
         orderId: string;
         status: OrderStatus;
     };
+    from: string,
+    to: string,
     hasRead: boolean;
 };
 
@@ -26,6 +28,8 @@ export type GarageOrderNotification = NotificationBase & {
         status: OrderStatus;
         allowAction?: boolean; // "auto" | "manual"
     };
+    from: string,
+    to: string,
     hasRead: boolean;
 };
 
