@@ -6,7 +6,7 @@ export type navType = {
 
 export const navList: navType[] = [
     { title: "Tổng quan", link: "" },
-    { title: "Lịch", link: "calendar" },
+    { title: "Lịch", link: "schedule" },
     { title: "Đơn sửa chữa", link: "orders" },
     { title: "Tin nhắn", link: "message" },
     {
