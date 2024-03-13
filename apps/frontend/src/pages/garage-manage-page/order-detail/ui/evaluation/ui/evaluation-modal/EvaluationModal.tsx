@@ -9,10 +9,15 @@ import {
 } from "@nextui-org/react";
 import moment from "moment";
 import { useState } from "react";
+import { DatePopup } from "..";
 
 function EvaluationModal({ closeModal }: { closeModal: () => void }) {
     const [localOrderTime, setLocalOrderTime] = useState<number>();
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
+
+    const setDate = (date) => {
+        setLocalOrderTime(date);
+    };
 
     return (
         <div className="flex flex-col   gap-4 p-5">
@@ -63,83 +68,13 @@ function EvaluationModal({ closeModal }: { closeModal: () => void }) {
                             </p>
                         </PopoverTrigger>
                         <PopoverContent>
-                            <div className="w-[400px] p-4">
-                                <div className="flex justify-between">
-                                    <div className="">
-                                        <p className="shrink-0 text-lg font-bold">
-                                            Pick Date
-                                        </p>
-                                        <span className="text-small text-default-400 font-normal">
-                                            Select a date to fix your car
-                                        </span>
-                                    </div>
-                                    <Input
-                                        label="Order Date"
-                                        placeholder="YYYY/MM/dd"
-                                        variant="bordered"
-                                        value={moment(localOrderTime).format(
-                                            "YYYY/MM/DD",
-                                        )}
-                                        classNames={{
-                                            base: "max-w-44",
-                                            inputWrapper:
-                                                "border data-[focus=true]:border-2",
-                                        }}
-                                        // isInvalid={isOrderTimeInvalid}
-                                        onValueChange={(value) => {
-                                            const orderDate = moment(
-                                                value,
-                                                "YYYY MM DD",
-                                            );
-                                            if (
-                                                value.length === 10 &&
-                                                orderDate.isValid()
-                                            ) {
-                                                setLocalOrderTime(
-                                                    orderDate
-                                                        .toDate()
-                                                        .getTime(),
-                                                );
-                                            }
-                                        }}
-                                        isClearable
-                                    />
-                                </div>
-                                <div className="pt-5">
-                                    <DatePicker
-                                        mode="single"
-                                        onSelectedChange={(date) => {
-                                            setLocalOrderTime(date?.getTime());
-                                        }}
-                                        defaultYear={2024}
-                                        defaultMonth={new Date().getMonth()}
-                                        selectedDate={
-                                            localOrderTime
-                                                ? new Date(localOrderTime)
-                                                : undefined
-                                        }
-                                    />
-                                </div>
-                                <div className="flex gap-2 py-2 justify-end px-4">
-                                    <Button
-                                        variant="light"
-                                        onPress={() => {
-                                            setDatePickerOpen(false);
-                                        }}
-                                    >
-                                        <p className="text-default-400">Xóa</p>
-                                    </Button>
-                                    <Button
-                                        className="bg-foreground"
-                                        onPress={() => {
-                                            //TODO add Save function
-                                            setDatePickerOpen(false);
-                                        }}
-                                    >
-                                        <p className="text-background">Lưu</p>
-                                    </Button>
-                                </div>
-                            </div>
+                            <DatePopup
+                                closeModal={() => {
+                                    setDatePickerOpen(false);
+                                }}
+                                pickDate={localOrderTime}
+                                setDate={setDate}
+                            />
                         </PopoverContent>
                     </Popover>
                 </div>
