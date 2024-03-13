@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePrevious } from ".";
-import deepEqual from "deep-equal";
+import equal from "deep-equal";
 import useSWR from "swr";
 import { Paging, Response } from "../types";
 
@@ -13,15 +13,14 @@ export default function useAsyncList<T>(
 ) {
     const previousDependencies = usePrevious(dependencies);
     const isReload = useMemo(() => {
-        return deepEqual(previousDependencies, dependencies);
-    }, [dependencies, previousDependencies]);
+        return !equal(previousDependencies, dependencies)
+    }, [previousDependencies, dependencies])
     const [paging, setPaging] = useState<Paging>(defaultPaging);
     const { isLoading, data: response } = useSWR([getKey, paging], (params) => fetcher(params), {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false
     });
-
     useEffect(() => {
         if (!isLoading) {
             onItemsLoaded(response?.data || [], isReload);

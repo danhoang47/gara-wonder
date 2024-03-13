@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NotificationsDialog from "./notifications-dialog";
 import {
     Badge,
@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { useAppSelector, useModalContext } from "@/core/hooks";
 import { hasAllNotificationsRead } from "./notifications.slice";
+import useNotifications from "./useNotifications";
 
 function Notifications() {
     const { open } = useModalContext();
@@ -18,8 +19,12 @@ function Notifications() {
     const hasAllRead = useAppSelector(state => hasAllNotificationsRead(state.notifications))
     const [isNotificationsOpen, setNotificationsOpen] =
         useState<boolean>(false);
+    const { isLoading, isReload, onNext } = useNotifications()
 
-    console.log(hasAllRead)
+    useEffect(() => {
+        document.addEventListener("scroll", () => setNotificationsOpen(false))
+    }, [])
+
     return (
         <Popover
             isOpen={isNotificationsOpen && Boolean(user)}
@@ -47,7 +52,11 @@ function Notifications() {
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[420px] p-0">
-                <NotificationsDialog />
+                <NotificationsDialog 
+                    isLoading={isLoading}
+                    isReload={isReload}
+                    onNext={onNext}
+                />
             </PopoverContent>
         </Popover>
     );
