@@ -9,7 +9,7 @@ const GarageLayout = () => {
     return (
         <div
             data-testid={GarageLayout.name}
-            className="h-full w-full flex flex-col"
+            className="h-full w-full flex flex-col overflow-hidden"
         >
             <Header
                 leftContent={<BrandLogo />}
