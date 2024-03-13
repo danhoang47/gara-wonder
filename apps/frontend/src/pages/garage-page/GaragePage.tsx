@@ -30,7 +30,7 @@ const GaragePage = () => {
 
     return (
         <OrderContextProvider>
-            <div id="garage" className="relative">
+            <div id="garage" className="relative overflow-auto">
                 <div className="container mx-auto mt-4">
                     <div className="">
                         <GarageHeader
