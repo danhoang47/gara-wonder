@@ -8,34 +8,41 @@ export default function useAsyncList<T>(
     getKey: string | null | (() => string | null),
     onItemsLoaded: (data: T[], isReload: boolean) => void,
     dependencies: React.DependencyList,
-    fetcher: (params: [string | null, Paging]) => Promise<Response<T[]>>,
-    defaultPaging: Paging
+    fetcher: (
+        params: [string | null | (() => string | null), Paging],
+    ) => Promise<Response<T[]>>,
+    defaultPaging: Paging,
 ) {
     const previousDependencies = usePrevious(dependencies);
     const isReload = useMemo(() => {
-        return !equal(previousDependencies, dependencies)
-    }, [previousDependencies, dependencies])
+        return !equal(previousDependencies, dependencies);
+    }, [previousDependencies, dependencies]);
     const [paging, setPaging] = useState<Paging>(defaultPaging);
-    const { isLoading, data: response } = useSWR([getKey, paging], (params) => fetcher(params), {
-        revalidateIfStale: false,
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false
-    });
+    const { isLoading, data: response } = useSWR(
+        [getKey, isReload ? defaultPaging : paging],
+        (params) => fetcher(params),
+        {
+            revalidateIfStale: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+        },
+    );
     useEffect(() => {
         if (!isLoading) {
             onItemsLoaded(response?.data || [], isReload);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response?.data, isLoading, isReload]);
 
     const onNext = () => {
         if (!response || !response.nextCursor) return;
 
-        setPaging(prev => ({
+        setPaging((prev) => ({
             ...prev,
             cursor: response?.cursor,
             nextCursor: response?.nextCursor,
-            total: response?.total
-        }))
-    }
+            total: response?.total,
+        }));
+    };
     return { isReload, isLoading, onNext };
 }
