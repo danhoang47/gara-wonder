@@ -13,7 +13,7 @@ function Categories() {
 
     return (
         <div
-            className="flex-grow flex justify-center gap-2 px-"
+            className="grow shrink flex justify-center gap-2"
             role="radiogroup"
         >
             <Carousel
