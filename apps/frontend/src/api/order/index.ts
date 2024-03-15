@@ -1,7 +1,8 @@
-import axios from 'axios'
+import axios from "axios";
 
 export const orderInstance = axios.create({
-    baseURL: `${import.meta.env.VITE_API_URL}/order`
-})
+    baseURL: `${import.meta.env.VITE_API_URL}/order`,
+});
 
-export { default as createOrders } from './createOrders'
+export { default as createOrders } from "./createOrders";
+export { default as getOrders } from "./getOrders";
