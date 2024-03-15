@@ -1,11 +1,15 @@
+import { Order } from "@/core/types";
 import { OrderCard } from "..";
 
-function OrderList() {
+type OrderListType = {
+    isLoading: boolean;
+    orders?: Order[];
+};
+
+function OrderList({ isLoading, orders }: OrderListType) {
     return (
         <div className="w-1/2 flex flex-col gap-2 pt-10">
-            {new Array(4).fill("").map((e, index) => (
-                <OrderCard key={index} />
-            ))}
+            {orders?.map((order: Order, index) => <OrderCard order={order} key={index} />)}
         </div>
     );
 }
