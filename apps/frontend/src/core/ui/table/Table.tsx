@@ -1,3 +1,4 @@
+import { Checkbox } from "@nextui-org/react";
 import clsx from "clsx";
 import { useLayoutEffect, useRef, useState } from "react";
 
@@ -17,6 +18,7 @@ export type Column<T = unknown> = {
     sortedOrder?: SortedOrder;
     disabled?: boolean;
     className?: string;
+    onCheck?: (item: T) => void; 
 };
 
 export type TableProps<T> = {
@@ -28,10 +30,11 @@ export type TableProps<T> = {
     enableCheckAction?: boolean;
     classNames?: Partial<
         Record<
-            "tableWrapper" | "headerWrapper" | "header" | "bodyWrapper" | "row",
+            "tableWrapper" | "headerWrapper" | "header" | "headerTitle" | "bodyWrapper" | "row",
             string
         >
     >;
+    onCheckAll?: () => void;
 };
 
 function Table<T>({
@@ -76,16 +79,21 @@ function Table<T>({
                 className={clsx("flex", classNames?.headerWrapper)}
                 role="rowheader"
             >
+                {
+                    enableCheckAction && <div key="checkBox" className="flex items-center w-10">
+                        <Checkbox size="sm" radius="sm"/>
+                    </div>
+                }
                 {columns.map(({ key, name, onRenderHeader }, index) => (
                     <div
                         key={key}
                         className={clsx("", classNames?.header)}
                         style={{
-                            minWidth:
+                            width:
                                 cellWidths[index] && `${cellWidths[index]}px`,
                         }}
                     >
-                        {onRenderHeader ? onRenderHeader() : <p>{name}</p>}
+                        {onRenderHeader ? onRenderHeader() : <p className={clsx("overflow-x-hidden text-ellipsis whitespace-nowrap", classNames?.headerTitle)}>{name}</p>}
                     </div>
                 ))}
             </div>
@@ -103,6 +111,11 @@ function Table<T>({
                         role="row"
                         key={index}
                     >
+                        {enableCheckAction && (
+                            <div key="checkBox" className="flex items-center w-10 pl-4">
+                                <Checkbox size="sm" radius="sm"/>
+                            </div>
+                        )}
                         {columns.map((column) => (
                             <div
                                 className={clsx(
@@ -114,7 +127,7 @@ function Table<T>({
                                 key={column.key}
                             >
                                 {column.onRender(item)}
-                            </div>
+                            </div>     
                         ))}
                     </div>
                 ))}

@@ -1,11 +1,12 @@
-import { Image, Model } from "./core";
+import { Image, Model, Status } from "./core";
 import { Garage } from "./garage";
 
 export const enum Role {
     User = 1,
     GarageOwner = 2,
-    Supplier = 3,
-    GarageOwnerAndSupplier = 4,
+    Staff = 3,
+    Supplier = 4,
+    GarageOwnerAndSupplier = 5,
 }
 
 export type User = Model & {
@@ -21,4 +22,13 @@ export type User = Model & {
     frontSideCitizenIdCardImage?: Image,
     backSideCitizenIdCardImage?: Image,
     favoriteGarageIds?: Garage["_id"][],
+}
+
+export type Authority = "WITH_ORDER" | "WITH_INCOME"
+
+export type Staff = User & {
+    role: Role.Staff,
+    authorites: Authority[],
+    garageId: string,
+    status: Status
 }

@@ -1,19 +1,16 @@
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Tooltip } from "@nextui-org/react";
+import { Link, Tooltip } from "@nextui-org/react";
 
 function CartLinkButton() {
     return (
         <Tooltip content="Giỏ Hàng">
-            <Button
+            <Link
                 href="/cart"
-                as="a"
-                isIconOnly
-                radius="full"
-                className="bg-white"
+                className="bg-white w-10 h-10 flex justify-center items-center"
             >
-                <FontAwesomeIcon icon={faShoppingCart} size="lg" />
-            </Button>
+                <FontAwesomeIcon icon={faShoppingCart} color="#000"/>
+            </Link>
         </Tooltip>
     );
 }

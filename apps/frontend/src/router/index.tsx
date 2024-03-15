@@ -16,7 +16,7 @@ import {
     CartPage,
     LandingPage,
 } from "@/pages";
-import { OrdersDetail, OrdersPage, Schedule } from "@/pages/garage-manage-page";
+import { OrdersDetail, OrdersPage, Schedule, StaffManagement } from "@/pages/garage-manage-page";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -41,6 +41,7 @@ const router = createBrowserRouter(
                     <Route path="orders" element={<OrdersPage />} />
                     <Route path="orders/:orderId" element={<OrdersDetail />} />
                     <Route path="schedule" element={<Schedule />} />
+                    <Route path="staff" element={<StaffManagement />} />
                 </Route>
             </Route>
         </Route>,
