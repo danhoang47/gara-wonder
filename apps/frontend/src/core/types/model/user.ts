@@ -28,7 +28,7 @@ export type Authority = "WITH_ORDER" | "WITH_INCOME"
 
 export type Staff = User & {
     role: Role.Staff,
-    authorites: Authority[],
+    authorities: Authority[],
     garageId: string,
     status: Status
 }

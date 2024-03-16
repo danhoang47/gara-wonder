@@ -18,7 +18,6 @@ export type Column<T = unknown> = {
     sortedOrder?: SortedOrder;
     disabled?: boolean;
     className?: string;
-    onCheck?: (item: T) => void; 
 };
 
 export type TableProps<T> = {
@@ -30,11 +29,17 @@ export type TableProps<T> = {
     enableCheckAction?: boolean;
     classNames?: Partial<
         Record<
-            "tableWrapper" | "headerWrapper" | "header" | "headerTitle" | "bodyWrapper" | "row",
+            | "tableWrapper"
+            | "headerWrapper"
+            | "header"
+            | "headerTitle"
+            | "bodyWrapper"
+            | "row",
             string
         >
     >;
     onCheckAll?: () => void;
+    onCheck?: (item: T, checked: boolean) => void;
 };
 
 function Table<T>({
@@ -42,6 +47,7 @@ function Table<T>({
     columns,
     classNames,
     enableCheckAction = false,
+    onCheck,
 }: TableProps<T>) {
     const [cellWidths, setCellWidths] = useState<number[]>([]);
     const tableBodyRef = useRef<HTMLDivElement>(null);
@@ -79,11 +85,11 @@ function Table<T>({
                 className={clsx("flex", classNames?.headerWrapper)}
                 role="rowheader"
             >
-                {
-                    enableCheckAction && <div key="checkBox" className="flex items-center w-10">
-                        <Checkbox size="sm" radius="sm"/>
+                {enableCheckAction && (
+                    <div key="checkBox" className="flex items-center w-10">
+                        <Checkbox size="sm" radius="sm" />
                     </div>
-                }
+                )}
                 {columns.map(({ key, name, onRenderHeader }, index) => (
                     <div
                         key={key}
@@ -93,7 +99,18 @@ function Table<T>({
                                 cellWidths[index] && `${cellWidths[index]}px`,
                         }}
                     >
-                        {onRenderHeader ? onRenderHeader() : <p className={clsx("overflow-x-hidden text-ellipsis whitespace-nowrap", classNames?.headerTitle)}>{name}</p>}
+                        {onRenderHeader ? (
+                            onRenderHeader()
+                        ) : (
+                            <p
+                                className={clsx(
+                                    "overflow-x-hidden text-ellipsis whitespace-nowrap",
+                                    classNames?.headerTitle,
+                                )}
+                            >
+                                {name}
+                            </p>
+                        )}
                     </div>
                 ))}
             </div>
@@ -112,8 +129,17 @@ function Table<T>({
                         key={index}
                     >
                         {enableCheckAction && (
-                            <div key="checkBox" className="flex items-center w-10 pl-4">
-                                <Checkbox size="sm" radius="sm"/>
+                            <div
+                                key="checkBox"
+                                className="flex items-center w-10 pl-4"
+                            >
+                                <Checkbox
+                                    size="sm"
+                                    radius="sm"
+                                    onValueChange={(isSelected) => {
+                                        onCheck && onCheck(item, isSelected);
+                                    }}
+                                />
                             </div>
                         )}
                         {columns.map((column) => (
@@ -127,7 +153,7 @@ function Table<T>({
                                 key={column.key}
                             >
                                 {column.onRender(item)}
-                            </div>     
+                            </div>
                         ))}
                     </div>
                 ))}
