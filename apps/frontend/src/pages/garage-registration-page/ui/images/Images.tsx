@@ -4,13 +4,16 @@ import ImagePreview from "./ImagePreview";
 import { useGarageRegistrationContext } from "../../hooks";
 
 function Images() {
-    const { garageRegistrationState: {
-        backgroundImage,
-        images
-    }, setGarageRegistrationStateValue } = useGarageRegistrationContext();
+    const {
+        garageRegistrationState: { backgroundImage, images },
+        setGarageRegistrationStateValue,
+    } = useGarageRegistrationContext();
 
     const onImageRemove = (fileName: string) => {
-        setGarageRegistrationStateValue("images", images?.filter(({ name }) => name !== fileName));
+        setGarageRegistrationStateValue(
+            "images",
+            images?.filter(({ name }) => name !== fileName),
+        );
     };
 
     const onMultipleFileInputValueChange = (fs: File[]) => {
@@ -19,13 +22,16 @@ function Images() {
             return;
         }
 
-        setGarageRegistrationStateValue("images", 
+        setGarageRegistrationStateValue(
+            "images",
             images
                 ? [
                       ...images,
-                      ...fs.filter(({ name }) =>
-                      images.some(({ name: n }) => n === name),
-                      ),
+                      ...fs.filter((file) => {
+                          return images.filter((imageFile) => {
+                              return file !== imageFile;
+                          });
+                      }),
                   ]
                 : fs,
         );
@@ -44,12 +50,22 @@ function Images() {
                 {backgroundImage ? (
                     <ImagePreview
                         file={backgroundImage}
-                        onImageRemove={() => setGarageRegistrationStateValue("backgroundImage", undefined)}
+                        onImageRemove={() =>
+                            setGarageRegistrationStateValue(
+                                "backgroundImage",
+                                undefined,
+                            )
+                        }
                     />
                 ) : (
                     <FileInput
                         selectionMode="single"
-                        onValueChange={(f) => setGarageRegistrationStateValue("backgroundImage", f)}
+                        onValueChange={(f) =>
+                            setGarageRegistrationStateValue(
+                                "backgroundImage",
+                                f,
+                            )
+                        }
                     />
                 )}
             </div>
