@@ -16,8 +16,8 @@ import {
     CartPage,
     LandingPage,
 } from "@/pages";
-import { OrdersDetail, OrdersPage, Schedule, StaffManagement } from "@/pages/garage-manage-page";
-import IncomePage from "@/pages/garage-manage-page/income/IncomePage";
+import { IncomePage, OrdersDetail, OrdersPage, Schedule, StaffManagement } from "@/pages/garage-manage-page";
+
 
 
 const router = createBrowserRouter(
