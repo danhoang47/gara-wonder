@@ -3,13 +3,32 @@ import { faFlag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
 import { Evaluation } from "./ui";
+import { useParams } from "react-router-dom";
+import useSWRImmutable from "swr/immutable";
+import { getOrderById } from "@/api";
+import { useContext, useEffect } from "react";
+import { LoadingContext } from "@/core/contexts/loading";
 
 function OrderDetail() {
+    const { orderId } = useParams();
+    const { load, unload } = useContext(LoadingContext);
+
+    const { isLoading: isOrderLoading, data: order } = useSWRImmutable(
+        `${orderId}`,
+        getOrderById,
+    );
+    useEffect(() => {
+        console.log(order);
+
+        if (isOrderLoading) load("order-detail");
+        else unload("order-detail");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOrderLoading]);
     return (
         <div className="pt-10">
             <p className="text-3xl font-bold">Chi tiết đơn hàng</p>
 
-            <div className="grid grid-cols-12 gap-4 pt-10">
+            <div className="md:grid grid-cols-12 gap-4 pt-10">
                 <div className="col-span-9 flex flex-col gap-5">
                     {/* Evaluation */}
                     <Evaluation />
@@ -20,17 +39,17 @@ function OrderDetail() {
                         <div className="flex  text-md">
                             <div className="w-[15rem]">
                                 <p className="text-default-400">Họ và tên</p>
-                                <p>Le Quy Duck</p>
+                                <p>{order?.user.displayName}</p>
                             </div>
                             <div className="w-[15rem]">
                                 <p className="text-default-400">Email</p>
-                                <p>lequyduc@gmail.com</p>
+                                <p>{order?.user.email}</p>
                             </div>
                             <div className="w-[15rem]">
                                 <p className="text-default-400">
                                     Số điện thoại
                                 </p>
-                                <p>+849082634</p>
+                                <p> {order?.user.phoneNumber}</p>
                             </div>
                         </div>
                     </div>

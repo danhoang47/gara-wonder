@@ -1,5 +1,5 @@
 import { Order, Response } from "@/core/types";
-import { orderInstance } from ".";
+import { managementOrderInstance } from ".";
 
 export default async function getOrders(
     id: string | undefined,
@@ -7,7 +7,7 @@ export default async function getOrders(
     cursor: string | undefined | null,
 ) {
     try {
-        let queryParams: string = `/${id}?`;
+        let queryParams: string = `/garage/${id}?`;
 
         if (limit) {
             queryParams += `limit=${limit}`;
@@ -19,7 +19,7 @@ export default async function getOrders(
             queryParams = queryParams.slice(1);
         }
 
-        const result = await orderInstance.get<Response<Order[]>>(
+        const result = await managementOrderInstance.get<Response<Order[]>>(
             `${queryParams}`,
         );
         return result.data;

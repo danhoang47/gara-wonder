@@ -3,7 +3,7 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chip, Link, Tooltip } from "@nextui-org/react";
 
-function OrderCard({ order }: { order: Order }) {
+function OrderCard({ order }: { order?: Order }) {
     return (
         <div className="">
             <div className=" border-2 rounded-md p-5 hover:border-default-600 hover:shadow-lg transition-colors">
@@ -14,7 +14,8 @@ function OrderCard({ order }: { order: Order }) {
                             target="_blank"
                             className="font-semibold text-lg"
                         >
-                            Mazda 3 - 43A 12345
+                            {order?.car.brand.name} {order?.car.model} -{" "}
+                            {order?.car.plateNumber}
                         </Link>
                         <Tooltip
                             content="I am a tooltip"
