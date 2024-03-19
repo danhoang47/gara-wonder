@@ -1,14 +1,17 @@
-import { Order, Response, User } from "@/core/types";
+import { Brand, Car, Order, Response, User } from "@/core/types";
 import { managementOrderInstance } from ".";
 
 export type OrderDetailType = Order & {
     user: Omit<
         User,
+        | "car"
         | "role"
         | "frontSideCitizenIdCardImage"
         | "backSideCitizenIdCardImage"
         | "favoriteGarageIds"
     >;
+    car: Car & { brand: Brand };
+    estimateHandOffTime: number;
 };
 
 export default async function getOrderById(id: string | undefined) {

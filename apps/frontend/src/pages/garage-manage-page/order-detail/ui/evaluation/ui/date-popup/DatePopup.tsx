@@ -8,8 +8,8 @@ function DatePopup({
     pickDate,
 }: {
     closeModal: () => void;
-    setDate: (date: number) => void;
-    pickDate?: number;
+    setDate: (date: { from?: number; to?: number }) => void;
+    pickDate?: { from?: number; to?: number };
 }) {
     return (
         <div className="w-[400px] p-4">
@@ -20,30 +20,56 @@ function DatePopup({
                         Select a date to fix your car
                     </span>
                 </div>
-                <Input
-                    label="Order Date"
-                    placeholder="YYYY/MM/dd"
-                    variant="bordered"
-                    value={moment(pickDate).format("YYYY/MM/DD")}
-                    classNames={{
-                        base: "max-w-44",
-                        inputWrapper: "border data-[focus=true]:border-2",
-                    }}
-                    // isInvalid={isOrderTimeInvalid}
-                    onValueChange={(value) => {
-                        const orderDate = moment(value, "YYYY MM DD");
-                        if (value.length === 10 && orderDate.isValid()) {
-                            setDate(orderDate.toDate().getTime());
-                        }
-                    }}
-                    isClearable
-                />
+                <div>
+                    <Input
+                        label="Order From"
+                        placeholder="YYYY/MM/dd"
+                        variant="bordered"
+                        value={moment(pickDate?.from).format("YYYY/MM/DD")}
+                        classNames={{
+                            base: "max-w-44",
+                            inputWrapper: "border data-[focus=true]:border-2",
+                        }}
+                        // isInvalid={isOrderTimeInvalid}
+                        onValueChange={(value) => {
+                            const orderDate = moment(value, "YYYY MM DD");
+                            if (value.length === 10 && orderDate.isValid()) {
+                                setDate({
+                                    ...pickDate,
+                                    from: orderDate.toDate().getTime(),
+                                });
+                            }
+                        }}
+                        isClearable
+                    />
+                    <Input
+                        label="Order To"
+                        placeholder="YYYY/MM/dd"
+                        variant="bordered"
+                        value={moment(pickDate?.to).format("YYYY/MM/DD")}
+                        classNames={{
+                            base: "max-w-44",
+                            inputWrapper: "border data-[focus=true]:border-2",
+                        }}
+                        // isInvalid={isOrderTimeInvalid}
+                        onValueChange={(value) => {
+                            const orderDate = moment(value, "YYYY MM DD");
+                            if (value.length === 10 && orderDate.isValid()) {
+                                setDate({
+                                    ...pickDate,
+                                    to: orderDate.toDate().getTime(),
+                                });
+                            }
+                        }}
+                        isClearable
+                    />
+                </div>
             </div>
             <div className="pt-5">
                 <DatePicker
-                    mode="single"
+                    mode="range"
                     onSelectedChange={(date) => {
-                        setDate(date?.getTime() as number);
+                        setDate(date);
                     }}
                     defaultYear={2024}
                     defaultMonth={new Date().getMonth()}
