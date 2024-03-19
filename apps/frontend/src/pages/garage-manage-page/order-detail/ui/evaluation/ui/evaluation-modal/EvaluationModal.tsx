@@ -10,13 +10,18 @@ import { DatePopup } from "..";
 import ImagePreview from "./ImagePreview";
 import { FileInput } from "@/core/ui";
 
+type DateRangeType = {
+    from?: number;
+    to?: number;
+};
+
 function EvaluationModal() {
-    const [localOrderTime, setLocalOrderTime] = useState<number>();
+    const [localOrderTime, setLocalOrderTime] = useState<DateRangeType>();
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
-    const [repairPrice, setRepairPrice] = useState<number>();
-    const [washPrice, setWashPrice] = useState<number>();
+    const [repairPrice, setRepairPrice] = useState<number>(0);
+    const [washPrice, setWashPrice] = useState<number>(0);
     const [images, setImages] = useState<File[]>();
-    const setDate = (date: number) => {
+    const setDate = (date: DateRangeType) => {
         setLocalOrderTime(date);
     };
 
@@ -75,7 +80,10 @@ function EvaluationModal() {
                     Ước tính thời gian hoàn thành
                 </p>
                 <div className="flex justify-between">
-                    <p>{moment(localOrderTime).format("YYYY/MM/DD")}</p>
+                    <p>
+                        {moment(localOrderTime?.from).format("YYYY/MM/DD")} -{" "}
+                        {moment(localOrderTime?.to).format("YYYY/MM/DD")}
+                    </p>
                     <Popover
                         placement="left"
                         triggerScaleOnOpen={false}
