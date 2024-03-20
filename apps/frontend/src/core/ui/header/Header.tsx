@@ -26,7 +26,7 @@ function Header({
         >
             <div
                 className={clsx(
-                    "h-20 flex gap-4",
+                    "h-20 flex justify-between gap-2 relative",
                     className,
                     location.pathname.includes("garage/") ||
                         location.pathname.includes("garage-management/")
@@ -37,7 +37,7 @@ function Header({
                 <div className="flex items-center justify-start h-full">
                     {leftContent}
                 </div>
-                <div className="flex items-center justify-center h-full">
+                <div className="flex items-center justify-center h-full absolute left-1/2 -translate-x-1/2">
                     {middleContent}
                 </div>
                 <div className="flex items-center justify-end h-full gap-1 ml-auto">

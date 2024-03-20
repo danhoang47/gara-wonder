@@ -1,11 +1,16 @@
 import { useAppDispatch, useAppSelector, useAsyncList } from "@/core/hooks";
 import {
+    notificationAdded,
+    notificationReset,
     notificationUpsert,
     notificationsReceived,
 } from "./notifications.slice";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { getNotifications } from "@/api";
 import { Notification, Paging } from "@/core/types";
+import { Unsubscribe } from "firebase/auth";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { firestore } from "@/components";
 
 const DEFAULT_PAGING: Paging = {
     limit: 10,
@@ -44,6 +49,36 @@ export default function useNotifications() {
         },
         DEFAULT_PAGING,
     );
+
+    useEffect(() => {
+        let unsub: Unsubscribe;
+        let isFirstTimeListened = true;
+
+        if (!user) {
+            dispatch(notificationReset())
+        }
+
+        if (user) {
+            const q = query(collection(
+                firestore, 
+                "rooms", 
+                "notifications", 
+                user._id
+                
+            ))
+            unsub = onSnapshot(q, (docs) => {
+                docs.docChanges().forEach(doc => {
+                    if (doc.type === "added" && !isFirstTimeListened) {
+                        const notification = doc.doc.data() as Notification
+                        dispatch(notificationAdded(notification))
+                    }
+                })
+                isFirstTimeListened = false
+            }) 
+        }
+
+        return () => unsub && unsub()
+    }, [user])
 
     return { isReload, isLoading, onNext };
 }

@@ -5,8 +5,8 @@ import "./HomePage.styles.scss"
 
 const HomePage = () => {
     return (
-        <div id="home" className="grow flex flex-col opacity-100 z-0 h-[calc(100%-80px)] overflow-auto relative">
-            <div className="TopBar flex items-center h-20 shrink-0 px-10 sticky top-0 z-20 bg-background">
+        <div id="home" className="px-10 grow flex flex-col opacity-100 z-0 relative">
+            <div className="TopBar flex items-center h-20 top-20 sticky bg-background z-20">
                 <div className="">
                     <SortBy />
                 </div>

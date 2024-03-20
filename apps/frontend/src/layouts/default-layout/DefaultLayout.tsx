@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import { BrandLogo, Header } from "@/core/ui";
-import { BecomeGaraOwnerLink, UserProfileMenu } from "./ui";
+import { BecomeGaraOwnerLink, RegionTabs, UserProfileMenu } from "./ui";
 import { useAppSelector } from "@/core/hooks";
 import { Role } from "@/core/types";
 import CartLinkButton from "./ui/cart-link-button";
@@ -10,6 +10,7 @@ import Notifications from "@/features/notifications";
 
 const DefaultLayout = () => {
     const user = useAppSelector((state) => state.user.value);
+    const location = useLocation()
     const shouldShowGarageRegistrationLink = useMemo(() => {
         if (!user) return true;
 
@@ -17,15 +18,15 @@ const DefaultLayout = () => {
 
         return role !== Role.GarageOwner;
     }, [user]);
+    const shouldShowMiddleContent = useMemo(() => {
+        return location.pathname !== "/"
+    }, [location])
 
     return (
-        <div
-            data-testid={DefaultLayout.name}
-            className="flex flex-col relative"
-        >
+        <div data-testid={DefaultLayout.name} className="flex flex-col">
             <Header
                 leftContent={<BrandLogo />}
-                middleContent={<></>}
+                middleContent={shouldShowMiddleContent && <RegionTabs />}
                 rightContent={
                     <>
                         {shouldShowGarageRegistrationLink && (

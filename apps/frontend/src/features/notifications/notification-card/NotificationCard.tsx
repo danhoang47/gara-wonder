@@ -1,4 +1,4 @@
-import { getBasicGarageInfo, getGarages, getUser } from "@/api";
+import { getBasicGarageInfo, getUser } from "@/api";
 import { GarageBasicInfo } from "@/api/garages/getBasicGarageInfo";
 import { Garage, Notification, NotificationType, OrderStatus, User } from "@/core/types";
 import { Avatar } from "@nextui-org/react";

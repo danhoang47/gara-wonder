@@ -5,8 +5,8 @@ const notificationsAdapter = createEntityAdapter<Notification, string>({
     selectId: notification => notification._id,
 })
 
-const notificationsSlice = createSlice({
-    name: "notifications",
+const garageNotificationsSlice = createSlice({
+    name: "garageNotifications",
     initialState: notificationsAdapter.getInitialState(),
     reducers: {
         notificationsReceived: notificationsAdapter.addMany,
@@ -21,7 +21,7 @@ export const {
     selectAll: selectNotifications
 } = notificationsAdapter.getSelectors()
 
-export const hasAllNotificationsRead = (state: EntityState<Notification, string>) => 
+export const hasAllGarageNotificationsRead = (state: EntityState<Notification, string>) => 
 selectNotifications(state).every(({ hasRead }) => hasRead)
 
 export const {
@@ -29,6 +29,6 @@ export const {
     notificationAdded,
     notificationUpsert,
     notificationReset
-} = notificationsSlice.actions
+} = garageNotificationsSlice.actions
 
-export default notificationsSlice.reducer
+export default garageNotificationsSlice.reducer

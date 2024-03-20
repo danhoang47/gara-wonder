@@ -26,7 +26,7 @@ function LandingPage() {
                         color="primary"
                         // variant="bordered"
                         className="max-w-fit mt-2"
-                        onPress={() => navigate("/garage")}
+                        onPress={() => navigate("/garages")}
                         size="lg"
                     >
                         <span className="text-large font-medium">

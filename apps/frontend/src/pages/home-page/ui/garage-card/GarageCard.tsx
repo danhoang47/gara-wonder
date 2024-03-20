@@ -22,14 +22,9 @@ export type GarageCardProps = {
 const ellipsisClassName = "overflow-x-hidden text-ellipsis whitespace-nowrap";
 
 // eslint-disable-next-line react-refresh/only-export-components
-function GarageCard({
-    garage,
-    className,
-    carouselType = "square",
-}: GarageCardProps) {
-    const { name, description, address, _id, backgroundImage, images, owner } =
-        garage;
-    const renderedImages = [backgroundImage, ...images];
+function GarageCard({ garage, className, carouselType = "square" }: GarageCardProps) {
+    const { name, description, address, _id, backgroundImage, images, owner, isFavorite } = garage;
+    const renderedImages = [backgroundImage, ...images]
 
     return (
         <Card className={clsx("gap-2 shadow-none relative", className)}>
@@ -56,7 +51,7 @@ function GarageCard({
                 <div className="flex mb-2 justify-between gap-2">
                     <div className="w-[calc(100%-3rem)]">
                         <Link
-                            href={`/garage/${_id}`}
+                            href={`/garages/${_id}`}
                             target="_blank"
                             className={clsx(
                                 "font-semibold text-foreground whitespace-nowrap",
@@ -80,12 +75,12 @@ function GarageCard({
                 </div>
                 <p>{}</p>
             </CardBody>
-            <Button
-                isIconOnly
-                radius="full"
-                className="absolute top-3 right-3 z-10"
+            <Button 
+                isIconOnly 
+                radius="full" 
+                className={clsx("absolute top-3 right-3 z-10")}
             >
-                <FontAwesomeIcon icon={faHeart} size="lg" />
+                <FontAwesomeIcon icon={faHeart} size="lg" className={clsx(isFavorite && "text-danger")}/>
             </Button>
         </Card>
     );

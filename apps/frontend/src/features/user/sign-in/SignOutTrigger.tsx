@@ -6,16 +6,16 @@ function SignOutTrigger() {
     const dispatch = useAppDispatch();
     const { load, unload } = useLoadingContext()
 
+    const onSignOutButtonClick = () => {
+        load("signOut")    
+        auth.signOut().finally(() => {
+            dispatch(signOut()) 
+            unload("signOut")
+        })
+    }
+
     return (
-        <p
-            onClick={() => {
-                load("signOut")    
-                auth.signOut().finally(() => {
-                    dispatch(signOut()) 
-                    unload("signOut")
-                })
-            }}
-        >
+        <p onClick={onSignOutButtonClick}>
             Sign Out
         </p>
     );
