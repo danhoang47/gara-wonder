@@ -12,14 +12,14 @@ const GarageLayout = () => {
             className="h-full w-full flex flex-col "
         >
             <Header
-                leftContent={<BrandLogo />}
-                middleContent={<></>}
-                rightContent={
+                leftContent={
                     <div className="flex gap-6">
+                        <BrandLogo />
                         <GarageNavbar />
-                        <UserProfileMenu />
                     </div>
                 }
+                middleContent={<></>}
+                rightContent={<UserProfileMenu />}
             />
             <Outlet />
         </div>
