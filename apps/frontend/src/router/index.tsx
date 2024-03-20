@@ -21,6 +21,9 @@ const GarageManagePage = lazy(() => import("@/pages/garage-manage-page"));
 const GeneralDashboard = lazy(
     () => import("@/pages/garage-manage-page/general-dashboard"),
 );
+const OrderAcceptModeSetting = lazy(
+    () => import("@/pages/garage-manage-page/order-accept-mode-setting"),
+);
 
 const CartPage = lazy(() => import("@/pages/cart-page"));
 
@@ -61,7 +64,11 @@ const router = createBrowserRouter(
                 <Route path="cart" element={<CartPage />} />
                 <Route
                     path="garage-registration"
-                    element={<GarageRegistrationPage />}
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <GarageRegistrationPage />
+                        </Suspense>
+                    }
                 />
             </Route>
             <Route
@@ -74,6 +81,14 @@ const router = createBrowserRouter(
                         element={
                             <Suspense fallback={<FullPageLoad />}>
                                 <GeneralDashboard />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="order-setting"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <OrderAcceptModeSetting />
                             </Suspense>
                         }
                     />
