@@ -2,7 +2,6 @@ import { useAppSelector } from "@/core/hooks";
 import { GeneralInfo, UpdateGarage } from "./ui";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { Divider } from "@nextui-org/react";
 
 function GeneralDashboard() {
     const userData = useAppSelector((state) => state.user);
@@ -17,7 +16,7 @@ function GeneralDashboard() {
                         alt={`${userData.value?.displayName} avatar`}
                         className="w-[40px] rounded-full mb-4"
                     />
-                    <p className="text-4xl font-semibold">
+                    <p className="text-3xl font-semibold">
                         Good Morning, <br />
                         <span className="font-bold">
                             {userData.value?.displayName}
@@ -56,7 +55,7 @@ function GeneralDashboard() {
                     </li>
                 </div>
             </div>
-            <div className="col-span-8 overflow-scroll h-full pt-[136px]">
+            <div className="col-span-8 overflow-auto h-full pt-[8.5rem]">
                 <div className="w-[40rem] h-full m-auto">
                     <GeneralInfo />
 
