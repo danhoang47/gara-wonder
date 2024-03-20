@@ -13,7 +13,8 @@ export type StepperProps = {
     disabled?: boolean,
     classNames?: Partial<Record<"wrapper" | "button" | "text", string>>,
     allowKeyboard?: boolean,
-    size?: "sm" | "md" | "lg"
+    size?: "sm" | "md" | "lg",
+    step?: number,
 }
 
 type ButtonProps = React.ComponentProps<typeof Button>
@@ -22,12 +23,13 @@ function Stepper({
     value,
     defaultValue,
     onChange = () => {},
-    max = 1000,
+    max = Number.MAX_SAFE_INTEGER,
     min = 0,
     disabled = false,
     classNames,
     allowKeyboard = false,
-    size = "sm"
+    size = "sm",
+    step = 1
 }: StepperProps) {
     const buttonProps: ButtonProps = useMemo(() => ({
         isIconOnly: true,
@@ -39,12 +41,14 @@ function Stepper({
 
     const onStepBack = () => {
         const currentValue = value || defaultValue || 1;
-        onChange(currentValue - 1)
+        const nextValue = currentValue - step
+        onChange(nextValue < min ? min : nextValue)
     }
 
     const onStepNext = () => {
         const currentValue = value || defaultValue || 0;
-        onChange(currentValue + 1)
+        const nextValue = currentValue + step
+        onChange(nextValue > max ? max : nextValue)
     }
 
     return (

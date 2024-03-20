@@ -85,12 +85,15 @@ function EvaluationModal() {
                         {moment(localOrderTime?.to).format("YYYY/MM/DD")}
                     </p>
                     <Popover
-                        placement="left"
+                        placement="bottom-end"
                         triggerScaleOnOpen={false}
                         offset={-2}
                         triggerType="grid"
                         isOpen={isDatePickerOpen}
                         onClose={() => setDatePickerOpen(false)}
+                        classNames={{
+                            base: "max-w-full w-[800px]"
+                        }}
                     >
                         <PopoverTrigger onClick={() => setDatePickerOpen(true)}>
                             <p className="cursor-pointer font-bold text-md underline">

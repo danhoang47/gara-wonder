@@ -106,7 +106,7 @@ const ProgressBar = ({ status }: { status: number }) => {
     );
 };
 
-function Evalutation({ status }: { status?: number }) {
+function Evaluation({ status }: { status?: number }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     return (
         <div className="border-2 rounded-lg">
@@ -174,4 +174,4 @@ function Evalutation({ status }: { status?: number }) {
     );
 }
 
-export default Evalutation;
+export default Evaluation;

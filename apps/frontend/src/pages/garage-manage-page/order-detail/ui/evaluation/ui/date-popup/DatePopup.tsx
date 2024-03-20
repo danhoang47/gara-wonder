@@ -1,6 +1,8 @@
+import { DateRange } from "@/core/types";
 import { DatePicker } from "@/core/ui";
 import { Button, Input } from "@nextui-org/react";
 import moment from "moment";
+import { useState } from "react";
 
 function DatePopup({
     closeModal,
@@ -11,8 +13,11 @@ function DatePopup({
     setDate: (date: { from?: number; to?: number }) => void;
     pickDate?: { from?: number; to?: number };
 }) {
+    // TODO: testing purpose only
+    const [dateRange, setDateRange] = useState<DateRange>();
+
     return (
-        <div className="w-[400px] p-4">
+        <div className="w-full p-4">
             <div className="flex justify-between">
                 <div className="">
                     <p className="shrink-0 text-lg font-bold">Pick Date</p>
@@ -20,7 +25,7 @@ function DatePopup({
                         Select a date to fix your car
                     </span>
                 </div>
-                <div>
+                <div className="flex gap-2">
                     <Input
                         label="Order From"
                         placeholder="YYYY/MM/dd"
@@ -69,11 +74,12 @@ function DatePopup({
                 <DatePicker
                     mode="range"
                     onSelectedChange={(date) => {
-                        setDate(date);
+                        setDateRange(date);
                     }}
                     defaultYear={2024}
                     defaultMonth={new Date().getMonth()}
-                    selectedDate={pickDate ? new Date(pickDate) : undefined}
+                    selectedDate={dateRange}
+                    show="double"
                 />
             </div>
             <div className="flex gap-2 py-2 justify-end px-4">

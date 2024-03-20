@@ -1,4 +1,4 @@
-import { isTwoDateSame } from "@/utils";
+import { isAfter, isBefore, isInRange, isTwoDateSame } from "@/utils";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import DateNavigation from "./DateNavigation";
 
@@ -7,14 +7,15 @@ import { usePrevious } from "@/core/hooks";
 import DatePickerCalendar from "./DatePickerCalendar";
 import { DateRange } from "@/core/types";
 
-export type DatePickerMode = "single" | "range"
+export type DatePickerMode = "single" | "range";
 
 export type DatePickerBaseProps = {
     disabledDates?: Date[];
     defaultYear?: number;
     defaultMonth?: number;
     disallowEmptySelection?: boolean;
-    mode: DatePickerMode
+    mode: DatePickerMode;
+    show: "single" | "double";
 };
 
 export type SingleModeProps = DatePickerBaseProps & {
@@ -35,28 +36,28 @@ function DatePicker({
     defaultYear = new Date().getFullYear(),
     defaultMonth = new Date().getMonth(),
     mode,
+    show = "single",
     selectedDate,
     disallowEmptySelection = false,
     onSelectedChange,
 }: DatePickerProps) {
-    const [index, setIndex] = useState<number>(0);
     const [year, setYear] = useState<number>(defaultYear);
     const [month, setMonth] = useState<number>(defaultMonth);
     const previousMonth = usePrevious(month);
     const renderedMonth = useMemo(() => {
-        if (mode === "single") {
-            if (previousMonth === undefined) return [month]
+        if (show === "single") {
+            if (previousMonth === undefined) return [month];
 
-            if (previousMonth < month) return [previousMonth, month]
-            return [month, previousMonth]
+            if (previousMonth < month) return [previousMonth, month];
+            return [month, previousMonth];
         } else {
-            if (previousMonth === undefined) return [month, month + 1]
-            
-            if (previousMonth < month) return [previousMonth, month, month + 1]
-            return [month, previousMonth, previousMonth + 1]    
+            if (previousMonth === undefined) return [month, month + 1];
+
+            if (previousMonth < month) return [previousMonth, month, month + 1];
+            return [month, previousMonth, previousMonth + 1];
         }
-    }, [month])
-    const carouselRef = useRef<HTMLDivElement>(null)
+    }, [month]);
+    const carouselRef = useRef<HTMLDivElement>(null);
 
     const onDateSelected = (date: Date) => {
         if (mode === "single") {
@@ -70,6 +71,22 @@ function DatePicker({
                 onSelectedChange({ from: date, to: undefined });
                 return;
             }
+
+            const { from, to } = selectedDate;
+
+            if (!from) {
+                onSelectedChange({ from: date, to: undefined });
+            } else if (!to && isTwoDateSame(date, from)) {
+                onSelectedChange({ from: undefined, to: undefined });
+            } else if (isBefore(date, from)) {
+                onSelectedChange({ from: date, to: from });
+            } else if (!to) {
+                onSelectedChange({ from, to: date });
+            } else if (isTwoDateSame(date, from) || isTwoDateSame(date, to)) {
+                onSelectedChange({ from: date, to: undefined });
+            } else if (isInRange(date, from, to) || isAfter(date, to)) {
+                onSelectedChange({ from, to: date });
+            }
         }
     };
 
@@ -77,7 +94,7 @@ function DatePicker({
         if (!carouselRef.current || previousMonth === undefined) return;
 
         const { current } = carouselRef;
-        const calendarElement = current.querySelector(".calendar")
+        const calendarElement = current.querySelector(".calendar");
 
         if (!calendarElement) return;
 
@@ -87,26 +104,24 @@ function DatePicker({
             current.scroll({
                 behavior: "instant",
                 left: width,
-            })   
+            });
             current.scroll({
                 behavior: "smooth",
-                left: 0
-            })
+                left: 0,
+            });
         } else {
             current.scroll({
                 behavior: "instant",
-                left: 0
-            })
+                left: 0,
+            });
             current.scroll({
                 behavior: "smooth",
-                left: width
-            })
+                left: width,
+            });
         }
 
-        return () => {
-
-        }
-    }, [carouselRef, month, mode])
+        return () => {};
+    }, [carouselRef, month, mode]);
 
     return (
         <div className="relative">
@@ -119,7 +134,7 @@ function DatePicker({
                 }}
             />
             <div className="datePickerCarousel" ref={carouselRef}>
-                {renderedMonth?.map(month => (
+                {renderedMonth?.map((month) => (
                     <DatePickerCalendar
                         key={month}
                         mode={mode}

@@ -11,7 +11,6 @@ function OrderCard({ order }: { order?: Order }) {
                     <div className="flex gap-5">
                         <Link
                             href={`orders/${order._id}`}
-                            target="_blank"
                             className="font-semibold text-lg"
                         >
                             {order?.car.brand.name} {order?.car.model} -{" "}

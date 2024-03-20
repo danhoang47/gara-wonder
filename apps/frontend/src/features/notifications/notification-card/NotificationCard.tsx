@@ -9,6 +9,7 @@ import {
 } from "@/core/types";
 import { Avatar } from "@nextui-org/react";
 import clsx from "clsx";
+import "moment/locale/vi";
 import moment from "moment";
 import { memo, useMemo } from "react";
 import useSWRImmutable from "swr/immutable";
@@ -16,6 +17,8 @@ import useSWRImmutable from "swr/immutable";
 export type NotificationCardProps = {
     notification: Notification;
 };
+
+moment.locale("vi");
 
 const getKey = (type: NotificationType, from: string) => {
     switch (type) {
