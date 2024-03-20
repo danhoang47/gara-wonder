@@ -28,7 +28,7 @@ function OrderDetail() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOrderLoading]);
     return (
-        <div className="pt-10">
+        <div className="pt-10 h-full overflow-auto">
             <p className="text-3xl font-bold">Chi tiết đơn hàng</p>
 
             <div className="md:grid grid-cols-12 gap-4 pt-10">
