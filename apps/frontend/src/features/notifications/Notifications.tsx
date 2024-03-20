@@ -20,20 +20,30 @@ import useGarageNotifications from "./useGarageNotifications";
 function Notifications() {
     const { open } = useModalContext();
     const user = useAppSelector((state) => state.user.value);
-    const hasCustomerNotificationsAllRead = useAppSelector(state => hasAllNotificationsRead(state.notifications))
-    const hasGarageNotificaitonsAllRead = useAppSelector(state => hasAllGarageNotificationsRead(state.garageNotifications))
-    const hasAllRead = useMemo(() => (  
-        hasCustomerNotificationsAllRead &&
-        hasGarageNotificaitonsAllRead
-    ), [hasCustomerNotificationsAllRead, hasGarageNotificaitonsAllRead])
+    const hasCustomerNotificationsAllRead = useAppSelector((state) =>
+        hasAllNotificationsRead(state.notifications),
+    );
+    const hasGarageNotificationsAllRead = useAppSelector((state) =>
+        hasAllGarageNotificationsRead(state.garageNotifications),
+    );
+    const hasAllRead = useMemo(
+        () => hasCustomerNotificationsAllRead && hasGarageNotificationsAllRead,
+        [hasCustomerNotificationsAllRead, hasGarageNotificationsAllRead],
+    );
     const [isNotificationsOpen, setNotificationsOpen] =
         useState<boolean>(false);
-    const { isLoading, isReload, onNext } = useNotifications()
-    const { 
-        isLoading: isGarageNotificationsLoading, 
-        isReload: isGarageNotificationsReload, 
-        onNext: onGarageNotificationsNext
-    } = useGarageNotifications()
+    const { isLoading, isReload, onNext } = useNotifications();
+    const {
+        isLoading: isGarageNotificationsLoading,
+        isReload: isGarageNotificationsReload,
+        onNext: onGarageNotificationsNext,
+    } = useGarageNotifications();
+
+    useEffect(() => {
+        document.addEventListener("scroll", () => {
+            setNotificationsOpen(false);
+        });
+    }, []);
 
     return (
         <Popover
@@ -57,28 +67,34 @@ function Notifications() {
                         }
                     }}
                 >
-                    <Badge isInvisible={hasAllRead} content="" color="primary" shape="circle" placement="bottom-right">
+                    <Badge
+                        isInvisible={hasAllRead}
+                        content=""
+                        color="primary"
+                        shape="circle"
+                        placement="bottom-right"
+                    >
                         <FontAwesomeIcon icon={faBell} size="lg" />
                     </Badge>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[420px] p-0">
                 <NotificationsDialog
-                    defaultRegion="general" 
-                    customerNotifications={(
+                    defaultRegion="general"
+                    customerNotifications={
                         <CustomerNotifications
                             isLoading={isLoading}
                             isReload={isReload}
                             onNext={onNext}
                         />
-                    )}
-                    garageNotifications={(
-                        <GarageNotifications 
+                    }
+                    garageNotifications={
+                        <GarageNotifications
                             isLoading={isGarageNotificationsLoading}
                             isReload={isGarageNotificationsReload}
                             onNext={onGarageNotificationsNext}
                         />
-                    )}
+                    }
                 />
             </PopoverContent>
         </Popover>

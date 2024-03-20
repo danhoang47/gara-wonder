@@ -24,7 +24,7 @@ export default function GridViewGarages({
     }
 
     return (
-        <div className="gridViewGaragesWrapper px-10">
+        <div className="gridViewGaragesWrapper">
             <div className="gridViewGarages">
                 {isReload && renderLoadingGarages()}
                 {garages?.map((garage) => (

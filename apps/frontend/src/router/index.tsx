@@ -44,7 +44,7 @@ const router = createBrowserRouter(
                 />
             </Route>
             <Route
-                path="garage-management/:garageId"
+                path="garages/:garageId/management"
                 element={<GarageLayout />}
             >
                 <Route element={<GarageManagePage />}>
