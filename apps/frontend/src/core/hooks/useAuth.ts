@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector, useLoadingContext } from ".";
 import { onAuthStateChanged } from "firebase/auth";
-import { getUserById, setEmptyUser, setUserToken } from "@/features/user/user.slice";
+import { getGarageByUserId, getUserById, setEmptyUser, setUserToken } from "@/features/user/user.slice";
 import { auth } from "@/components/firebase";
-import { FetchStatus } from "../types";
+import { FetchStatus, Role, User } from "../types";
 
 export default function useAuth() {
     const dispatch = useAppDispatch();
@@ -16,6 +16,12 @@ export default function useAuth() {
                 user.getIdToken().then(token => {
                     dispatch(setUserToken(token))
                     dispatch(getUserById(user.uid))
+                        .then(action => {
+                            const user = action.payload as User
+                            if (user.role === Role.GarageOwner) {
+                                dispatch(getGarageByUserId(user._id))
+                            }
+                        })
                 })
             } else {
                 dispatch(setEmptyUser())

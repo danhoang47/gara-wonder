@@ -7,15 +7,19 @@ import {
     PopoverTrigger,
 } from "@nextui-org/react";
 import { useState } from "react";
-import { userProfileMenuSections, guestProfileMenuSections } from "./constant";
+import getUserProfileMenu from "./getUserProfileMenu";
 import { useAppSelector } from "@/core/hooks";
+import { Role } from "@/core/types";
 
 function UserProfileMenu() {
     const [isOpen, setOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user.value);
-    const profileMenuOptions = user
-        ? userProfileMenuSections
-        : guestProfileMenuSections;
+    const garageId = useAppSelector((state) => state.user.garageId)
+    const profileMenuOptions = getUserProfileMenu(
+        Boolean(user), 
+        user?.role === Role.GarageOwner,
+        garageId
+    )
 
     return (
         <Popover

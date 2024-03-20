@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { FetchStatus, Response, User } from '@/core/types'
-import { getUser, signup } from '@/api'
+import { getGarageByOwnerId, getUser, signup } from '@/api'
 import { HttpStatusCode } from 'axios'
 import { auth } from '@/components/firebase'
 
@@ -8,6 +8,8 @@ export type UserSliceState = {
     status: FetchStatus,
     value?: User,
     token?: string,
+    garageId?: string,
+    shopId?: string
 }
 
 const initialState: UserSliceState = {
@@ -22,6 +24,8 @@ const userSlice = createSlice({
             state.status = FetchStatus.Fulfilled
             state.value = undefined
             state.token = undefined
+            state.garageId = undefined,
+            state.shopId = undefined
         },
         setUserToken(state, action) {
             state.token = action.payload
@@ -45,6 +49,8 @@ const userSlice = createSlice({
             } else {
                 state.status = FetchStatus.Rejected
             }
+        }).addCase(getGarageByUserId.fulfilled, (state, action) => {
+            state.garageId = action.payload._id
         })
     }
 })
@@ -61,6 +67,14 @@ export const getUserById = createAsyncThunk("user/getUserById", async (id: strin
         } else {
             throw new Error("ERROR")
         }
+    }
+})
+
+export const getGarageByUserId = createAsyncThunk("user/getGarageByUserId", async (id: string) => {
+    try {
+        return (await getGarageByOwnerId(id)).data
+    } catch (_error: unknown) {
+        throw new Error("ERROR")
     }
 })
 

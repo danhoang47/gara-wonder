@@ -7,24 +7,35 @@ import {
 import App from "@/App";
 import { DefaultLayout, GarageLayout } from "@/layouts";
 import {
-    HomePage,
     GarageRegistrationPage,
     GaragePage,
     BookPage,
     GarageManagePage,
     GeneralDashboard,
     CartPage,
-    LandingPage,
 } from "@/pages";
 import { OrdersDetail, OrdersPage } from "@/pages/garage-manage-page";
+import { lazy, Suspense } from "react";
+import { FullPageLoad } from "@/core/ui";
+
+const LandingPage = lazy(() => import("@/pages/landing-page"))
+const HomePage = lazy(() => import("@/pages/home-page"))
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
             <Route element={<DefaultLayout />}>
-                <Route path="" element={<LandingPage />} />
-                <Route path="garage" element={<HomePage />} />
-                <Route path="garage/:garageId" element={<GaragePage />} />
+                <Route path="" element={(
+                    <Suspense fallback={<FullPageLoad />}>
+                        <LandingPage />    
+                    </Suspense>
+                )}/>
+                <Route path="garages" element={(
+                    <Suspense fallback={<FullPageLoad />}>
+                        <HomePage />    
+                    </Suspense>
+                )}/>
+                <Route path="garages/:garageId" element={<GaragePage />} />
                 <Route path="book" element={<BookPage />} />
                 <Route path="cart" element={<CartPage />} />
                 <Route
