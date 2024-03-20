@@ -1,7 +1,7 @@
 import { Order } from "@/core/types";
 import { Table } from "./ui";
 import { useMemo } from "react";
-import { Column } from "./ui/table/Table";
+import { Column } from "../../core/ui/table/Table";
 import { Tab, Tabs } from "@nextui-org/react";
 import { useAppSelector } from "@/core/hooks";
 import { selectOrders } from "@/features/cart/cart.slice";

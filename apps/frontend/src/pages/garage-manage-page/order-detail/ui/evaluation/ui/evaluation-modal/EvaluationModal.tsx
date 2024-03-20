@@ -1,7 +1,4 @@
-import { DatePicker } from "@/core/ui";
 import {
-    Button,
-    Input,
     Popover,
     PopoverContent,
     PopoverTrigger,
@@ -9,36 +6,71 @@ import {
 } from "@nextui-org/react";
 import moment from "moment";
 import { useState } from "react";
+import { DatePopup } from "..";
+import ImagePreview from "./ImagePreview";
+import { FileInput } from "@/core/ui";
 
-function EvaluationModal({ closeModal }: { closeModal: () => void }) {
-    const [localOrderTime, setLocalOrderTime] = useState<number>();
+type DateRangeType = {
+    from?: number;
+    to?: number;
+};
+
+function EvaluationModal() {
+    const [localOrderTime, setLocalOrderTime] = useState<DateRangeType>();
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
+    const [repairPrice, setRepairPrice] = useState<number>(0);
+    const [washPrice, setWashPrice] = useState<number>(0);
+    const [images, setImages] = useState<File[]>();
+    const setDate = (date: DateRangeType) => {
+        setLocalOrderTime(date);
+    };
 
+    const onMultipleFileInputValueChange = (fs: File[]) => {
+        if (!images) {
+            setImages(fs);
+            return;
+        }
+
+        setImages([
+            ...images,
+            ...fs.filter((file) => {
+                return images.filter((imageFile) => {
+                    return file !== imageFile;
+                });
+            }),
+        ]);
+    };
+
+    const onImageRemove = (fileName: string) => {
+        setImages(images?.filter(({ name }) => name !== fileName));
+    };
     return (
-        <div className="flex flex-col   gap-4 p-5">
-            <p className="text-center text-2xl font-bold">Đánh giá</p>
-            <div className="w-full h-1 border-t-2" />
+        <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
                 <p className=" text-xl font-semibold">Dịch vụ</p>
                 <div className="flex justify-between">
                     <p className="text-lg">Sửa chửa</p>
                     <input
-                        type="text"
-                        value={"30"}
-                        className="w-10 text-center text-lg outline-none"
+                        type="number"
+                        value={repairPrice}
+                        onChange={(e) => setRepairPrice(Number(e.target.value))}
+                        className="w-24 text-center text-lg bg-default font-semibold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                 </div>
                 <div className="flex justify-between">
                     <p className="text-lg">Rửa xe</p>
                     <input
-                        type="text"
-                        value={"30"}
-                        className="w-10 text-center text-lg outline-none"
+                        type="number"
+                        value={washPrice}
+                        onChange={(e) => setWashPrice(Number(e.target.value))}
+                        className="w-24 text-center text-lg bg-default  font-semibold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                 </div>
                 <div className="flex justify-between">
                     <p className="text-lg">Ngày lấy xe</p>
-                    <p className="text-lg">Mon , 4 Feb 2024 -10:00</p>
+                    <p className="text-lg font-semibold">
+                        Mon , 4 Feb 2024 -10:00
+                    </p>
                 </div>
             </div>
 
@@ -48,7 +80,10 @@ function EvaluationModal({ closeModal }: { closeModal: () => void }) {
                     Ước tính thời gian hoàn thành
                 </p>
                 <div className="flex justify-between">
-                    <p>{moment(localOrderTime).format("YYYY/MM/DD")}</p>
+                    <p>
+                        {moment(localOrderTime?.from).format("YYYY/MM/DD")} -{" "}
+                        {moment(localOrderTime?.to).format("YYYY/MM/DD")}
+                    </p>
                     <Popover
                         placement="left"
                         triggerScaleOnOpen={false}
@@ -63,90 +98,18 @@ function EvaluationModal({ closeModal }: { closeModal: () => void }) {
                             </p>
                         </PopoverTrigger>
                         <PopoverContent>
-                            <div className="w-[400px] p-4">
-                                <div className="flex justify-between">
-                                    <div className="">
-                                        <p className="shrink-0 text-lg font-bold">
-                                            Pick Date
-                                        </p>
-                                        <span className="text-small text-default-400 font-normal">
-                                            Select a date to fix your car
-                                        </span>
-                                    </div>
-                                    <Input
-                                        label="Order Date"
-                                        placeholder="YYYY/MM/dd"
-                                        variant="bordered"
-                                        value={moment(localOrderTime).format(
-                                            "YYYY/MM/DD",
-                                        )}
-                                        classNames={{
-                                            base: "max-w-44",
-                                            inputWrapper:
-                                                "border data-[focus=true]:border-2",
-                                        }}
-                                        // isInvalid={isOrderTimeInvalid}
-                                        onValueChange={(value) => {
-                                            const orderDate = moment(
-                                                value,
-                                                "YYYY MM DD",
-                                            );
-                                            if (
-                                                value.length === 10 &&
-                                                orderDate.isValid()
-                                            ) {
-                                                setLocalOrderTime(
-                                                    orderDate
-                                                        .toDate()
-                                                        .getTime(),
-                                                );
-                                            }
-                                        }}
-                                        isClearable
-                                    />
-                                </div>
-                                <div className="pt-5">
-                                    <DatePicker
-                                        mode="single"
-                                        onSelectedChange={(date) => {
-                                            setLocalOrderTime(date?.getTime());
-                                        }}
-                                        defaultYear={2024}
-                                        defaultMonth={new Date().getMonth()}
-                                        selectedDate={
-                                            localOrderTime
-                                                ? new Date(localOrderTime)
-                                                : undefined
-                                        }
-                                    />
-                                </div>
-                                <div className="flex gap-2 py-2 justify-end px-4">
-                                    <Button
-                                        variant="light"
-                                        onPress={() => {
-                                            setDatePickerOpen(false);
-                                        }}
-                                    >
-                                        <p className="text-default-400">Xóa</p>
-                                    </Button>
-                                    <Button
-                                        className="bg-foreground"
-                                        onPress={() => {
-                                            //TODO add Save function
-                                            setDatePickerOpen(false);
-                                        }}
-                                    >
-                                        <p className="text-background">Lưu</p>
-                                    </Button>
-                                </div>
-                            </div>
+                            <DatePopup
+                                closeModal={() => {
+                                    setDatePickerOpen(false);
+                                }}
+                                pickDate={localOrderTime}
+                                setDate={setDate}
+                            />
                         </PopoverContent>
                     </Popover>
                 </div>
             </div>
-
             <div className="w-full h-1 border-t-2" />
-
             <div className="flex flex-col gap-3">
                 <p className=" text-xl font-semibold">Miêu tả tổng quát</p>
                 <Textarea
@@ -159,19 +122,23 @@ function EvaluationModal({ closeModal }: { closeModal: () => void }) {
                 />
             </div>
             <div className="w-full h-1 border-t-2" />
-            <div className="flex justify-between items-center">
-                <div className="flex gap-2 items-center">
-                    <p>Tổng cộng:</p>
-                    <p className="font-bold text-black text-2xl">USD 280</p>
-                </div>
-                <div className="flex gap-2 py-2 justify-end px-4">
-                    <Button variant="light" onClick={() => closeModal()}>
-                        <p className="text-black">Đóng</p>
-                    </Button>
-                    <Button color="primary">
-                        <p className="text-background">Gửi tới khách hàng</p>
-                    </Button>
-                </div>
+
+            <div className="mb-2">
+                <p className="text-xl font-semibold">Thêm ảnh</p>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+                {images?.map((file) => (
+                    <ImagePreview
+                        key={file.name}
+                        file={file}
+                        onImageRemove={onImageRemove}
+                    />
+                ))}
+                <FileInput
+                    selectionMode="multiple"
+                    onValueChange={onMultipleFileInputValueChange}
+                    showLabel={false}
+                />
             </div>
         </div>
     );

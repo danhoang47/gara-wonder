@@ -1,16 +1,22 @@
+import { Order } from "@/core/types";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Chip, Tooltip } from "@nextui-org/react";
+import { Chip, Link, Tooltip } from "@nextui-org/react";
 
-function OrderCard() {
+function OrderCard({ order }: { order?: Order }) {
     return (
-        <div className="cursor-pointer">
+        <div className="">
             <div className=" border-2 rounded-md p-5 hover:border-default-600 hover:shadow-lg transition-colors">
                 <div className="relative">
                     <div className="flex gap-5">
-                        <p className="font-semibold text-lg">
-                            Mazda 3 - 43A 12345
-                        </p>
+                        <Link
+                            href={`orders/${order._id}`}
+                            target="_blank"
+                            className="font-semibold text-lg"
+                        >
+                            {order?.car.brand.name} {order?.car.model} -{" "}
+                            {order?.car.plateNumber}
+                        </Link>
                         <Tooltip
                             content="I am a tooltip"
                             disableAnimation

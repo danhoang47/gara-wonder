@@ -2,14 +2,21 @@ import { WithOwnerGarage } from "@/api/garages/getGarages";
 import { Carousel } from "@/core/ui";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, Button, Card, CardBody, CardHeader, Link } from "@nextui-org/react";
+import {
+    Avatar,
+    Button,
+    Card,
+    CardBody,
+    CardHeader,
+    Link,
+} from "@nextui-org/react";
 import clsx from "clsx";
 import { memo } from "react";
 
 export type GarageCardProps = {
     garage: WithOwnerGarage;
     className?: string;
-    carouselType?: "square" | "rectangle"
+    carouselType?: "square" | "rectangle";
 };
 
 const ellipsisClassName = "overflow-x-hidden text-ellipsis whitespace-nowrap";
@@ -21,11 +28,13 @@ function GarageCard({ garage, className, carouselType = "square" }: GarageCardPr
 
     return (
         <Card className={clsx("gap-2 shadow-none relative", className)}>
-            <CardHeader className={clsx("p-0 rounded-xl overflow-hidden", carouselType)}>
+            <CardHeader
+                className={clsx("p-0 rounded-xl overflow-hidden", carouselType)}
+            >
                 <Carousel
                     items={renderedImages}
                     classNames={{
-                        item: "w-full"
+                        item: "w-full",
                     }}
                     renderItem={(image) => (
                         <div className="h-full" key={image._id}>
@@ -52,15 +61,17 @@ function GarageCard({ garage, className, carouselType = "square" }: GarageCardPr
                         >
                             {name}
                         </Link>
-                        <p className={clsx("text-sm text-default-500", ellipsisClassName)}>
+                        <p
+                            className={clsx(
+                                "text-sm text-default-500",
+                                ellipsisClassName,
+                            )}
+                        >
                             {description}
                         </p>
                         <p className="text-sm text-default-500">{address}</p>
                     </div>
-                    <Avatar
-                        src={owner.photoURL}
-                        className="shrink-0"
-                    />
+                    <Avatar src={owner.photoURL} className="shrink-0" />
                 </div>
                 <p>{}</p>
             </CardBody>

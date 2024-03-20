@@ -34,13 +34,13 @@ function Header({
                         : " px-10",
                 )}
             >
-                <div className="flex items-center justify-start flex-1 h-full">
+                <div className="flex items-center justify-start h-full">
                     {leftContent}
                 </div>
                 <div className="flex items-center justify-center h-full absolute left-1/2 -translate-x-1/2">
                     {middleContent}
                 </div>
-                <div className="flex basis-auto items-center justify-end flex-1 h-full gap-1">
+                <div className="flex items-center justify-end h-full gap-1 ml-auto">
                     {rightContent}
                 </div>
             </div>

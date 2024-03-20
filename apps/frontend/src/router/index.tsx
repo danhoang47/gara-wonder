@@ -14,7 +14,7 @@ import {
     GeneralDashboard,
     CartPage,
 } from "@/pages";
-import { OrdersDetail, OrdersPage } from "@/pages/garage-manage-page";
+import { OrdersDetail, OrdersPage, Schedule, StaffManagement, IncomePage } from "@/pages/garage-manage-page";
 import { lazy, Suspense } from "react";
 import { FullPageLoad } from "@/core/ui";
 
@@ -51,6 +51,9 @@ const router = createBrowserRouter(
                     <Route path="" element={<GeneralDashboard />} />
                     <Route path="orders" element={<OrdersPage />} />
                     <Route path="orders/:orderId" element={<OrdersDetail />} />
+                    <Route path="schedule" element={<Schedule />} />
+                    <Route path="staff" element={<StaffManagement />} />
+                    <Route path="income" element={<IncomePage />} />
                 </Route>
             </Route>
         </Route>,

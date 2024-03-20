@@ -35,16 +35,13 @@ function Notifications() {
         onNext: onGarageNotificationsNext
     } = useGarageNotifications()
 
-    useEffect(() => {
-        document.addEventListener("scroll", () => setNotificationsOpen(false))
-    }, [])
-
     return (
         <Popover
             isOpen={isNotificationsOpen && Boolean(user)}
             onOpenChange={(open) => {
                 setNotificationsOpen(open);
             }}
+            triggerType="dialog"
         >
             <PopoverTrigger>
                 <Button
