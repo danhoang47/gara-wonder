@@ -24,7 +24,9 @@ const GeneralDashboard = lazy(
 const OrderAcceptModeSetting = lazy(
     () => import("@/pages/garage-manage-page/order-accept-mode-setting"),
 );
-
+const RefundRuleSetting = lazy(
+    () => import("@/pages/garage-manage-page/refund-rule-setting"),
+);
 const CartPage = lazy(() => import("@/pages/cart-page"));
 
 const OrdersDetail = lazy(
@@ -89,6 +91,14 @@ const router = createBrowserRouter(
                         element={
                             <Suspense fallback={<FullPageLoad />}>
                                 <OrderAcceptModeSetting />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="refund-setting"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <RefundRuleSetting />
                             </Suspense>
                         }
                     />
