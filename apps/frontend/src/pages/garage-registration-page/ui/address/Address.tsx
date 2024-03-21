@@ -23,7 +23,6 @@ function Address() {
     } = useGarageRegistrationContext();
     const { address, location } = garageRegistrationState;
     const debouncedAddress = useDebouncedValue(address, 500);
-    const [center, setCenter] = useState<google.maps.LatLngLiteral>()
     const position = location
         ? {
             lat: location.coordinates[1],
@@ -44,10 +43,6 @@ function Address() {
                     setGarageRegistrationStateValue("location", {
                         coordinates: [lng, lat]
                     });
-                    setCenter({
-                        lat,
-                        lng
-                    })
                 }
             }
         };
@@ -83,21 +78,16 @@ function Address() {
                     <Map
                         mapId={"36cc488b1b7a7759"}
                         defaultCenter={position}
-                        center={center}
                         defaultZoom={14}
                         mapTypeId={"roadmap"}
                         disableDefaultUI
                         onDrag={(event) => {
-                            setCenter(undefined)
                             const latlng = event.map.getCenter()
                             if (latlng) {
                                 setGarageRegistrationStateValue("location", {
-                                    coordinates:  [latlng.lat(), latlng.lng()]
+                                    coordinates:  [latlng.lng(), latlng.lat()]
                                 });
                             }
-                        }}
-                        onDragend={() => {
-                            setCenter(position)
                         }}
                     >
                         <AdvancedMarker position={position} />
