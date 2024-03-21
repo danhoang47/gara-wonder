@@ -35,7 +35,7 @@ function EstimateDurationGroup({
                     <div className="flex justify-between items-center">
                         <div>
                             <p className="font-medium">
-                                How long does it take?
+                                Dịch vụ kéo dài trong bao lâu?
                             </p>
                             <span className="text-sm text-default-400">
                                 Iplorem sumary esdwas
@@ -123,7 +123,7 @@ function EstimateDurationGroup({
             <RadioGroup
                 label={
                     <p className="font-medium text-foreground">
-                        Estimate Duration
+                        Thời gian thực hiện
                     </p>
                 }
                 value={estimateType.toString()}
@@ -136,14 +136,14 @@ function EstimateDurationGroup({
                     value={EstimateType.SameDay.toString()}
                     isDisabled={disableKeys?.includes(EstimateType.SameDay)}
                 >
-                    Same day
+                    Cùng ngày
                 </Radio>
-                <Radio value={EstimateType.Exact.toString()}>Exact day</Radio>
+                <Radio value={EstimateType.Exact.toString()}>Ngày xác định</Radio>
                 <Radio value={EstimateType.InRange.toString()}>
-                    Complete in range
+                    Trong khoảng ngày
                 </Radio>
                 <Radio value={EstimateType.UnEstimated.toString()}>
-                    Can not be estimate right now
+                    Không thể ước tính trước
                 </Radio>
             </RadioGroup>
             {renderAdditionalInput()}
