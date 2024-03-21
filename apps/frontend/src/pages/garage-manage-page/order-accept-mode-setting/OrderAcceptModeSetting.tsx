@@ -1,12 +1,12 @@
 import { faGem } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { BreadcrumbItem, Breadcrumbs, Switch } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Button, Switch } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 
 export default function OrderAcceptModeSetting() {
     const navigate = useNavigate();
     return (
-        <div className="grid grid-cols-12 gap-5 px-10 mt-10">
+        <div className=" relative grid grid-cols-12 gap-5 px-10 mt-10 h-full">
             <div className="col-span-4 col-start-4">
                 <Breadcrumbs>
                     <BreadcrumbItem
@@ -63,6 +63,20 @@ export default function OrderAcceptModeSetting() {
                         </p>
                     </div>
                 </div>
+            </div>
+            <div className="absolute flex w-44 gap-4 bottom-[5rem] left-[calc((100%-11rem)/2)]">
+                <Button
+                    variant="light"
+                    radius="full"
+                    onClick={() => {
+                        navigate("..");
+                    }}
+                >
+                    Hủy
+                </Button>
+                <Button className="" color="primary" radius="full">
+                    Lưu
+                </Button>
             </div>
         </div>
     );

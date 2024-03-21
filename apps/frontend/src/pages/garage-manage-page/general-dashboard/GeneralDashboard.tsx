@@ -5,7 +5,6 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 function GeneralDashboard() {
     const userData = useAppSelector((state) => state.user);
-    console.log(userData.value);
 
     return (
         <div className="grid grid-cols-12 gap-5 h-full ">
