@@ -3,10 +3,11 @@ import { Garage } from "./garage";
 
 export const enum Role {
     User = 1,
-    GarageOwner = 2,
-    Staff = 3,
+    Staff = 2,
+    GarageOwner = 3,
     Supplier = 4,
     GarageOwnerAndSupplier = 5,
+    Admin = 6
 }
 
 export type User = Model & {

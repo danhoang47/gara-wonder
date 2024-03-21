@@ -87,7 +87,7 @@ const GarageRegistrationPage = () => {
                     title: "Register Garage",
                     description: "Successfully register your garage"
                 }))
-                
+                navigate(`/garages/${result.data._id}/management`)
             }
         } catch (error) {
             dispatch(notify({
@@ -97,7 +97,6 @@ const GarageRegistrationPage = () => {
             }))
         } finally {
             unload("registrationSaveLoad")
-            navigate("/")
         }
     }
 

@@ -11,11 +11,11 @@ export type FieldConstraint = {
 export type GarageRegistration = Partial<Omit<Garage, "images" | "backgroundImage" | "additionalServices">> & {
     backgroundImage?: File,
     images?: File[],
-    additionalServices: string[]
+    additionalServices?: string[]
 }
 
 export type GarageRegistrationErrors = {
-    [K in keyof GarageRegistration]: string;
+    [K in keyof GarageRegistration]?: string;
 };
 
 export type GarageRegistrationContextType = {

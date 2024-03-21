@@ -13,7 +13,7 @@ export default function useAuth() {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                user.getIdToken().then(token => {
+                user.getIdToken(true).then(token => {
                     dispatch(setUserToken(token))
                     dispatch(getUserById(user.uid))
                         .then(action => {

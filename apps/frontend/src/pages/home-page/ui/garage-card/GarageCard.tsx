@@ -17,12 +17,13 @@ export type GarageCardProps = {
     garage: WithOwnerGarage;
     className?: string;
     carouselType?: "square" | "rectangle";
+    onFavoriteButtonPress: (garage: WithOwnerGarage) => void;
 };
 
 const ellipsisClassName = "overflow-x-hidden text-ellipsis whitespace-nowrap";
 
 // eslint-disable-next-line react-refresh/only-export-components
-function GarageCard({ garage, className, carouselType = "square" }: GarageCardProps) {
+function GarageCard({ garage, className, carouselType = "square", onFavoriteButtonPress }: GarageCardProps) {
     const { name, description, address, _id, backgroundImage, images, owner, isFavorite } = garage;
     const renderedImages = [backgroundImage, ...images]
 
@@ -79,6 +80,7 @@ function GarageCard({ garage, className, carouselType = "square" }: GarageCardPr
                 isIconOnly 
                 radius="full" 
                 className={clsx("absolute top-3 right-3 z-10")}
+                onPress={() => onFavoriteButtonPress(garage)}
             >
                 <FontAwesomeIcon icon={faHeart} size="lg" className={clsx(isFavorite && "text-danger")}/>
             </Button>
