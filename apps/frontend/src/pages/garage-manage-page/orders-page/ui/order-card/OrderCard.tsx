@@ -1,7 +1,7 @@
 import { OrderListType } from "@/api/order/getOrders";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Chip, Link, Tooltip } from "@nextui-org/react";
+import { Chip, Link } from "@nextui-org/react";
 import moment from "moment";
 
 function OrderCard({ order }: { order?: OrderListType }) {
