@@ -1,67 +1,93 @@
-import { Order } from "@/core/types";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { OrderListType } from "@/api/order/getOrders";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chip, Link, Tooltip } from "@nextui-org/react";
+import moment from "moment";
 
-function OrderCard({ order }: { order?: Order }) {
+function OrderCard({ order }: { order?: OrderListType }) {
     return (
         <div className="">
-            <div className=" border-2 rounded-md p-5 hover:border-default-600 hover:shadow-lg transition-colors">
-                <div className="relative">
-                    <div className="flex gap-5">
-                        <Link
-                            href={`orders/${order._id}`}
-                            className="font-semibold text-lg"
-                        >
-                            {order?.car.brand.name} {order?.car.model} -{" "}
-                            {order?.car.plateNumber}
-                        </Link>
-                        <Tooltip
-                            content="I am a tooltip"
-                            disableAnimation
-                            radius="sm"
-                            classNames={{
-                                content:
-                                    "bg-default-800 text-white font-semibold",
-                            }}
-                        >
-                            <Chip color="success" radius="sm">
-                                <p className="font-semibold">Confirmed</p>
-                            </Chip>
-                        </Tooltip>
-                    </div>
-                    <div className="flex gap-2 pt-1">
-                        <Chip
-                            classNames={{
-                                base: "bg-default-500 text-white min-w-[6rem] text-center",
-                            }}
-                        >
-                            <p className="font-semibold">Car wash</p>
-                        </Chip>
-                        <Chip
-                            classNames={{
-                                base: "bg-default-500 text-white min-w-[6rem] text-center",
-                            }}
-                        >
-                            <p className="font-semibold">Slot 7</p>
-                        </Chip>
-                    </div>
-                    <div className=" pt-5 flex gap-6 items-center">
-                        <div>
-                            <p className="font-medium text-default-500">
-                                Start time
-                            </p>
-                            <p className="font-medium">29 Nov 2024, 03:30pm</p>
+            <div className="border-1 rounded-2xl p-5 shadow-md hover:shadow-xl transition-shadow">
+                <div className="relative flex flex-col gap-4">
+                    <div className="flex justify-between">
+                        <div className="flex items-center gap-2">
+                            <div>
+                                <img
+                                    src={order?.userId.photoURL}
+                                    alt=""
+                                    className="w-8 h-8 rounded-full"
+                                />
+                            </div>
+                            <div>
+                                <div className="flex gap-5">
+                                    <Link
+                                        href={`orders/${order?._id}`}
+                                        className="text-sm font-medium text-black"
+                                    >
+                                        {order?.car.brand.name}{" "}
+                                        {order?.car.model} -{" "}
+                                        {order?.car.plateNumber}
+                                    </Link>
+                                </div>
+                                <div className="flex gap-2 ">
+                                    <p className="text-sm">
+                                        {moment(order?.handOverTime).format(
+                                            "DD/MM/YYYY",
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <FontAwesomeIcon
-                            icon={faArrowRight}
-                            className="text-default-500"
-                        />
                         <div>
-                            <p className="font-medium text-default-500">
-                                End time
+                            <p className="font-semibold text-xl">
+                                VND {order?.totalPrice}
                             </p>
-                            <p className="font-medium">29 Nov 2024, 03:30pm</p>
+                        </div>
+                    </div>
+                    <div className="flex gap-6 items-center">
+                        <div>
+                            <p className="font-semibold">
+                                {order?.services.map((e, index) => {
+                                    if (index === 0)
+                                        return <span>{e.name}</span>;
+
+                                    return <span>, {e.name}</span>;
+                                })}
+                            </p>
+                            <div className="flex gap-2 items-center text-sm text-default-600">
+                                <p>
+                                    <FontAwesomeIcon
+                                        icon={faCalendar}
+                                        className="mr-2"
+                                    />
+                                    Order Date:{" "}
+                                    {moment(order?.handOverTime).format(
+                                        "DD/MM/YYYY",
+                                    )}
+                                </p>
+
+                                {order?.estimateHandOffTime !== undefined && (
+                                    <>
+                                        <p>-</p>
+                                        <p>
+                                            Return Date:{" "}
+                                            {moment(
+                                                order?.estimateHandOffTime,
+                                            ).format("DD/MM/YYYY")}
+                                        </p>
+                                    </>
+                                )}
+                            </div>
+                            <div className="pt-3 flex gap-2">
+                                <Chip color="primary">
+                                    <p className="font-medium">Accepted</p>
+                                </Chip>
+                                <Chip color="default" variant="bordered">
+                                    <p className="font-medium text-default-500">
+                                        No Evaluation
+                                    </p>
+                                </Chip>
+                            </div>
                         </div>
                     </div>
                 </div>

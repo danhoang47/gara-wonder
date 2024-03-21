@@ -9,7 +9,7 @@ function GeneralInfo() {
     return (
         <div className="w-full border-b-1 pb-[7.5rem]">
             <div className="flex justify-between items-center">
-                <p className="font-semibold text-3xl">
+                <p className="font-semibold text-2xl">
                     Hôm nay bạn có gì mới ?
                 </p>
                 <Tabs
