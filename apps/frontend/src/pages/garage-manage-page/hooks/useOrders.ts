@@ -1,29 +1,29 @@
 import { useAsyncList } from "@/core/hooks";
 import { useCallback, useState } from "react";
-import { Order, Paging } from "@/core/types";
+import { Paging } from "@/core/types";
 import { useParams } from "react-router-dom";
 import { getOrders } from "@/api";
+import { OrderListType } from "@/api/order/getOrders";
 
 const DEFAULT_PAGING: Paging = {
     limit: 5,
 };
 
 export default function useOrders() {
-    const [orders, setOrders] = useState<Order[]>([]);
+    const [orders, setOrders] = useState<OrderListType[]>([]);
     const { garageId } = useParams();
     const getKey = useCallback(() => {
         if (!garageId) return null;
-
         return "notifications/" + garageId;
     }, [garageId]);
-    const onOrderLoaded = (order: Order[], isReload: boolean) => {
+    const onOrderLoaded = (order: OrderListType[], isReload: boolean) => {
         if (isReload) {
             setOrders(order);
         } else {
             setOrders([...orders, ...order]);
         }
     };
-    const { isReload, isLoading, onNext } = useAsyncList<Order>(
+    const { isReload, isLoading, onNext } = useAsyncList<OrderListType>(
         getKey,
         onOrderLoaded,
         [garageId],

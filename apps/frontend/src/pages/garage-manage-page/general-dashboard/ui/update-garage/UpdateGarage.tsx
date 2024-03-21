@@ -8,7 +8,7 @@ function UpdateGarage() {
     return (
         <div className="w-full border-b-1 pt-5 pb-[7.5rem]">
             <div className="flex justify-between items-center">
-                <p className="font-semibold text-3xl">Chỉnh sửa garage</p>
+                <p className="font-semibold text-2xl">Chỉnh sửa garage</p>
                 {/* <Tabs
                     color="primary"
                     aria-label="Tabs colors"
