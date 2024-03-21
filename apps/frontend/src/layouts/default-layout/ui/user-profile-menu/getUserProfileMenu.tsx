@@ -62,7 +62,7 @@ const getUserProfileMenu = (isLogin: boolean, isGarageOwner: boolean, garageId?:
                     key: "k1",
                     component: (
                         <Link 
-                            href={`garages/${garageId}/management`} 
+                            href={`/garages/${garageId}/management`} 
                             className="text-foreground text-small"
                         >
                             Quản lý Garage

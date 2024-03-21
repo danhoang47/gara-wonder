@@ -30,7 +30,7 @@ function RegionTabs() {
                     key={path} 
                     title={title} 
                     className={clsx(currentPath === path && "shadow")} 
-                    href={path}
+                    href={`/${path}`}
                 />
             ))}
         </Tabs>

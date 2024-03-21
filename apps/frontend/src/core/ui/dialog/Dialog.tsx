@@ -41,7 +41,7 @@ export default function Dialog({
         <Modal isOpen={isOpen} onClose={onClose} hideCloseButton>
             <ModalContent>
                 <ModalBody>
-                    <div className="mt-4">
+                    <div className="mt-4 flex justify-center">
                         {icon ? (
                             IconComponent
                         ) : (

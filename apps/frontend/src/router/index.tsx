@@ -61,9 +61,30 @@ const router = createBrowserRouter(
                         </Suspense>
                     }
                 />
-                <Route path="garages/:garageId" element={<GaragePage />} />
-                <Route path="book" element={<BookPage />} />
-                <Route path="cart" element={<CartPage />} />
+                <Route
+                    path="garages/:garageId"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <GaragePage />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="book"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <BookPage />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="cart"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <CartPage />
+                        </Suspense>
+                    }
+                />
                 <Route
                     path="garage-registration"
                     element={
@@ -77,7 +98,13 @@ const router = createBrowserRouter(
                 path="garages/:garageId/management"
                 element={<GarageLayout />}
             >
-                <Route element={<GarageManagePage />}>
+                <Route
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <GarageManagePage />
+                        </Suspense>
+                    }
+                >
                     <Route
                         path=""
                         element={

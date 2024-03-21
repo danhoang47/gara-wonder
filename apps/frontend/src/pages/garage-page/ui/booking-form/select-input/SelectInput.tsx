@@ -92,6 +92,7 @@ function SelectInput() {
                                     ? new Date(localOrderTime)
                                     : undefined
                             }
+                            show="single"
                         />
                     </div>
                     <div className="flex gap-2 py-2 justify-end px-4">
