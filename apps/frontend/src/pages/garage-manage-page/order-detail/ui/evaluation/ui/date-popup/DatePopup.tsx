@@ -2,7 +2,8 @@ import { DateRange } from "@/core/types";
 import { DatePicker } from "@/core/ui";
 import { Button, Input } from "@nextui-org/react";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DateRangeType } from "../evaluation-modal/EvaluationModal";
 
 function DatePopup({
     closeModal,
@@ -10,11 +11,15 @@ function DatePopup({
     pickDate,
 }: {
     closeModal: () => void;
-    setDate: (date: { from?: number; to?: number }) => void;
-    pickDate?: { from?: number; to?: number };
+    setDate: (date: DateRangeType) => void;
+    pickDate: DateRangeType;
 }) {
     // TODO: testing purpose only
     const [dateRange, setDateRange] = useState<DateRange>();
+
+    useEffect(() => {
+        console.log(dateRange, pickDate);
+    }, [dateRange, pickDate]);
 
     return (
         <div className="w-full p-4">
@@ -75,6 +80,10 @@ function DatePopup({
                     mode="range"
                     onSelectedChange={(date) => {
                         setDateRange(date);
+                        setDate({
+                            from: date?.from?.getTime(),
+                            to: date?.to?.getTime(),
+                        });
                     }}
                     defaultYear={2024}
                     defaultMonth={new Date().getMonth()}

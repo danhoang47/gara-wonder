@@ -40,7 +40,7 @@ function IncomePage() {
         console.log(selectedMonth);
     }, [selectedMonth]);
     return (
-        <div className="pt-10">
+        <div className="p-10">
             <div className="flex justify-between items-center">
                 <p className="text-2xl font-semibold">Here is your revenue</p>
                 <Select
