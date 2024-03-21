@@ -23,7 +23,7 @@ export default function Toasts() {
             {createPortal(
                 <div
                     id="toasts"
-                    className="absolute bottom-10 right-10 flex flex-col-reverse gap-2"
+                    className="fixed bottom-10 right-10 flex flex-col-reverse gap-2"
                 >
                     {renderedToasts.map((toast) => (
                         <Toast key={toast.id} item={toast} />

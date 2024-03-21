@@ -110,5 +110,15 @@ export default function useGarages(viewMode: ViewMode) {
         }
     };
 
-    return { garages, fetchingStatus, isReload, onNext };
+    const onUpdateGarage = (updatedGarage: WithOwnerGarage) => {
+        setGarages(prev => prev.map(garage => {
+            if (garage._id === updatedGarage._id) {
+                return updatedGarage
+            }
+
+            return garage
+        }))
+    }
+
+    return { garages, fetchingStatus, isReload, onNext, onUpdateGarage };
 }

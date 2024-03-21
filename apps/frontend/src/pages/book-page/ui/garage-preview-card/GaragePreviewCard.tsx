@@ -34,6 +34,7 @@ function GaragePreviewCard() {
             <div className="mt-2">
                 <h2 className="font-semibold">{garage?.name}</h2>
                 <p className="text-small w-full overflow-hidden whitespace-nowrap text-ellipsis">{garage?.description}</p>
+                <p className="text-small w-full overflow-hidden whitespace-nowrap text-ellipsis">{garage?.address}</p>
             </div>
         </div>
     );

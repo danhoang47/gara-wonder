@@ -19,12 +19,13 @@ export type ViewModeGaragesProps = {
     error?: any;
     garages?: WithOwnerGarage[];
     onNext: () => void;
+    onUpdateGarage: (garage: WithOwnerGarage) => void;
 };
 
 function Garages() {
     const [viewMode, onViewModeChange] = useViewMode();
     const { open } = useModalContext();
-    const { garages, fetchingStatus, isReload, onNext } = useGarages(viewMode);
+    const { garages, fetchingStatus, isReload, onNext, onUpdateGarage } = useGarages(viewMode);
     const changeViewModeButtonLabel =
         viewMode === "grid" ? "Map view" : "List view";
     const changeViewModeButtonIcon =
@@ -48,7 +49,8 @@ function Garages() {
             isLoading: fetchingStatus === FetchStatus.Fetching,
             isReload,
             garages,
-            onNext
+            onNext,
+            onUpdateGarage
         };
 
         switch (viewMode) {

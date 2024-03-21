@@ -34,7 +34,7 @@ export default function MapViewGarages({ garages }: ViewModeGaragesProps) {
     };
 
     return (
-        <div className="h-full -mx-10">
+        <div className="h-[calc(100vh-161px)] -mx-10">
             <Map
                 mapId={"513c015c554b1aac"}
                 defaultCenter={{

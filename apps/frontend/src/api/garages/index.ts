@@ -10,3 +10,4 @@ export { default as getBasicGarageInfo } from "./getBasicGarageInfo";
 export { default as getGarageServices } from "./getGarageServices";
 
 export { default as getGarageByOwnerId } from './getGarageByOwnerId'
+export { default as addGarageToFavorites } from './addGarageToFavorites'
