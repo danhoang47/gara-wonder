@@ -2,8 +2,10 @@ import { createContext, useCallback, useMemo, useState } from "react";
 import { ContainerProps } from "../types";
 import { SignInModal } from "@/features/user";
 import { Dialog } from "../ui";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
 
-export type ModalType = "signIn" | "signOut" | "location";
+export type ModalType = "signIn" | "signOut" | "location" | "orderSuccess";
 
 export type ModalContextType = {
     open: (type: ModalType) => void;
@@ -32,9 +34,21 @@ export default function ModalContextProvider({ children }: ContainerProps) {
                     <Dialog
                         isOpen={isModalOpen}
                         onClose={onModalClose}
-                        title="Enable Location Tracking"
+                        title="Cho phép sử dụng vị trí"
                         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut ex nisi. Quisque commodo sem et rhoncus hendrerit."
                         imageSrc="https://cdn-icons-png.flaticon.com/512/235/235861.png"
+                        showNegativeButton={false}
+                    />
+                );
+            case "orderSuccess":
+                return (
+                    <Dialog
+                        isOpen={isModalOpen}
+                        onClose={onModalClose}
+                        title="Đặt đơn sửa chữa thành công"
+                        description="Đặt đơn sửa chữa thành công. Hãy theo dõi tiến độ đơn trong danh sách đơn hàng của bạn."
+                        icon
+                        IconComponent={<FontAwesomeIcon icon={faCircleCheck} className="text-success" size="8x"/>}
                         showNegativeButton={false}
                     />
                 );

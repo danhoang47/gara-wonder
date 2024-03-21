@@ -9,7 +9,9 @@ export type UserSliceState = {
     value?: User,
     token?: string,
     garageId?: string,
-    shopId?: string
+    shopId?: string,
+    lng?: number,
+    lat?: number,
 }
 
 const initialState: UserSliceState = {

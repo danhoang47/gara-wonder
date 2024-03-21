@@ -15,7 +15,7 @@ export type DatePickerBaseProps = {
     defaultMonth?: number;
     disallowEmptySelection?: boolean;
     mode: DatePickerMode;
-    show: "single" | "double";
+    show?: "single" | "double";
 };
 
 export type SingleModeProps = DatePickerBaseProps & {
