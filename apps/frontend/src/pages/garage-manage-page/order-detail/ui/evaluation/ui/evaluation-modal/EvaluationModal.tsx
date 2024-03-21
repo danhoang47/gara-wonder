@@ -10,7 +10,7 @@ import { DatePopup } from "..";
 import ImagePreview from "./ImagePreview";
 import { FileInput } from "@/core/ui";
 
-type DateRangeType = {
+export type DateRangeType = {
     from?: number;
     to?: number;
 };
@@ -92,7 +92,7 @@ function EvaluationModal() {
                         isOpen={isDatePickerOpen}
                         onClose={() => setDatePickerOpen(false)}
                         classNames={{
-                            base: "max-w-full w-[800px]"
+                            base: "max-w-full w-[800px]",
                         }}
                     >
                         <PopoverTrigger onClick={() => setDatePickerOpen(true)}>

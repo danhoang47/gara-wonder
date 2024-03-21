@@ -34,13 +34,15 @@ const GaragePage = () => {
                 <div className="container mx-auto mt-4">
                     <div className="">
                         <GarageHeader
-                            name={basicInfo?.data[0].name}
-                            address={basicInfo?.data[0].address}
+                            name={basicInfo?.data[0]?.name}
+                            address={basicInfo?.data[0]?.address}
                         />
                     </div>
                     <div className="my-6">
                         <GarageImagesPreview
-                            backgroundImage={basicInfo?.data[0].backgroundImage}
+                            backgroundImage={
+                                basicInfo?.data[0]?.backgroundImage
+                            }
                         />
                     </div>
                     <div className="my-6 block w-full gap-4 md:flex">
@@ -50,8 +52,8 @@ const GaragePage = () => {
                         <div className="w-full flex flex-col gap-[30px]">
                             <div className="border-b-1 pb-8 border-zinc-300">
                                 <GarageOwnerAndStaffInfoPreview
-                                    garageOwner={basicInfo?.data[0].userId}
-                                    staff={basicInfo?.data[0].staff}
+                                    garageOwner={basicInfo?.data[0]?.userId}
+                                    staff={basicInfo?.data[0]?.staff}
                                 />
                             </div>
                             <div className="border-b-1 pb-8 border-zinc-300">
@@ -60,14 +62,16 @@ const GaragePage = () => {
                             <div className="border-b-1 pb-8 border-zinc-300">
                                 <AdditionalServices
                                     additionalServices={
-                                        basicInfo?.data[0].additionalServices
+                                        basicInfo?.data[0]?.additionalServices
                                     }
                                     isLoading={isInfoLoading}
                                 />
                             </div>
                             <div className="">
                                 <Description
-                                    description={basicInfo?.data[0].description}
+                                    description={
+                                        basicInfo?.data[0]?.description
+                                    }
                                 />
                             </div>
                         </div>
