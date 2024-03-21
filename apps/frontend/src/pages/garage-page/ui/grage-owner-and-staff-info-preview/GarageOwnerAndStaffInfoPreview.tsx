@@ -27,7 +27,7 @@ function GarageOwnerAndStaffInfoPreview({
                     />
                 </div>
                 <div>
-                    <p className="text-sm text-gray-500">Garage Owner</p>
+                    <p className="text-sm text-gray-500">Chủ Garage</p>
                     <p className="font-medium text-black">
                         {ownerDetail?.data?.displayName}
                     </p>
@@ -55,7 +55,7 @@ function GarageOwnerAndStaffInfoPreview({
                     </AvatarGroup>
                 </div>
                 <div>
-                    <p className="text-sm text-gray-500">Garage Staff</p>
+                    <p className="text-sm text-gray-500">Nhân viên</p>
                     <p className="font-medium text-black">
                         {staff?.slice(0, 3).map((user, index) => {
                             if (index == 0)
@@ -71,7 +71,7 @@ function GarageOwnerAndStaffInfoPreview({
                             }
                         })}
                         {(staff?.length as number) > 3 &&
-                            ` and ${(staff?.length as number) - 3} more`}
+                            ` và thêm ${(staff?.length as number) - 3}`}
                     </p>
                 </div>
             </div>

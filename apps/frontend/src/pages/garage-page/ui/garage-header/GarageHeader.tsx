@@ -10,7 +10,7 @@ function GarageHeader({ name, address }: { name?: string; address?: string }) {
     return (
         <div className="flex justify-between items-center ">
             <div>
-                <span className="text-xs font-medium">522 visited</span>
+                <span className="text-xs font-medium">522 Đã xem</span>
                 <div className="flex gap-2 items-center">
                     <p className="font-semibold text-2xl">{name}</p>
                     {hasCoupon && (

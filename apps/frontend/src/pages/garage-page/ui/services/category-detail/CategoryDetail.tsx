@@ -25,7 +25,7 @@ function CategoryDetail({ service }: { service: Service }) {
                     <p>
                         {categoryData?.description}{" "}
                         <span className="text-primary cursor-pointer hover:text-primary-700">
-                            See all supported cars
+                            Xem tất cả xe được hỗ trợ
                         </span>
                     </p>
                 )}

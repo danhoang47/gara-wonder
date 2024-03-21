@@ -16,9 +16,9 @@ function Services() {
     return (
         <div>
             <div className="pb-4">
-                <p className="text-2xl text-black font-medium">Services</p>
+                <p className="text-2xl text-black font-medium">Dịch vụ</p>
                 <p className="text-sm text-zinc-500">
-                    All services this garage have
+                    Tất cả dịch vụ Garage này có
                 </p>
             </div>
             {isServicesLoading ? (
