@@ -15,6 +15,10 @@ import { faCheckCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
 function BookingForm() {
     const navigate = useNavigate();
     const { order } = useOrderContext();
+    useEffect(() => {
+        console.log(order);
+    }, [order]);
+
     const [isDomReady, setDomReady] = useState<boolean>(false);
     const [hasAddedToCart, setAddedToCart] = useState<boolean>(false);
     const dispatch = useAppDispatch();
@@ -31,7 +35,11 @@ function BookingForm() {
     };
 
     const validateForm = useMemo<boolean>(() => {
-        if (order.car?.brandId && order.orderTime && order?.serviceIds?.length !== 0)
+        if (
+            order.car?.brandId &&
+            order.orderTime &&
+            order?.serviceIds?.length !== 0
+        )
             return false;
         return true;
     }, [order]);
@@ -51,29 +59,29 @@ function BookingForm() {
     return (
         <div className="px-5 py-8 border-zinc-200 border-2 rounded-md">
             <div className="flex flex-col gap-6 ">
-                <p className="font-semibold text-xl leading-5">
-                    Booking Services
-                </p>
+                <p className="font-semibold text-xl leading-5">Đặt dịch vụ</p>
                 <div className="flex flex-col gap-3 relative">
                     <SelectInput />
                     <BrandInput />
                     <ServiceSelect />
                 </div>
-                <div>
+                {/* <div>
                     <div className="flex justify-between">
-                        <p className="text-default-400">Total</p>
-                        <p>$123</p>
+                        <p className="text-default-400">Tổng</p>
+                        <p>VND 42000</p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="text-default-400">Tax</p>
-                        <p>$123</p>
+                        <p className="text-default-400">Thuế</p>
+                        <p>VND 42000</p>
                     </div>
                 </div>
                 <div className="border-t-2 border-zync-400" />
                 <div className="flex justify-between">
-                    <p className="font-semibold text-xl">Total</p>
-                    <p>$123</p>
-                </div>
+                    <p className="font-semibold text-xl">Tổng</p>
+                    <p>VND 42000</p>
+                </div> */}
+                <div className="border-t-2 border-zync-400" />
+
                 <div className="flex flex-col gap-3">
                     <Button
                         color="primary"
@@ -83,9 +91,7 @@ function BookingForm() {
                         onClick={onBookPress}
                         className="w-full"
                     >
-                        <span className="text-base font-medium">
-                            Booking Now
-                        </span>
+                        <span className="text-base font-medium">Đặt ngay</span>
                     </Button>
                     <Button
                         color="default"

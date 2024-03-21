@@ -35,8 +35,8 @@ export default function ServiceSelect() {
         <Select
             items={renderedServices || []}
             isLoading={isServicesLoading}
-            placeholder="Select services"
-            label="Services"
+            placeholder="Chọn dịch vụ"
+            label="Dịch vụ"
             selectionMode="multiple"
             variant="bordered"
             isRequired

@@ -1,10 +1,5 @@
 import { Brand, Car } from "@/core/types";
-import {
-    Button,
-    Input,
-    Select,
-    SelectItem,
-} from "@nextui-org/react";
+import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 
@@ -70,13 +65,13 @@ function BrandInputModal({
 
     return (
         <div className="w-[30rem] p-5">
-            <p className="text-lg font-bold">Edit Your Car</p>
+            <p className="text-lg font-bold">Chọn xe của bạn</p>
             <div className="flex flex-col gap-3 pt-5">
                 <Select
                     items={brands || []}
                     selectionMode="single"
-                    label="Brand"
-                    placeholder="Select Brand"
+                    label="Hãng"
+                    placeholder="Chọn Hãng xe"
                     variant="bordered"
                     isLoading={isBrandLoading}
                     disallowEmptySelection
@@ -96,7 +91,7 @@ function BrandInputModal({
                     items={models}
                     selectionMode="single"
                     label="Model"
-                    placeholder="Select Model"
+                    placeholder="Chọn Model xe"
                     variant="bordered"
                     isLoading={isModelLoading}
                     disallowEmptySelection
@@ -115,8 +110,8 @@ function BrandInputModal({
                 </Select>
 
                 <Input
-                    label="Release Year"
-                    placeholder="Release Year"
+                    label="Năm phát hành"
+                    placeholder="Năm phát hành"
                     variant="bordered"
                     value={localCar.releaseYear?.toString()}
                     isDisabled={Boolean(!localCar.brandId)}
@@ -130,14 +125,14 @@ function BrandInputModal({
             </div>
             <div className="flex gap-2 pt-3 justify-end">
                 <Button variant="light" onPress={onDismiss}>
-                    <p className="text-default-400">Cancel</p>
+                    <p className="text-default-400">Hủy</p>
                 </Button>
                 <Button
                     className="bg-foreground"
                     onPress={() => onSave && onSave(localCar)}
                     isDisabled={disabledSaveButton}
                 >
-                    <p className="text-background">Save</p>
+                    <p className="text-background">Lưu</p>
                 </Button>
             </div>
         </div>
