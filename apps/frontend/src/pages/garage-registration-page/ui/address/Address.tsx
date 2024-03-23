@@ -1,5 +1,5 @@
 import { Input } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 
 import RegistrationSection from "../registration-section";

@@ -57,6 +57,15 @@
                     background-color: #f7f7f7;
                 }
             }
+            &.disabled {
+                color: #a1a1aa;
+                cursor: not-allowed;
+                text-decoration: line-through;
+
+                &:hover::before {
+                    border: none;
+                }
+            }
         }
 
         &:first-child {

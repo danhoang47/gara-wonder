@@ -16,7 +16,7 @@ import { WithOwnerGarage } from "@/api/garages/getGarages";
 export type ViewModeGaragesProps = {
     isLoading: boolean;
     isReload: boolean;
-    error?: any;
+    error?: unknown;
     garages?: WithOwnerGarage[];
     onNext: () => void;
     onUpdateGarage: (garage: WithOwnerGarage) => void;

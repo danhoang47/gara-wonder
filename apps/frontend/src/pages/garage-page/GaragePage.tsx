@@ -30,8 +30,8 @@ const GaragePage = () => {
 
     return (
         <OrderContextProvider>
-            <div id="garage" className="relative overflow-auto">
-                <div className="container mx-auto mt-4">
+            <div id="garage" className="relative overflow-auto sm:px-4">
+                <div className="w-full max-w-[1024px] mx-auto mt-4">
                     <div className="">
                         <GarageHeader
                             name={basicInfo?.data[0]?.name}

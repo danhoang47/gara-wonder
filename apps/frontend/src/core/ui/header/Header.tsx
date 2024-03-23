@@ -16,6 +16,8 @@ function Header({
 }: HeaderProps) {
     const location = useLocation();
     const isLandingPage = location.pathname === "/";
+    const isGaragePage = location.pathname.includes("/garages/");
+    const isGarageManagementPage = location.pathname.includes("/management")
 
     return (
         <div
@@ -26,12 +28,10 @@ function Header({
         >
             <div
                 className={clsx(
-                    "h-20 flex justify-between gap-2 relative",
+                    "h-20 flex justify-between gap-2 relative px-10",
                     className,
-                    location.pathname.includes("garage/") ||
-                        location.pathname.includes("garage-management/")
-                        ? "container mx-auto"
-                        : " px-10",
+                    isGaragePage && "w-full max-w-[1024px] mx-auto px-unit-0",
+                    isGarageManagementPage && "max-w-full"
                 )}
             >
                 <div className="flex items-center justify-start h-full">
