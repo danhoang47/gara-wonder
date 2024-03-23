@@ -19,7 +19,7 @@ function BecomeGaraOwnerLink() {
                 }
             }}
         >
-            <p className="font-medium">Become Garage Owner</p>
+            <p className="font-medium">Trở thành chủ Garage</p>
         </Link>
     );
 }

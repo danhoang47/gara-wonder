@@ -11,7 +11,7 @@ function GarageActionButton() {
     const [isFlag, setIsFlag] = useState<boolean>(true);
 
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-4">
             <FontAwesomeIcon
                 icon={isFavorite ? solid.faHeart : regular.faHeart}
                 className={clsx(

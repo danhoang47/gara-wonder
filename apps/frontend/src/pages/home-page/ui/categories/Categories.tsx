@@ -5,7 +5,7 @@ import { getCategories } from "@/api";
 import { Carousel } from "@/core/ui";
 
 function Categories() {
-    const { isLoading, data: categories } = useSWR("category", getCategories, {
+    const { data: categories } = useSWR("category", getCategories, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -21,6 +21,8 @@ function Categories() {
                 classNames={{
                     item: "w-auto",
                     wrapper: "px-10",
+                    button: "bg-background border-2",
+                    base: "gap-2"
                 }}
                 renderItem={(category) => (
                     <CategoryOption category={category} key={category._id} />

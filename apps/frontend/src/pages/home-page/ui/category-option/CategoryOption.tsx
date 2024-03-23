@@ -4,10 +4,25 @@ import { useSearchParams } from "react-router-dom";
 import "./CategoryOption.styles.scss"
 
 import clsx from "clsx";
-import { Category } from "@/core/types";
+import { Category, CategoryType } from "@/core/types";
 
 export type CategoryOptionProps = {
     category: Category
+}
+
+const getCategoryIcon = (type: CategoryType): string => {
+    const cdnUrl = import.meta.env.VITE_CDN_URL;
+    switch (type) {
+        case CategoryType.Fix: return cdnUrl + "fix.png"
+        case CategoryType.Wash: return cdnUrl + "wash.png"
+        case CategoryType.Unwrap: return cdnUrl + "unwrap.png"
+        case CategoryType.Upgrade: return cdnUrl + "upgrade.png"
+        case CategoryType.Replace: return cdnUrl + "replace.png"
+        case CategoryType.Interior: return cdnUrl + "interior.png"
+        case CategoryType.Exterior: return cdnUrl + "exterior.png"
+        default: 
+            return cdnUrl
+    }
 }
 
 function CategoryOption({ category }: CategoryOptionProps) {
@@ -16,7 +31,7 @@ function CategoryOption({ category }: CategoryOptionProps) {
         const filteredCategory = filterSearchParams.get("category")
 
         return filteredCategory === category._id
-    }, [filterSearchParams])
+    }, [category._id, filterSearchParams])
 
 
     const onCategoryOptionSelect = () => {
@@ -35,14 +50,15 @@ function CategoryOption({ category }: CategoryOptionProps) {
         <div 
             role="radio" 
             className={clsx(
-                "flex flex-col items-center cursor-pointer transition px-2 relative py-1",
+                "flex flex-col items-center cursor-pointer transition px-2 relative py-1 gap-2",
                 "CategoryOption",
                 isSelected && "CategoryOption--selected"
             )} 
             onClick={onCategoryOptionSelect}
             aria-label={`${category.name} option`}
-        >
-            <p className="capitalize">{category.name}</p>
+        >   
+            <img src={getCategoryIcon(category.type)} alt={category.name} className="h-5 object-contain"/>
+            <p className="capitalize text-[12px] font-medium">{category.name}</p>
         </div>
     )
 }

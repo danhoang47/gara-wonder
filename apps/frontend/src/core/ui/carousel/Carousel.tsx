@@ -79,7 +79,7 @@ function Carousel<T>({
 
     return (
         <div className={clsx("carouselWrapper", classNames?.wrapper)}>
-            <div className="carousel" ref={containerRef}>
+            <div className={clsx("carousel", classNames?.base)} ref={containerRef}>
                 {items.map((value, index) => (
                     <div
                         key={index}
@@ -99,7 +99,7 @@ function Carousel<T>({
                 disableAnimation
                 size="sm"
                 className={clsx(
-                    "absolute top-1/2 -translate-y-1/2 left-2 border",
+                    "absolute top-1/2 -translate-y-1/2 left-2 border cursor-pointer",
                     classNames?.button,
                 )}
                 onPress={onBackPress}

@@ -80,8 +80,7 @@ export default function DatePickerCalendar({
                             "dateCell",
                             getSelectedClassName(date),
                             checkIfDateBetween(date) && "middle",
-                            disabled &&
-                                "text-default-400 hover:border-transparent cursor-not-allowed line-through",
+                            disabled && "disabled",
                         ),
                         text: "relative z-10",
                     }}
