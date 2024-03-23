@@ -8,6 +8,8 @@ export type HeaderProps = StylableProps & {
     middleContent?: React.ReactNode;
 };
 
+const garageRegex = new RegExp(/^\/garages\/[a-zA-Z0-9]*$/g)
+
 function Header({
     leftContent,
     rightContent,
@@ -16,8 +18,7 @@ function Header({
 }: HeaderProps) {
     const location = useLocation();
     const isLandingPage = location.pathname === "/";
-    const isGaragePage = location.pathname.includes("/garages/");
-    const isGarageManagementPage = location.pathname.includes("/management")
+    const isGaragePage = garageRegex.test(location.pathname)
 
     return (
         <div
@@ -30,8 +31,7 @@ function Header({
                 className={clsx(
                     "h-20 flex justify-between gap-2 relative px-10",
                     className,
-                    isGaragePage && "w-full max-w-[1024px] mx-auto px-unit-0",
-                    isGarageManagementPage && "max-w-full"
+                    isGaragePage && "w-full max-w-[1024px] mx-auto px-unit-0 md:max-lg:px-4",
                 )}
             >
                 <div className="flex items-center justify-start h-full">
