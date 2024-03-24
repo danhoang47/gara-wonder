@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { navList } from "../../constraints";
 import {
     Dropdown,
@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import clsx from "clsx";
 function GarageNavbar() {
     const location = useLocation();
+    const navigate = useNavigate();
     console.log(location.pathname);
     const indicateRoute = useMemo(() => {
         const list = navList.filter((el) => {
@@ -29,7 +30,8 @@ function GarageNavbar() {
                         <Link
                             className={clsx(
                                 "font-medium text-small cursor-pointer hover:text-default-500",
-                                indicateRoute !== nav.link && "text-default-400"
+                                indicateRoute !== nav.link &&
+                                    "text-default-400",
                             )}
                             key={index}
                             to={nav.link}
@@ -44,7 +46,9 @@ function GarageNavbar() {
                         className="cursor-pointer text-default-400"
                         key={index}
                     >
-                        <Dropdown classNames={{ content: "min-w-[7.5rem]" }}>
+                        <Dropdown
+                            classNames={{ content: "min-w-[7.5rem] p-0 py-1" }}
+                        >
                             <DropdownTrigger>
                                 <div
                                     className="font-medium text-small cursor-pointer text-default-400 hover:text-default-600 "
@@ -53,16 +57,29 @@ function GarageNavbar() {
                                     {nav.title}
                                 </div>
                             </DropdownTrigger>
-                            <DropdownMenu>
+                            <DropdownMenu
+                                classNames={{
+                                    base: "px-0 ",
+                                    list: "p-0 !rounded-none",
+                                    emptyContent: "rounded-none",
+                                }}
+                                itemClasses={{
+                                    base: "rounded-none",
+                                }}
+                            >
                                 {nav.children.map((sub, index) => (
-                                    <DropdownItem key={index}>
-                                        <Link
-                                            className="cursor-pointer text-default-400 hover:text-default-600 "
-                                            to={sub.link}
-                                            relative="path"
-                                        >
+                                    <DropdownItem
+                                        key={index}
+                                        classNames={{
+                                            base: "p-0 ",
+                                        }}
+                                        onClick={() =>
+                                            navigate(`./${sub.link}`)
+                                        }
+                                    >
+                                        <p className="cursor-pointer text-default-400 hover:text-default-600 ">
                                             {sub.title}
-                                        </Link>
+                                        </p>
                                     </DropdownItem>
                                 ))}
                             </DropdownMenu>

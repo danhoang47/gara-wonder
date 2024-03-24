@@ -1,10 +1,10 @@
-import { VisuallyHidden, cn, useCheckbox } from "@nextui-org/react";
+import { VisuallyHidden, cn, useRadio } from "@nextui-org/react";
 import clsx from "clsx";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function CustomSelect(props: any) {
     const { Component, children, isSelected, getBaseProps, getInputProps } =
-        useCheckbox({
+        useRadio({
             ...props,
         });
 
