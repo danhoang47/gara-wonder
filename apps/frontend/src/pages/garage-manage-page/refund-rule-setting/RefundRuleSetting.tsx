@@ -4,7 +4,7 @@ import {
     BreadcrumbItem,
     Breadcrumbs,
     Button,
-    CheckboxGroup,
+    RadioGroup,
 } from "@nextui-org/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import { CustomSelect } from "./ui";
 
 export default function RefundRuleSetting() {
     const navigate = useNavigate();
-    const [groupSelected, setGroupSelected] = useState<string[]>([]);
+    const [groupSelected, setGroupSelected] = useState<string>();
 
     return (
         <div className="relative grid grid-cols-12 gap-5 px-10 mt-10 h-full">
@@ -41,13 +41,13 @@ export default function RefundRuleSetting() {
                 <div className="pt-5">
                     <p className="text-sm font-medium">Chế độ hoàn trả</p>
                     <div className="flex flex-col w-full">
-                        <CheckboxGroup
+                        <RadioGroup
                             value={groupSelected}
                             classNames={{
                                 wrapper: "gap-3",
                                 label: "max-w-full",
                             }}
-                            onChange={(value: string[]) =>
+                            onValueChange={(value: string) =>
                                 setGroupSelected(value)
                             }
                         >
@@ -90,7 +90,7 @@ export default function RefundRuleSetting() {
                                     enim.
                                 </p>
                             </CustomSelect>
-                        </CheckboxGroup>
+                        </RadioGroup>
                     </div>
                 </div>
             </div>

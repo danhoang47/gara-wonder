@@ -21,6 +21,10 @@ function GeneralInfo() {
                         console.log(e);
                         setSelectType(e as string);
                     }}
+                    classNames={{
+                        tabList: "bg-white",
+                        cursor: "rounded-md",
+                    }}
                 >
                     <Tab key="today" title="Hôm nay" />
                     <Tab key="tommorow" title="Ngày mai" />
@@ -33,7 +37,7 @@ function GeneralInfo() {
                             <FontAwesomeIcon icon={faCar} />
                             <p>0</p>
                         </div>
-                        <p className="text-lg pt-3">Check-ins</p>
+                        <p className="text-medium pt-3">Check-ins</p>
                     </div>
                 </div>
                 <div className="min-w-32 h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100">
@@ -42,7 +46,7 @@ function GeneralInfo() {
                             <FontAwesomeIcon icon={faCar} />
                             <p>0</p>
                         </div>
-                        <p className="text-lg pt-3">Checkouts</p>
+                        <p className="text-medium pt-3">Checkouts</p>
                     </div>
                 </div>
                 <div className="min-w-32 h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100">
@@ -51,7 +55,7 @@ function GeneralInfo() {
                             <FontAwesomeIcon icon={faCar} />
                             <p>0</p>
                         </div>
-                        <p className="text-lg pt-3">Đang sửa chữa</p>
+                        <p className="text-medium pt-3">Đang sửa chữa</p>
                     </div>
                 </div>
                 <div className="min-w-32 h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100">
@@ -60,7 +64,7 @@ function GeneralInfo() {
                             <FontAwesomeIcon icon={faCar} />
                             <p>0</p>
                         </div>
-                        <p className="text-lg pt-3">Chờ đánh giá</p>
+                        <p className="text-medium pt-3">Chờ đánh giá</p>
                     </div>
                 </div>
             </div>

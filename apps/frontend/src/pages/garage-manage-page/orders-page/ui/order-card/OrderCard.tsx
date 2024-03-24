@@ -6,8 +6,8 @@ import moment from "moment";
 
 function OrderCard({ order }: { order?: OrderListType }) {
     return (
-        <div className="">
-            <div className="border-1 rounded-2xl p-5 shadow-md hover:shadow-xl transition-shadow">
+        <div className="max-w-[480px]">
+            <div className="border-1 rounded-2xl p-5 shadow-sm">
                 <div className="relative flex flex-col gap-4">
                     <div className="flex justify-between">
                         <div className="flex items-center gap-2">
@@ -39,7 +39,7 @@ function OrderCard({ order }: { order?: OrderListType }) {
                             </div>
                         </div>
                         <div>
-                            <p className="font-semibold text-xl">
+                            <p className="font-semibold text-lg">
                                 VND {order?.totalPrice}
                             </p>
                         </div>
@@ -49,9 +49,11 @@ function OrderCard({ order }: { order?: OrderListType }) {
                             <p className="font-semibold">
                                 {order?.services.map((e, index) => {
                                     if (index === 0)
-                                        return <span>{e.name}</span>;
+                                        return (
+                                            <span key={index}>{e.name}</span>
+                                        );
 
-                                    return <span>, {e.name}</span>;
+                                    return <span key={index}>, {e.name}</span>;
                                 })}
                             </p>
                             <div className="flex gap-2 items-center text-sm text-default-600">
