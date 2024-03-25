@@ -34,7 +34,10 @@ function OrderDetail() {
             <div className="md:grid grid-cols-12 gap-4 pt-10">
                 <div className="col-span-9 flex flex-col gap-5">
                     {/* Evaluation */}
-                    <Evaluation status={order?.status} />
+                    <Evaluation
+                        status={order?.status}
+                        handOverTime={order?.handOverTime}
+                    />
                     {/* User Information */}
                     <UserInfo user={order?.user} />
                     {/* Service Information */}

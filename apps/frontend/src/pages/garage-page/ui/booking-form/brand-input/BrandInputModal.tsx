@@ -39,7 +39,14 @@ function BrandInputModal({
         () => brands?.find((brand) => brand._id === localCar.brandId),
         [brands, localCar.brandId],
     );
-    const disabledSaveButton = Object.keys(localCar).length < 3;
+
+    const disabledSaveButton = useMemo(
+        () =>
+            Object.keys(localCar).length < 3 &&
+            !Object.values(localCar).includes(null) &&
+            !Object.values(localCar).includes(NaN),
+        [localCar],
+    );
 
     useEffect(() => {
         if (!localCar?.brandId || !selectedBrand) return;
@@ -62,6 +69,9 @@ function BrandInputModal({
             isStale = true;
         };
     }, [localCar?.brandId, selectedBrand]);
+    useEffect(() => {
+        console.log(localCar, !Object.values(localCar).includes(NaN));
+    }, [localCar]);
 
     return (
         <div className="w-[30rem] p-5">
@@ -113,9 +123,16 @@ function BrandInputModal({
                     label="Năm phát hành"
                     placeholder="Năm phát hành"
                     variant="bordered"
+                    type="number"
+                    min={0}
+                    classNames={{
+                        input: " [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
+                    }}
+                    max={new Date().getFullYear()}
                     value={localCar.releaseYear?.toString()}
                     isDisabled={Boolean(!localCar.brandId)}
                     onValueChange={(value) => {
+                        console.log(value);
                         setLocalCar((prev) => ({
                             ...prev,
                             releaseYear: Number.parseInt(value),
@@ -129,6 +146,7 @@ function BrandInputModal({
                 </Button>
                 <Button
                     className="bg-foreground"
+                    disabled={disabledSaveButton}
                     onPress={() => onSave && onSave(localCar)}
                     isDisabled={disabledSaveButton}
                 >
