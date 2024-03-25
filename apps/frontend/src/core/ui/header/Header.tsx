@@ -31,7 +31,7 @@ function Header({
                 className={clsx(
                     "h-20 flex justify-between gap-2 relative px-10",
                     className,
-                    isGaragePage && "w-full max-w-[1024px] mx-auto px-unit-0 md:max-lg:px-4",
+                    isGaragePage && "w-full max-w-[1024px] mx-auto lg:px-unit-0 md:max-lg:px-4",
                 )}
             >
                 <div className="flex items-center justify-start h-full">

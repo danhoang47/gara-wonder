@@ -43,8 +43,11 @@ function Carousel<T>({
     };
 
     useLayoutEffect(() => {
-        if (containerRef.current) {
-            const { current } = containerRef;
+        if (!containerRef.current) return;
+
+        const { current } = containerRef;
+
+        const calculateMaxIndex = () => {
             const { width } = current.getBoundingClientRect();
             const child = current.querySelector('[data-index="0"]');
 
@@ -62,7 +65,12 @@ function Carousel<T>({
                     });
                 }
             }
-        }
+        };
+
+        const observer = new ResizeObserver(calculateMaxIndex);
+        observer.observe(current);
+
+        return () => observer.unobserve(current);
     }, [containerRef, items.length]);
 
     useLayoutEffect(() => {
@@ -79,7 +87,10 @@ function Carousel<T>({
 
     return (
         <div className={clsx("carouselWrapper", classNames?.wrapper)}>
-            <div className={clsx("carousel", classNames?.base)} ref={containerRef}>
+            <div
+                className={clsx("carousel", classNames?.base)}
+                ref={containerRef}
+            >
                 {items.map((value, index) => (
                     <div
                         key={index}
@@ -100,6 +111,7 @@ function Carousel<T>({
                 size="sm"
                 className={clsx(
                     "absolute top-1/2 -translate-y-1/2 left-2 border cursor-pointer",
+                    index === 0 && "opacity-0",
                     classNames?.button,
                 )}
                 onPress={onBackPress}
