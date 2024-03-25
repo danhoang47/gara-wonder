@@ -9,7 +9,7 @@ import App from "@/App";
 import { DefaultLayout, GarageLayout } from "@/layouts";
 import { lazy, Suspense } from "react";
 import { FullPageLoad } from "@/core/ui";
-import { ProductsPage, UserSettingsPage, ChatPage } from "@/pages";
+import { ProductsPage, UserSettingsPage } from "@/pages";
 
 const GarageRegistrationPage = lazy(
     () => import("@/pages/garage-registration-page"),
