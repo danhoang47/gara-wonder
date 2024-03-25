@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import {
     createBrowserRouter,
     createRoutesFromElements,
@@ -13,11 +14,8 @@ const GarageRegistrationPage = lazy(
     () => import("@/pages/garage-registration-page"),
 );
 const GaragePage = lazy(() => import("@/pages/garage-page"));
-
 const BookPage = lazy(() => import("@/pages/book-page"));
-
 const GarageManagePage = lazy(() => import("@/pages/garage-manage-page"));
-
 const GeneralDashboard = lazy(
     () => import("@/pages/garage-manage-page/general-dashboard"),
 );
@@ -28,7 +26,6 @@ const RefundRuleSetting = lazy(
     () => import("@/pages/garage-manage-page/refund-rule-setting"),
 );
 const CartPage = lazy(() => import("@/pages/cart-page"));
-
 const OrdersDetail = lazy(
     () => import("@/pages/garage-manage-page/order-detail"),
 );
@@ -40,6 +37,7 @@ const StaffManagement = lazy(
 const IncomePage = lazy(() => import("@/pages/garage-manage-page/income"));
 const LandingPage = lazy(() => import("@/pages/landing-page"));
 const HomePage = lazy(() => import("@/pages/home-page"));
+const ChatPage = lazy(() => import("@/pages/chat-page"));
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -90,6 +88,14 @@ const router = createBrowserRouter(
                     element={
                         <Suspense fallback={<FullPageLoad />}>
                             <GarageRegistrationPage />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="chat"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <ChatPage />
                         </Suspense>
                     }
                 />
