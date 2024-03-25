@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import clsx from "clsx";
 import "./ChatPage.styles.scss";
 import { useState } from "react";
@@ -521,3 +520,4 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
+

@@ -1,17 +1,16 @@
 import { getCategories } from "@/api";
-import { Button } from "@nextui-org/react";
+import { Button, Link } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 
+import "./LandingPage.styles.scss";
+
 function LandingPage() {
     const navigate = useNavigate();
-    const { isLoading, data: categories } = useSWRImmutable(
-        "categories",
-        getCategories,
-    );
+    const { data: categories } = useSWRImmutable("categories", getCategories);
 
     return (
-        <div className="pb-10 overflow-auto">
+        <div id="landing" className="pb-10 overflow-auto">
             <div className="h-[60vh] flex gap-4">
                 <div className="flex flex-col grow basis-0 justify-center h-full ml-10">
                     <h1 className="text-3xl font-medium">
@@ -34,8 +33,13 @@ function LandingPage() {
                         </span>
                     </Button>
                 </div>
-                <div className="grow basis-0">
-                    <div className="h-full bg-default-300"></div>
+                <div className="h-full flex items-center grow basis-0">
+                    <div className="h-3/5 w-full bg-default-300">
+                        <img
+                            src="https://strongbuildingsystems.com/wp-content/uploads/2020/09/mechanic-garage-2500-x-2000-7-1024x819.jpg"
+                            className="h-full w-full object-cover object-center"
+                        />
+                    </div>
                 </div>
             </div>
             <div className="mt-6 px-10">
@@ -75,14 +79,21 @@ function LandingPage() {
                 <div className="mb-4">
                     <h2 className="font-semibold text-2xl">Dịch vụ về xe</h2>
                 </div>
-                <div className="flex gap-2">
+                <div className="categories">
                     {categories?.map((category) => (
                         <div
                             key={category._id}
-                            className="grow basis-0 cursor-pointer"
+                            className="category grow basis-0 cursor-pointer"
                         >
-                            <div className="h-28 bg-default-300 rounded-large"></div>
-                            <p>{category.name}</p>
+                            <Link
+                                className="block"
+                                href={`/garages?category=${category._id}`}
+                            >
+                                <div className="h-32 bg-default-300 rounded-large"></div>
+                                <p className="text-large font-medium text-default-foreground">
+                                    {category.name}
+                                </p>
+                            </Link>
                         </div>
                     ))}
                 </div>
