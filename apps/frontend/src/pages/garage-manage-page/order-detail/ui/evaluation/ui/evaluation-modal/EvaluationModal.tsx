@@ -1,4 +1,5 @@
 import {
+    Button,
     Popover,
     PopoverContent,
     PopoverTrigger,
@@ -9,13 +10,15 @@ import { useState } from "react";
 import { DatePopup } from "..";
 import ImagePreview from "./ImagePreview";
 import { FileInput } from "@/core/ui";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export type DateRangeType = {
     from?: number;
     to?: number;
 };
 
-function EvaluationModal() {
+function EvaluationModal({ handOverTime }: { handOverTime?: number }) {
     const [localOrderTime, setLocalOrderTime] = useState<DateRangeType>();
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
     const [repairPrice, setRepairPrice] = useState<number>(0);
@@ -50,26 +53,72 @@ function EvaluationModal() {
                 <p className=" text-xl font-semibold">Dịch vụ</p>
                 <div className="flex justify-between">
                     <p className="text-lg">Sửa chửa</p>
-                    <input
-                        type="number"
-                        value={repairPrice}
-                        onChange={(e) => setRepairPrice(Number(e.target.value))}
-                        className="w-24 text-center text-lg bg-default font-semibold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    />
+                    <div className="flex items-center gap-2">
+                        <div
+                            className="border-3 w-8 h-8 flex justify-center items-center rounded-full cursor-pointer text-default-400 border-default-400 transition-colors hover:text-default-700 hover:border-default-700"
+                            onClick={() => {
+                                if (repairPrice > 1000)
+                                    setRepairPrice(Number(repairPrice) - 1000);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faMinus} />
+                        </div>
+                        <input
+                            type="number"
+                            value={repairPrice}
+                            min="0"
+                            max="1000"
+                            onChange={(e) =>
+                                setRepairPrice(Number(e.target.value))
+                            }
+                            className="w-24 text-center text-lg bg-default font-semibold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                        <div
+                            className="border-3 w-8 h-8 flex justify-center items-center rounded-full cursor-pointer text-default-400 border-default-400 transition-colors hover:text-default-700 hover:border-default-700"
+                            onClick={() =>
+                                setRepairPrice(Number(repairPrice) + 1000)
+                            }
+                        >
+                            <FontAwesomeIcon icon={faPlus} />
+                        </div>
+                    </div>
                 </div>
                 <div className="flex justify-between">
                     <p className="text-lg">Rửa xe</p>
-                    <input
-                        type="number"
-                        value={washPrice}
-                        onChange={(e) => setWashPrice(Number(e.target.value))}
-                        className="w-24 text-center text-lg bg-default  font-semibold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    />
+                    <div className="flex items-center gap-2">
+                        <div
+                            className="border-3 w-8 h-8 flex justify-center items-center rounded-full cursor-pointer text-default-400 border-default-400 transition-colors hover:text-default-700 hover:border-default-700"
+                            onClick={() => {
+                                if (washPrice > 1000)
+                                    setWashPrice(Number(washPrice) - 1000);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faMinus} />
+                        </div>
+                        <input
+                            type="number"
+                            value={washPrice}
+                            min="0"
+                            max="10"
+                            onChange={(e) =>
+                                setWashPrice(Number(e.target.value))
+                            }
+                            className="w-24 text-center text-lg bg-default  font-semibold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                        <div
+                            className="border-3 w-8 h-8 flex justify-center items-center rounded-full cursor-pointer text-default-400 border-default-400 transition-colors hover:text-default-700 hover:border-default-700"
+                            onClick={() =>
+                                setWashPrice(Number(washPrice) + 1000)
+                            }
+                        >
+                            <FontAwesomeIcon icon={faPlus} />
+                        </div>
+                    </div>
                 </div>
                 <div className="flex justify-between">
                     <p className="text-lg">Ngày lấy xe</p>
                     <p className="text-lg font-semibold">
-                        Mon , 4 Feb 2024 -10:00
+                        {moment(handOverTime).format("LLLL")}
                     </p>
                 </div>
             </div>
@@ -105,7 +154,7 @@ function EvaluationModal() {
                                 closeModal={() => {
                                     setDatePickerOpen(false);
                                 }}
-                                pickDate={localOrderTime}
+                                pickDate={localOrderTime as DateRangeType}
                                 setDate={setDate}
                             />
                         </PopoverContent>
