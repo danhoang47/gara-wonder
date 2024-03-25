@@ -1,16 +1,26 @@
-import { Model } from ".";
+import { Image, Model } from ".";
 
 export enum Category {
     Interior = 0,
-    Exterior
+    Exterior,
 }
 
 export type Product = Model & {
-    category: Category,
-    type: string,
-    brandId: string,
-    series: string[],
-    models: string[],
-    year: number,
-    price: number
-}
+    category: Category;
+    name: string;
+    type: string;
+    brandId: string; // merc
+    series: string[]; // C-series
+    models: string[]; // C200/C300/C200 AMG
+    year: number;
+    price: number;
+    images: Image[];
+    remain: number;
+};
+
+export type ProductFilter = {
+    type?: string;
+    brandId?: string;
+    series?: string;
+    models?: string;
+};

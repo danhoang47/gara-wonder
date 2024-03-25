@@ -8,6 +8,7 @@ import App from "@/App";
 import { DefaultLayout, GarageLayout } from "@/layouts";
 import { lazy, Suspense } from "react";
 import { FullPageLoad } from "@/core/ui";
+import { ProductsPage, UserSettingsPage, ChatPage } from "@/pages";
 
 const GarageRegistrationPage = lazy(
     () => import("@/pages/garage-registration-page"),
@@ -93,6 +94,9 @@ const router = createBrowserRouter(
                         </Suspense>
                     }
                 />
+                <Route path="products" element={<ProductsPage />} />
+                <Route path="user-settings" element={<UserSettingsPage />} />
+                <Route path="chat" element={<ChatPage />} />
             </Route>
             <Route
                 path="garages/:garageId/management"
