@@ -2,8 +2,9 @@ import { DateRange } from "@/core/types";
 import { DatePicker } from "@/core/ui";
 import { Button, Input } from "@nextui-org/react";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DateRangeType } from "../evaluation-modal/EvaluationModal";
+import { EvaluationContext } from "@/pages/garage-manage-page/contexts/EvaluationContext";
 
 function DatePopup({
     closeModal,
@@ -14,11 +15,28 @@ function DatePopup({
     setDate: (date: DateRangeType) => void;
     pickDate: DateRangeType;
 }) {
-    // TODO: testing purpose only
-    const [dateRange, setDateRange] = useState<DateRange>();
+    const { evaluation, setEvaluationValue } = useContext(EvaluationContext);
 
+    // TODO: testing purpose only
+    const [dateRange, setDateRange] = useState<DateRange | undefined>(
+        evaluation?.estimateDuration
+            ? {
+                  from: moment(
+                      Number(pickDate.from) || new Date().getTime(),
+                  ).toDate(),
+                  to: moment(
+                      Number(pickDate.to) || new Date().getTime(),
+                  ).toDate(),
+              }
+            : {},
+    );
     useEffect(() => {
-        console.log(dateRange, pickDate);
+        console.log(dateRange, pickDate, moment(0).toISOString());
+        setEvaluationValue("estimateDuration", [
+            Number(pickDate?.from) || null,
+            Number(pickDate?.to) || null,
+        ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dateRange, pickDate]);
 
     return (

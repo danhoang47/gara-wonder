@@ -7,8 +7,17 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { EvaluationModal, ProgressBar } from "./ui";
+import { OrderDetailType } from "@/api/order/getOrderById";
+import { handleEvaluation, uploadEvaluationImage } from "@/api";
+import {
+    EvaluationContext,
+    EvaluationInfo,
+} from "@/pages/garage-manage-page/contexts/EvaluationContext";
+import { useParams } from "react-router-dom";
+import { useAppDispatch } from "@/core/hooks";
+import { notify } from "@/features/toasts/toasts.slice";
 
 const ProgressButton = ({
     status,
@@ -17,7 +26,7 @@ const ProgressButton = ({
     status: number;
     setModalOpen: () => void;
 }) => {
-    if (status === 0)
+    if (status !== 0)
         return (
             <div className="p-4 flex flex-col gap-6 items-end">
                 <Button
@@ -54,11 +63,51 @@ const ProgressButton = ({
 function Evaluation({
     status,
     handOverTime,
+    services,
 }: {
     status?: number;
     handOverTime?: number;
+    services?: OrderDetailType["services"];
 }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const { garageId } = useParams();
+    const { evaluation } = useContext(EvaluationContext);
+    const dispatch = useAppDispatch();
+
+    const onSubmit = async () => {
+        try {
+            const result = await handleEvaluation(
+                garageId,
+                evaluation as EvaluationInfo,
+            );
+            if (result.statusCode === 200) {
+                const imageUpload = await uploadEvaluationImage(
+                    garageId,
+                    evaluation?.orderId as string,
+                    evaluation?.evaluationImages as File[],
+                );
+                if (imageUpload.statusCode === 200) {
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: "Gửi Đánh Giá Thành Công",
+                            description:
+                                "Gửi đánh giá tới khách hàng thành công",
+                        }),
+                    );
+                }
+            }
+        } catch (error) {
+            dispatch(
+                notify({
+                    type: "failure",
+                    title: "Gửi Đánh Giá Thất Bại",
+                    description: "Một số lỗi xảy ra khi gửi đánh giá",
+                }),
+            );
+        }
+    };
+
     return (
         <div className="border-2 rounded-lg">
             <ProgressBar status={status || 0} />
@@ -85,7 +134,10 @@ function Evaluation({
                     </ModalHeader>
                     <Divider />
                     <ModalBody className="pb-4 overflow-auto">
-                        <EvaluationModal handOverTime={handOverTime} />
+                        <EvaluationModal
+                            handOverTime={handOverTime}
+                            services={services}
+                        />
                     </ModalBody>
                     <Divider />
                     <ModalFooter className="flex items-center justify-between">
@@ -102,7 +154,7 @@ function Evaluation({
                             >
                                 <p className="text-black">Đóng</p>
                             </Button>
-                            <Button color="primary">
+                            <Button color="primary" onClick={onSubmit}>
                                 <p className="text-background">
                                     Gửi tới khách hàng
                                 </p>

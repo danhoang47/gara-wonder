@@ -13,7 +13,7 @@ export default async function getOrders(
     cursor: string | undefined | null,
 ) {
     try {
-        let queryParams: string = `/garage/${id}?`;
+        let queryParams: string = `/${id}/management/orders?`;
 
         if (limit) {
             queryParams += `limit=${limit}`;
