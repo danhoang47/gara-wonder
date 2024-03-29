@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "@vis.gl/react-google-maps": "^0.7.0",
     "axios": "^1.6.7",
+    "bson": "^6.5.0",
     "clsx": "^2.1.0",
     "deep-equal": "^2.2.3",
     "firebase": "^10.8.0",

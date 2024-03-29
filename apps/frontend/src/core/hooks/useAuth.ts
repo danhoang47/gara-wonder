@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector, useLoadingContext } from ".";
 import { onAuthStateChanged } from "firebase/auth";
-import { getGarageByUserId, getUserById, setEmptyUser, setUserToken } from "@/features/user/user.slice";
+import {
+    getGarageByUserId,
+    getUserById,
+    setEmptyUser,
+    setUserToken,
+} from "@/features/user/user.slice";
 import { auth } from "@/components/firebase";
 import { FetchStatus, Role, User } from "../types";
 
@@ -13,21 +18,20 @@ export default function useAuth() {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                user.getIdToken(true).then(token => {
-                    dispatch(setUserToken(token))
-                    dispatch(getUserById(user.uid))
-                        .then(action => {
-                            const user = action.payload as User
-                            if (user.role === Role.GarageOwner) {
-                                dispatch(getGarageByUserId(user._id))
-                            }
-                        })
-                })
+                user.getIdToken(true).then((token) => {
+                    dispatch(setUserToken(token));
+                    dispatch(getUserById(user.uid)).then((action) => {
+                        const user = action.payload as User;
+                        if (user.role === Role.GarageOwner) {
+                            dispatch(getGarageByUserId(user._id));
+                        }
+                    });
+                });
             } else {
-                dispatch(setEmptyUser())
+                dispatch(setEmptyUser());
             }
         });
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         if (status === FetchStatus.Fetching) {
