@@ -19,6 +19,8 @@ function Header({
     const location = useLocation();
     const isLandingPage = location.pathname === "/";
     const isGaragePage = garageRegex.test(location.pathname)
+    const isAccountPage = location.pathname.includes("/account-settings");
+    const isGarageManagementPage = location.pathname.includes("/management");
 
     return (
         <div
@@ -31,7 +33,9 @@ function Header({
                 className={clsx(
                     "h-20 flex justify-between gap-2 relative px-10",
                     className,
-                    isGaragePage && "w-full max-w-[1024px] mx-auto lg:px-unit-0 md:max-lg:px-4",
+                    (isGaragePage || isAccountPage) &&
+                        "w-full max-w-[1024px] mx-auto px-unit-0",
+                    isGarageManagementPage && "max-w-full",
                 )}
             >
                 <div className="flex items-center justify-start h-full">

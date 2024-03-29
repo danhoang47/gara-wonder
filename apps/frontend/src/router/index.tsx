@@ -40,6 +40,13 @@ const LandingPage = lazy(() => import("@/pages/landing-page"));
 const HomePage = lazy(() => import("@/pages/home-page"));
 const ChatPage = lazy(() => import("@/pages/chat-page"));
 const ChatPageWrapper = lazy(() => import("@/pages/chat-page/ChatPageWrapper"));
+const AccountSettingsPage = lazy(
+    () => import("@/pages/account-page/account-settings"),
+);
+const AccountOrdersPage = lazy(
+    () => import("@/pages/account-page/account-orders"),
+);
+const AccountPage = lazy(() => import("@/pages/account-page"));
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -95,6 +102,37 @@ const router = createBrowserRouter(
                 />
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="user-settings" element={<UserSettingsPage />} />
+                <Route path="chat" element={<ChatPage />} />
+                <Route
+                    path=""
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <AccountPage />
+                        </Suspense>
+                    }
+                >
+                    <Route
+                        path="account-settings"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <AccountSettingsPage />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="account-orders"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <AccountOrdersPage />
+                            </Suspense>
+                        }
+                    />
+                </Route>
+            </Route>
+            <Route
+                path="garages/:garageId/management"
+                element={<GarageLayout />}
+            >
                 <Route
                     path="chat"
                     element={

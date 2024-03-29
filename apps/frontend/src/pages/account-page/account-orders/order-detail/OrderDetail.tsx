@@ -10,17 +10,16 @@ import { useContext, useEffect } from "react";
 import { LoadingContext } from "@/core/contexts/loading";
 import moment from "moment";
 import "moment/locale/vi";
-import EvaluationContextProvider from "../contexts/EvaluationContext";
 moment.locale("vi");
 
 function OrderDetail() {
-    const { orderId, garageId } = useParams();
+    const { orderId } = useParams();
     moment.locale("es");
     console.log(moment().fromNow());
     const { load, unload } = useContext(LoadingContext);
 
     const { isLoading: isOrderLoading, data: order } = useSWRImmutable(
-        `${garageId}/management/orders/${orderId}`,
+        `${orderId}/management/orders/${orderId}`,
         getOrderById,
     );
     useEffect(() => {
@@ -29,7 +28,6 @@ function OrderDetail() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOrderLoading]);
     return (
-        <EvaluationContextProvider>
             <div className="pt-10 h-full overflow-auto">
                 <p className="text-3xl font-bold">Chi tiết đơn hàng</p>
 
@@ -199,7 +197,6 @@ function OrderDetail() {
                     </div>
                 </div>
             </div>
-        </EvaluationContextProvider>
     );
 }
 export default OrderDetail;
