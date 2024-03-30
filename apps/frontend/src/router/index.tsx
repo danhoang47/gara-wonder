@@ -71,6 +71,10 @@ const router = createBrowserRouter(
                         </Suspense>
                     }
                 />
+                <Route 
+                    path="products"
+                    element={<ProductsPage />}
+                />
                 <Route
                     path="garages/:garageId"
                     element={

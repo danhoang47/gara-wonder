@@ -126,6 +126,7 @@ function Carousel<T>({
                 size="sm"
                 className={clsx(
                     "absolute top-1/2 -translate-y-1/2 right-2 border",
+                    index === maxIndex && "opacity-0",
                     classNames?.button,
                 )}
                 onPress={onNextPress}

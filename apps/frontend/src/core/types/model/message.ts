@@ -11,7 +11,7 @@ export type Message = Model & {
     authorId: string;
     images?: Image[];
     isSticked?: boolean;
-    isFavorited?: boolean;
+    isFavorite?: boolean;
     replyFrom?: Message;
     status: MessageStatus;
     isLoading: boolean;
