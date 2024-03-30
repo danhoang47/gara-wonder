@@ -9,7 +9,7 @@ function ChatLinkButton() {
                 href="/chat"
                 className="bg-white w-10 h-10 flex justify-center items-center"
             >
-                <FontAwesomeIcon icon={faComment} color="#000"/>
+                <FontAwesomeIcon icon={faComment} color="#000" />
             </Link>
         </Tooltip>
     );

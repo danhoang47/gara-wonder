@@ -1,15 +1,18 @@
-import { Image, Model, Status } from ".";
+import { Image, Model } from ".";
 
-export type Room = Model & {
-    userId: string,
-    status: Status
+export enum MessageStatus {
+    Exist = 0,
+    Recall,
 }
 
 export type Message = Model & {
-    authorId: string,
-    content: string,
-    images: Image[],
-    roomId: string,
-    replyFrom?: string,
-    isSticked?: boolean
-}
+    roomId: string;
+    content: string;
+    authorId: string;
+    images?: Image[];
+    isSticked?: boolean;
+    isFavorite?: boolean;
+    replyFrom?: Message;
+    status: MessageStatus;
+    isLoading: boolean;
+};
