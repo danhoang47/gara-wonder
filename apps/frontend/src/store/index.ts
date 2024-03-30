@@ -23,6 +23,8 @@ const store = configureStore({
         garageNotifications: garageNotificationsReducer,
         rooms: roomsReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({ serializableCheck: false }),
 });
 
 setup(store);

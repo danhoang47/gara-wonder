@@ -10,7 +10,7 @@ export type Message = Model & {
     content: string;
     authorId: string;
     images?: Image[];
-    isSickted?: boolean;
+    isSticked?: boolean;
     isFavorited?: boolean;
     replyFrom?: Message;
     status: MessageStatus;

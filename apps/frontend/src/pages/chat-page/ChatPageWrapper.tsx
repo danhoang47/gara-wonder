@@ -3,8 +3,9 @@ import { FetchStatus } from "@/core/types";
 import { selectRooms } from "@/features/chat/rooms.slice";
 import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { DetailMessage, Rooms } from "./ui";
+import { Rooms } from "./ui";
 import EmptySelectedRoom from "./ui/empty-selected-room";
+import { FullPageLoad } from "@/core/ui";
 
 const ChatPageWrapper = () => {
     const rooms = useAppSelector((state) => selectRooms(state));
@@ -33,7 +34,7 @@ const ChatPageWrapper = () => {
     }, [navigate]);
 
     if (fetchingStatus !== FetchStatus.Fulfilled) {
-        return <h1>Loading...</h1>;
+        return <FullPageLoad />;
     }
 
     if (rooms.length === 0) {

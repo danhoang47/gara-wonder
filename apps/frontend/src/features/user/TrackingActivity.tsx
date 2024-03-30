@@ -11,9 +11,9 @@ function TrackingActivity({ children }: ContainerProps) {
 
     useEffect(() => {
         function onConnect() {
-            console.log("CONNECT");
             setIsConnected(true);
         }
+
         socket.on("connect", onConnect);
 
         if (user && isConnected) {

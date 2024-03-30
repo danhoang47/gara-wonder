@@ -4,7 +4,6 @@ import {
     createSlice,
     createSelector,
     EntityState,
-    PayloadAction,
 } from "@reduxjs/toolkit";
 import { createRoom, deleteRoom, getRooms, trackingActivity } from "@/api/chat";
 import { FetchStatus, Message, Room } from "@/core/types";
@@ -38,11 +37,43 @@ const roomSlice = createSlice({
             if (roomEntry) {
                 messagesAdapter.upsertMany(
                     roomEntry.messages,
-                    payload.messages,
+                    payload.messages.reverse(),
                 );
             }
         },
-        receivedMessage: (state, action) => {},
+        receivedMessage: (state, action) => {
+            const payload = action.payload;
+            const roomId = payload.roomId;
+            const roomEntry = state.rooms.entities[roomId];
+            if (roomEntry) {
+                const messagesAdapterForRoom = messagesAdapter
+                    .getSelectors()
+                    .selectAll(roomEntry.messages);
+
+                const updatedMessages = [...messagesAdapterForRoom, payload];
+
+                state.rooms.entities[roomId].messages =
+                    messagesAdapter.upsertMany(
+                        roomEntry.messages,
+                        updatedMessages,
+                    );
+
+                state.rooms.entities[roomId].latestMessage = payload;
+
+                const listRoom = [
+                    ...roomsAdapter.getSelectors().selectAll(state.rooms),
+                ];
+
+                listRoom.forEach(function (item, i) {
+                    if (item.roomId === payload.roomId) {
+                        listRoom.splice(i, 1);
+                        listRoom.unshift(item);
+                    }
+                });
+
+                state.rooms = roomsAdapter.setAll(state.rooms, listRoom);
+            }
+        },
     },
     extraReducers(builder) {
         builder
@@ -52,7 +83,12 @@ const roomSlice = createSlice({
             .addCase(getListRooms.fulfilled, (state, action) => {
                 state.fetchingStatus = FetchStatus.Fulfilled;
                 const data = action.payload;
-                const listRoom = data.data;
+                const listRoom = data.data.sort(
+                    (a, b) =>
+                        b.latestMessage.createdAt ||
+                        0 - a.latestMessage.createdAt ||
+                        0,
+                );
                 const cloned: RoomEntry[] = listRoom.map((room) => {
                     return {
                         ...room,
@@ -161,12 +197,12 @@ export const selectRooms = createSelector(
 );
 
 export const selectMessages = createSelector(
-    (selectedRoom: RoomEntry) => selectedRoom,
-    (selectedRoom) => {
-        return messagesAdapter.getSelectors().selectAll(selectedRoom.messages);
+    (state) => state,
+    (state) => {
+        return messagesAdapter.getSelectors().selectAll(state.messages);
     },
 );
 
-export const { receivedMessages } = roomSlice.actions;
+export const { receivedMessages, receivedMessage } = roomSlice.actions;
 
 export default roomSlice.reducer;
