@@ -26,6 +26,9 @@ const OrderAcceptModeSetting = lazy(
 const RefundRuleSetting = lazy(
     () => import("@/pages/garage-manage-page/refund-rule-setting"),
 );
+const ServicesSetting = lazy(
+    () => import("@/pages/garage-manage-page/services-setting"),
+);
 const CartPage = lazy(() => import("@/pages/cart-page"));
 const OrdersDetail = lazy(
     () => import("@/pages/garage-manage-page/order-detail"),
@@ -67,6 +70,10 @@ const router = createBrowserRouter(
                             <HomePage />
                         </Suspense>
                     }
+                />
+                <Route 
+                    path="products"
+                    element={<ProductsPage />}
                 />
                 <Route
                     path="garages/:garageId"
@@ -162,6 +169,14 @@ const router = createBrowserRouter(
                         element={
                             <Suspense fallback={<FullPageLoad />}>
                                 <OrderAcceptModeSetting />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="services-setting"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <ServicesSetting />
                             </Suspense>
                         }
                     />
