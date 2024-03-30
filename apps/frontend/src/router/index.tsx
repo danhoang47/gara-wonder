@@ -42,6 +42,7 @@ const IncomePage = lazy(() => import("@/pages/garage-manage-page/income"));
 const LandingPage = lazy(() => import("@/pages/landing-page"));
 const HomePage = lazy(() => import("@/pages/home-page"));
 const ChatPage = lazy(() => import("@/pages/chat-page"));
+const ChatPageWrapper = lazy(() => import("@/pages/chat-page/ChatPageWrapper"));
 const AccountSettingsPage = lazy(
     () => import("@/pages/account-page/account-settings"),
 );
@@ -104,7 +105,16 @@ const router = createBrowserRouter(
                 />
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="user-settings" element={<UserSettingsPage />} />
-                <Route path="chat" element={<ChatPage />} />
+                <Route
+                    path="chat"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <ChatPageWrapper />
+                        </Suspense>
+                    }
+                >
+                    <Route path=":roomId" element={<ChatPage />}></Route>
+                </Route>
                 <Route
                     path=""
                     element={
