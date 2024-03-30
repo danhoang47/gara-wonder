@@ -85,7 +85,9 @@ const roomSlice = createSlice({
                 const data = action.payload;
                 const listRoom = data.data.sort(
                     (a, b) =>
-                        b.latestMessage.createdAt - a.latestMessage.createdAt,
+                        b.latestMessage.createdAt ||
+                        0 - a.latestMessage.createdAt ||
+                        0,
                 );
                 const cloned: RoomEntry[] = listRoom.map((room) => {
                     return {
