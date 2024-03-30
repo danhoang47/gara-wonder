@@ -10,6 +10,7 @@ import { DefaultLayout, GarageLayout } from "@/layouts";
 import { lazy, Suspense } from "react";
 import { FullPageLoad } from "@/core/ui";
 import { ProductsPage, UserSettingsPage } from "@/pages";
+import AccountPage from "@/pages/account-page";
 
 const GarageRegistrationPage = lazy(
     () => import("@/pages/garage-registration-page"),
@@ -49,7 +50,6 @@ const AccountSettingsPage = lazy(
 const AccountOrdersPage = lazy(
     () => import("@/pages/account-page/account-orders"),
 );
-const AccountPage = lazy(() => import("@/pages/account-page"));
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -71,10 +71,7 @@ const router = createBrowserRouter(
                         </Suspense>
                     }
                 />
-                <Route 
-                    path="products"
-                    element={<ProductsPage />}
-                />
+                <Route path="products" element={<ProductsPage />} />
                 <Route
                     path="garages/:garageId"
                     element={
@@ -109,6 +106,24 @@ const router = createBrowserRouter(
                 />
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="user-settings" element={<UserSettingsPage />} />
+                <Route path="account" element={<AccountPage />}>
+                    <Route
+                        path="settings"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <AccountSettingsPage />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="orders"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <AccountOrdersPage />
+                            </Suspense>
+                        }
+                    />
+                </Route>
                 <Route
                     path="chat"
                     element={
@@ -118,31 +133,6 @@ const router = createBrowserRouter(
                     }
                 >
                     <Route path=":roomId" element={<ChatPage />}></Route>
-                </Route>
-                <Route
-                    path=""
-                    element={
-                        <Suspense fallback={<FullPageLoad />}>
-                            <AccountPage />
-                        </Suspense>
-                    }
-                >
-                    <Route
-                        path="account-settings"
-                        element={
-                            <Suspense fallback={<FullPageLoad />}>
-                                <AccountSettingsPage />
-                            </Suspense>
-                        }
-                    />
-                    <Route
-                        path="account-orders"
-                        element={
-                            <Suspense fallback={<FullPageLoad />}>
-                                <AccountOrdersPage />
-                            </Suspense>
-                        }
-                    />
                 </Route>
             </Route>
             <Route
