@@ -7,7 +7,7 @@ import {
     ChatLinkButton,
     RegionTabs,
     UserProfileMenu,
-    CartLinkButton
+    CartLinkButton,
 } from "./ui";
 import { useAppSelector } from "@/core/hooks";
 import { Role } from "@/core/types";
@@ -24,7 +24,9 @@ const DefaultLayout = () => {
         return role !== Role.GarageOwner;
     }, [user]);
     const shouldShowMiddleContent = useMemo(() => {
-        return location.pathname !== "/";
+        return (
+            location.pathname !== "/" && !location.pathname.includes("account")
+        );
     }, [location]);
 
     return (
