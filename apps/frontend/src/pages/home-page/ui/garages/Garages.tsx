@@ -10,7 +10,7 @@ import MapViewGarages from "./MapViewGarages";
 import GridViewGarages from "./GridViewGarages";
 import useViewMode from "../../hooks/useViewMode";
 
-import "./Garages.styles.scss"
+import "./Garages.styles.scss";
 import { WithOwnerGarage } from "@/api/garages/getGarages";
 
 export type ViewModeGaragesProps = {
@@ -25,7 +25,8 @@ export type ViewModeGaragesProps = {
 function Garages() {
     const [viewMode, onViewModeChange] = useViewMode();
     const { open } = useModalContext();
-    const { garages, fetchingStatus, isReload, onNext, onUpdateGarage } = useGarages(viewMode);
+    const { garages, fetchingStatus, isReload, onNext, onUpdateGarage } =
+        useGarages(viewMode);
     const changeViewModeButtonLabel =
         viewMode === "grid" ? "Map view" : "List view";
     const changeViewModeButtonIcon =
@@ -50,12 +51,12 @@ function Garages() {
             isReload,
             garages,
             onNext,
-            onUpdateGarage
+            onUpdateGarage,
         };
 
         switch (viewMode) {
             case "grid":
-                return <GridViewGarages {...props}/>;
+                return <GridViewGarages {...props} />;
             case "map":
                 return <MapViewGarages {...props} />;
             default:
@@ -81,7 +82,6 @@ function Garages() {
                 onPress={() =>
                     onViewModeChange(viewMode === "grid" ? "map" : "grid")
                 }
-                disableAnimation
                 variant="solid"
             >
                 <span className="font-medium text-white">

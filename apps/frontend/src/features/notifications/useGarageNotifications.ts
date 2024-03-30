@@ -24,7 +24,7 @@ export default function useGarageNotifications() {
         if (!user || user.role !== Role.GarageOwner || !garageId) return null;
         
         return "notifications/garage/" + user._id
-    }, [user?._id]);
+    }, [garageId, user]);
     const onNotificationLoaded = (notifications: Notification[], isReload: boolean) => {
         if (isReload) {
             dispatch(notificationsReceived(notifications))

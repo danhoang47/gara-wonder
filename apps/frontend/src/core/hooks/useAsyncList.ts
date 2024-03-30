@@ -18,8 +18,15 @@ export default function useAsyncList<T>(
         return !equal(previousDependencies, dependencies);
     }, [previousDependencies, dependencies]);
     const [paging, setPaging] = useState<Paging>(defaultPaging);
+    const key = useMemo(() => {
+        if (typeof getKey === "function") {
+            return getKey();
+        }
+
+        return getKey;
+    }, [getKey]);
     const { isLoading, data: response } = useSWR(
-        [getKey, isReload ? defaultPaging : paging],
+        key && [getKey, isReload ? defaultPaging : paging],
         (params) => fetcher(params),
         {
             revalidateIfStale: false,
