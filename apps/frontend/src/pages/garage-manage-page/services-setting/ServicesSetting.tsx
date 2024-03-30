@@ -21,7 +21,7 @@ export default function ServicesSetting() {
         [],
     );
     const [serviceList, setServiceList] = useState<WithCategoryService[]>([]);
-    const { isLoading, data: servicesData } = useSWRImmutable(
+    const { data: servicesData } = useSWRImmutable(
         `service/${garageId}`,
         getGarageServices,
     );

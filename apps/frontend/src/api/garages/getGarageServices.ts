@@ -2,9 +2,9 @@ import axios from "axios";
 import { baseGaragesUrl } from ".";
 import { Category, Response, Service } from "@/core/types";
 
-export type WithCategoryService = Omit<Service, "categoryId"> & {
-    category: Category
-}
+export type WithCategoryService = Service & {
+    category: Category;
+};
 
 export default async function getGarageServices(
     api: string,

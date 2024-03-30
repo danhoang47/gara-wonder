@@ -33,7 +33,7 @@ function GeneralDashboard() {
                         <p className="text-xl font-semibold">
                             Đơn sửa chữa đang chờ
                         </p>
-                        <FontAwesomeIcon icon={} size="1x" />
+                        <FontAwesomeIcon icon={faChevronRight} size="1x" />
                     </div>
                     <li className="cursor-pointer hover:underline">
                         Bạn đang có{" "}
