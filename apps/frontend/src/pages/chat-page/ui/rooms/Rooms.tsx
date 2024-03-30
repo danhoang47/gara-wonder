@@ -1,9 +1,8 @@
-/* eslint-disable */
-
-import { deleteRoom } from "@/api/chat";
-import { Room } from "@/core/types";
+import { faBellSlash } from "@fortawesome/free-solid-svg-icons";
 import { RoomEntry } from "@/features/chat/rooms.slice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
+import { RoomStatus } from "@/core/types";
 
 const ellipsisClassName = "overflow-x-hidden text-ellipsis whitespace-nowrap";
 
@@ -58,13 +57,10 @@ const Rooms = ({ rooms, onRoomSelected, selectedRoom }: IListUserProps) => {
                                     {room?.latestMessage?.content}
                                 </p>
                             </div>
-                            <button
-                                onClick={async () => {
-                                    await deleteRoom(room._id);
-                                }}
-                            >
-                                delete room
-                            </button>
+
+                            {room?.status === RoomStatus.InActive && (
+                                <FontAwesomeIcon icon={faBellSlash} size="sm" />
+                            )}
                         </div>
                     ))
                 ) : (

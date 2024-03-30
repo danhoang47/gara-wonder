@@ -5,9 +5,6 @@ import { updateToken } from "@/features/user/user.slice";
 import { Message, Room } from "@/core/types/model";
 import { Response } from "@/core/types";
 
-// 401 => refresh
-// auth.currentUser?.getIdToken().then()
-
 const chatInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL + "/room",
 });
@@ -113,6 +110,17 @@ export const deleteRoom = async (roomId: string) => {
             `/${roomId}`,
             globalConfig,
         );
+        return result.data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+export const muteRoom = async (roomId: string, isMute: boolean) => {
+    try {
+        const url: string = `/${roomId}?mute=${isMute}`;
+
+        const result = await chatInstance.put(url, globalConfig);
         return result.data;
     } catch (error) {
         return Promise.reject(error);

@@ -102,7 +102,16 @@ const router = createBrowserRouter(
                 />
                 <Route path="products" element={<ProductsPage />} />
                 <Route path="user-settings" element={<UserSettingsPage />} />
-                <Route path="chat" element={<ChatPage />} />
+                <Route
+                    path="chat"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <ChatPageWrapper />
+                        </Suspense>
+                    }
+                >
+                    <Route path=":roomId" element={<ChatPage />}></Route>
+                </Route>
                 <Route
                     path=""
                     element={
@@ -134,91 +143,76 @@ const router = createBrowserRouter(
                 element={<GarageLayout />}
             >
                 <Route
-                    path="chat"
                     element={
                         <Suspense fallback={<FullPageLoad />}>
-                            <ChatPageWrapper />
+                            <GarageManagePage />
                         </Suspense>
                     }
                 >
-                    <Route path=":roomId" element={<ChatPage />}></Route>
-                </Route>
-                <Route
-                    path="garages/:garageId/management"
-                    element={<GarageLayout />}
-                >
                     <Route
+                        path=""
                         element={
                             <Suspense fallback={<FullPageLoad />}>
-                                <GarageManagePage />
+                                <GeneralDashboard />
                             </Suspense>
                         }
-                    >
-                        <Route
-                            path=""
-                            element={
-                                <Suspense fallback={<FullPageLoad />}>
-                                    <GeneralDashboard />
-                                </Suspense>
-                            }
-                        />
-                        <Route
-                            path="order-setting"
-                            element={
-                                <Suspense fallback={<FullPageLoad />}>
-                                    <OrderAcceptModeSetting />
-                                </Suspense>
-                            }
-                        />
-                        <Route
-                            path="refund-setting"
-                            element={
-                                <Suspense fallback={<FullPageLoad />}>
-                                    <RefundRuleSetting />
-                                </Suspense>
-                            }
-                        />
-                        <Route
-                            path="orders"
-                            element={
-                                <Suspense fallback={<FullPageLoad />}>
-                                    <OrdersPage />
-                                </Suspense>
-                            }
-                        />
-                        <Route
-                            path="orders/:orderId"
-                            element={
-                                <Suspense fallback={<FullPageLoad />}>
-                                    <OrdersDetail />
-                                </Suspense>
-                            }
-                        />
-                        <Route
-                            path="schedule"
-                            element={
-                                <Suspense fallback={<FullPageLoad />}>
-                                    <Schedule />
-                                </Suspense>
-                            }
-                        />
-                        <Route
-                            path="staff"
-                            element={
-                                <Suspense fallback={<FullPageLoad />}>
-                                    <StaffManagement />
-                                </Suspense>
-                            }
-                        />
-                        <Route
-                            path="income"
-                            element={
-                                <Suspense fallback={<FullPageLoad />}>
-                                    <IncomePage />
-                                </Suspense>
-                            }
-                        />
-                    </Route>
+                    />
+                    <Route
+                        path="order-setting"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <OrderAcceptModeSetting />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="refund-setting"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <RefundRuleSetting />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="orders"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <OrdersPage />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="orders/:orderId"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <OrdersDetail />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="schedule"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <Schedule />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="staff"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <StaffManagement />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="income"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <IncomePage />
+                            </Suspense>
+                        }
+                    />
                 </Route>
             </Route>
         </Route>,

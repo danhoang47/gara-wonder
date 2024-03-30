@@ -1,4 +1,3 @@
-/* eslint-disable */
 import "./ChatPage.styles.scss";
 import { useEffect, useState } from "react";
 

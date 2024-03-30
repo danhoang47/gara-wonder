@@ -1,10 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { ContainerProps, Message } from "@/core/types";
 import { useEffect, useState } from "react";
-import { getListRooms, selectRooms } from "./rooms.slice";
-import manager from "@/components/socket";
-
-export const socket = manager.socket("/room");
+import { getListRooms, receivedMessage, selectRooms } from "./rooms.slice";
+import { socket } from "@/components/socket";
 
 function MessageListener({ children }: ContainerProps) {
     const user = useAppSelector((state) => state.user.value);
@@ -25,21 +23,25 @@ function MessageListener({ children }: ContainerProps) {
                 socket.emit("room:join", room);
             });
         };
-        const receivedMessage = (message: Message) => {};
+
+        const receivedMessageSocket = (message: Message) => {
+            dispatch(receivedMessage(message));
+        };
 
         if (isConnected && rooms.length !== 0) {
             joinRooms();
-            socket.on("room:receive_message", receivedMessage);
-            socket.on("room:receive_update_message", receivedMessage);
-            // socket.on("room:receive_typing", receivedTyping);
+            socket.on("room:receive_message", receivedMessageSocket);
+            socket.on("room:receive_update_message", receivedMessageSocket);
+            // socket.on("room:receive_typing", receivedTypingSocket);
             // socket.on("room:receive_idle", receivedTyping);
         }
 
         return () => {
-            socket.off("room:receive_message", receivedMessage);
-            socket.off("room:receive_update_message", receivedMessage);
+            socket.off("room:receive_message", receivedMessageSocket);
+            socket.off("room:receive_update_message", receivedMessageSocket);
+            // socket.off("room:receive_typing", receivedTypingSocket);
         };
-    }, [rooms, isConnected]);
+    }, [rooms, isConnected, dispatch]);
 
     useEffect(() => {
         if (user) {
