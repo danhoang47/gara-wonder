@@ -7,7 +7,13 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 
-const ProgressBar = ({ status }: { status: number }) => {
+const ProgressBar = ({
+    status,
+    isProvideEvaluation,
+}: {
+    status: number;
+    isProvideEvaluation: boolean;
+}) => {
     const checkProgress = (stat: number) => {
         if (status === stat) return `text-primary-500 border-primary-500 `;
         if (status > stat) return `text-white border-primary bg-primary`;
@@ -23,22 +29,41 @@ const ProgressBar = ({ status }: { status: number }) => {
     };
     return (
         <div className=" flex  items-center justify-center px-auto py-5 pb-10 ">
-            <div
-                className={clsx(
-                    "relative flex justify-center items-center rounded-full border-3 w-16 h-16 p-3",
-                    checkProgress(-1),
-                )}
-            >
-                <FontAwesomeIcon icon={faFileLines} size="2xl" />
-                <p
+            {isProvideEvaluation ? (
+                <div
                     className={clsx(
-                        "absolute -bottom-7 text-sm font-semibold whitespace-nowrap",
-                        checkProgressText(0),
+                        "relative flex justify-center items-center rounded-full border-3 w-16 h-16 p-3",
+                        checkProgress(-1),
                     )}
                 >
-                    Đánh giá
-                </p>
-            </div>
+                    <FontAwesomeIcon icon={faFileLines} size="2xl" />
+                    <p
+                        className={clsx(
+                            "absolute -bottom-7 text-sm font-semibold whitespace-nowrap",
+                            checkProgressText(0),
+                        )}
+                    >
+                        Đánh giá
+                    </p>
+                </div>
+            ) : (
+                <div
+                    className={clsx(
+                        "relative flex justify-center items-center rounded-full border-3 w-16 h-16 p-3",
+                        checkProgress(-2),
+                    )}
+                >
+                    <FontAwesomeIcon icon={faFileLines} size="2xl" />
+                    <p
+                        className={clsx(
+                            "absolute -bottom-7 text-sm font-semibold whitespace-nowrap",
+                            checkProgressText(-1),
+                        )}
+                    >
+                        Xem xét
+                    </p>
+                </div>
+            )}
 
             <div className={clsx("min-w-32 h-1", checkProgressLine(0))} />
             <div
