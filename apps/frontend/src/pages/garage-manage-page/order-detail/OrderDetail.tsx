@@ -30,7 +30,7 @@ function OrderDetail() {
     }, [isOrderLoading]);
     return (
         <EvaluationContextProvider>
-            <div className="pt-10 h-full overflow-auto">
+            <div className="p-10 h-full overflow-auto ">
                 <p className="text-3xl font-bold">Chi tiết đơn hàng</p>
 
                 <div className="md:grid grid-cols-12 gap-4 pt-10">

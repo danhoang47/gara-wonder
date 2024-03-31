@@ -50,10 +50,16 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                 {order?.services.map((e, index) => {
                                     if (index === 0)
                                         return (
-                                            <span key={index}>{e.name}</span>
+                                            <span key={index}>
+                                                {e.category.name}
+                                            </span>
                                         );
 
-                                    return <span key={index}>, {e.name}</span>;
+                                    return (
+                                        <span key={index}>
+                                            , {e.category.name}
+                                        </span>
+                                    );
                                 })}
                             </p>
                             <div className="flex gap-2 items-center text-sm text-default-600">
