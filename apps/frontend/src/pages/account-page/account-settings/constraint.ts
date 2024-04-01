@@ -23,6 +23,6 @@ export const accountMenus: AccountMenuType[] = [
         title: "Tra cứu đơn đặt hàng",
         description: "Xem lại các đơn đặt sửa chữa xe gần đây",
         icon: "faChartBar",
-        to: "",
+        to: "orders",
     },
 ];

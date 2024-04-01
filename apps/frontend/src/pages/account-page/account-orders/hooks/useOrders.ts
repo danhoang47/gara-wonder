@@ -1,7 +1,7 @@
 import { useAppSelector, useAsyncList } from "@/core/hooks";
 import { useCallback, useState } from "react";
 import { Paging } from "@/core/types";
-import { getOrders } from "@/api";
+import { getUserOrders } from "@/api";
 import { OrderListType } from "@/api/order/getOrders";
 
 const DEFAULT_PAGING: Paging = {
@@ -28,8 +28,8 @@ export default function useOrders() {
         [userData],
         async (params) => {
             const paging = params[1];
-            const results = await getOrders(
-                userData.value?._id,
+            const results = await getUserOrders(
+                userData.token,
                 paging.limit,
                 paging?.nextCursor,
             );
