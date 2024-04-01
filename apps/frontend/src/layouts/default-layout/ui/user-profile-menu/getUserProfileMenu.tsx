@@ -1,15 +1,19 @@
-import { SignInTrigger, SignOutTrigger } from '@/features/user'
-import { Link } from '@nextui-org/react'
+import { SignInTrigger, SignOutTrigger } from "@/features/user";
+import { Link } from "@nextui-org/react";
 
 type MenuItem = {
-    key: string,
-    component?: React.ReactNode,
-    title: string,
-}
+    key: string;
+    component?: React.ReactNode;
+    title: string;
+};
 
-const getUserProfileMenu = (isLogin: boolean, isGarageOwner: boolean, garageId?: string): Array<Record<"options", MenuItem[]>> => {
-    const menuItems = []
-    
+const getUserProfileMenu = (
+    isLogin: boolean,
+    isGarageOwner: boolean,
+    garageId?: string,
+): Array<Record<"options", MenuItem[]>> => {
+    const menuItems = [];
+
     if (!isLogin) {
         menuItems.push(
             {
@@ -17,7 +21,7 @@ const getUserProfileMenu = (isLogin: boolean, isGarageOwner: boolean, garageId?:
                     {
                         key: "k1",
                         component: <SignInTrigger />,
-                        title: 'Sign in'
+                        title: "Sign in",
                     },
                     {
                         key: "k2",
@@ -40,7 +44,7 @@ const getUserProfileMenu = (isLogin: boolean, isGarageOwner: boolean, garageId?:
                     },
                 ],
             },
-        )
+        );
     }
 
     if (isLogin) {
@@ -48,11 +52,23 @@ const getUserProfileMenu = (isLogin: boolean, isGarageOwner: boolean, garageId?:
             options: [
                 {
                     key: "k1",
+                    component: (
+                        <Link
+                            href={`/account/settings`}
+                            className="text-foreground text-small"
+                        >
+                            Cài đặt tài khoản
+                        </Link>
+                    ),
+                    title: "Accounnt settings",
+                },
+                {
+                    key: "k2",
                     component: <SignOutTrigger />,
-                    title: 'Sign out'
-                }
+                    title: "Sign out",
+                },
             ],
-        })
+        });
     }
 
     if (isGarageOwner) {
@@ -61,20 +77,20 @@ const getUserProfileMenu = (isLogin: boolean, isGarageOwner: boolean, garageId?:
                 {
                     key: "k1",
                     component: (
-                        <Link 
-                            href={`/garages/${garageId}/management`} 
+                        <Link
+                            href={`/garages/${garageId}/management`}
                             className="text-foreground text-small"
                         >
                             Quản lý Garage
                         </Link>
                     ),
-                    title: 'Garage Management'
-                }
+                    title: "Garage Management",
+                },
             ],
-        })
+        });
     }
 
-    return menuItems
-}
+    return menuItems;
+};
 
-export default getUserProfileMenu
+export default getUserProfileMenu;
