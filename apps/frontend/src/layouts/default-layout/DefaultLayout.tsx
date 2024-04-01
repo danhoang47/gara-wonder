@@ -25,7 +25,9 @@ const DefaultLayout = () => {
     }, [user]);
     const shouldShowMiddleContent = useMemo(() => {
         return (
-            location.pathname !== "/" && !location.pathname.includes("account")
+            location.pathname !== "/" && 
+            !location.pathname.includes("account") &&
+            !location.pathname.includes("chat")
         );
     }, [location]);
 
