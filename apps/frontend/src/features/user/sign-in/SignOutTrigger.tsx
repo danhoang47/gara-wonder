@@ -6,22 +6,18 @@ import { useNavigate } from "react-router-dom";
 function SignOutTrigger() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { load, unload } = useLoadingContext()
+    const { load, unload } = useLoadingContext();
 
     const onSignOutButtonClick = () => {
-        load("signOut")    
+        load("signOut");
         auth.signOut().finally(() => {
-            dispatch(signOut()) 
-            navigate("/")
-            unload("signOut")
-        })
-    }
+            dispatch(signOut());
+            navigate("/");
+            unload("signOut");
+        });
+    };
 
-    return (
-        <p onClick={onSignOutButtonClick}>
-            Sign Out
-        </p>
-    );
+    return <p onClick={onSignOutButtonClick}>Thoát</p>;
 }
 
 export default SignOutTrigger;
