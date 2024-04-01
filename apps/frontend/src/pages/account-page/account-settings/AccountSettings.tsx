@@ -1,8 +1,8 @@
 import { useAppSelector } from "@/core/hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as icon from "@fortawesome/free-solid-svg-icons";
+import * as icon from "@fortawesome/free-regular-svg-icons";
 import { Card, CardBody } from "@nextui-org/react";
-import { accountMenus } from "./constraint";
+import { AccountMenuType, accountMenus } from "./constraint";
 import { useContext, useEffect } from "react";
 import { LoadingContext } from "@/core/contexts/loading";
 
@@ -30,15 +30,24 @@ export default function AccountSettings() {
                 </p>
             </div>
             <div className="grid grid-cols-12 gap-3">
-                {accountMenus.map((item, index) => (
-                    <Card className="p-1 col-span-4 cursor-pointer" key={index}>
-                        <CardBody className="text-left">
-                            <FontAwesomeIcon
-                                icon={icon[String(item.icon)]}
-                                className="w-8 h-8 mb-6"
-                            />
-                            <p className="font-semibold">{item.title}</p>
-                            <p className="text-sm pt-3">{item.description}</p>
+                {accountMenus.map((item: AccountMenuType, index) => (
+                    <Card
+                        className="px-6 py-8 col-span-4 cursor-pointer"
+                        key={index}
+                    >
+                        <CardBody className="text-left p-0 ">
+                            <div className="h-8 mb-6 font-bold">
+                                <FontAwesomeIcon
+                                    //@ts-expect-error unmatch type string error
+                                    icon={icon[`${item.icon}`]}
+                                    className="h-8"
+                                />
+                            </div>
+
+                            <p className="font-medium text-xl">{item.title}</p>
+                            <p className="text-sm text-default-500">
+                                {item.description}
+                            </p>
                         </CardBody>
                     </Card>
                 ))}

@@ -12,3 +12,4 @@ export { default as getOrders } from "./getOrders";
 export { default as getOrderById } from "./getOrderById";
 export { default as handleEvaluation } from "./handleEvaluation";
 export { default as uploadEvaluationImage } from "./uploadEvaluationImage";
+export { default as moveNextStep } from "./moveNextStep";

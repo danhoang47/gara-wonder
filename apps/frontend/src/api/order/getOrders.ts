@@ -1,10 +1,11 @@
-import { Brand, Car, Order, Response, Service } from "@/core/types";
+import { Brand, Car, Order, Response, Service, User } from "@/core/types";
 import { managementOrderInstance } from ".";
 
-export type OrderListType = Omit<Order, "car"> & {
+export type OrderListType = Omit<Order, "car" | "userId"> & {
     car: Car & { brand: Brand };
     services: (Service & { name: string })[];
     estimateHandOffTime: number;
+    userId: User;
 };
 
 export default async function getOrders(

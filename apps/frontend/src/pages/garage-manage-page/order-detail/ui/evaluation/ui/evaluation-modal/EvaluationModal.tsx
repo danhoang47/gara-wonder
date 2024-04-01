@@ -12,9 +12,7 @@ import { FileInput } from "@/core/ui";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { OrderDetailType, ServiceOrderType } from "@/api/order/getOrderById";
-import {
-    EvaluationContext,
-} from "@/pages/garage-manage-page/contexts/EvaluationContext";
+import { EvaluationContext } from "@/pages/garage-manage-page/contexts/EvaluationContext";
 
 export type DateRangeType = {
     from?: number | null;
@@ -33,7 +31,12 @@ const ServiceInput = ({
     const [servicePrice, setPrice] = useState<number>(serviceState || 0);
     return (
         <div className="flex justify-between">
-            <p className="text-lg">{service.category.name}</p>
+            <p className="text-lg">
+                {service.category.name}{" "}
+                <span className="font-medium">
+                    (Max: {service.highestPrice})
+                </span>
+            </p>
             <div className="flex items-center gap-2">
                 <div
                     className="border-3 w-8 h-8 flex justify-center items-center rounded-full cursor-pointer text-default-400 border-default-400 transition-colors hover:text-default-700 hover:border-default-700"
@@ -47,14 +50,15 @@ const ServiceInput = ({
                 <input
                     type="number"
                     value={servicePrice}
-                    min="0"
-                    max="1000"
+                    min={0}
+                    max={service.highestPrice}
                     onChange={(e) => {
                         setPrice(Number(e.target.value));
                         setServicePrice(Number(e.target.value));
                     }}
                     className="w-24 text-center text-lg bg-default font-semibold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
+
                 <div
                     className="border-3 w-8 h-8 flex justify-center items-center rounded-full cursor-pointer text-default-400 border-default-400 transition-colors hover:text-default-700 hover:border-default-700"
                     onClick={() => {
@@ -119,7 +123,6 @@ function EvaluationModal({
         setImages(images?.filter(({ name }) => name !== fileName));
     };
 
-    
     return (
         <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
@@ -131,15 +134,29 @@ function EvaluationModal({
                         serviceState={
                             evaluation?.services?.filter(
                                 (e) => e.serviceId === service._id,
-                            )[0].price
+                            )[0]?.price
                         }
                         setServicePrice={(price: number) => {
-                            setEvaluationValue("services", [
-                                {
-                                    serviceId: String(service._id),
-                                    price: price,
-                                },
-                            ]);
+                            setEvaluationValue(
+                                "services",
+                                evaluation?.services
+                                    ? [
+                                          ...evaluation["services"].filter(
+                                              (e) =>
+                                                  e.serviceId !== service._id,
+                                          ),
+                                          {
+                                              serviceId: String(service._id),
+                                              price: price,
+                                          },
+                                      ]
+                                    : [
+                                          {
+                                              serviceId: String(service._id),
+                                              price: price,
+                                          },
+                                      ],
+                            );
                         }}
                     />
                 ))}
