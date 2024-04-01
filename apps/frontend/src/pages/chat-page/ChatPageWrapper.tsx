@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/core/hooks";
 import { FetchStatus } from "@/core/types";
 import { selectRooms } from "@/features/chat/rooms.slice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { Rooms } from "./ui";
 import EmptySelectedRoom from "./ui/empty-selected-room";
@@ -13,20 +13,26 @@ const ChatPageWrapper = () => {
         (state) => state.rooms.fetchingStatus,
     );
     const navigate = useNavigate();
+    const [isMounted, setMounted] = useState<boolean>(false);
     const { roomId } = useParams();
 
     useEffect(() => {
         if (roomId) return;
 
-        if (fetchingStatus === FetchStatus.Fulfilled && rooms.length !== 0) {
+        if (
+            fetchingStatus === FetchStatus.Fulfilled &&
+            rooms.length !== 0 &&
+            !isMounted
+        ) {
             navigate(`${rooms[0]?._id}`);
         }
-    }, [fetchingStatus, navigate, rooms, roomId]);
+    }, [fetchingStatus, navigate, rooms, roomId, isMounted]);
 
     useEffect(() => {
         const onPopstate = () => {
             navigate(-1);
         };
+        setMounted(true);
 
         addEventListener("popstate", onPopstate);
 

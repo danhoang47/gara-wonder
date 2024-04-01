@@ -15,7 +15,7 @@ export type Product = Model & {
     year: number;
     price: number;
     images: Image[];
-    remain: number;
+    quantity: number;
 };
 
 export type ProductFilter = {
