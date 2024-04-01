@@ -50,6 +50,9 @@ const AccountSettingsPage = lazy(
 const AccountOrdersPage = lazy(
     () => import("@/pages/account-page/account-orders"),
 );
+const AccountOrderDetail = lazy(
+    () => import("@/pages/account-page/order-detail"),
+);
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -120,6 +123,14 @@ const router = createBrowserRouter(
                         element={
                             <Suspense fallback={<FullPageLoad />}>
                                 <AccountOrdersPage />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="orders/:orderId"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <AccountOrderDetail />
                             </Suspense>
                         }
                     />

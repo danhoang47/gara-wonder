@@ -5,9 +5,11 @@ import { Card, CardBody } from "@nextui-org/react";
 import { AccountMenuType, accountMenus } from "./constraint";
 import { useContext, useEffect } from "react";
 import { LoadingContext } from "@/core/contexts/loading";
+import { useNavigate } from "react-router-dom";
 
 export default function AccountSettings() {
     const userData = useAppSelector((state) => state.user);
+    const navigate = useNavigate();
     const { load, unload } = useContext(LoadingContext);
     useEffect(() => {
         if (!userData.value) load("account-settings");
@@ -35,7 +37,10 @@ export default function AccountSettings() {
                         className="px-6 py-8 col-span-4 cursor-pointer"
                         key={index}
                     >
-                        <CardBody className="text-left p-0 ">
+                        <CardBody
+                            className="text-left p-0 "
+                            onClick={() => navigate(`/account/${item.to}`)}
+                        >
                             <div className="h-8 mb-6 font-bold">
                                 <FontAwesomeIcon
                                     //@ts-expect-error unmatch type string error

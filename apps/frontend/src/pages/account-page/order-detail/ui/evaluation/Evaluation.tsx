@@ -7,17 +7,19 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@nextui-org/react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { EvaluationModal, ProgressBar } from "./ui";
 import { OrderDetailType } from "@/api/order/getOrderById";
-import { handleEvaluation, uploadEvaluationImage } from "@/api";
 import {
-    EvaluationContext,
-    EvaluationInfo,
-} from "@/pages/garage-manage-page/contexts/EvaluationContext";
+    getOrderEvaluation,
+    handleEvaluation,
+    uploadEvaluationImage,
+} from "@/api";
+import { EvaluationInfo } from "@/pages/garage-manage-page/contexts/EvaluationContext";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
+import useSWRImmutable from "swr/immutable";
 
 const ProgressButton = ({
     status,
@@ -26,7 +28,7 @@ const ProgressButton = ({
     status: number;
     setModalOpen: () => void;
 }) => {
-    if (status !== 0)
+    if (status === 0)
         return (
             <div className="p-4 flex flex-col gap-6 items-end">
                 <Button
@@ -34,30 +36,30 @@ const ProgressButton = ({
                     className="w-[14rem]"
                     onClick={() => setModalOpen()}
                 >
-                    Đánh giá
+                    Xem Đánh giá
                 </Button>
-                <Button
+                {/* <Button
                     color="default"
                     className="w-[14rem]"
                     onClick={() => setModalOpen()}
                 >
                     Tới thanh toán
-                </Button>
+                </Button> */}
             </div>
         );
-    return (
-        <div className="p-4 flex flex-col gap-6 items-end">
-            <Button
-                color="primary"
-                className="w-[14rem]"
-                onClick={() => {
-                    console.log("toNextStep");
-                }}
-            >
-                Tới bước tiếp theo
-            </Button>
-        </div>
-    );
+    // return (
+    //     <div className="p-4 flex flex-col gap-6 items-end">
+    //         <Button
+    //             color="primary"
+    //             className="w-[14rem]"
+    //             onClick={() => {
+    //                 console.log("toNextStep");
+    //             }}
+    //         >
+    //             Tới bước tiếp theo
+    //         </Button>
+    //     </div>
+    // );
 };
 
 function Evaluation({
@@ -70,42 +72,43 @@ function Evaluation({
     services?: OrderDetailType["services"];
 }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const { garageId } = useParams();
-    const { evaluation } = useContext(EvaluationContext);
-    const dispatch = useAppDispatch();
+    const { orderId } = useParams();
+    const { data: evaluation } = useSWRImmutable("evaluation", () =>
+        getOrderEvaluation(orderId),
+    );
 
     const onSubmit = async () => {
-        try {
-            const result = await handleEvaluation(
-                garageId,
-                evaluation as EvaluationInfo,
-            );
-            if (result.statusCode === 200) {
-                const imageUpload = await uploadEvaluationImage(
-                    garageId,
-                    evaluation?.orderId as string,
-                    evaluation?.evaluationImages as File[],
-                );
-                if (imageUpload.statusCode === 200) {
-                    dispatch(
-                        notify({
-                            type: "success",
-                            title: "Gửi Đánh Giá Thành Công",
-                            description:
-                                "Gửi đánh giá tới khách hàng thành công",
-                        }),
-                    );
-                }
-            }
-        } catch (error) {
-            dispatch(
-                notify({
-                    type: "failure",
-                    title: "Gửi Đánh Giá Thất Bại",
-                    description: "Một số lỗi xảy ra khi gửi đánh giá",
-                }),
-            );
-        }
+        // try {
+        //     const result = await handleEvaluation(
+        //         garageId,
+        //         evaluation as EvaluationInfo,
+        //     );
+        //     if (result.statusCode === 200) {
+        //         const imageUpload = await uploadEvaluationImage(
+        //             garageId,
+        //             evaluation?.orderId as string,
+        //             evaluation?.evaluationImages as File[],
+        //         );
+        //         if (imageUpload.statusCode === 200) {
+        //             dispatch(
+        //                 notify({
+        //                     type: "success",
+        //                     title: "Gửi Đánh Giá Thành Công",
+        //                     description:
+        //                         "Gửi đánh giá tới khách hàng thành công",
+        //                 }),
+        //             );
+        //         }
+        //     }
+        // } catch (error) {
+        //     dispatch(
+        //         notify({
+        //             type: "failure",
+        //             title: "Gửi Đánh Giá Thất Bại",
+        //             description: "Một số lỗi xảy ra khi gửi đánh giá",
+        //         }),
+        //     );
+        // }
     };
 
     return (
