@@ -15,7 +15,7 @@ import {
     faReply,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Spinner, Tooltip } from "@nextui-org/react";
+import { Avatar, Spinner, Tooltip } from "@nextui-org/react";
 import { ObjectId } from "bson";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
@@ -68,10 +68,7 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
 
     const [replyMessage, setReplyMessage] = useState<Message>();
 
-    const ref = useInfiniteScroll(() => {
-        console.log("INFIs");
-        onNext();
-    });
+    const ref = useInfiniteScroll(onNext);
 
     const chatRef = useRef<any>(listMessages);
 
@@ -90,7 +87,7 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
         const getTrackingStatus = async () => {
             dispatch(
                 trackingActivityStatus({
-                    userId,
+                    userId: room?.userId,
                     garageId: room?.garageId,
                     roomId: room?.roomId,
                 }),
@@ -117,36 +114,28 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
                                 <div
                                     key={index}
                                     className={clsx(
-                                        "flex items-end gap-1",
+                                        "flex items-end gap-1 mb-2",
                                         item[0].authorId === userId &&
                                             "justify-end",
                                     )}
                                 >
                                     {item[0].authorId !== userId && (
-                                        <div className="w-[30px] h-[30px] shrink-0">
-                                            <img
-                                                src={
-                                                    item[0]?.images &&
-                                                    item[0]?.images[0]?.url
-                                                }
+                                        <div className="w-[25px] h-[25px] shrink-0">
+                                            <Avatar
+                                                src={room?.photoURL}
                                                 alt=""
-                                                className="block rounded-full h-full w-full object-cover"
+                                                className="h-full w-full"
                                             />
                                         </div>
                                     )}
 
                                     <div className="flex flex-col gap-1 max-w-[80%]">
-                                        {item[0].authorId !== userId && (
-                                            <h2 className="text-sm">
-                                                {item[0].authorId}
-                                            </h2>
-                                        )}
                                         {item.map((item2: Message) => {
                                             return (
                                                 <div
                                                     key={item2._id}
                                                     className={clsx(
-                                                        "w-fit",
+                                                        "max-w-full",
                                                         item2.authorId ===
                                                             userId &&
                                                             "self-end",
@@ -187,13 +176,20 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
                                                                 ? "left"
                                                                 : "right"
                                                         }
-                                                        shouldFlip={false}
                                                     >
                                                         <div className="flex flex-col ">
                                                             {item2?.replyFrom
                                                                 ?._id && (
-                                                                <div className=" cursor-pointer relative bg-[#ccc] rounded-3xl chat-bubble">
-                                                                    <p className="m-1">
+                                                                <div
+                                                                    className={clsx(
+                                                                        "translate-y-1.5 mb-[-4px] cursor-pointer bg-[#ccc] rounded-3xl chat-bubble",
+                                                                        item2.authorId ===
+                                                                            userId
+                                                                            ? "self-end"
+                                                                            : "self-start",
+                                                                    )}
+                                                                >
+                                                                    <p className="m-1 break-words">
                                                                         {
                                                                             item2
                                                                                 ?.replyFrom
@@ -204,14 +200,14 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
                                                             )}
                                                             <div
                                                                 className={clsx(
-                                                                    "chat-bubble relative rounded-3xl  ",
+                                                                    "chat-bubble relative rounded-3xl max-w-full",
                                                                     item2.authorId ===
                                                                         userId
                                                                         ? "right self-end chat-bubble-gradient text-white"
-                                                                        : "left",
+                                                                        : "self-start",
                                                                 )}
                                                             >
-                                                                <p className="m-1">
+                                                                <p className="m-1 break-words">
                                                                     {
                                                                         item2?.content
                                                                     }
@@ -230,7 +226,7 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
                                                         </div>
                                                     </Tooltip>
                                                     {item2.isLoading && (
-                                                        <div className="flex items-center mt-0.5 justify-end">
+                                                        <div className="flex items-center mt-0.5 justify-end gap-1.5">
                                                             <Spinner
                                                                 size="sm"
                                                                 color="default"

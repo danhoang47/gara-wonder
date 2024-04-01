@@ -19,10 +19,12 @@ const roomsAdapter = createEntityAdapter<RoomEntry, string>({
 
 const messagesAdapter = createEntityAdapter<Message, string>({
     selectId: (message) => message._id,
+    sortComparer: (a, b) => a.createdAt - b.createdAt,
 });
 
 const initialState = {
     fetchingStatus: FetchStatus.None,
+    fetchingStatusActivity: FetchStatus.None,
     rooms: roomsAdapter.getInitialState(),
 };
 
@@ -37,7 +39,7 @@ const roomSlice = createSlice({
             if (roomEntry) {
                 messagesAdapter.upsertMany(
                     roomEntry.messages,
-                    payload.messages.reverse(),
+                    payload.messages,
                 );
             }
         },
@@ -46,19 +48,12 @@ const roomSlice = createSlice({
             const roomId = payload.roomId;
             const roomEntry = state.rooms.entities[roomId];
             if (roomEntry) {
-                const messagesAdapterForRoom = messagesAdapter
-                    .getSelectors()
-                    .selectAll(roomEntry.messages);
+                roomEntry.messages = messagesAdapter.upsertOne(
+                    roomEntry.messages,
+                    payload,
+                );
 
-                const updatedMessages = [...messagesAdapterForRoom, payload];
-
-                state.rooms.entities[roomId].messages =
-                    messagesAdapter.upsertMany(
-                        roomEntry.messages,
-                        updatedMessages,
-                    );
-
-                state.rooms.entities[roomId].latestMessage = payload;
+                roomEntry.latestMessage = payload;
 
                 const listRoom = [
                     ...roomsAdapter.getSelectors().selectAll(state.rooms),
@@ -71,8 +66,14 @@ const roomSlice = createSlice({
                     }
                 });
 
-                state.rooms = roomsAdapter.setAll(state.rooms, listRoom);
+                roomsAdapter.setAll(state.rooms, listRoom);
             }
+        },
+        receivedTyping: (state, action) => {
+            const payload = action.payload;
+            const roomId = payload.roomId;
+            const roomEntry = state.rooms.entities[roomId];
+            roomEntry.isTyping = payload.isTyping;
         },
     },
     extraReducers(builder) {
@@ -85,9 +86,8 @@ const roomSlice = createSlice({
                 const data = action.payload;
                 const listRoom = data.data.sort(
                     (a, b) =>
-                        b.latestMessage.createdAt ||
-                        0 - a.latestMessage.createdAt ||
-                        0,
+                        b?.latestMessage?.createdAt -
+                            a?.latestMessage?.createdAt || 0,
                 );
                 const cloned: RoomEntry[] = listRoom.map((room) => {
                     return {
@@ -102,7 +102,7 @@ const roomSlice = createSlice({
                 state.fetchingStatus = FetchStatus.Rejected;
             })
             .addCase(createNewRoom.pending, (state) => {
-                state.fetchingStatus = FetchStatus.Rejected;
+                state.fetchingStatus = FetchStatus.Fetching;
             })
             .addCase(createNewRoom.fulfilled, (state, action) => {
                 state.fetchingStatus = FetchStatus.Fulfilled;
@@ -112,31 +112,39 @@ const roomSlice = createSlice({
                         ...payload.data,
                         messages: messagesAdapter.getInitialState(),
                     },
-                    ...roomsAdapter
-                        .getSelectors()
-                        .selectAll({ ...state.rooms }),
+                    ...roomsAdapter.getSelectors().selectAll(state.rooms),
                 ];
-                state.rooms = roomsAdapter.setAll(state.rooms, newRoomsState);
+                roomsAdapter.setAll(state.rooms, newRoomsState);
             })
             .addCase(createNewRoom.rejected, (state) => {
                 state.fetchingStatus = FetchStatus.Rejected;
             })
+
             .addCase(deleteCurrentRoom.pending, (state) => {
-                state.fetchingStatus = FetchStatus.Rejected;
+                state.fetchingStatus = FetchStatus.Fetching;
             })
             .addCase(deleteCurrentRoom.fulfilled, (state, action) => {
                 state.fetchingStatus = FetchStatus.Fulfilled;
                 const data = action.payload;
+                console.log(data);
             })
             .addCase(deleteCurrentRoom.rejected, (state) => {
                 state.fetchingStatus = FetchStatus.Rejected;
             })
+
+            .addCase(trackingActivityStatus.pending, (state) => {
+                state.fetchingStatusActivity = FetchStatus.Fetching;
+            })
             .addCase(trackingActivityStatus.fulfilled, (state, action) => {
                 const payload = action.payload;
 
-                state.rooms = roomsAdapter.upsertOne(state.rooms, {
+                roomsAdapter.upsertOne(state.rooms, {
                     ...payload?.data,
                 } as RoomEntry);
+                state.fetchingStatusActivity = FetchStatus.Fulfilled;
+            })
+            .addCase(trackingActivityStatus.rejected, (state) => {
+                state.fetchingStatusActivity = FetchStatus.Rejected;
             });
     },
 });
@@ -203,6 +211,7 @@ export const selectMessages = createSelector(
     },
 );
 
-export const { receivedMessages, receivedMessage } = roomSlice.actions;
+export const { receivedMessages, receivedMessage, receivedTyping } =
+    roomSlice.actions;
 
 export default roomSlice.reducer;

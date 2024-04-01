@@ -17,6 +17,7 @@ import { RoomEntry, receivedMessage } from "@/features/chat/rooms.slice";
 import { socket } from "@/components/socket";
 import { Textarea } from "@nextui-org/react";
 import ImagePreview from "../image-preview/ImagePreview";
+import useDebouncedValue from "./useDebounce";
 
 const ellipsisClassName = "overflow-hidden text-ellipsis whitespace-nowrap";
 
@@ -71,7 +72,11 @@ const SendMessage = ({
                 sendMessage,
                 (message: Response<Message>) => {
                     dispatch(
-                        receivedMessage({ ...message.data, isLoading: false }),
+                        receivedMessage({
+                            ...message.data,
+                            isLoading: false,
+                            replyFrom,
+                        }),
                     );
                 },
             );
@@ -82,6 +87,8 @@ const SendMessage = ({
         const newList = pasteImage.filter((item) => item.lastModified !== idx);
         setPasteImage(newList);
     };
+
+    const emitTyping = useDebouncedValue(room, content);
 
     return (
         <div className="items-end  gap-2 px-4 py-4 rounded">
@@ -140,6 +147,9 @@ const SendMessage = ({
                     alt=""
                     placeholder="Aa"
                     onKeyDown={(e) => {
+                        if (!room.isTyping) {
+                            emitTyping();
+                        }
                         if (replyMessage?._id) {
                             handleSubmit(e, replyMessage);
                         } else {

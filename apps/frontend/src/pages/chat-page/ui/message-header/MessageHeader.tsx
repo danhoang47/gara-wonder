@@ -3,6 +3,7 @@ import { RoomStatus } from "@/core/types";
 import { RoomEntry } from "@/features/chat/rooms.slice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+    Avatar,
     Button,
     Popover,
     PopoverContent,
@@ -18,15 +19,16 @@ import {
 const MessageHeader = ({ room }: { room: RoomEntry }) => {
     return (
         <div className="flex items-center gap-2 px-4 py-3 border-b">
-            <div className="w-[45px] h-[45px] relative">
-                <img
+            <div className="relative">
+                <Avatar
                     src={room?.photoURL}
                     alt=""
-                    className="block rounded-full h-full w-full object-cover"
+                    name={room?.displayName}
+                    size="md"
                 />
 
                 {room?.isOnline && (
-                    <div className="bg-[#31a24c] border border-[black] rounded-full absolute w-[14px] h-[14px] bottom-0 right-0"></div>
+                    <div className="bg-[#31a24c] border border-[black] rounded-full absolute w-[12px] h-[12px] bottom-0 right-0"></div>
                 )}
             </div>
             <div className="leading-none">

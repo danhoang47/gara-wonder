@@ -7,7 +7,7 @@ import { faHeart, faFlag } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
-import { createNewRoom, getListRooms } from "@/features/chat/rooms.slice";
+import { createNewRoom, selectRooms } from "@/features/chat/rooms.slice";
 import { FetchStatus } from "@/core/types";
 
 function GarageActionButton() {
@@ -21,6 +21,8 @@ function GarageActionButton() {
     const [isFlag, setIsFlag] = useState<boolean>(true);
     const { garageId } = useParams();
 
+    const rooms = useAppSelector((state) => selectRooms(state));
+
     return (
         <div className="flex gap-4">
             <FontAwesomeIcon
@@ -30,6 +32,14 @@ function GarageActionButton() {
                     user.garageId === garageId && "hidden",
                 )}
                 onClick={async () => {
+                    const isExistRoom = rooms.find(
+                        (room) => room.garageId === garageId,
+                    );
+                    if (isExistRoom) {
+                        navigate(`/chat/${isExistRoom._id}`);
+                        return;
+                    }
+
                     if (fetchingStatus !== FetchStatus.Fetching) {
                         const { data: room } = await dispatch(
                             createNewRoom({

@@ -14,15 +14,26 @@ const ChatPage = () => {
     const fetchingStatus = useAppSelector(
         (state) => state.rooms.fetchingStatus,
     );
+    const fetchingStatusActivity = useAppSelector(
+        (state) => state.rooms.fetchingStatusActivity,
+    );
+
     const { roomId } = useParams();
 
     const [selectedRoom, setSelectedRoom] = useState<RoomEntry>();
 
     useEffect(() => {
-        if (fetchingStatus === FetchStatus.Fulfilled) {
+        if (fetchingStatus === FetchStatus.Fulfilled && !selectedRoom) {
             setSelectedRoom(rooms.find(({ _id }) => _id === roomId));
         }
-    }, [roomId, fetchingStatus]);
+
+        if (
+            fetchingStatus === FetchStatus.Fulfilled &&
+            fetchingStatusActivity === FetchStatus.Fulfilled
+        ) {
+            setSelectedRoom(rooms.find(({ _id }) => _id === roomId));
+        }
+    }, [roomId, fetchingStatus, fetchingStatusActivity]);
 
     useEffect(() => {
         if (!selectedRoom) return;
