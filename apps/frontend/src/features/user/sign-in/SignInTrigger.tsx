@@ -9,7 +9,7 @@ function SignInTrigger() {
                 open("signIn");
             }}
         >
-            Sign In
+            Đăng nhập
         </p>
     );
 }

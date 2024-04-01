@@ -25,7 +25,7 @@ const getUserProfileMenu = (
                     },
                     {
                         key: "k2",
-                        component: <p>Register</p>,
+                        component: <p>Đăng kí</p>,
                         title: "Register",
                     },
                 ],
@@ -34,17 +34,36 @@ const getUserProfileMenu = (
                 options: [
                     {
                         key: "k3",
-                        component: <p>Become Garage Owner</p>,
+                        component: <p>Trở thành chủ khách sạn</p>,
                         title: "Become Garage Owner",
                     },
                     {
                         key: "k4",
-                        component: <p>Help Center</p>,
+                        component: <p>Giúp đỡ</p>,
                         title: "Help Center",
                     },
                 ],
             },
         );
+    }
+
+    if (isGarageOwner) {
+        menuItems.push({
+            options: [
+                {
+                    key: "k1",
+                    component: (
+                        <Link
+                            href={`/garages/${garageId}/management`}
+                            className="text-foreground text-small"
+                        >
+                            Quản lý Garage
+                        </Link>
+                    ),
+                    title: "Garage Management",
+                },
+            ],
+        });
     }
 
     if (isLogin) {
@@ -66,25 +85,6 @@ const getUserProfileMenu = (
                     key: "k2",
                     component: <SignOutTrigger />,
                     title: "Sign out",
-                },
-            ],
-        });
-    }
-
-    if (isGarageOwner) {
-        menuItems.push({
-            options: [
-                {
-                    key: "k1",
-                    component: (
-                        <Link
-                            href={`/garages/${garageId}/management`}
-                            className="text-foreground text-small"
-                        >
-                            Quản lý Garage
-                        </Link>
-                    ),
-                    title: "Garage Management",
                 },
             ],
         });
