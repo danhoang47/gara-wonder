@@ -1,6 +1,7 @@
-import { faHandHoldingDollar, faSort } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
+import carIcon from "./icon/car.svg";
+import certIcon from "./icon/cert.svg";
+import sortIcon from "./icon/sort.svg";
 
 function UpdateGarage() {
     const navigate = useNavigate();
@@ -9,14 +10,14 @@ function UpdateGarage() {
             <div className="flex justify-between items-center">
                 <p className="font-semibold text-2xl">Chỉnh sửa garage</p>
             </div>
-            <div className="flex gap-4 pt-10">
+            <div className="flex gap-4 pt-10 flex-wrap">
                 <div
                     className="max-w-[15rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
-                    onClick={() => navigate("./order-setting")}
+                    onClick={() => navigate("./setting/order")}
                 >
                     <div>
                         <div className="font-semibold text-2xl flex gap-3 items-center">
-                            <FontAwesomeIcon icon={faSort} />
+                            <img src={sortIcon} alt="" />
                         </div>
                         <p className="text-medium pt-3">
                             Cài đặt chế độ nhận đơn
@@ -24,12 +25,12 @@ function UpdateGarage() {
                     </div>
                 </div>
                 <div
-                    className="max-w-[15rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
-                    onClick={() => navigate("./refund-setting")}
+                    className="max-w-[15rem] flex-shrink-0  h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
+                    onClick={() => navigate("./setting/refund")}
                 >
                     <div>
                         <div className="font-semibold text-2xl flex gap-3 items-center">
-                            <FontAwesomeIcon icon={faHandHoldingDollar} />
+                            <img src={carIcon} alt="" />
                         </div>
                         <p className="text-medium pt-3">
                             Cài đặt Chế độ Hoàn trả thanh toán
@@ -38,15 +39,27 @@ function UpdateGarage() {
                 </div>
                 <div
                     className="max-w-[15rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
-                    onClick={() => navigate("./services-setting")}
+                    onClick={() => navigate("./setting/services")}
                 >
                     <div>
                         <div className="font-semibold text-2xl flex gap-3 items-center">
-                            <FontAwesomeIcon icon={faHandHoldingDollar} />
+                            <img src={carIcon} alt="" />
                         </div>
                         <p className="text-medium pt-3">
                             Thay đổi cài đặt dịch vụ
                         </p>
+                    </div>
+                </div>
+
+                <div
+                    className="max-w-[15rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
+                    onClick={() => navigate("./setting/certificate")}
+                >
+                    <div>
+                        <div className="font-semibold text-2xl flex gap-3 items-center">
+                            <img src={certIcon} alt="" />
+                        </div>
+                        <p className="text-medium pt-3">Giấy phép kinh doanh</p>
                     </div>
                 </div>
             </div>

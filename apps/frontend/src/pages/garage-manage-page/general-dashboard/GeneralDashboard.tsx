@@ -7,7 +7,7 @@ function GeneralDashboard() {
     const userData = useAppSelector((state) => state.user);
 
     return (
-        <div className="grid grid-cols-12 gap-5 h-full ">
+        <div className="grid grid-cols-12 gap-5 h-full">
             <div className="pt-20 col-span-4 flex flex-col gap-[4rem] bg-default-100 px-10 overflow-hidden static ">
                 <div>
                     <img

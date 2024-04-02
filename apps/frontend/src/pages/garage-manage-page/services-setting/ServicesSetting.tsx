@@ -166,7 +166,7 @@ export default function ServicesSetting() {
                 selectedCategoryIds={selectedCategoryIds}
                 service={editedService}
             />
-            <div className="absolute flex w-44 gap-4 bottom-[5rem] left-[calc((100%-11rem)/2)]">
+            <div className="absolute flex w-44 gap-4 bottom-[3rem] left-[calc((100%-11rem)/2)]">
                 <Button
                     variant="light"
                     radius="full"

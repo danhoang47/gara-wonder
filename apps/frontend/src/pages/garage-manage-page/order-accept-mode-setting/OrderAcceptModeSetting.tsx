@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function OrderAcceptModeSetting() {
     const navigate = useNavigate();
     return (
-        <div className=" relative grid grid-cols-12 gap-5 px-10 mt-10 h-full">
+        <div className=" relative grid grid-cols-12 gap-5 px-10 mt-10 h-[95%]">
             <div className="col-span-4 col-start-4">
                 <Breadcrumbs>
                     <BreadcrumbItem
@@ -64,7 +64,7 @@ export default function OrderAcceptModeSetting() {
                     </div>
                 </div>
             </div>
-            <div className="absolute flex w-44 gap-4 bottom-[5rem] left-[calc((100%-11rem)/2)]">
+            <div className="absolute flex w-44 gap-4 bottom-[3rem] left-[calc((100%-11rem)/2)]">
                 <Button
                     variant="light"
                     radius="full"
