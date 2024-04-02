@@ -15,7 +15,7 @@ export default function RefundRuleSetting() {
     const [groupSelected, setGroupSelected] = useState<string>();
 
     return (
-        <div className="relative grid grid-cols-12 gap-5 px-10 mt-10 h-full">
+        <div className="relative grid grid-cols-12 gap-5 px-10 mt-10 h-[95%]">
             <div className="col-span-6 col-start-4 lg:col-span-4 lg:col-start-4">
                 <Breadcrumbs>
                     <BreadcrumbItem
@@ -108,7 +108,7 @@ export default function RefundRuleSetting() {
                     </div>
                 </div>
             </div>
-            <div className="fixed flex w-44 gap-4 bottom-[5rem] left-[calc((100%-11rem)/2)]">
+            <div className="fixed flex w-44 gap-4 bottom-[3rem] left-[calc((100%-11rem)/2)]">
                 <Button
                     variant="light"
                     radius="full"
