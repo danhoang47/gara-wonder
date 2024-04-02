@@ -4,9 +4,17 @@ import { managementOrderInstance } from ".";
 export default async function moveNextStep(
     id: string | undefined,
     data: { orderId?: string },
+    step: number | undefined,
 ) {
     try {
-        const queryParams: string = `/${id}/management/step`;
+        let queryParams: string = `/${id}/management/`;
+        console.log(step);
+
+        if (step === 2) {
+            queryParams += "completed";
+        } else {
+            queryParams += "step";
+        }
 
         const result = await managementOrderInstance.post<Response>(
             `${queryParams}`,
