@@ -1,9 +1,11 @@
 import { createContext, useCallback, useMemo, useState } from "react";
+import Lottie from "react-lottie";
+
 import { ContainerProps } from "../types";
 import { SignInModal } from "@/features/user";
 import { Dialog } from "../ui";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-regular-svg-icons";
+import locationAnimation from "@/assets/location_tracking.json";
+import orderSuccessAnimation from "@/assets/order_success.json";
 
 export type ModalType = "signIn" | "signOut" | "location" | "orderSuccess";
 
@@ -35,9 +37,20 @@ export default function ModalContextProvider({ children }: ContainerProps) {
                         isOpen={isModalOpen}
                         onClose={onModalClose}
                         title="Cho phép sử dụng vị trí"
-                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut ex nisi. Quisque commodo sem et rhoncus hendrerit."
-                        imageSrc="https://cdn-icons-png.flaticon.com/512/235/235861.png"
+                        description="Cho phép chế độ sử dụng vị trí qua GPS. Điều này giúp chúng tôi cải thiện kết quả tìm kiếm của bạn"
                         showNegativeButton={false}
+                        icon
+                        IconComponent={
+                            <div className="w-32 h-32">
+                                <Lottie
+                                    options={{
+                                        animationData: locationAnimation,
+                                        autoplay: true,
+                                        loop: true,
+                                    }}
+                                />
+                            </div>
+                        }
                     />
                 );
             case "orderSuccess":
@@ -48,7 +61,17 @@ export default function ModalContextProvider({ children }: ContainerProps) {
                         title="Đặt đơn sửa chữa thành công"
                         description="Đặt đơn sửa chữa thành công. Hãy theo dõi tiến độ đơn trong danh sách đơn hàng của bạn."
                         icon
-                        IconComponent={<FontAwesomeIcon icon={faCircleCheck} className="text-success" size="8x"/>}
+                        IconComponent={
+                            <div className="w-32 h-32">
+                                <Lottie
+                                    options={{
+                                        animationData: orderSuccessAnimation,
+                                        autoplay: true,
+                                        loop: true,
+                                    }}
+                                />
+                            </div>
+                        }
                         showNegativeButton={false}
                     />
                 );
