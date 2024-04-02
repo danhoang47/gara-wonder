@@ -97,7 +97,7 @@ function Evaluation({
             keys.includes("estimateDuration");
         return filledKeys;
     }, [evaluation]);
-    
+
     const priceValidate: boolean = useMemo(() => {
         const servicesLength: boolean =
             evaluation?.services?.length === services?.length;
@@ -185,20 +185,31 @@ function Evaluation({
 
     const onMoveNext = async () => {
         try {
-            const result = await moveNextStep(garageId, { orderId: orderId });
+            const result = await moveNextStep(
+                garageId,
+                { orderId: orderId },
+                status,
+            );
             if (result.statusCode === 200) {
                 setIsNextModalOpen(false);
                 dispatch(
                     notify({
                         type: "success",
-                        title: "Di chuyển tới bước tiếp theo thành công",
-                        description: "Di chuyển tới bước tiếp theo thành công",
+                        title:
+                            status === 2
+                                ? "Gửi thông báo tới khách hàng thành công"
+                                : "Di chuyển tới bước tiếp theo thành công",
+                        description:
+                            status === 2
+                                ? "Gửi thông báo tới khách hàng thành công"
+                                : "Di chuyển tới bước tiếp theo thành công",
                         delay: 2000,
                     }),
                 );
-                setTimeout(() => {
-                    window.location.reload();
-                }, 3000);
+                if (status !== 2)
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
             }
         } catch (error) {
             dispatch(
