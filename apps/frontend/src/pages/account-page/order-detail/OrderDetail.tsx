@@ -17,7 +17,6 @@ function OrderDetail() {
     const { orderId } = useParams();
     const user = useAppSelector((state) => state.user);
     moment.locale("es");
-    console.log(moment().fromNow());
     const { load, unload } = useContext(LoadingContext);
 
     const { isLoading: isOrderLoading, data: order } = useSWRImmutable(
