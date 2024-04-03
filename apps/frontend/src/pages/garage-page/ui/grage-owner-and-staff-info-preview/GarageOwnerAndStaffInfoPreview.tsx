@@ -4,6 +4,7 @@ import { getUser } from "@/api";
 import { Garage } from "@/core/types";
 import { Avatar, AvatarGroup } from "@nextui-org/react";
 import { GarageBasicInfo } from "@/api/garages/getBasicGarageInfo";
+import { useModalContext } from "@/core/hooks";
 
 function GarageOwnerAndStaffInfoPreview({
     garageOwner,
@@ -13,11 +14,15 @@ function GarageOwnerAndStaffInfoPreview({
     staff?: GarageBasicInfo["staff"];
 }) {
     const { data: ownerDetail } = useSWRImmutable(garageOwner, getUser);
+    const { open } = useModalContext();
 
     return (
         <div className="flex gap-2 pt-5 md:pt-0">
             <div className="flex gap-3 min-w-40">
-                <div className="shrink-0">
+                <div
+                    className="shrink-0"
+                    onClick={() => open("profile", ownerDetail?.data._id)}
+                >
                     <Avatar
                         isBordered
                         src={ownerDetail?.data.photoURL}
@@ -49,6 +54,7 @@ function GarageOwnerAndStaffInfoPreview({
                                                 : "bg-zinc-300" +
                                                   " cursor-pointer",
                                     }}
+                                    onClick={() => open("profile", ava?._id)}
                                 />
                             );
                         })}
