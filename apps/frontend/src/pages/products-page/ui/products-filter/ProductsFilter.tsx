@@ -1,9 +1,9 @@
-import { Category } from "@/core/types/model/product";
+import { ProductCategory } from "@/core/types";
 import ButtonFilter from "./ButtonFilter";
 
-const getCategoryName: Record<Category, string> = {
-    [Category.Exterior]: "Ngoại thất",
-    [Category.Interior]: "Nội thất",
+const getCategoryName: Record<ProductCategory, string> = {
+    [ProductCategory.Exterior]: "Ngoại thất",
+    [ProductCategory.Interior]: "Nội thất",
 };
 
 export interface IFilterValue {
@@ -28,12 +28,12 @@ const ProductsFilter = () => {
                     value: "",
                 },
                 {
-                    label: getCategoryName[Category.Exterior],
-                    value: getCategoryName[Category.Exterior],
+                    label: getCategoryName[ProductCategory.Exterior],
+                    value: getCategoryName[ProductCategory.Exterior],
                 },
                 {
-                    label: getCategoryName[Category.Interior],
-                    value: getCategoryName[Category.Interior],
+                    label: getCategoryName[ProductCategory.Interior],
+                    value: getCategoryName[ProductCategory.Interior],
                 },
             ],
         },

@@ -15,6 +15,9 @@ import AccountPage from "@/pages/account-page";
 const GarageRegistrationPage = lazy(
     () => import("@/pages/garage-registration-page"),
 );
+const SupplierRegistrationPage = lazy(
+    () => import("@/pages/supplier-registration-page"),
+);
 const GaragePage = lazy(() => import("@/pages/garage-page"));
 const BookPage = lazy(() => import("@/pages/book-page"));
 const GarageManagePage = lazy(() => import("@/pages/garage-manage-page"));
@@ -107,6 +110,14 @@ const router = createBrowserRouter(
                     element={
                         <Suspense fallback={<FullPageLoad />}>
                             <GarageRegistrationPage />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="supplier-registration"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <SupplierRegistrationPage />
                         </Suspense>
                     }
                 />

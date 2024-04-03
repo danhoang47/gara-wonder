@@ -5,8 +5,14 @@ import {
     createSelector,
     EntityState,
 } from "@reduxjs/toolkit";
-import { createRoom, deleteRoom, getRooms, trackingActivity } from "@/api/chat";
-import { FetchStatus, Message, Room } from "@/core/types";
+import {
+    createRoom,
+    deleteRoom,
+    getRooms,
+    muteRoom,
+    trackingActivity,
+} from "@/api/chat";
+import { FetchStatus, Message, Room, RoomStatus } from "@/core/types";
 import { AppState } from "@/store";
 
 export type RoomEntry = Omit<Room, "messages"> & {
@@ -125,11 +131,19 @@ const roomSlice = createSlice({
             })
             .addCase(deleteCurrentRoom.fulfilled, (state, action) => {
                 state.fetchingStatus = FetchStatus.Fulfilled;
-                const data = action.payload;
-                console.log(data);
+                const roomId = action.meta.arg.roomId;
+                roomsAdapter.removeOne(state.rooms, roomId);
             })
             .addCase(deleteCurrentRoom.rejected, (state) => {
                 state.fetchingStatus = FetchStatus.Rejected;
+            })
+
+            .addCase(muteCurrentRoom.fulfilled, (state, action) => {
+                const updatePayload = action.meta.arg;
+                roomsAdapter.upsertOne(state.rooms, {
+                    roomId: updatePayload.roomId,
+                    status: updatePayload.isMute,
+                } as RoomEntry);
             })
 
             .addCase(trackingActivityStatus.pending, (state) => {
@@ -186,10 +200,26 @@ export const createNewRoom = createAsyncThunk(
 
 export const deleteCurrentRoom = createAsyncThunk(
     "rooms/deleteRoom",
-    async (params: { roomId: string }) => {
+    async (params: { roomId: string; room_id: string }) => {
         try {
-            const { roomId } = params;
-            const result = await deleteRoom(roomId);
+            const { room_id } = params;
+            const result = await deleteRoom(room_id);
+            return result;
+        } catch (err) {
+            return Promise.reject(err);
+        }
+    },
+);
+
+export const muteCurrentRoom = createAsyncThunk(
+    "rooms/muteRoom",
+    async (params: { roomId: string; room_id: string; isMute: RoomStatus }) => {
+        try {
+            const { room_id, isMute } = params;
+            const result = await muteRoom(
+                room_id,
+                isMute === RoomStatus.Active ? false : true,
+            );
             return result;
         } catch (err) {
             return Promise.reject(err);

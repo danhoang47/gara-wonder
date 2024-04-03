@@ -67,7 +67,7 @@ const Rooms = ({ rooms, onRoomSelected, selectedRoom }: IListUserProps) => {
                                 </p>
                             </div>
 
-                            {room?.status === RoomStatus.InActive && (
+                            {room?.status === RoomStatus.Ignore && (
                                 <FontAwesomeIcon icon={faBellSlash} size="sm" />
                             )}
                         </div>

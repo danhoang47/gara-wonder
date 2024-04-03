@@ -5,3 +5,5 @@ export * from "./order";
 export * from "./notification";
 export * from "./room";
 export * from "./message";
+export * from "./product";
+export * from "./supplier";

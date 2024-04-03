@@ -40,7 +40,7 @@ const SendMessage = ({
     const handleSubmit = (e: any, replyFrom?: Message) => {
         if (e.key === "Enter" || e.type === "click") {
             e.preventDefault();
-            if (!content) {
+            if (!content && !pasteImage.length) {
                 return;
             }
 
@@ -176,7 +176,16 @@ const SendMessage = ({
                         setPasteImage([...pasteImage, blob]);
                     }}
                 />
-                <div className="cursor-pointer" onClick={handleSubmit}>
+                <div
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                        if (replyMessage?._id) {
+                            handleSubmit(e, replyMessage);
+                        } else {
+                            handleSubmit(e);
+                        }
+                    }}
+                >
                     <FontAwesomeIcon
                         icon={faPaperPlane}
                         size="lg"

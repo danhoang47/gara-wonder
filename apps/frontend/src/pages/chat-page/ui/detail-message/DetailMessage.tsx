@@ -40,7 +40,7 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
     const userId = useAppSelector((state) => state.user.value?._id);
     const dispatch = useAppDispatch();
     const { onNext } = useMessages(room.roomId);
-    const listMessages = useAppSelector((state) =>
+    const messages = useAppSelector((state) =>
         selectMessages(state.rooms.rooms.entities[room.roomId]),
     );
 
@@ -70,7 +70,7 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
 
     const ref = useInfiniteScroll(onNext);
 
-    const chatRef = useRef<any>(listMessages);
+    const chatRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (chatRef.current) {
@@ -79,7 +79,7 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
                 behavior: "instant",
             });
         }
-    }, [chatRef, listMessages]);
+    }, [chatRef, messages.length]);
 
     useEffect(() => {
         if (!userId || !room?.garageId) return;
@@ -99,7 +99,7 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
         const id = setInterval(getTrackingStatus, 30000);
 
         return () => clearInterval(id);
-    }, [dispatch, room?.garageId, room?.roomId, userId]);
+    }, [dispatch, room?.garageId, room?.roomId, room?.userId, userId]);
 
     return room ? (
         <div className="flex flex-col col-span-4 overflow-hidden h-full">
@@ -108,142 +108,133 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
             <div ref={chatRef} className="overflow-y-auto grow">
                 <div className="overflow-y-auto px-4 py-3">
                     <div className="h-5" ref={ref} />
-                    {group(listMessages).map(
-                        (item: Message[], index: number) => {
-                            return (
-                                <div
-                                    key={index}
-                                    className={clsx(
-                                        "flex items-end gap-1 mb-2",
-                                        item[0].authorId === userId &&
-                                            "justify-end",
-                                    )}
-                                >
-                                    {item[0].authorId !== userId && (
-                                        <div className="w-[25px] h-[25px] shrink-0">
-                                            <Avatar
-                                                src={room?.photoURL}
-                                                alt=""
-                                                className="h-full w-full"
-                                            />
-                                        </div>
-                                    )}
+                    {group(messages).map((item: Message[], index: number) => {
+                        return (
+                            <div
+                                key={index}
+                                className={clsx(
+                                    "flex items-end gap-1 mb-2",
+                                    item[0].authorId === userId &&
+                                        "justify-end",
+                                )}
+                            >
+                                {item[0].authorId !== userId && (
+                                    <div className="w-[25px] h-[25px] shrink-0">
+                                        <Avatar
+                                            src={room?.photoURL}
+                                            alt=""
+                                            className="h-full w-full"
+                                        />
+                                    </div>
+                                )}
 
-                                    <div className="flex flex-col gap-1 max-w-[80%]">
-                                        {item.map((item2: Message) => {
-                                            return (
-                                                <div
-                                                    key={item2._id}
-                                                    className={clsx(
-                                                        "max-w-full",
+                                <div className="flex flex-col gap-1 max-w-[80%]">
+                                    {item.map((item2: Message) => {
+                                        return (
+                                            <div
+                                                key={item2._id}
+                                                className={clsx(
+                                                    "max-w-full",
+                                                    item2.authorId === userId &&
+                                                        "self-end",
+                                                )}
+                                            >
+                                                <Tooltip
+                                                    content={
+                                                        <div className="cursor-pointer flex gap-3 text-primary">
+                                                            <FontAwesomeIcon
+                                                                icon={faHeart}
+                                                                size="lg"
+                                                                color="red"
+                                                            />
+                                                            <FontAwesomeIcon
+                                                                icon={faReply}
+                                                                size="lg"
+                                                                onClick={() => {
+                                                                    setReplyMessage(
+                                                                        item2,
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faEllipsis
+                                                                }
+                                                                size="lg"
+                                                            />
+                                                        </div>
+                                                    }
+                                                    placement={
                                                         item2.authorId ===
-                                                            userId &&
-                                                            "self-end",
-                                                    )}
+                                                        userId
+                                                            ? "left"
+                                                            : "right"
+                                                    }
                                                 >
-                                                    <Tooltip
-                                                        content={
-                                                            <div className="cursor-pointer flex gap-3 text-primary">
-                                                                <FontAwesomeIcon
-                                                                    icon={
-                                                                        faHeart
-                                                                    }
-                                                                    size="lg"
-                                                                    color="red"
-                                                                />
-                                                                <FontAwesomeIcon
-                                                                    icon={
-                                                                        faReply
-                                                                    }
-                                                                    size="lg"
-                                                                    onClick={() => {
-                                                                        setReplyMessage(
-                                                                            item2,
-                                                                        );
-                                                                    }}
-                                                                />
-                                                                <FontAwesomeIcon
-                                                                    icon={
-                                                                        faEllipsis
-                                                                    }
-                                                                    size="lg"
-                                                                />
-                                                            </div>
-                                                        }
-                                                        placement={
-                                                            item2.authorId ===
-                                                            userId
-                                                                ? "left"
-                                                                : "right"
-                                                        }
-                                                    >
-                                                        <div className="flex flex-col ">
-                                                            {item2?.replyFrom
-                                                                ?._id && (
-                                                                <div
-                                                                    className={clsx(
-                                                                        "translate-y-1.5 mb-[-4px] cursor-pointer bg-[#ccc] rounded-3xl chat-bubble",
-                                                                        item2.authorId ===
-                                                                            userId
-                                                                            ? "self-end"
-                                                                            : "self-start",
-                                                                    )}
-                                                                >
-                                                                    <p className="m-1 break-words">
-                                                                        {
-                                                                            item2
-                                                                                ?.replyFrom
-                                                                                ?.content
-                                                                        }
-                                                                    </p>
-                                                                </div>
-                                                            )}
+                                                    <div className="flex flex-col ">
+                                                        {item2?.replyFrom
+                                                            ?._id && (
                                                             <div
                                                                 className={clsx(
-                                                                    "chat-bubble relative rounded-3xl max-w-full",
+                                                                    "translate-y-1.5 mb-[-4px] cursor-pointer bg-[#ccc] rounded-3xl chat-bubble",
                                                                     item2.authorId ===
                                                                         userId
-                                                                        ? "right self-end chat-bubble-gradient text-white"
+                                                                        ? "self-end"
                                                                         : "self-start",
                                                                 )}
                                                             >
                                                                 <p className="m-1 break-words">
                                                                     {
-                                                                        item2?.content
+                                                                        item2
+                                                                            ?.replyFrom
+                                                                            ?.content
                                                                     }
                                                                 </p>
-                                                                {item2.isSticked && (
-                                                                    <div className="absolute bottom-[-2px] right-[-6px] text-[red] rounded-full">
-                                                                        <FontAwesomeIcon
-                                                                            icon={
-                                                                                faHeart
-                                                                            }
-                                                                            size="1x"
-                                                                        />
-                                                                    </div>
-                                                                )}
                                                             </div>
-                                                        </div>
-                                                    </Tooltip>
-                                                    {item2.isLoading && (
-                                                        <div className="flex items-center mt-0.5 justify-end gap-1.5">
-                                                            <Spinner
-                                                                size="sm"
-                                                                color="default"
-                                                            />
-                                                            <p className="text-xs">
-                                                                Đang gửi
+                                                        )}
+                                                        <div
+                                                            className={clsx(
+                                                                "chat-bubble relative rounded-3xl max-w-full",
+                                                                item2.authorId ===
+                                                                    userId
+                                                                    ? "right self-end chat-bubble-gradient text-white"
+                                                                    : "self-start",
+                                                            )}
+                                                        >
+                                                            <p className="m-1 break-words">
+                                                                {item2?.content}
                                                             </p>
+                                                            {item2.isSticked && (
+                                                                <div className="absolute bottom-[-2px] right-[-6px] text-[red] rounded-full">
+                                                                    <FontAwesomeIcon
+                                                                        icon={
+                                                                            faHeart
+                                                                        }
+                                                                        size="1x"
+                                                                    />
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
+                                                    </div>
+                                                </Tooltip>
+                                                {item2.isLoading && (
+                                                    <div className="flex items-center mt-0.5 justify-end gap-1.5">
+                                                        <Spinner
+                                                            size="sm"
+                                                            color="default"
+                                                        />
+                                                        <p className="text-xs">
+                                                            Đang gửi
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
-                            );
-                        },
-                    )}
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
