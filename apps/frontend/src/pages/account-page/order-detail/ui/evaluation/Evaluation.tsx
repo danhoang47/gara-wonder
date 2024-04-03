@@ -10,9 +10,11 @@ import {
 import { useState, useEffect } from "react";
 import { EvaluationModal, ProgressBar } from "./ui";
 import { OrderDetailType } from "@/api/order/getOrderById";
-import { getOrderEvaluation } from "@/api";
+import { confirmEvaluation, getOrderEvaluation } from "@/api";
 import { useParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { notify } from "@/features/toasts/toasts.slice";
 
 const ProgressButton = ({
     status,
@@ -31,13 +33,6 @@ const ProgressButton = ({
                 >
                     Xem Đánh giá
                 </Button>
-                {/* <Button
-                    color="default"
-                    className="w-[14rem]"
-                    onClick={() => setModalOpen()}
-                >
-                    Tới thanh toán
-                </Button> */}
             </div>
         );
     // return (
@@ -65,48 +60,51 @@ function Evaluation({
     services?: OrderDetailType["services"];
 }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const user = useAppSelector((state) => state.user);
     const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
     const [confirm, setConfirm] = useState<string>("");
     const { orderId } = useParams();
     const { data: evaluation } = useSWRImmutable("evaluation", () =>
         getOrderEvaluation(orderId),
     );
+    const dispatch = useAppDispatch();
     useEffect(() => {
         console.log(evaluation);
     }, [evaluation]);
 
     const onSubmit = async () => {
-        // try {
-        //     const result = await handleEvaluation(
-        //         garageId,
-        //         evaluation as EvaluationInfo,
-        //     );
-        //     if (result.statusCode === 200) {
-        //         const imageUpload = await uploadEvaluationImage(
-        //             garageId,
-        //             evaluation?.orderId as string,
-        //             evaluation?.evaluationImages as File[],
-        //         );
-        //         if (imageUpload.statusCode === 200) {
-        //             dispatch(
-        //                 notify({
-        //                     type: "success",
-        //                     title: "Gửi Đánh Giá Thành Công",
-        //                     description:
-        //                         "Gửi đánh giá tới khách hàng thành công",
-        //                 }),
-        //             );
-        //         }
-        //     }
-        // } catch (error) {
-        //     dispatch(
-        //         notify({
-        //             type: "failure",
-        //             title: "Gửi Đánh Giá Thất Bại",
-        //             description: "Một số lỗi xảy ra khi gửi đánh giá",
-        //         }),
-        //     );
-        // }
+        try {
+            const result = await confirmEvaluation(
+                {
+                    evaluationId: evaluation?._id,
+                    type: confirm === "reject" ? 0 : 1,
+                },
+                user.token,
+            );
+            if (result.statusCode === 200) {
+                dispatch(
+                    notify({
+                        type: "success",
+                        title: `Đã xác nhận ${
+                            confirm === "confirm" ? "chấp nhận" : "hủy bỏ"
+                        } đơn hàng`,
+                        description: `Đã xác nhận ${
+                            confirm === "confirm" ? "chấp nhận" : "hủy bỏ"
+                        } đơn khách hàng thành công`,
+                        delay: 4000,
+                    }),
+                );
+            }
+        } catch (error) {
+            dispatch(
+                notify({
+                    type: "failure",
+                    title: "Xác nhận thất bại",
+                    description: "Một số lỗi xảy ra khi xác nhận",
+                    delay: 4000,
+                }),
+            );
+        }
     };
 
     return (
@@ -140,6 +138,8 @@ function Evaluation({
                             services={services}
                             description={evaluation?.description}
                             images={evaluation?.evaluationImgs}
+                            // TODO- change typo when backend update
+                            // @ts-expect-error typo from backend
                             estimateTime={evaluation?.estimationDuration}
                         />
                     </ModalBody>
