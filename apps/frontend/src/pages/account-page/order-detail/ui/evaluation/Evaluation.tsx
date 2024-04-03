@@ -7,18 +7,11 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EvaluationModal, ProgressBar } from "./ui";
 import { OrderDetailType } from "@/api/order/getOrderById";
-import {
-    getOrderEvaluation,
-    handleEvaluation,
-    uploadEvaluationImage,
-} from "@/api";
-import { EvaluationInfo } from "@/pages/garage-manage-page/contexts/EvaluationContext";
+import { getOrderEvaluation } from "@/api";
 import { useParams } from "react-router-dom";
-import { useAppDispatch } from "@/core/hooks";
-import { notify } from "@/features/toasts/toasts.slice";
 import useSWRImmutable from "swr/immutable";
 
 const ProgressButton = ({
@@ -72,10 +65,15 @@ function Evaluation({
     services?: OrderDetailType["services"];
 }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
+    const [confirm, setConfirm] = useState<string>("");
     const { orderId } = useParams();
     const { data: evaluation } = useSWRImmutable("evaluation", () =>
         getOrderEvaluation(orderId),
     );
+    useEffect(() => {
+        console.log(evaluation);
+    }, [evaluation]);
 
     const onSubmit = async () => {
         // try {
@@ -140,6 +138,9 @@ function Evaluation({
                         <EvaluationModal
                             handOverTime={handOverTime}
                             services={services}
+                            description={evaluation?.description}
+                            images={evaluation?.evaluationImgs}
+                            estimateTime={evaluation?.estimationDuration}
                         />
                     </ModalBody>
                     <Divider />
@@ -157,10 +158,64 @@ function Evaluation({
                             >
                                 <p className="text-black">Đóng</p>
                             </Button>
+                            <Button
+                                color="danger"
+                                onClick={() => {
+                                    setConfirmModalOpen(true);
+                                    setConfirm("reject");
+                                }}
+                            >
+                                <p className="text-background">Hủy bỏ</p>
+                            </Button>
+                            <Button
+                                color="primary"
+                                onClick={() => {
+                                    setConfirmModalOpen(true);
+                                    setConfirm("confirm");
+                                }}
+                            >
+                                <p className="text-background">Chấp nhận</p>
+                            </Button>
+                        </div>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            <Modal
+                isOpen={isConfirmModalOpen}
+                onOpenChange={() => setConfirmModalOpen(false)}
+                classNames={{
+                    wrapper: "overflow-y-hidden",
+                }}
+                size="2xl"
+            >
+                <ModalContent className="max-w-[600px]">
+                    <ModalHeader>
+                        <p className="text-center text-lg font-bold">
+                            Xác nhận
+                        </p>
+                    </ModalHeader>
+                    <Divider />
+                    <ModalBody className="pb-4 overflow-auto text-lg">
+                        <p className="font-medium">
+                            Bạn xác nhận{" "}
+                            <span className="font-bold">
+                                {confirm === "confirm" ? "chấp nhận" : "hủy bỏ"}
+                            </span>{" "}
+                            đơn này không ?
+                        </p>
+                    </ModalBody>
+
+                    <ModalFooter className="flex items-center justify-end">
+                        <div className="flex gap-2 justify-end">
+                            <Button
+                                variant="light"
+                                onClick={() => setConfirmModalOpen(false)}
+                            >
+                                <p className="text-black">Đóng</p>
+                            </Button>
                             <Button color="primary" onClick={onSubmit}>
-                                <p className="text-background">
-                                    Gửi tới khách hàng
-                                </p>
+                                <p className="text-background">Có</p>
                             </Button>
                         </div>
                     </ModalFooter>
