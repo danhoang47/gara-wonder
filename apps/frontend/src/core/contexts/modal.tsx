@@ -10,7 +10,7 @@ import orderSuccessAnimation from "@/assets/order_success.json";
 export type ModalType = "signIn" | "signOut" | "location" | "orderSuccess" | "profile";
 
 export type ModalContextType<T = unknown> = {
-    open: (type: ModalType, params: T) => void;
+    open: (type: ModalType, params?: T) => void;
 };
 
 export const ModalContext = createContext<ModalContextType>(
@@ -91,7 +91,7 @@ export default function ModalContextProvider({ children }: ContainerProps) {
         }
     };
 
-    const open = useCallback((type: ModalType, params: unknown) => {
+    const open = useCallback((type: ModalType, params?: unknown) => {
         setCurrentModalType(type);
         setModalOpen(true);
         setParams(params)
