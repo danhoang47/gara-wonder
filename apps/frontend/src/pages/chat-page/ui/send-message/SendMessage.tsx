@@ -17,6 +17,8 @@ import { RoomEntry, receivedMessage } from "@/features/chat/rooms.slice";
 import { socket } from "@/components/socket";
 import { Textarea } from "@nextui-org/react";
 import ImagePreview from "../image-preview/ImagePreview";
+import { WithCategoryService } from "@/api/garages/getGarageServices";
+import ServicesSuggestion from "../services-suggestion";
 
 const ellipsisClassName = "overflow-hidden text-ellipsis whitespace-nowrap";
 
@@ -33,8 +35,10 @@ const SendMessage = ({
 }: ISendMessageProps) => {
     const dispatch = useAppDispatch();
     const userId = useAppSelector((state) => state.user.value?._id);
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const [pasteImage, setPasteImage] = useState<File[]>([]);
     const [content, setContent] = useState("");
+    const [service, setService] = useState<WithCategoryService>();
 
     const handleSubmit = (e: any, replyFrom?: Message) => {
         if (e.key === "Enter" || e.type === "click") {
@@ -131,6 +135,9 @@ const SendMessage = ({
                 <div className="cursor-pointer">
                     <FontAwesomeIcon icon={faImage} size="lg" color="#0070f0" />
                 </div>
+                {garageId === room.garageId && (
+                    <ServicesSuggestion garageId={garageId} />
+                )}
                 <Textarea
                     radius="full"
                     type="text"

@@ -1,11 +1,13 @@
 {
-    "cSpell.words": [
-        "clsx",
-        "fontawesome",
-        "fortawesome",
-        "Gara",
-        "nextui",
-        "tailwindcss",
-        "testid"
-    ]
+	"cSpell.words": [
+		"clsx",
+		"fontawesome",
+		"fortawesome",
+		"Gara",
+		"nextui",
+		"recaptcha",
+		"tailwindcss",
+		"testid",
+		"unsub"
+	]
 }

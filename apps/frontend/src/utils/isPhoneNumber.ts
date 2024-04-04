@@ -1,6 +1,10 @@
 
-const phoneNumberRegex = new RegExp(/\d{9,}/g)
+const phoneNumberRegex = new RegExp(/\d+/g)
 
 export default function isPhoneNumber(str: string | undefined): boolean {
-    return str ? phoneNumberRegex.test(str)  : false 
+    if (!str) return false;
+
+    const result = phoneNumberRegex.test(str);
+
+    return result && str.length >= 9 && str.length <= 12 
 }   

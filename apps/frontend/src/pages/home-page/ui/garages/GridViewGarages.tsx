@@ -11,13 +11,20 @@ import { WithOwnerGarage } from "@/api/garages/getGarages";
 import { addGarageToFavorites } from "@/api";
 import { notify } from "@/features/toasts/toasts.slice";
 
+export type GridViewGaragesProps = ViewModeGaragesProps & {
+    onHoverGarageCard?: (garageId: string) => void;
+    onHoverOutGarageCard?: () => void;
+}
+
 export default function GridViewGarages({
     isLoading,
     isReload,
     garages,
     onNext,
     onUpdateGarage,
-}: ViewModeGaragesProps) {
+    onHoverGarageCard,
+    onHoverOutGarageCard
+}: GridViewGaragesProps) {
     const token = useAppSelector((state) => state.user.token);
     const dispatch = useAppDispatch()
     const { open } = useModalContext();
@@ -58,6 +65,8 @@ export default function GridViewGarages({
                         key={garage._id}
                         garage={garage}
                         onFavoriteButtonPress={onFavoriteButtonPress}
+                        onHover={(garage) => onHoverGarageCard && onHoverGarageCard(garage._id)}
+                        onHoverOut={() => onHoverOutGarageCard && onHoverOutGarageCard()}
                     />
                 ))}
                 {isLoading && renderLoadingGarages()}

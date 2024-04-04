@@ -125,10 +125,7 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
                                     {item[0].authorId !== userId && (
                                         <div className="w-[30px] h-[30px] shrink-0">
                                             <img
-                                                src={
-                                                    item[0]?.images &&
-                                                    item[0]?.images[0]?.url
-                                                }
+                                                src={room.photoURL}
                                                 alt=""
                                                 className="block rounded-full h-full w-full object-cover"
                                             />

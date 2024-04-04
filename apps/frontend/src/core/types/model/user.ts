@@ -24,7 +24,8 @@ export type User = Model & {
     backSideCitizenIdCardImage?: Image,
     favoriteGarageIds?: Garage["_id"][],
     isOnline: boolean,
-    lastActiveAt: number
+    lastActiveAt: number,
+    garageId?: string
 }
 
 export type Authority = "WITH_ORDER" | "WITH_INCOME"

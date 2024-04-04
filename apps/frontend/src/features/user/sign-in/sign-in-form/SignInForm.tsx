@@ -5,7 +5,7 @@ import {
     ModalBody,
     ModalHeader,
 } from "@nextui-org/react";
-import { RecaptchaVerifier, signInWithPhoneNumber,  } from "firebase/auth";
+import { RecaptchaVerifier } from "firebase/auth";
 
 import { useAppDispatch } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
