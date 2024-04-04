@@ -1,6 +1,6 @@
 import { auth } from "@/components/firebase";
 import { useAppDispatch, useLoadingContext } from "@/core/hooks";
-import { signOut } from "../user.slice";
+import { signOut } from "../../user.slice";
 import { useNavigate } from "react-router-dom";
 
 function SignOutTrigger() {

@@ -2,7 +2,7 @@ import { createContext, useCallback, useMemo, useState } from "react";
 import Lottie from "react-lottie";
 
 import { ContainerProps } from "../types";
-import { ProfileDialog, SignInModal } from "@/features/user";
+import { ProfileDialog, SignIn } from "@/features/user";
 import { Dialog } from "../ui";
 import locationAnimation from "@/assets/location_tracking.json";
 import orderSuccessAnimation from "@/assets/order_success.json";
@@ -10,7 +10,7 @@ import orderSuccessAnimation from "@/assets/order_success.json";
 export type ModalType = "signIn" | "signOut" | "location" | "orderSuccess" | "profile";
 
 export type ModalContextType<T = unknown> = {
-    open: (type: ModalType, params: T) => void;
+    open: (type: ModalType, params?: T) => void;
 };
 
 export const ModalContext = createContext<ModalContextType>(
@@ -32,7 +32,7 @@ export default function ModalContextProvider({ children }: ContainerProps) {
         switch (currentModalType) {
             case "signIn":
                 return (
-                    <SignInModal isOpen={isModalOpen} onClose={onModalClose} />
+                    <SignIn isOpen={isModalOpen} onClose={onModalClose} />
                 );
             case "location":
                 return (
@@ -91,7 +91,7 @@ export default function ModalContextProvider({ children }: ContainerProps) {
         }
     };
 
-    const open = useCallback((type: ModalType, params: unknown) => {
+    const open = useCallback((type: ModalType, params?: unknown) => {
         setCurrentModalType(type);
         setModalOpen(true);
         setParams(params)
