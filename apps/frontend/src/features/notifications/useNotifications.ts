@@ -58,7 +58,7 @@ export default function useNotifications() {
             dispatch(notificationReset())
         }
 
-        if (user) {
+        if (user && user._id) {
             const q = query(collection(
                 firestore, 
                 "rooms", 
@@ -78,7 +78,7 @@ export default function useNotifications() {
         }
 
         return () => unsub && unsub()
-    }, [user])
+    }, [dispatch, user])
 
     return { isReload, isLoading, onNext };
 }
