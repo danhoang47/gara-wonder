@@ -52,7 +52,7 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
     return (
         <div className="h-[calc(100vh-177px)] -mx-10 flex relative overflow-y-hidden">
             {isOpenGridView && (
-                <div className="flex-grow basis-0 px-10 pt-10 overflow-auto">
+                <div className="flex-grow basis-0 px-10 overflow-auto">
                     <GridViewGarages
                         {...props}
                         onHoverGarageCard={onHoverGarageCard}

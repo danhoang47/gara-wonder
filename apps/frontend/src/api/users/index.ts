@@ -5,3 +5,4 @@ export { default as signup } from "./signup";
 export { default as getUserOrders } from "./getUserOrders";
 export { default as getUserOrderById } from "./getUserOrderById";
 export { default as confirmEvaluation } from "./confirmEvaluation";
+export { default as updateUserProfile } from "./updateUserProfile";

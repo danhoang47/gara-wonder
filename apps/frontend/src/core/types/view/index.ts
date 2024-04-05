@@ -1,4 +1,4 @@
-import { ConfirmationResult, RecaptchaVerifier } from "firebase/auth";
+import { ConfirmationResult, RecaptchaVerifier, UserCredential } from "firebase/auth";
 
 export type StylableProps = {
     className?: string;
@@ -20,5 +20,6 @@ declare global {
     interface Window {
         recaptchaVerifier: RecaptchaVerifier;
         confirmationResult: ConfirmationResult;
+        userCredential: UserCredential
     }
 }

@@ -21,9 +21,10 @@ export type SignInModalProps = {
     onPhoneNumberChange: (value: string) => void;
     onClose: () => void;
     onSave?: () => void;
+    isLoading: boolean;
 };
 
-function SignInForm({ onClose, phoneNumber, onPhoneNumberChange, onSave }: SignInModalProps) {
+function SignInForm({ onClose, phoneNumber, onPhoneNumberChange, onSave, isLoading }: SignInModalProps) {
     const dispatch = useAppDispatch();
     const [hasInputFocus, setInputFocus] = useState<boolean>(true);
     const isPhoneNumberValid = useMemo(
@@ -108,6 +109,7 @@ function SignInForm({ onClose, phoneNumber, onPhoneNumberChange, onSave }: SignI
                     id={signInButtonId}
                     isDisabled={!isPhoneNumberValid}
                     onPress={onSave}
+                    isLoading={isLoading}
                 >
                     <span className="font-semibold text-base">Đăng nhập</span>
                 </Button>

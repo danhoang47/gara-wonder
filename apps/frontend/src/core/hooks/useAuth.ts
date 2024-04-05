@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector, useLoadingContext } from ".";
-import { onAuthStateChanged } from "firebase/auth";
+import { getAdditionalUserInfo, onAuthStateChanged } from "firebase/auth";
 import {
+    Type,
     getGarageByUserId,
     getUserById,
     setEmptyUser,
@@ -13,16 +14,17 @@ import { FetchStatus, Role, User } from "../types";
 export default function useAuth() {
     const dispatch = useAppDispatch();
     const status = useAppSelector((state) => state.user.status);
+    const type = useAppSelector((state) => state.user.type);
     const { load, unload } = useLoadingContext();
 
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
+        const unSubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                user.getIdToken(true).then((token) => {
+                user.getIdToken(true).then(async (token) => {
                     dispatch(setUserToken(token));
                     dispatch(getUserById(user.uid)).then((action) => {
                         const user = action.payload as User;
-                        if (user.role === Role.GarageOwner) {
+                        if (user?.role && user.role === Role.GarageOwner) {
                             dispatch(getGarageByUserId(user._id));
                         }
                     });
@@ -31,10 +33,12 @@ export default function useAuth() {
                 dispatch(setEmptyUser());
             }
         });
+
+        return () => unSubscribe();
     }, [dispatch]);
 
     useEffect(() => {
-        if (status === FetchStatus.Fetching) {
+        if (status === FetchStatus.Fetching && type !== Type.SignUp) {
             load("login");
         }
         if (
@@ -43,5 +47,5 @@ export default function useAuth() {
         ) {
             unload("login");
         }
-    }, [load, status, unload]);
+    }, [load, status, unload, type]);
 }

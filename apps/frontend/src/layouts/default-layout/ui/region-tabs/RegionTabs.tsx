@@ -33,6 +33,7 @@ function RegionTabs() {
                     navigate(path);
                 }
             }}
+            className="regionTabs"
         >
             {paths.map(({ path, title }) => (
                 <Tab

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppSelector } from "@/core/hooks";
 import { ContainerProps } from "@/core/types";
 import manager from "@/components/socket";

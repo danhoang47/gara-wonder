@@ -1,5 +1,5 @@
 import { Button } from "@nextui-org/react";
-import { User, signInWithPopup } from "firebase/auth";
+import { User, getAdditionalUserInfo, signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from '@/components/firebase'
 
 export type GoogleSignInButtonProps = {
@@ -17,6 +17,7 @@ function GoogleSignInButton({
                 prompt: "select_account"
             })
             await signInWithPopup(auth, googleAuthProvider);
+            
             onSuccess()
         } catch (error) {
             onError()

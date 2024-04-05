@@ -1,6 +1,8 @@
+import { useLocation } from "react-router-dom";
 import { StylableProps } from "@/core/types";
 import clsx from "clsx";
-import { useLocation } from "react-router-dom";
+
+import "./Header.styles.scss";
 
 export type HeaderProps = StylableProps & {
     leftContent?: React.ReactNode;
@@ -24,6 +26,7 @@ function Header({
 
     return (
         <div
+            id="header"
             className={clsx(
                 "sticky top-0 z-20 shrink-0 bg-white",
                 isLandingPage || "border-b-1",
@@ -41,10 +44,10 @@ function Header({
                 <div className="flex items-center justify-start h-full">
                     {leftContent}
                 </div>
-                <div className="flex items-center justify-center h-full absolute left-1/2 -translate-x-1/2">
+                <div className="middle flex items-center justify-center h-full absolute">
                     {middleContent}
                 </div>
-                <div className="flex items-center justify-end h-full gap-1 ml-auto">
+                <div className="right flex items-center justify-end h-full gap-1 ml-auto">
                     {rightContent}
                 </div>
             </div>
