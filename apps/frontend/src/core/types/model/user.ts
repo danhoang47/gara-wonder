@@ -25,6 +25,7 @@ export type User = Model & {
     favoriteGarageIds?: Garage["_id"][];
     isOnline: boolean;
     lastActiveAt: number;
+    garageId?: string;
 };
 
 export type Authority = "WITH_ORDER" | "WITH_INCOME";
