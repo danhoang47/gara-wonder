@@ -14,12 +14,13 @@ import { Role } from "@/core/types";
 function UserProfileMenu() {
     const [isOpen, setOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user.value);
-    const garageId = useAppSelector((state) => state.user.garageId)
+    const garageId = useAppSelector((state) => state.user.garageId);
     const profileMenuOptions = getUserProfileMenu(
-        Boolean(user), 
+        Boolean(user),
         user?.role === Role.GarageOwner,
-        garageId
-    )
+        user?.role === Role.Supplier,
+        garageId,
+    );
 
     return (
         <Popover

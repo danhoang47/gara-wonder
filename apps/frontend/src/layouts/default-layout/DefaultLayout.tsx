@@ -23,6 +23,13 @@ const DefaultLayout = () => {
 
         return role !== Role.GarageOwner;
     }, [user]);
+    const shouldShowSupplierRegistrationLink = useMemo(() => {
+        if (!user) return true;
+
+        const { role } = user;
+
+        return role !== Role.Supplier;
+    }, [user]);
     const shouldShowMiddleContent = useMemo(() => {
         return (
             location.pathname.includes("/garages") ||
@@ -37,9 +44,14 @@ const DefaultLayout = () => {
                 middleContent={shouldShowMiddleContent && <RegionTabs />}
                 rightContent={
                     <>
-                        {shouldShowGarageRegistrationLink && (
-                            <BecomeGaraOwnerLink />
-                        )}
+                        {shouldShowGarageRegistrationLink &&
+                            location.pathname.includes("/garages") && (
+                                <BecomeGaraOwnerLink />
+                            )}
+                        {shouldShowSupplierRegistrationLink &&
+                            location.pathname.includes("/products") && (
+                                <BecomeGaraOwnerLink />
+                            )}
                         <Notifications />
                         <ChatLinkButton />
                         <CartLinkButton />
