@@ -1,9 +1,15 @@
-import { deleteRoom, muteRoom } from "@/api/chat";
 import { RoomStatus } from "@/core/types";
-import { RoomEntry } from "@/features/chat/rooms.slice";
+import {
+    RoomEntry,
+    deleteCurrentRoom,
+    muteCurrentRoom,
+    selectRooms,
+} from "@/features/chat/rooms.slice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+    Avatar,
     Button,
+    Link,
     Popover,
     PopoverContent,
     PopoverTrigger,
@@ -13,60 +19,110 @@ import {
     faBellSlash,
     faEllipsis,
     faTrash,
+    faBell,
 } from "@fortawesome/free-solid-svg-icons";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import moment from "moment";
 
-const MessageHeader = ({ room }: { room: RoomEntry }) => {
+const MessageHeader = ({
+    room,
+    setSelectedRoom,
+}: {
+    room: RoomEntry;
+    setSelectedRoom: (room?: RoomEntry) => void | undefined;
+}) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const rooms = useAppSelector((state) => selectRooms(state));
+
     return (
         <div className="flex items-center gap-2 px-4 py-3 border-b">
-            <div className="w-[45px] h-[45px] relative">
-                <img
+            <div className="relative">
+                <Avatar
                     src={room?.photoURL}
                     alt=""
-                    className="block rounded-full h-full w-full object-cover"
+                    name={room?.displayName}
+                    size="md"
                 />
 
                 {room?.isOnline && (
-                    <div className="bg-[#31a24c] border border-[black] rounded-full absolute w-[14px] h-[14px] bottom-0 right-0"></div>
+                    <div className="bg-[#31a24c] border border-[black] rounded-full absolute w-[12px] h-[12px] bottom-0 right-0"></div>
                 )}
             </div>
             <div className="leading-none">
-                <h2 className="font-semibold">{room?.displayName}</h2>
-                {room?.isOnline && <p className="text-sm">Đang hoạt động</p>}
+                <Link href={`/garages/${room.garageId}`}>
+                    <h2 className="font-semibold text-black">
+                        {room?.displayName}
+                    </h2>
+                </Link>
+
+                {room?.isOnline ? (
+                    <p className="text-sm">Đang hoạt động</p>
+                ) : (
+                    <p className="text-sm">{`Hoạt động ${moment(
+                        room.lastActiveAt,
+                    ).fromNow()}`}</p>
+                )}
             </div>
             <div className="ml-auto">
-                <Popover placement="bottom">
+                <Popover
+                    placement="bottom"
+                    isOpen={isOpen}
+                    onOpenChange={() => {
+                        setIsOpen((prev) => !prev);
+                    }}
+                >
                     <PopoverTrigger>
                         <FontAwesomeIcon
                             className="mr-6 cursor-pointer"
                             icon={faEllipsis}
                             size="lg"
+                            onClick={() => {
+                                setIsOpen(true);
+                            }}
                         />
                     </PopoverTrigger>
-                    <PopoverContent>
+                    <PopoverContent className="px-0 py-3">
                         <Button
                             variant="light"
-                            className="px-2"
+                            className="w-full"
+                            radius="none"
                             startContent={
                                 <FontAwesomeIcon
                                     className="cursor-pointer"
-                                    icon={faBellSlash}
+                                    icon={
+                                        room.status === RoomStatus.Active
+                                            ? faBellSlash
+                                            : faBell
+                                    }
                                     size="lg"
                                 />
                             }
                             onPress={async () => {
-                                await muteRoom(
-                                    room._id,
-                                    room.status === RoomStatus.Active
-                                        ? true
-                                        : false,
+                                dispatch(
+                                    muteCurrentRoom({
+                                        roomId: room.roomId,
+                                        room_id: room._id,
+                                        isMute:
+                                            room.status === RoomStatus.Active
+                                                ? RoomStatus.Ignore
+                                                : RoomStatus.Active,
+                                    }),
                                 );
+                                setIsOpen(false);
                             }}
                         >
-                            Tắt thông báo
+                            {room.status === RoomStatus.Active
+                                ? "Tắt thông báo"
+                                : "Bật thông báo"}
                         </Button>
                         <Button
                             variant="light"
-                            className="px-2"
+                            className="w-full"
+                            radius="none"
                             color="danger"
                             startContent={
                                 <FontAwesomeIcon
@@ -76,7 +132,22 @@ const MessageHeader = ({ room }: { room: RoomEntry }) => {
                                 />
                             }
                             onPress={async () => {
-                                await deleteRoom(room._id);
+                                dispatch(
+                                    deleteCurrentRoom({
+                                        roomId: room.roomId,
+                                        room_id: room._id,
+                                    }),
+                                );
+                                const find = rooms.find(
+                                    (item) => item.roomId !== room.roomId,
+                                );
+                                setIsOpen(false);
+                                setSelectedRoom(undefined);
+                                if (find) {
+                                    navigate(`/chat/${find?._id}`);
+                                } else {
+                                    navigate(`/chat/`);
+                                }
                             }}
                         >
                             Xóa đoạn chat

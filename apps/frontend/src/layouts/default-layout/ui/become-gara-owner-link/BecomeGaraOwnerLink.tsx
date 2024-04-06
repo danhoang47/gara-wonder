@@ -1,20 +1,32 @@
 import { Link } from "@nextui-org/react";
 
 import { useAppSelector, useModalContext } from "@/core/hooks";
+import { useLocation } from "react-router-dom";
+import { useMemo } from "react";
 
 function BecomeGaraOwnerLink() {
-    const user = useAppSelector(state => state.user.value)
+    const user = useAppSelector((state) => state.user.value);
     const { open } = useModalContext();
 
+    const location = useLocation();
+    const currentPath = useMemo(
+        () => location.pathname.split("/")[1],
+        [location],
+    );
+
     return (
-        <Link 
-            href="/garage-registration" 
-            color="foreground" 
-            underline="hover" 
+        <Link
+            href={
+                currentPath === "products"
+                    ? "/supplier-registration"
+                    : "/garage-registration"
+            }
+            color="foreground"
+            underline="hover"
             onClick={(e) => {
                 if (!user) {
-                    open("signIn")
-                    e.preventDefault()
+                    open("signIn");
+                    e.preventDefault();
                     return;
                 }
             }}

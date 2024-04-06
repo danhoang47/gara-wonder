@@ -17,6 +17,7 @@ import { RoomEntry, receivedMessage } from "@/features/chat/rooms.slice";
 import { socket } from "@/components/socket";
 import { Textarea } from "@nextui-org/react";
 import ImagePreview from "../image-preview/ImagePreview";
+import useDebouncedValue from "./useDebounce";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
 import ServicesSuggestion from "../services-suggestion";
 
@@ -43,7 +44,7 @@ const SendMessage = ({
     const handleSubmit = (e: any, replyFrom?: Message) => {
         if (e.key === "Enter" || e.type === "click") {
             e.preventDefault();
-            if (!content) {
+            if (!content && !pasteImage.length) {
                 return;
             }
 
@@ -75,7 +76,11 @@ const SendMessage = ({
                 sendMessage,
                 (message: Response<Message>) => {
                     dispatch(
-                        receivedMessage({ ...message.data, isLoading: false }),
+                        receivedMessage({
+                            ...message.data,
+                            isLoading: false,
+                            replyFrom,
+                        }),
                     );
                 },
             );
@@ -86,6 +91,8 @@ const SendMessage = ({
         const newList = pasteImage.filter((item) => item.lastModified !== idx);
         setPasteImage(newList);
     };
+
+    const emitTyping = useDebouncedValue(room, content);
 
     return (
         <div className="items-end  gap-2 px-4 py-4 rounded">
@@ -147,6 +154,9 @@ const SendMessage = ({
                     alt=""
                     placeholder="Aa"
                     onKeyDown={(e) => {
+                        if (!room.isTyping) {
+                            emitTyping();
+                        }
                         if (replyMessage?._id) {
                             handleSubmit(e, replyMessage);
                         } else {
@@ -173,7 +183,16 @@ const SendMessage = ({
                         setPasteImage([...pasteImage, blob]);
                     }}
                 />
-                <div className="cursor-pointer" onClick={handleSubmit}>
+                <div
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                        if (replyMessage?._id) {
+                            handleSubmit(e, replyMessage);
+                        } else {
+                            handleSubmit(e);
+                        }
+                    }}
+                >
                     <FontAwesomeIcon
                         icon={faPaperPlane}
                         size="lg"

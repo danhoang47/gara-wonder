@@ -22,7 +22,7 @@ export default function useMessages(roomId: string) {
         [roomId],
         async (params) => {
             const paging = params[1];
-            return getMessages(roomId, paging.limit!, paging.cursor);
+            return getMessages(roomId, paging.limit!, paging.nextCursor);
         },
         DEFAULT_PAGING,
     );

@@ -3,6 +3,8 @@ import { RoomEntry } from "@/features/chat/rooms.slice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import { RoomStatus } from "@/core/types";
+import "./Rooms.styles.scss";
+import { Avatar } from "@nextui-org/react";
 
 const ellipsisClassName = "overflow-x-hidden text-ellipsis whitespace-nowrap";
 
@@ -21,24 +23,23 @@ const Rooms = ({ rooms, onRoomSelected, selectedRoom }: IListUserProps) => {
                     rooms.map((room) => (
                         <div
                             key={room.garageId}
-                            className={`flex items-center gap-2 px-3 py-2 rounded transition ease-linear  ${
+                            className={`rounded-lg flex items-center gap-2 px-3 py-2 rounded transition ease-linear  ${
                                 selectedRoom?._id === room._id &&
                                 "bg-[#8bc1ff] border-l-8 border-l-primary"
                             } ${
                                 selectedRoom?._id !== room._id &&
-                                "hover:bg-[rgba(0,0,0,0.1)]"
+                                "hover:bg-default-200"
                             } cursor-pointer ${`border-l-8 border-l-transparent`}`}
                             onClick={() => {
                                 onRoomSelected && onRoomSelected(room);
                             }}
                         >
-                            <div className="shrink-0 w-[60px] h-[60px] relative">
-                                <img
-                                    src={room.photoURL}
-                                    alt=""
-                                    className="block rounded-full h-full w-full object-cover"
-                                />
-                            </div>
+                            <Avatar
+                                src={room?.photoURL}
+                                name={room?.displayName}
+                                alt=""
+                                size="lg"
+                            />
                             <div className="grow overflow-hidden">
                                 <h2
                                     className={clsx(
@@ -54,11 +55,19 @@ const Rooms = ({ rooms, onRoomSelected, selectedRoom }: IListUserProps) => {
                                         ellipsisClassName,
                                     )}
                                 >
-                                    {room?.latestMessage?.content}
+                                    {room.isTyping ? (
+                                        <div className="typing flex gap-0.5 bg-default-200 w-fit px-2.5 py-2 rounded-full">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    ) : (
+                                        room?.latestMessage?.content
+                                    )}
                                 </p>
                             </div>
 
-                            {room?.status === RoomStatus.InActive && (
+                            {room?.status === RoomStatus.Ignore && (
                                 <FontAwesomeIcon icon={faBellSlash} size="sm" />
                             )}
                         </div>

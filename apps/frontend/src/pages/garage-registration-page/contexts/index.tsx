@@ -3,16 +3,18 @@ import { createContext, useState, useMemo, useCallback } from "react";
 import { ContainerProps, Garage } from "@/core/types";
 
 export type FieldConstraint = {
-    required?: string,
-    min?: [number, string],
-    max?: [number, string]
-}
+    required?: string;
+    min?: [number, string];
+    max?: [number, string];
+};
 
-export type GarageRegistration = Partial<Omit<Garage, "images" | "backgroundImage" | "additionalServices">> & {
-    backgroundImage?: File,
-    images?: File[],
-    additionalServices?: string[]
-}
+export type GarageRegistration = Partial<
+    Omit<Garage, "images" | "backgroundImage" | "additionalServices">
+> & {
+    backgroundImage?: File;
+    images?: File[];
+    additionalServices?: string[];
+};
 
 export type GarageRegistrationErrors = {
     [K in keyof GarageRegistration]?: string;
@@ -42,11 +44,11 @@ const garageRegistrationConstraints: GarageRegistrationConstraints = {
         max: [100, "Garage's name is must be smaller than 100 characters"],
     },
     address: {
-        required: "Address is required"
+        required: "Address is required",
     },
     location: {
-        required: ""
-    }
+        required: "",
+    },
 };
 
 const validate = (
@@ -81,7 +83,7 @@ export function GarageRegistrationContextProvider({
 }: ContainerProps) {
     const [garageRegistrationState, setGarageRegistrationState] =
         useState<GarageRegistration>({
-            defaultSlot: 10
+            defaultSlot: 10,
         });
     const [garageRegistrationErrors, setGarageRegistrationErrors] =
         useState<GarageRegistrationErrors>({});
@@ -104,7 +106,7 @@ export function GarageRegistrationContextProvider({
             if (isValid) {
                 setGarageRegistrationErrors((prev) => {
                     if (prev[key]) {
-                        const newErrors = {...prev};
+                        const newErrors = { ...prev };
                         delete newErrors[key];
 
                         return newErrors;
