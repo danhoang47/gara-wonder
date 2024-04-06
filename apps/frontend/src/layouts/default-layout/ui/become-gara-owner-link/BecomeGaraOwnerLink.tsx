@@ -31,7 +31,10 @@ function BecomeGaraOwnerLink() {
                 }
             }}
         >
-            <p className="font-medium">Trở thành chủ Garage</p>
+            <p className="font-medium">
+                Trở thành{" "}
+                {currentPath === "products" ? "nhà cung cấp" : "chủ Garage"}
+            </p>
         </Link>
     );
 }
