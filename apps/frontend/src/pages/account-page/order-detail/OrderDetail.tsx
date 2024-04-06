@@ -11,6 +11,7 @@ import { LoadingContext } from "@/core/contexts/loading";
 import moment from "moment";
 import "moment/locale/vi";
 import { useAppSelector } from "@/core/hooks";
+import { mutate } from "swr";
 moment.locale("vi");
 
 function OrderDetail() {
@@ -23,6 +24,9 @@ function OrderDetail() {
         `${orderId}`,
         () => getUserOrderById(orderId, user.token),
     );
+    const refetch = () => {
+        mutate(`${orderId}`);
+    };
     useEffect(() => {
         if (isOrderLoading) load("order-detail");
         else unload("order-detail");
@@ -39,6 +43,7 @@ function OrderDetail() {
                         status={order?.status}
                         handOverTime={order?.handOverTime}
                         services={order?.services}
+                        refetch={refetch}
                     />
                     {/* User Information */}
                     <UserInfo user={order?.user} />
