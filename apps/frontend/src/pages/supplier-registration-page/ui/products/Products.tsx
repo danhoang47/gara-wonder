@@ -23,7 +23,6 @@ export default function Products() {
     const hasShowEditButton = selectedProducts.length === 1;
     const hasShowDeleteButton = selectedProducts.length > 0;
 
-    console.log(selectedProducts);
     return (
         <>
             <RegistrationSection

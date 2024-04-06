@@ -58,7 +58,15 @@ function MessageListener({ children }: ContainerProps) {
 
     useEffect(() => {
         if (user) {
-            dispatch(getListRooms());
+            const getRooms = async () => {
+                dispatch(getListRooms());
+            };
+
+            getRooms();
+
+            const id = setInterval(getRooms, 5000);
+
+            return () => clearInterval(id);
         }
     }, [dispatch, user]);
 

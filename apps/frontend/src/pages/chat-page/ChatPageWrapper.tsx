@@ -39,7 +39,11 @@ const ChatPageWrapper = () => {
         return () => removeEventListener("popstate", onPopstate);
     }, [navigate]);
 
-    if (fetchingStatus !== FetchStatus.Fulfilled) {
+    if (
+        fetchingStatus !== FetchStatus.Fulfilled &&
+        rooms.length === 0 &&
+        !isMounted
+    ) {
         return <FullPageLoad />;
     }
 

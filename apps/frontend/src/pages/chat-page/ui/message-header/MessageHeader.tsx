@@ -26,7 +26,13 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import moment from "moment";
 
-const MessageHeader = ({ room }: { room: RoomEntry }) => {
+const MessageHeader = ({
+    room,
+    setSelectedRoom,
+}: {
+    room: RoomEntry;
+    setSelectedRoom: (room?: RoomEntry) => void | undefined;
+}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -62,7 +68,13 @@ const MessageHeader = ({ room }: { room: RoomEntry }) => {
                 )}
             </div>
             <div className="ml-auto">
-                <Popover placement="bottom" isOpen={isOpen}>
+                <Popover
+                    placement="bottom"
+                    isOpen={isOpen}
+                    onOpenChange={() => {
+                        setIsOpen((prev) => !prev);
+                    }}
+                >
                     <PopoverTrigger>
                         <FontAwesomeIcon
                             className="mr-6 cursor-pointer"
@@ -126,8 +138,16 @@ const MessageHeader = ({ room }: { room: RoomEntry }) => {
                                         room_id: room._id,
                                     }),
                                 );
+                                const find = rooms.find(
+                                    (item) => item.roomId !== room.roomId,
+                                );
                                 setIsOpen(false);
-                                navigate(`/chat/${rooms[0]._id}`);
+                                setSelectedRoom(undefined);
+                                if (find) {
+                                    navigate(`/chat/${find?._id}`);
+                                } else {
+                                    navigate(`/chat/`);
+                                }
                             }}
                         >
                             Xóa đoạn chat

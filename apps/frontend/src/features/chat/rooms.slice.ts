@@ -95,7 +95,26 @@ const roomSlice = createSlice({
                         b?.latestMessage?.createdAt -
                             a?.latestMessage?.createdAt || 0,
                 );
-                const cloned: RoomEntry[] = listRoom.map((room) => {
+
+                const cloned: RoomEntry[] = listRoom?.map((room) => {
+                    const roomEntry = state.rooms.entities[room.roomId];
+                    if (roomEntry) {
+                        const listMess = messagesAdapter
+                            .getSelectors()
+                            .selectAll(
+                                state.rooms.entities[room.roomId].messages,
+                            );
+
+                        return {
+                            ...room,
+                            ...roomEntry,
+                            messages: messagesAdapter.upsertMany(
+                                state.rooms.entities[room.roomId].messages,
+                                listMess,
+                            ),
+                        };
+                    }
+
                     return {
                         ...room,
                         messages: messagesAdapter.getInitialState(),

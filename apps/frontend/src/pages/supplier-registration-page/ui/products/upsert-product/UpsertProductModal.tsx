@@ -38,7 +38,10 @@ const UpsertProductModal = ({
         product,
     );
 
-    const onChangeValue = (key: string, value: string | number | File[]) => {
+    const onChangeValue = (
+        key: string,
+        value: string | number | File[] | undefined | any,
+    ) => {
         setLocalProduct((prev) => {
             return { ...prev, [key]: value } as Product;
         });
@@ -137,6 +140,7 @@ const UpsertProductModal = ({
                                         inputWrapper: "border",
                                     }}
                                 />
+
                                 <Input
                                     variant="bordered"
                                     placeholder="Nhập mô tả"
@@ -150,6 +154,7 @@ const UpsertProductModal = ({
                                         inputWrapper: "border",
                                     }}
                                 />
+
                                 <Select
                                     items={brands}
                                     isLoading={isBrandsLoading}
@@ -195,21 +200,39 @@ const UpsertProductModal = ({
                                     placeholder="Chọn danh mục"
                                     label="Danh mục"
                                     variant="bordered"
+                                    classNames={{
+                                        trigger: "border",
+                                    }}
+                                    isRequired
                                     onSelectionChange={(keys) => {
                                         const selectedId = Array.from(
                                             keys,
                                         )[0] as string;
 
-                                        onChangeValue("category", selectedId);
+                                        onChangeValue(
+                                            "category",
+                                            selectedId
+                                                ? Number(selectedId)
+                                                : undefined,
+                                        );
+                                        onChangeValue("type", undefined);
                                     }}
-                                    classNames={{
-                                        trigger: "border",
-                                    }}
-                                    isRequired
                                     selectedKeys={
-                                        localProduct?.category
+                                        localProduct?.category !== undefined
                                             ? [String(localProduct?.category)]
-                                            : undefined
+                                            : []
+                                    }
+                                    disabledKeys={
+                                        localProduct?.category !== undefined
+                                            ? [
+                                                  String(
+                                                      localProduct?.category ===
+                                                          ProductCategory.Exterior
+                                                          ? ProductCategory.Interior
+                                                          : ProductCategory.Exterior,
+                                                  ),
+                                              ]
+                                            : []
                                     }
                                 >
                                     {(category) => (
@@ -223,7 +246,17 @@ const UpsertProductModal = ({
                                 </Select>
 
                                 <Select
-                                    items={productTypes?.data}
+                                    items={
+                                        localProduct?.category === undefined
+                                            ? productTypes?.data
+                                            : productTypes?.data.filter(
+                                                  (item) =>
+                                                      item.category ===
+                                                      Number(
+                                                          localProduct?.category,
+                                                      ),
+                                              )
+                                    }
                                     isLoading={isProductTypesLoading}
                                     placeholder="Chọn loại sản phẩm"
                                     label="Loại sản phẩm"
@@ -233,17 +266,29 @@ const UpsertProductModal = ({
                                             keys,
                                         )[0] as string;
 
-                                        onChangeValue("type", selectedId);
+                                        const item = productTypes?.data.find(
+                                            (productType) =>
+                                                productType.code ===
+                                                Number(selectedId),
+                                        );
+
+                                        onChangeValue(
+                                            "type",
+                                            selectedId && Number(selectedId),
+                                        );
+                                        onChangeValue(
+                                            "category",
+                                            item?.category,
+                                        );
                                     }}
                                     classNames={{
                                         trigger: "border",
                                     }}
                                     isRequired
-                                    isMultiline={false}
                                     selectedKeys={
-                                        localProduct?.type
+                                        localProduct?.type !== undefined
                                             ? [String(localProduct?.type)]
-                                            : undefined
+                                            : []
                                     }
                                 >
                                     {(productType) => (
@@ -252,6 +297,7 @@ const UpsertProductModal = ({
                                         </SelectItem>
                                     )}
                                 </Select>
+
                                 <Select
                                     items={[]}
                                     isLoading={false}
@@ -273,6 +319,7 @@ const UpsertProductModal = ({
                                     <SelectItem key={1}>Dòng 1</SelectItem>
                                     <SelectItem key={2}>Dòng 2</SelectItem>
                                 </Select>
+
                                 <Input
                                     variant="bordered"
                                     placeholder="Nhập Năm"
@@ -299,6 +346,7 @@ const UpsertProductModal = ({
                                         value={localProduct?.price || 1}
                                     />
                                 </div>
+
                                 <div className="flex justify-between items-center">
                                     <div>
                                         <p className="font-medium">Số lượng</p>

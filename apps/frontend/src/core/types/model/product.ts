@@ -8,7 +8,7 @@ export enum ProductCategory {
 export type Product = Model & {
     category: ProductCategory; // Danh mục
     name: string;
-    type: string; // Loại sản phẩm
+    type: number; // Loại sản phẩm
     brandId: string; // merc
     series: string[]; // Dòng xe
     year: number;

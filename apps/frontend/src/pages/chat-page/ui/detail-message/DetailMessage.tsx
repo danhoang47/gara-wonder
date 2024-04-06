@@ -25,6 +25,7 @@ import useMessages from "./useMessages";
 
 interface IDetailMessageProps {
     room: RoomEntry;
+    setSelectedRoom: (room?: RoomEntry) => void | undefined;
 }
 
 export type PayloadMessage = Omit<
@@ -36,7 +37,7 @@ export type PayloadMessage = Omit<
     replyFrom?: Message;
 };
 
-const DetailMessage = ({ room }: IDetailMessageProps) => {
+const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
     const userId = useAppSelector((state) => state.user.value?._id);
     const dispatch = useAppDispatch();
     const { onNext } = useMessages(room.roomId);
@@ -103,7 +104,7 @@ const DetailMessage = ({ room }: IDetailMessageProps) => {
 
     return room ? (
         <div className="flex flex-col col-span-4 overflow-hidden h-full">
-            <MessageHeader room={room} />
+            <MessageHeader room={room} setSelectedRoom={setSelectedRoom} />
 
             <div ref={chatRef} className="overflow-y-auto grow">
                 <div className="overflow-y-auto px-4 py-3">

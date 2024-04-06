@@ -51,7 +51,10 @@ const ChatPage = () => {
                 onRoomSelected={(room) => setSelectedRoom(room)}
             />
             {selectedRoom ? (
-                <DetailMessage room={selectedRoom} />
+                <DetailMessage
+                    room={selectedRoom}
+                    setSelectedRoom={setSelectedRoom}
+                />
             ) : (
                 <EmptySelectedRoom />
             )}
