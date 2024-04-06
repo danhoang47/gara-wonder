@@ -77,10 +77,12 @@ function Evaluation({
     status,
     handOverTime,
     services,
+    refetch,
 }: {
     status?: number;
     handOverTime?: number;
     services?: OrderDetailType["services"];
+    refetch: () => void;
 }) {
     const [isEvaluationModalOpen, setIsEvaluationModalOpen] =
         useState<boolean>(false);
@@ -140,6 +142,7 @@ function Evaluation({
                         evaluation?.evaluationImages as File[],
                     );
                     if (imageUpload.statusCode === 200) {
+                        refetch();
                         setIsEvaluationModalOpen(false);
                         dispatch(
                             notify({
@@ -191,6 +194,7 @@ function Evaluation({
                 status,
             );
             if (result.statusCode === 200) {
+                refetch();
                 setIsNextModalOpen(false);
                 dispatch(
                     notify({
@@ -206,10 +210,6 @@ function Evaluation({
                         delay: 2000,
                     }),
                 );
-                if (status !== 2)
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 3000);
             }
         } catch (error) {
             dispatch(

@@ -54,10 +54,12 @@ function Evaluation({
     status,
     handOverTime,
     services,
+    refetch,
 }: {
     status?: number;
     handOverTime?: number;
     services?: OrderDetailType["services"];
+    refetch: () => void;
 }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user);
@@ -82,6 +84,7 @@ function Evaluation({
                 user.token,
             );
             if (result.statusCode === 200) {
+                refetch();
                 dispatch(
                     notify({
                         type: "success",
