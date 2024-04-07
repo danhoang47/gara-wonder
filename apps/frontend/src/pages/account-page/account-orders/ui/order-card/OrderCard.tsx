@@ -13,7 +13,9 @@ function OrderCard({ order }: { order?: OrderListType }) {
                         <div className="flex items-center gap-2">
                             <div>
                                 <img
-                                    src={order?.userId.photoURL}
+                                    src={
+                                        order?.garageId?.backgroundImage[0].url
+                                    }
                                     alt=""
                                     className="w-8 h-8 rounded-full"
                                 />
@@ -62,7 +64,7 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                         icon={faCalendar}
                                         className="mr-2"
                                     />
-                                    Order Date:{" "}
+                                    Ngày đặt:{" "}
                                     {moment(order?.handOverTime).format(
                                         "DD/MM/YYYY",
                                     )}
@@ -72,7 +74,7 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                     <>
                                         <p>-</p>
                                         <p>
-                                            Return Date:{" "}
+                                            Ngày trả:{" "}
                                             {moment(
                                                 order?.estimateHandOffTime,
                                             ).format("DD/MM/YYYY")}
@@ -81,14 +83,28 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                 )}
                             </div>
                             <div className="pt-3 flex gap-2">
-                                <Chip color="primary">
-                                    <p className="font-medium">Accepted</p>
-                                </Chip>
-                                <Chip color="default" variant="bordered">
-                                    <p className="font-medium text-default-500">
-                                        No Evaluation
-                                    </p>
-                                </Chip>
+                                {order?.status <= 0 ? (
+                                    <Chip color="primary">
+                                        <p className="font-medium">
+                                            Cần chấp nhận
+                                        </p>
+                                    </Chip>
+                                ) : (
+                                    <Chip color="primary">
+                                        <p className="font-medium">
+                                            Đã chấp nhận
+                                        </p>
+                                    </Chip>
+                                )}
+                                {order?.evaluationRequired ? (
+                                    ""
+                                ) : (
+                                    <Chip color="default" variant="bordered">
+                                        <p className="font-medium text-default-500">
+                                            Không có đánh giá
+                                        </p>
+                                    </Chip>
+                                )}
                             </div>
                         </div>
                     </div>
