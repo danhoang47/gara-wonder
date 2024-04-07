@@ -25,29 +25,19 @@ const ProgressButton = ({
 }) => {
     if (status === 0)
         return (
-            <div className="p-4 flex flex-col gap-6 items-end">
-                <Button
-                    color="primary"
-                    className="w-[14rem]"
-                    onClick={() => setModalOpen()}
-                >
-                    Xem Đánh giá
-                </Button>
-            </div>
+            <>
+                <div className="w-full h-1 border-t-2" />
+                <div className="p-4 flex flex-col gap-6 items-end">
+                    <Button
+                        color="primary"
+                        className="w-[14rem]"
+                        onClick={() => setModalOpen()}
+                    >
+                        Xem Đánh giá
+                    </Button>
+                </div>
+            </>
         );
-    // return (
-    //     <div className="p-4 flex flex-col gap-6 items-end">
-    //         <Button
-    //             color="primary"
-    //             className="w-[14rem]"
-    //             onClick={() => {
-    //                 console.log("toNextStep");
-    //             }}
-    //         >
-    //             Tới bước tiếp theo
-    //         </Button>
-    //     </div>
-    // );
 };
 
 function Evaluation({
@@ -113,7 +103,7 @@ function Evaluation({
     return (
         <div className="border-2 rounded-lg">
             <ProgressBar status={status || 0} />
-            <div className="w-full h-1 border-t-2" />
+
             <ProgressButton
                 status={status || 0}
                 setModalOpen={() => {
