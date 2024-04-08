@@ -1,18 +1,21 @@
 import { useParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWrench } from "@fortawesome/free-solid-svg-icons";
+import { getBrands, getGarageServices } from "@/api";
 
+import ServiceDetail from "./service-detail";
 import SkeletonServices from "./skeleton-services";
-import { getGarageServices } from "@/api";
-import { Service } from "@/core/types";
-import CategoryDetail from "./category-detail";
 
 function Services() {
     const { garageId } = useParams();
     const { isLoading: isServicesLoading, data: servicesList } =
         useSWRImmutable(`service/${garageId}`, getGarageServices);
+    const { isLoading: isBrandsLoading, data: brands } = useSWRImmutable(
+        "brands",
+        getBrands,
+    );
+    console.log(brands);
+
     return (
         <div>
             <div className="pb-4">
@@ -21,26 +24,12 @@ function Services() {
                     Tất cả dịch vụ Garage này có
                 </p>
             </div>
-            {isServicesLoading ? (
+            {isBrandsLoading && isServicesLoading ? (
                 <SkeletonServices />
             ) : (
                 <div className="flex flex-col gap-4">
-                    {servicesList?.data.map((service: Service, index) => (
-                        <div
-                            key={index}
-                            className="flex justify-between w-full items-center"
-                        >
-                            <div className="flex items-center gap-2">
-                                <FontAwesomeIcon icon={faWrench} size="xl" />
-                                <CategoryDetail service={service} />
-                            </div>
-                            <div>
-                                <p className="font-semibold">
-                                    {service.lowestPrice}$ -{" "}
-                                    {service.highestPrice}$
-                                </p>
-                            </div>
-                        </div>
+                    {servicesList?.data.map((service, index) => (
+                        <ServiceDetail key={index} service={service} />
                     ))}
                 </div>
             )}

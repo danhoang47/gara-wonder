@@ -1,22 +1,34 @@
-import useSWRImmutable from "swr/immutable";
 import { Skeleton } from "@nextui-org/react";
 
-import { Service } from "@/core/types";
+import { Category } from "@/core/types";
 import { SupportedChip } from "../..";
-import { getCategoryById } from "@/api";
+import { WithCategoryService } from "@/api/garages/getGarageServices";
 
-function CategoryDetail({ service }: { service: Service }) {
-    const { isLoading: isCategoryLoading, data: categoryData } =
-        useSWRImmutable(`${service.categoryId}`, getCategoryById);
+function CategoryDetail({
+    service,
+    categoryData,
+    isCategoryLoading,
+    openModal,
+}: {
+    service: WithCategoryService;
+    categoryData?: Category;
+    isCategoryLoading: boolean;
+    openModal: () => void;
+}) {
     return (
         <div>
             <div className="flex items-center">
                 {isCategoryLoading ? (
                     <Skeleton className="w-40 h-4 " />
                 ) : (
-                    <p className="font-medium">{categoryData?.name}</p>
+                    <p
+                        className="font-medium cursor-pointer hover:underline transition-all"
+                        onClick={openModal}
+                    >
+                        {categoryData?.name}
+                    </p>
                 )}
-                <SupportedChip isSupport={service.isSupported} />
+                <SupportedChip isSupport={service.status} />
             </div>
             <div className="text-sm text-zinc-500">
                 {isCategoryLoading ? (

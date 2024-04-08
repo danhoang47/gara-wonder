@@ -65,21 +65,6 @@ function BookingForm() {
                     <BrandInput />
                     <ServiceSelect />
                 </div>
-                {/* <div>
-                    <div className="flex justify-between">
-                        <p className="text-default-400">Tổng</p>
-                        <p>VND 42000</p>
-                    </div>
-                    <div className="flex justify-between">
-                        <p className="text-default-400">Thuế</p>
-                        <p>VND 42000</p>
-                    </div>
-                </div>
-                <div className="border-t-2 border-zync-400" />
-                <div className="flex justify-between">
-                    <p className="font-semibold text-xl">Tổng</p>
-                    <p>VND 42000</p>
-                </div> */}
                 <div className="border-t-2 border-zync-400" />
 
                 <div className="flex flex-col gap-3">
