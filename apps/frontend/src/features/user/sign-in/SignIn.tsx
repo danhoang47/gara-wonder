@@ -25,7 +25,7 @@ export enum SignInStep {
 function SignIn({ isOpen, onClose }: SignInProps) {
     const dispatch = useAppDispatch();
     const type = useAppSelector(state => state.user.type)
-    const [step, setStep] = useState<SignInStep>(SignInStep.OTP);
+    const [step, setStep] = useState<SignInStep>(SignInStep.SignIn);
     const [phoneNumber, setPhoneNumber] = useState<string>();
     const [isSignInLoading, setSignInLoading] = useState<boolean>(false)
     const otpFormRef = useRef<OTPFormRef>(null)
