@@ -62,7 +62,7 @@ export default function GridViewGarages({
                 {isReload && renderLoadingGarages()}
                 {garages?.map((garage) => (
                     <GarageCard
-                        key={garage._id}
+                        key={garage?._id}
                         garage={garage}
                         onFavoriteButtonPress={onFavoriteButtonPress}
                         onHover={(garage) => onHoverGarageCard && onHoverGarageCard(garage._id)}
