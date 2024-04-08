@@ -10,9 +10,9 @@ function UpdateGarage() {
             <div className="flex justify-between items-center">
                 <p className="font-semibold text-2xl">Chỉnh sửa garage</p>
             </div>
-            <div className="flex gap-4 pt-10 flex-wrap">
+            <div className="gridViewUpdate pt-10 ">
                 <div
-                    className="max-w-[15rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
+                    className="h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
                     onClick={() => navigate("./setting/order")}
                 >
                     <div>
@@ -25,7 +25,7 @@ function UpdateGarage() {
                     </div>
                 </div>
                 <div
-                    className="max-w-[15rem] flex-shrink-0  h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
+                    className="flex-shrink-0  h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
                     onClick={() => navigate("./setting/refund")}
                 >
                     <div>
@@ -38,7 +38,7 @@ function UpdateGarage() {
                     </div>
                 </div>
                 <div
-                    className="max-w-[15rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
+                    className="h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
                     onClick={() => navigate("./setting/services")}
                 >
                     <div>
@@ -52,7 +52,7 @@ function UpdateGarage() {
                 </div>
 
                 <div
-                    className="max-w-[15rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
+                    className="h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100 cursor-pointer transition-shadow"
                     onClick={() => navigate("./setting/certificate")}
                 >
                     <div>

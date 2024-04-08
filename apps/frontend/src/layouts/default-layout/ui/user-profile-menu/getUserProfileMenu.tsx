@@ -11,6 +11,7 @@ const getUserProfileMenu = (
     isLogin: boolean,
     isGarageOwner: boolean,
     isSupplier: boolean,
+    openMenu: () => void,
     garageId?: string,
 ): Array<Record<"options", MenuItem[]>> => {
     const menuItems = [];
@@ -84,7 +85,21 @@ const getUserProfileMenu = (
             options: [
                 {
                     key: "k3",
-                    component: <p>Trở thành chủ khách sạn</p>,
+                    component: (
+                        <Link
+                            href={`garage-registration`}
+                            className="text-foreground text-small"
+                            onClick={(e) => {
+                                if (!isLogin) {
+                                    openMenu();
+                                    e.preventDefault();
+                                    return;
+                                }
+                            }}
+                        >
+                            Trở thành chủ Garage
+                        </Link>
+                    ),
                     title: "Become Garage Owner",
                 },
             ],
@@ -96,7 +111,21 @@ const getUserProfileMenu = (
             options: [
                 {
                     key: "k3",
-                    component: <p>Trở thành nhà cung cấp</p>,
+                    component: (
+                        <Link
+                            href={`supplier-registration`}
+                            className="text-foreground text-small"
+                            onClick={(e) => {
+                                if (!isLogin) {
+                                    openMenu();
+                                    e.preventDefault();
+                                    return;
+                                }
+                            }}
+                        >
+                            Trở thành nhà cung cấp
+                        </Link>
+                    ),
                     title: "Become Garage Owner",
                 },
             ],
