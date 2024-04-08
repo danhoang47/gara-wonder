@@ -4,6 +4,7 @@ import { Category, Response, Service } from "@/core/types";
 
 export type WithCategoryService = Service & {
     category: Category;
+    status: boolean;
 };
 
 export default async function getGarageServices(
