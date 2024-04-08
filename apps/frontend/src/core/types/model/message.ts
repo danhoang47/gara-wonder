@@ -15,4 +15,5 @@ export type Message = Model & {
     replyFrom?: Message;
     status: MessageStatus;
     isLoading: boolean;
+    serviceIds?: string[]
 };

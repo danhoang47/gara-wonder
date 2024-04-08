@@ -8,9 +8,10 @@ export type WithCategoryService = Service & {
 };
 
 export default async function getGarageServices(
-    api: string,
+    api: string, // server/:garageId
 ): Promise<Response<WithCategoryService[]>> {
     try {
+        // /garage/server/:garageId
         const result = await axios.get(`${baseGaragesUrl}/${api}`);
         return result.data;
     } catch (error) {

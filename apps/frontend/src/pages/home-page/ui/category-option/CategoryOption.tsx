@@ -4,26 +4,13 @@ import { useSearchParams } from "react-router-dom";
 import "./CategoryOption.styles.scss"
 
 import clsx from "clsx";
-import { Category, CategoryType } from "@/core/types";
+import { Category} from "@/core/types";
+import { getCategoryIcon } from "@/utils";
 
 export type CategoryOptionProps = {
     category: Category
 }
 
-const getCategoryIcon = (type: CategoryType): string => {
-    const cdnUrl = import.meta.env.VITE_CDN_URL;
-    switch (type) {
-        case CategoryType.Fix: return cdnUrl + "fix.png"
-        case CategoryType.Wash: return cdnUrl + "wash.png"
-        case CategoryType.Unwrap: return cdnUrl + "unwrap.png"
-        case CategoryType.Upgrade: return cdnUrl + "upgrade.png"
-        case CategoryType.Replace: return cdnUrl + "replace.png"
-        case CategoryType.Interior: return cdnUrl + "interior.png"
-        case CategoryType.Exterior: return cdnUrl + "exterior.png"
-        default: 
-            return cdnUrl
-    }
-}
 
 function CategoryOption({ category }: CategoryOptionProps) {
     const [filterSearchParams, setFilterSearchParams] = useSearchParams();

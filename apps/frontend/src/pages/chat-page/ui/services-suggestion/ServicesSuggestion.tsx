@@ -15,7 +15,7 @@ export type ServiceSuggestionProps = {
 };
 
 function ServicesSuggestion({ garageId }: ServiceSuggestionProps) {
-    const { isLoading: isServicesLoading, data } = useSWRImmutable(
+    const { data } = useSWRImmutable(
         `service/${garageId}`,
         getGarageServices,
     );

@@ -39,6 +39,7 @@ const SendMessage = ({
     const garageId = useAppSelector((state) => state.user.value?.garageId);
     const [pasteImage, setPasteImage] = useState<File[]>([]);
     const [content, setContent] = useState("");
+    const [selectedServices, setSelectedServices] = useState<WithCategoryService[]>([])
     const [service, setService] = useState<WithCategoryService>();
 
     const handleSubmit = (e: any, replyFrom?: Message) => {
