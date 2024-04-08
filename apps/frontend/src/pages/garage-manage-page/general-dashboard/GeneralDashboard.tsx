@@ -2,10 +2,25 @@ import { useAppSelector } from "@/core/hooks";
 import { GeneralInfo, UpdateGarage } from "./ui";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import "./grids.style.scss";
+import getDashboardInfo from "@/api/garages/getDashboardInfo";
+
+import { useParams } from "react-router-dom";
+import useSWR from "swr";
 
 function GeneralDashboard() {
+    const { garageId } = useParams();
     const userData = useAppSelector((state) => state.user);
 
+
+    const { data: needEvaluate } = useSWR("needEvaluate", () =>
+        getDashboardInfo(garageId, "needEvaluate", userData.token),
+    );
+
+
+    const { data: needAccept } = useSWR("needAccept", () =>
+        getDashboardInfo(garageId, "needAccept", userData.token),
+    );
     return (
         <div className="grid grid-cols-12 gap-5 h-full">
             <div className="pt-20 col-span-4 flex flex-col gap-[4rem] bg-default-100 px-10 overflow-hidden static ">
@@ -37,13 +52,17 @@ function GeneralDashboard() {
                     </div>
                     <li className="cursor-pointer hover:underline">
                         Bạn đang có{" "}
-                        <span className="text-black font-medium">4</span> đơn
-                        đang chờ xác nhận
+                        <span className="text-black font-medium">
+                            {needAccept?.numberOfOrdersNeedToAccept}
+                        </span>{" "}
+                        đơn đang chờ xác nhận
                     </li>
                     <li className="cursor-pointer hover:underline">
                         Bạn đang có{" "}
-                        <span className="text-black font-medium">4</span> đơn
-                        đang chờ đánh giá
+                        <span className="text-black font-medium">
+                            {needEvaluate?.numberOdOrderNeedToEvaluate}
+                        </span>{" "}
+                        đơn đang chờ đánh giá
                     </li>
                 </div>
                 <div>
@@ -57,8 +76,8 @@ function GeneralDashboard() {
                 </div>
             </div>
             <div className="col-span-8 overflow-auto h-full pt-[8.5rem]">
-                <div className="w-[40rem] h-full m-auto">
-                    <GeneralInfo />
+                <div className="max-w-[40rem] h-full m-auto">
+                    <GeneralInfo garageId={garageId} token={userData.token} />
                     <UpdateGarage />
                 </div>
             </div>
