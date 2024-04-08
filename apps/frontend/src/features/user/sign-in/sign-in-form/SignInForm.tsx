@@ -55,6 +55,9 @@ function SignInForm({ onClose, phoneNumber, onPhoneNumberChange, onSave, isLoadi
         });
     }, [signInButtonId]);
 
+    useEffect(() => {
+        onPhoneNumberChange("")
+    }, [])
 
     return (
         <>

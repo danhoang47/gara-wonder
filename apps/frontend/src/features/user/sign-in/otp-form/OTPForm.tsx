@@ -76,6 +76,7 @@ const OTPForm = forwardRef<OTPFormRef, OTPFormProps>(
                 return;
             }
 
+            console.log(elementWillReceiveFocus);
             range.selectNodeContents(elementWillReceiveFocus);
             range.collapse(false);
             const selection = window.getSelection();
@@ -168,7 +169,17 @@ const OTPForm = forwardRef<OTPFormRef, OTPFormProps>(
                         onInputCapture={onCodeChange}
                         tabIndex={-1}
                         onKeyDown={onCodeRemove}
-                        onFocus={() => setFocus(true)}
+                        onFocusCapture={(event) => {
+                            if (!hasFocus) {
+                                const placeholders =
+                                    event.currentTarget.querySelectorAll(
+                                        "[data-index]",
+                                    ) as NodeListOf<HTMLDivElement>;
+                                placeholders[otpCode.length].focus();
+                            }
+
+                            setFocus(true);
+                        }}
                         onBlur={() => setFocus(false)}
                     >
                         {otpInputs.map((_, index) => (
@@ -182,7 +193,6 @@ const OTPForm = forwardRef<OTPFormRef, OTPFormProps>(
                                     isError && "border-danger",
                                 )}
                                 contentEditable
-                                tabIndex={-1}
                                 suppressContentEditableWarning
                                 data-index={index}
                             >
