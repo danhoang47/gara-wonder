@@ -6,6 +6,9 @@ on:
     branches:
     - main
 
+env:
+  PASS: "garageWoder_2024"
+
 jobs:
   # deploy Fe to server
   deploy-fe:
@@ -37,6 +40,7 @@ jobs:
          host : ${{vars.HOST_IP}}
          username: ${{secrets.HOST_USERNAME}}
          key: ${{vars.SSH_PRIVATE_KEY}}
+         password: '$env.PASS'
          port: 22
          source: "./apps/frontend/dist/**"
          target: "/var/www/html/"
