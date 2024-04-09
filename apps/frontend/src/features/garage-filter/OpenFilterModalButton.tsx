@@ -30,7 +30,7 @@ export default function OpenFilterButton({
                 onPress={onPress}
             >
                 <FontAwesomeIcon icon={faSliders} />
-                <span className="font-medium">Filter</span>
+                <span className="font-medium">Bộ lọc</span>
             </Button>
         </Badge>
     );

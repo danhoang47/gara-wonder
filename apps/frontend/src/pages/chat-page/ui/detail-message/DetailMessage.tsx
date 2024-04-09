@@ -198,7 +198,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                 "chat-bubble relative rounded-3xl max-w-full",
                                                                 item2.authorId ===
                                                                     userId
-                                                                    ? "right self-end chat-bubble-gradient text-white"
+                                                                    ? "right self-end bg-primary text-white"
                                                                     : "self-start",
                                                             )}
                                                         >

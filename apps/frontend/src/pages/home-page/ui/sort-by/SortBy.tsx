@@ -53,7 +53,7 @@ function SortBy() {
         >
             <DropdownTrigger>
                 <SortByButton className={clsx("border capitalize", isSortByMenuOpen && "border-black")}>
-                    {selectedSortByOption ? selectedSortByOption.title : "Sort By" }
+                    {selectedSortByOption ? selectedSortByOption.title : "Sắp xếp" }
                 </SortByButton>
             </DropdownTrigger>
             <DropdownMenu

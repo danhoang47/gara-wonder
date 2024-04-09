@@ -21,9 +21,9 @@ export default function DistanceFilterSection() {
                     <Button
                         key={distanceRadius}
                         className={clsx(
-                            "grow h-auto py-6 bg-foreground-800 border-black last:border-2 shadow-inner border-y-2 border-l-2  text-background",
+                            "grow h-auto py-6 bg-background border-foreground last:border-2 shadow-inner border-y-2 border-l-2  text-foreground",
                             distanceRadius === distance &&
-                                "bg-foreground-50 text-foreground",
+                                "bg-foreground text-background",
                         )}
                         onPress={() => {
                             if (distanceRadius === distance) {

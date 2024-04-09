@@ -24,7 +24,7 @@ export default function useAuth() {
                     dispatch(setUserToken(token));
                     dispatch(getUserById(user.uid)).then((action) => {
                         const user = action.payload as User;
-                        if (user?.role && user.role === Role.GarageOwner) {
+                        if (user?.role && (user.role === Role.GarageOwner || user.role === Role.Staff)) {
                             dispatch(getGarageByUserId(user._id));
                         }
                     });

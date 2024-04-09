@@ -4,8 +4,6 @@ import { isTwoDateSame } from "@/utils";
 import { ScheduleCalendar, SlotManipulation } from "./ui";
 
 function Schedule() {
-    const [month, setMonth] = useState<number>(new Date().getMonth());
-    const [year, setYear] = useState<number>(new Date().getFullYear());
     const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
     const checkIfDateSelected = (date: Date) => {
@@ -29,16 +27,14 @@ function Schedule() {
     return (
         <div className="flex h-full">
             <div className="grow h-full overflow-auto flex flex-col">
-                <ScheduleCalendar 
-                    month={month}
-                    year={year}
+                <ScheduleCalendar
                     onDateSelected={onDateSelected}
                     selectedDates={selectedDates}
                 />
             </div>
-            <SlotManipulation 
+            <SlotManipulation
                 selectedDates={selectedDates}
-                onRemoveDate={onDateSelected} 
+                onRemoveDate={onDateSelected}
             />
         </div>
     );

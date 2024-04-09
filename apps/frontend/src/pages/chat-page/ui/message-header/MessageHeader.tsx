@@ -74,10 +74,13 @@ const MessageHeader = ({
                     onOpenChange={() => {
                         setIsOpen((prev) => !prev);
                     }}
+                    classNames={{
+                        base: "min-w-44"
+                    }}
                 >
                     <PopoverTrigger>
                         <FontAwesomeIcon
-                            className="mr-6 cursor-pointer"
+                            className="cursor-pointer"
                             icon={faEllipsis}
                             size="lg"
                             onClick={() => {
@@ -88,7 +91,7 @@ const MessageHeader = ({
                     <PopoverContent className="px-0 py-3">
                         <Button
                             variant="light"
-                            className="w-full"
+                            className="w-full justify-start"
                             radius="none"
                             startContent={
                                 <FontAwesomeIcon
@@ -121,7 +124,7 @@ const MessageHeader = ({
                         </Button>
                         <Button
                             variant="light"
-                            className="w-full"
+                            className="w-full justify-start"
                             radius="none"
                             color="danger"
                             startContent={

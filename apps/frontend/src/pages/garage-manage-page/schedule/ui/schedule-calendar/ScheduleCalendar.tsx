@@ -3,20 +3,24 @@ import clsx from "clsx";
 
 import { Calendar } from "@/core/ui";
 import { isTwoDateSame } from "@/utils";
+import { Button } from "@nextui-org/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 export type ScheduleCalendarProps = {
     selectedDates: Date[];
-    month: number;
-    year: number;
     onDateSelected: (date: Date) => void;
 };
 
+const DEFAULT_YEAR = new Date().getFullYear()
+
 function ScheduleCalendar({
     selectedDates,
-    month,
-    year,
     onDateSelected,
 }: ScheduleCalendarProps) {
+    const [month, setMonth] = useState<number>(new Date().getMonth());
+
     const checkIfDateSelected = (date: Date) => {
         return selectedDates.some((selectedDate: Date) =>
             isTwoDateSame(selectedDate, date),
@@ -32,12 +36,34 @@ function ScheduleCalendar({
                 },
             ]}
             month={month}
-            year={year}
+            year={DEFAULT_YEAR}
             renderHeader={(date) => (
-                <div className="sticky top-0 w-full px-4 py-6 bg-background flex gap-4">
+                <div className="sticky top-0 w-full px-10 py-6 bg-background flex gap-4">
+                    <Button
+                        isIconOnly
+                        radius="full"
+                        disableAnimation
+                        size="sm"
+                        variant="bordered"
+                        className={clsx("border cursor-pointer")}
+                        onPress={() => setMonth(month - 1)}
+                    >
+                        <FontAwesomeIcon icon={faAngleLeft} />
+                    </Button>
                     <h2 className="font-semibold text-2xl z-10">
                         {moment(date).format("MMMM YYYY")}
                     </h2>
+                    <Button
+                        isIconOnly
+                        radius="full"
+                        disableAnimation
+                        size="sm"
+                        variant="bordered"
+                        className={clsx("border cursor-pointer")}
+                        onPress={() => setMonth(month + 1)}
+                    >
+                        <FontAwesomeIcon icon={faAngleRight} />
+                    </Button>
                 </div>
             )}
             renderDate={(date, disabled) => (
