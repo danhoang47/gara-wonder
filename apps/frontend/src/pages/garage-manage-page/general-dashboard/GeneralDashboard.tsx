@@ -13,14 +13,11 @@ function GeneralDashboard() {
     const userData = useAppSelector((state) => state.user);
 
 
-    const { data: needEvaluate } = useSWR("needEvaluate", () =>
-        getDashboardInfo(garageId, "needEvaluate", userData.token),
+    const { data: generalData } = useSWR("generalData", () =>
+        getDashboardInfo(garageId,userData.token),
     );
 
 
-    const { data: needAccept } = useSWR("needAccept", () =>
-        getDashboardInfo(garageId, "needAccept", userData.token),
-    );
     return (
         <div className="grid grid-cols-12 gap-5 h-full">
             <div className="pt-20 col-span-4 flex flex-col gap-[4rem] bg-default-100 px-10 overflow-hidden static ">
@@ -53,14 +50,14 @@ function GeneralDashboard() {
                     <li className="cursor-pointer hover:underline">
                         Bạn đang có{" "}
                         <span className="text-black font-medium">
-                            {needAccept?.numberOfOrdersNeedToAccept}
+                            {generalData?.numberOfOrdersNeedToAccept}
                         </span>{" "}
                         đơn đang chờ xác nhận
                     </li>
                     <li className="cursor-pointer hover:underline">
                         Bạn đang có{" "}
                         <span className="text-black font-medium">
-                            {needEvaluate?.numberOdOrderNeedToEvaluate}
+                            {generalData?.numberOdOrderNeedToEvaluate}
                         </span>{" "}
                         đơn đang chờ đánh giá
                     </li>

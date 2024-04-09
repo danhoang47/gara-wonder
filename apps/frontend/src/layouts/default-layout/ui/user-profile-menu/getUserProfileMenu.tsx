@@ -25,11 +25,6 @@ const getUserProfileMenu = (
                         component: <SignInTrigger />,
                         title: "Sign in",
                     },
-                    {
-                        key: "k2",
-                        component: <p>Đăng kí</p>,
-                        title: "Register",
-                    },
                 ],
             },
             {
@@ -80,7 +75,7 @@ const getUserProfileMenu = (
             ],
         });
     }
-    if (!isGarageOwner) {
+    if (!isGarageOwner && isLogin) {
         menuItems.push({
             options: [
                 {
@@ -106,7 +101,7 @@ const getUserProfileMenu = (
         });
     }
 
-    if (!isSupplier) {
+    if (!isSupplier && isLogin) {
         menuItems.push({
             options: [
                 {

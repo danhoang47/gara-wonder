@@ -24,7 +24,6 @@ export default function ServiceDetail({
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const { isLoading: isCategoryLoading, data: categoryData } =
         useSWRImmutable(`${service.categoryId}`, getCategoryById);
-        
 
     return (
         <>
@@ -40,11 +39,19 @@ export default function ServiceDetail({
                         }}
                     />
                 </div>
-                <div>
-                    <p className="font-semibold">
-                        {service.lowestPrice}$ - {service.highestPrice}$
-                    </p>
-                </div>
+
+                <p className="font-semibold shrink-0">
+                    {String(service.lowestPrice as number).replace(
+                        /\B(?=(\d{3})+(?!\d))/g,
+                        ",",
+                    )}{" "}
+                    -{" "}
+                    {String(service.highestPrice as number).replace(
+                        /\B(?=(\d{3})+(?!\d))/g,
+                        ",",
+                    )}{" "}
+                    VND
+                </p>
             </div>
             <Modal
                 isOpen={isModalOpen}
@@ -58,7 +65,7 @@ export default function ServiceDetail({
                         <p className="text-center text-lg font-bold">
                             Dịch vụ {categoryData?.name}
                         </p>
-                        {service.status && (
+                        {service.isProvidedEvaluation && (
                             <Chip className="ml-3" color="primary">
                                 Có đánh giá
                             </Chip>
@@ -68,13 +75,15 @@ export default function ServiceDetail({
                     <ModalBody className="overflow-auto max-h-[30rem]">
                         <p className="font-medium">Giá tiền</p>
                         <p className="text-xl font-semibold">
-                            {String(
-                                (service.lowestPrice as number) * 24000,
-                            ).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                            {String(service.lowestPrice as number).replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ",",
+                            )}{" "}
                             -{" "}
-                            {String(
-                                (service.highestPrice as number) * 24000,
-                            ).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                            {String(service.highestPrice as number).replace(
+                                /\B(?=(\d{3})+(?!\d))/g,
+                                ",",
+                            )}{" "}
                             VND
                         </p>
                         <p className="font-medium">Thời gian hoàn thành</p>
