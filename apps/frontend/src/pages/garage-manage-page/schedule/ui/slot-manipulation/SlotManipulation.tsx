@@ -28,7 +28,7 @@ function SlotManipulation({
                     Chọn ngày mà bạn muốn chỉnh sửa
                 </span>
             </div>
-            <div className="grow overflow-auto px-2 pb-2">
+            <div className="grow overflow-auto px-4 pb-2">
                 <Accordion
                     showDivider
                     itemClasses={{

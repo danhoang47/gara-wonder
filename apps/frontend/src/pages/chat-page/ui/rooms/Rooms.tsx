@@ -25,7 +25,7 @@ const Rooms = ({ rooms, onRoomSelected, selectedRoom }: IListUserProps) => {
                             key={room.garageId}
                             className={`rounded-lg flex items-center gap-2 px-3 py-2 rounded transition ease-linear  ${
                                 selectedRoom?._id === room._id &&
-                                "bg-[#8bc1ff] border-l-8 border-l-primary"
+                                "bg-[#e8f3ff] border-l-8 border-l-primary"
                             } ${
                                 selectedRoom?._id !== room._id &&
                                 "hover:bg-default-200"
