@@ -2,8 +2,9 @@ import { getDashboardInfo } from "@/api";
 import { faCar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tab, Tabs } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
+import { mutate } from "swr";
 
 function GeneralInfo({
     garageId,
@@ -12,20 +13,14 @@ function GeneralInfo({
     garageId?: string;
     token?: string;
 }) {
-    const { data: checkIn } = useSWR("checkIn", () =>
-        getDashboardInfo(garageId, "checkIn", token),
-    );
-    const { data: needEvaluate } = useSWR("needEvaluate", () =>
-        getDashboardInfo(garageId, "needEvaluate", token),
-    );
-    const { data: checkOut } = useSWR("checkOut", () =>
-        getDashboardInfo(garageId, "checkOut", token),
-    );
-    const { data: inProgress } = useSWR("inProgress", () =>
-        getDashboardInfo(garageId, "inProgress", token),
-    );
-
     const [selectType, setSelectType] = useState<string>("today");
+
+    const { data: generalData } = useSWR("tabData", () =>
+        getDashboardInfo(garageId, token, selectType),
+    );
+    useEffect(() => {
+        mutate("tabData"); // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectType]);
 
     return (
         <div className="w-full border-b-1 pb-[7.5rem]">
@@ -39,7 +34,6 @@ function GeneralInfo({
                     radius="sm"
                     selectedKey={selectType}
                     onSelectionChange={(e: React.Key) => {
-                        console.log(e);
                         setSelectType(e as string);
                     }}
                     classNames={{
@@ -56,7 +50,7 @@ function GeneralInfo({
                     <div>
                         <div className="font-semibold text-2xl flex gap-3 items-center">
                             <FontAwesomeIcon icon={faCar} />
-                            <p>{checkIn?.numberOfOrderCheckInToday}</p>
+                            <p>{generalData?.numberOfOrderCheckInToday}</p>
                         </div>
                         <p className="text-medium pt-3">Check-ins</p>
                     </div>
@@ -65,7 +59,7 @@ function GeneralInfo({
                     <div>
                         <div className="font-semibold text-2xl flex gap-3 items-center">
                             <FontAwesomeIcon icon={faCar} />
-                            <p>{checkOut?.numberOfOrderCheckOutToday}</p>
+                            <p>{generalData?.numberOfOrderCheckOutToday}</p>
                         </div>
                         <p className="text-medium pt-3">Checkouts</p>
                     </div>
@@ -74,7 +68,7 @@ function GeneralInfo({
                     <div>
                         <div className="font-semibold text-2xl flex gap-3 items-center">
                             <FontAwesomeIcon icon={faCar} />
-                            <p>{inProgress?.numberOfOrderInProgress}</p>
+                            <p>{generalData?.numberOfOrderInProgress}</p>
                         </div>
                         <p className="text-medium pt-3">Đang sửa chữa</p>
                     </div>
@@ -83,7 +77,7 @@ function GeneralInfo({
                     <div>
                         <div className="font-semibold text-2xl flex gap-3 items-center">
                             <FontAwesomeIcon icon={faCar} />
-                            <p>{needEvaluate?.numberOdOrderNeedToEvaluate}</p>
+                            <p>{generalData?.numberOdOrderNeedToEvaluate}</p>
                         </div>
                         <p className="text-medium pt-3">Chờ đánh giá</p>
                     </div>
