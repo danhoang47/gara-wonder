@@ -22,6 +22,7 @@ jobs:
      - name: Build FE App
        run: | 
          npm i
+         npm i @rollup/rollup-linux-x64-gnu
          cd apps/frontend/
          echo 'VITE_FIREBASE_API_KEY=${{vars.VITE_FIREBASE_API_KEY}} 
                VITE_GOOGLE_MAPS_API_KEY=${{vars.VITE_GOOGLE_MAPS_API_KEY}}  
