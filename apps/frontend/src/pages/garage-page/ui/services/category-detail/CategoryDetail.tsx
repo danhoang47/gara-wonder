@@ -17,7 +17,7 @@ function CategoryDetail({
 }) {
     return (
         <div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
                 {isCategoryLoading ? (
                     <Skeleton className="w-40 h-4 " />
                 ) : (

@@ -13,8 +13,8 @@ export default function DistanceFilterSection() {
 
     return (
         <FilterSection
-            title="Distances Radius"
-            description="This is not include tax and other fees"
+            title="Khoảng cách"
+            description="Bạn muốn tìm kiếm trong bán kính bao nhiêu?"
         >
             <ButtonGroup className="grow bg-white" variant="solid">
                 {distanceRadiuses.map((distanceRadius) => (

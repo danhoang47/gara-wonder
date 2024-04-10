@@ -1,4 +1,5 @@
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
 import clsx from "clsx";
@@ -17,12 +18,15 @@ function FavoriteFilterButton() {
                 isFilteredByFavorite && "border-danger-300",
             )}
             startContent={
-                <FontAwesomeIcon icon={faHeart} className="text-danger" />
+                <FontAwesomeIcon
+                    icon={isFilteredByFavorite ? faHeartSolid : faHeartRegular}
+                    className="text-danger"
+                />
             }
             onPress={() => {
                 if (isFilteredByFavorite) {
                     urlSearchParams.delete("isFavorite");
-                    setURLSearchParams(urlSearchParams)
+                    setURLSearchParams(urlSearchParams);
                 } else {
                     setURLSearchParams((prev) => {
                         prev.set("isFavorite", "true");

@@ -68,17 +68,17 @@ function FilterModal({
                             onClear();
                         }}
                     >
-                        <p className="font-semibold text-base">Clear all</p>
+                        <p className="font-semibold text-base">Bỏ chọn tất cả</p>
                     </Button>
                     <div className="ml-auto gap-1 flex">
                         <Button variant="light" onPress={onDismiss}>
-                            <span>Cancel</span>
+                            <span>Hủy bỏ</span>
                         </Button>
                         <Button
                             className="bg-black text-white"
                             onPress={onSave}
                         >
-                            <span className="text-base">Save</span>
+                            <span className="text-base">Tìm kiếm</span>
                         </Button>
                     </div>
                 </ModalFooter>

@@ -26,7 +26,7 @@ export default function ProfileDialog({
     isOpen,
     onClose,
 }: ProfileDialogProps) {
-    const { isLoading, data: response } = useSWRImmutable(
+    const { data: response } = useSWRImmutable(
         ["user", userId],
         (params) => getUser(params[1]),
     );
@@ -47,6 +47,9 @@ export default function ProfileDialog({
                                         className="text-primary"
                                     />
                                 }
+                                classNames={{
+                                    badge: "p-0 right-4 bg-white"
+                                }}
                             >
                                 <Avatar
                                     src={user?.photoURL}

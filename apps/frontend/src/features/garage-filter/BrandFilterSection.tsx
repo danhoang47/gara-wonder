@@ -11,13 +11,13 @@ import { getBrands } from "@/api";
 
 export default function BrandFilterSection() {
     const brands = useAppSelector((state) => state.filter.brands)
-    const { isLoading, data: supportedBrands } = useSWR("brands", getBrands)
+    const { data: supportedBrands } = useSWR("brands", getBrands)
     const dispatch = useAppDispatch();
 
     return (
         <FilterSection
-            title="Supported Brands"
-            description="This is not include tax and other fees"
+            title="Hãng xe được hỗ trợ"
+            description="Chọn vào một hay nhiều hãng xe bạn muốn tìm kiếm"
             classNames={{
                 contentWrapper: "grid grid-cols-3 gap-2"
             }}

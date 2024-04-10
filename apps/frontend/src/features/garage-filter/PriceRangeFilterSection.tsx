@@ -10,8 +10,8 @@ export default function PriceRangeFilterSection() {
 
     return (
         <FilterSection
-            title="Ratings"
-            description="This is not include tax and other fees"
+            title="Khoảng giá"
+            description="Không bao gồm các loại phí dịch vụ khác"
         >
             <Slider
                 step={1}

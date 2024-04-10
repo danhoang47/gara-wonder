@@ -50,6 +50,10 @@ function BookingForm() {
 
     useEffect(() => {
         if (hasAddedToCart) {
+            window.scroll({
+                top: 0,
+                behavior: "smooth"
+            })
             setTimeout(() => {
                 setAddedToCart(false);
             }, 3000);
@@ -91,12 +95,11 @@ function BookingForm() {
                     </Button>
                 </div>
             </div>
-            {isDomReady &&
-                hasAddedToCart &&
+            {isDomReady && hasAddedToCart && 
                 createPortal(
                     <Overlay>
-                        <div className="container h-full justify-end mx-auto">
-                            <div className="sticky top-20 ml-auto bg-white w-1/4 p-4 min-w-96">
+                        <div className="flex sticky container justify-end mx-auto">
+                            <div className="bg-white w-1/4 p-4 min-w-96 h-fit">
                                 <div className="flex items-center">
                                     <FontAwesomeIcon
                                         icon={faCheckCircle}

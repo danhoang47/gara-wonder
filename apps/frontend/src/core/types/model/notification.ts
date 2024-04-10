@@ -4,6 +4,7 @@ export const enum NotificationType {
     Order = 0,
     GarageOrder,
     Voucher,
+    Evaluation,
 }
 
 export type NotificationBase = Model & {
