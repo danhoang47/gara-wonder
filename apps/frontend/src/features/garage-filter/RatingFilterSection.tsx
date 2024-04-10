@@ -17,8 +17,8 @@ export default function RatingFilterSection() {
 
     return (
         <FilterSection
-            title="Price Range"
-            description="This is not include tax and other fees"
+            title="Đánh giá"
+            description="Lựa chọn những garage có điểm số bạn mong muốn"
             classNames={{
                 contentWrapper: "gap-1"
             }}
