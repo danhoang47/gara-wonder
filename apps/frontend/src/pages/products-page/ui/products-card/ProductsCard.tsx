@@ -1,7 +1,7 @@
 import { Image } from "@/core/types";
 import { Product } from "@/core/types/model/product";
 import { Carousel } from "@/core/ui";
-import { formatNumber } from "@/utils";
+import { formatCurrency } from "@/utils";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -56,7 +56,7 @@ function ProductsCard({ product }: IProduct) {
                     </div>
                     <div>
                         <p className="font-semibold">
-                            {formatNumber(price)}
+                            {formatCurrency(price)}
                             <sup>vnd</sup>
                         </p>
                     </div>

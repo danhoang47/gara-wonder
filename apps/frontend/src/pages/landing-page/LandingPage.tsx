@@ -34,7 +34,7 @@ function LandingPage() {
                     </Button>
                 </div>
                 <div className="h-full flex items-center grow basis-0">
-                    <div className="h-3/5 w-full bg-default-300">
+                    <div className="h-4/5 w-full bg-default-300">
                         <img
                             src="https://strongbuildingsystems.com/wp-content/uploads/2020/09/mechanic-garage-2500-x-2000-7-1024x819.jpg"
                             className="h-full w-full object-cover object-center"
