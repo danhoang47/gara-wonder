@@ -37,6 +37,11 @@ export default function ServicesSetting() {
     useEffect(() => {
         if (servicesData) {
             setServiceList(servicesData?.data);
+            setSelectedCategoryIds(
+                servicesData?.data.map((e) => e.categoryId) as string[],
+            );
+
+            // setSelectedCategoryIds()
         }
     }, [servicesData]);
 
@@ -77,6 +82,16 @@ export default function ServicesSetting() {
                                 delay: 4000,
                             }),
                         );
+                        setSelectedCategoryIds((prev) => {
+                            if (
+                                service?.categoryId &&
+                                !prev.includes(service.categoryId)
+                            ) {
+                                return [...prev, service.categoryId];
+                            }
+
+                            return prev;
+                        });
                     }
                 });
             } catch (error) {
@@ -101,6 +116,11 @@ export default function ServicesSetting() {
                                 description: `Đã xác nhận thêm dịch vụ thành công`,
                                 delay: 4000,
                             }),
+                        );
+                        setSelectedCategoryIds((prev) =>
+                            service?.categoryId
+                                ? [...prev, service.categoryId]
+                                : prev,
                         );
                     }
                 });
@@ -173,7 +193,7 @@ export default function ServicesSetting() {
                 </Button>
             </div>
             <div className="pt-4">
-                {servicesData?.data?.map((service) => (
+                {serviceList?.map((service) => (
                     <ServiceCard
                         key={service._id}
                         service={service}
