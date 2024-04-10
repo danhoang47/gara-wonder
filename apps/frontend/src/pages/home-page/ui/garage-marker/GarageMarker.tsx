@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { addGarageToFavorites } from "@/api";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
+import { formatCurrency } from "@/utils";
 
 export type GarageMarkerProps = {
     garage: WithOwnerGarage;
@@ -83,7 +84,7 @@ function GarageMarker({
                         isHovered && "text-[white!important]",
                     )}
                 >
-                    ${price.to}
+                    {formatCurrency(price.to)}
                 </p>
             </div>
             {isOpenGarageCard && (
