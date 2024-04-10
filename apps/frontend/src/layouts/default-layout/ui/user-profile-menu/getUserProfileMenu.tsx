@@ -31,6 +31,44 @@ const getUserProfileMenu = (
                 options: [
                     {
                         key: "k4",
+                        component: (
+                            <Link
+                                href={`supplier-registration`}
+                                className="text-foreground text-small"
+                                onClick={(e) => {
+                                    if (!isLogin) {
+                                        openMenu();
+                                        e.preventDefault();
+                                        return;
+                                    }
+                                }}
+                            >
+                                Trở thành nhà cung cấp
+                            </Link>
+                        ),
+                        title: "Become Garage Owner",
+                    },
+                    {
+                        key: "k3",
+                        component: (
+                            <Link
+                                href={`garage-registration`}
+                                className="text-foreground text-small"
+                                onClick={(e) => {
+                                    if (!isLogin) {
+                                        openMenu();
+                                        e.preventDefault();
+                                        return;
+                                    }
+                                }}
+                            >
+                                Trở thành chủ Garage
+                            </Link>
+                        ),
+                        title: "Become Garage Owner",
+                    },
+                    {
+                        key: "k5",
                         component: <p>Giúp đỡ</p>,
                         title: "Help Center",
                     },
