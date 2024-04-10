@@ -23,7 +23,7 @@ const ProgressButton = ({
     status: number;
     setModalOpen: () => void;
 }) => {
-    if (status === 0)
+    if (status !== 0)
         return (
             <>
                 <div className="w-full h-1 border-t-2" />
