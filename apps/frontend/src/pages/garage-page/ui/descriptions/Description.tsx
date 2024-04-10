@@ -2,7 +2,7 @@ function Description({ description }: { description?: string }) {
     return (
         <div>
             <div className="pb-4">
-                <p className="text-2xl text-black font-medium">
+                <p className="text-xl text-black font-semibold">
                     Mô tả chi tiết
                 </p>
             </div>

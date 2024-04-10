@@ -16,7 +16,11 @@ export enum OrderStatus {
     Pending = 0,
     Accepted,
     Canceled,
-    Rejected
+    Rejected,
+    Preparing,
+    Fixing,
+    PaymentRequest,
+    Completed
 }
 
 export type Order = Model & {
