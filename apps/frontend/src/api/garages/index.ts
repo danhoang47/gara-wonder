@@ -14,3 +14,5 @@ export { default as addGarageToFavorites } from "./addGarageToFavorites";
 export { default as getDashboardInfo } from "./getDashboardInfo";
 
 export { default as getOrderEvaluation } from "./getOrderEvaluation";
+
+export { default as getScheduleSlot } from "./getScheduleSlot";

@@ -2,8 +2,25 @@ import { useState } from "react";
 
 import { isTwoDateSame } from "@/utils";
 import { ScheduleCalendar, SlotManipulation } from "./ui";
+import useSWR from "swr";
+import { getScheduleSlot } from "@/api";
+import { useParams } from "react-router-dom";
 
 function Schedule() {
+    const { garageId } = useParams();
+    const [selectedYear, setSelectedYear] = useState<string | number>(
+        new Date().getFullYear(),
+    );
+    const [selectedMonth, setSelectedMonth] = useState<string | number>(
+        new Date().getMonth(),
+    );
+    const {
+        isLoading: calendarLoading,
+        data: calendarData,
+        mutate: refechCalendar,
+    } = useSWR("calendar", () =>
+        getScheduleSlot(garageId, selectedMonth, selectedYear),
+    );
     const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
     const checkIfDateSelected = (date: Date) => {
