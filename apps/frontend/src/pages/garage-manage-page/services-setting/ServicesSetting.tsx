@@ -6,14 +6,23 @@ import { useEffect, useMemo, useState } from "react";
 import { Service } from "@/core/types";
 import ServiceCard from "./ServiceCard";
 import useSWR from "swr";
-import { getBrands, getCategories, getGarageServices } from "@/api";
+import {
+    addNewService,
+    getBrands,
+    getCategories,
+    getGarageServices,
+    updateService,
+} from "@/api";
 import useSWRImmutable from "swr/immutable";
 import { useNavigate, useParams } from "react-router-dom";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
+import { useAppDispatch } from "@/core/hooks";
+import { notify } from "@/features/toasts/toasts.slice";
 
 export default function ServicesSetting() {
     const { garageId } = useParams();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const [isServiceTemplateModalOpen, setServiceTemplateModalOpen] =
         useState<boolean>(false);
@@ -21,15 +30,21 @@ export default function ServicesSetting() {
         [],
     );
     const [serviceList, setServiceList] = useState<WithCategoryService[]>([]);
-    const { data: servicesData } = useSWRImmutable(
+    const { data: servicesData, mutate: refetch } = useSWRImmutable(
         `service/${garageId}`,
         getGarageServices,
     );
     useEffect(() => {
         if (servicesData) {
             setServiceList(servicesData?.data);
+            setSelectedCategoryIds(
+                servicesData?.data.map((e) => e.categoryId) as string[],
+            );
+
+            // setSelectedCategoryIds()
         }
     }, [servicesData]);
+
     const [modalActionType, setModalActionType] = useState<"edit" | "create">(
         "create",
     );
@@ -55,21 +70,70 @@ export default function ServicesSetting() {
 
     const onModalSave = (service: Partial<Service>) => {
         if (modalActionType === "edit") {
-            setServiceList(
-                serviceList?.map((s) => (s._id === service._id ? service : s)),
-            );
-            setSelectedCategoryIds((prev) => {
-                if (service?.categoryId && !prev.includes(service.categoryId)) {
-                    return [...prev, service.categoryId];
-                }
+            try {
+                updateService(garageId, service._id, service).then((resp) => {
+                    if (resp.statusCode === 200) {
+                        refetch();
+                        dispatch(
+                            notify({
+                                type: "success",
+                                title: `Chỉnh sửa dịch vụ thành công`,
+                                description: `Đã xác nhận chỉnh sửa dịch vụ thành công`,
+                                delay: 4000,
+                            }),
+                        );
+                        setSelectedCategoryIds((prev) => {
+                            if (
+                                service?.categoryId &&
+                                !prev.includes(service.categoryId)
+                            ) {
+                                return [...prev, service.categoryId];
+                            }
 
-                return prev;
-            });
+                            return prev;
+                        });
+                    }
+                });
+            } catch (error) {
+                dispatch(
+                    notify({
+                        type: "failure",
+                        title: "Xác nhận thất bại",
+                        description: "Một số lỗi xảy ra khi xác nhận",
+                        delay: 4000,
+                    }),
+                );
+            }
         } else {
-            setServiceList(serviceList ? [...serviceList, service] : [service]);
-            setSelectedCategoryIds((prev) =>
-                service?.categoryId ? [...prev, service.categoryId] : prev,
-            );
+            try {
+                addNewService(garageId, service).then((resp) => {
+                    if (resp.statusCode === 200) {
+                        refetch();
+                        dispatch(
+                            notify({
+                                type: "success",
+                                title: `Thêm dịch vụ thành công`,
+                                description: `Đã xác nhận thêm dịch vụ thành công`,
+                                delay: 4000,
+                            }),
+                        );
+                        setSelectedCategoryIds((prev) =>
+                            service?.categoryId
+                                ? [...prev, service.categoryId]
+                                : prev,
+                        );
+                    }
+                });
+            } catch (error) {
+                dispatch(
+                    notify({
+                        type: "failure",
+                        title: "Xác nhận thất bại",
+                        description: "Một số lỗi xảy ra khi xác nhận",
+                        delay: 4000,
+                    }),
+                );
+            }
         }
 
         setServiceTemplateModalOpen(false);
@@ -168,16 +232,14 @@ export default function ServicesSetting() {
             />
             <div className="absolute flex w-44 gap-4 bottom-[3rem] left-[calc((100%-11rem)/2)]">
                 <Button
-                    variant="light"
+                    color="primary"
+                    className="w-[10rem]"
                     radius="full"
                     onClick={() => {
                         navigate("..");
                     }}
                 >
-                    Hủy
-                </Button>
-                <Button className="" color="primary" radius="full">
-                    Lưu
+                    Quay lại
                 </Button>
             </div>
         </div>
