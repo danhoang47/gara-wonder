@@ -8,6 +8,7 @@ import {
     faImage,
     faPaperPlane,
     faXmark,
+    faClose,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { PayloadMessage } from "../detail-message/DetailMessage";
@@ -15,7 +16,7 @@ import { ObjectId } from "bson";
 import { Message, MessageStatus, Response } from "@/core/types";
 import { RoomEntry, receivedMessage } from "@/features/chat/rooms.slice";
 import { socket } from "@/components/socket";
-import { Textarea } from "@nextui-org/react";
+import { Card, CardBody, Textarea } from "@nextui-org/react";
 import ImagePreview from "../image-preview/ImagePreview";
 import useDebouncedValue from "./useDebounce";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
@@ -39,8 +40,9 @@ const SendMessage = ({
     const garageId = useAppSelector((state) => state.user.value?.garageId);
     const [pasteImage, setPasteImage] = useState<File[]>([]);
     const [content, setContent] = useState("");
-    const [selectedServices, setSelectedServices] = useState<WithCategoryService[]>([])
-    const [service, setService] = useState<WithCategoryService>();
+    const [selectedServices, setSelectedServices] = useState<
+        WithCategoryService[]
+    >([]);
 
     const handleSubmit = (e: any, replyFrom?: Message) => {
         if (e.key === "Enter" || e.type === "click") {
@@ -59,6 +61,7 @@ const SendMessage = ({
                 roomId: room.roomId,
                 status: MessageStatus.Exist,
                 replyFrom,
+                serviceIds: selectedServices.map(({ _id }) => _id) as string[],
             };
 
             dispatch(
@@ -71,6 +74,7 @@ const SendMessage = ({
             setContent("");
             setPasteImage([]);
             setReplyMessage();
+            setSelectedServices([]);
 
             socket.emit(
                 "room:send_message",
@@ -95,12 +99,26 @@ const SendMessage = ({
 
     const emitTyping = useDebouncedValue(room, content);
 
+    const onServiceSelected = (service: WithCategoryService) => {
+        setSelectedServices((prev) => [...prev, service]);
+    };
+
+    const onRemoveServiceSelected = (idx: number) => {
+        const newSelectedServices = selectedServices.filter(
+            (_, index) => index !== idx,
+        );
+        setSelectedServices(newSelectedServices);
+    };
+
     return (
         <div className="items-end  gap-2 px-4 py-4 rounded">
             <div
                 className={clsx(
                     "h-fit rounded overflow-hidden w-full",
-                    (replyMessage || pasteImage?.length > 0) && "border-t-2",
+                    (replyMessage ||
+                        pasteImage?.length > 0 ||
+                        selectedServices?.length > 0) &&
+                        "border-t-2",
                 )}
             >
                 {replyMessage?._id && (
@@ -119,6 +137,44 @@ const SendMessage = ({
                         </div>
                     </div>
                 )}
+
+                {selectedServices?.length > 0 && (
+                    <div className="flex gap-2 p-2 overflow-x-auto ">
+                        {selectedServices.map((selectedService, index) => (
+                            <Card className="shrink-0">
+                                <CardBody className="py-2 px-4">
+                                    <div className="flex gap-2 items-center">
+                                        <div className="flex gap-2 items-center justify-between">
+                                            <div className="w-[18px] h-[18px]">
+                                                <img
+                                                    src={
+                                                        selectedService.category
+                                                            .icon
+                                                    }
+                                                    alt=""
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                            <p>
+                                                {selectedService.category.name}
+                                            </p>
+                                        </div>
+
+                                        <FontAwesomeIcon
+                                            icon={faClose}
+                                            size="1x"
+                                            className="hover:text-danger cursor-pointer"
+                                            onClick={() => {
+                                                onRemoveServiceSelected(index);
+                                            }}
+                                        />
+                                    </div>
+                                </CardBody>
+                            </Card>
+                        ))}
+                    </div>
+                )}
+
                 {pasteImage?.length > 0 && (
                     <div className="flex gap-2 p-2 overflow-x-auto ">
                         {pasteImage.map((item: File) => {
@@ -144,7 +200,10 @@ const SendMessage = ({
                     <FontAwesomeIcon icon={faImage} size="lg" color="#0070f0" />
                 </div>
                 {garageId === room.garageId && (
-                    <ServicesSuggestion garageId={garageId} />
+                    <ServicesSuggestion
+                        garageId={garageId}
+                        onServiceSelected={onServiceSelected}
+                    />
                 )}
                 <Textarea
                     radius="full"

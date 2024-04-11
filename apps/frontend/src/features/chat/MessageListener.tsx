@@ -59,7 +59,8 @@ function MessageListener({ children }: ContainerProps) {
     useEffect(() => {
         if (user) {
             const getRooms = async () => {
-                dispatch(getListRooms());
+                const roomIds = rooms.map((room) => room.roomId);
+                dispatch(getListRooms(roomIds));
             };
 
             getRooms();
@@ -68,7 +69,7 @@ function MessageListener({ children }: ContainerProps) {
 
             return () => clearInterval(id);
         }
-    }, [dispatch, user]);
+    }, [dispatch, user, rooms.length]);
 
     return <>{children}</>;
 }
