@@ -21,6 +21,7 @@ import ImagePreview from "../image-preview/ImagePreview";
 import useDebouncedValue from "./useDebounce";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
 import ServicesSuggestion from "../services-suggestion";
+import { getCategoryIcon } from "@/utils";
 
 const ellipsisClassName = "overflow-hidden text-ellipsis whitespace-nowrap";
 
@@ -139,23 +140,23 @@ const SendMessage = ({
                 )}
 
                 {selectedServices?.length > 0 && (
-                    <div className="flex gap-2 p-2 overflow-x-auto ">
+                    <div className="flex gap-2 py-2 overflow-x-auto ">
                         {selectedServices.map((selectedService, index) => (
-                            <Card className="shrink-0">
+                            <Card className="shrink-0 shadow-none border">
                                 <CardBody className="py-2 px-4">
                                     <div className="flex gap-2 items-center">
                                         <div className="flex gap-2 items-center justify-between">
                                             <div className="w-[18px] h-[18px]">
                                                 <img
-                                                    src={
+                                                    src={getCategoryIcon(
                                                         selectedService.category
-                                                            .icon
-                                                    }
+                                                            .type,
+                                                    )}
                                                     alt=""
                                                     className="w-full h-full object-cover"
                                                 />
                                             </div>
-                                            <p>
+                                            <p className="text-small font-medium">
                                                 {selectedService.category.name}
                                             </p>
                                         </div>

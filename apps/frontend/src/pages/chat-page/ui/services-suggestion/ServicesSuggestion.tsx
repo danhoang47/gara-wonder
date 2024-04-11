@@ -1,5 +1,6 @@
 import { getGarageServices } from "@/api";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
+import { getCategoryIcon } from "@/utils";
 import { faLightbulb } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
@@ -28,7 +29,7 @@ function ServicesSuggestion({
                     />
                 </div>
             </PopoverTrigger>
-            <PopoverContent className="min-w-[320px]">
+            <PopoverContent className="min-w-[320px] px-4">
                 <div className="w-full">
                     <div className="border-b py-2">
                         <p className="font-medium">Gợi ý dịch vụ</p>
@@ -41,13 +42,13 @@ function ServicesSuggestion({
                             }}
                         >
                             <div className="flex items-center">
-                                <img src={service.category.icon} alt="" />
+                                <img src={getCategoryIcon(service.category.type)} alt="" />
                             </div>
                             <div>
-                                <p className="font-medium text-base">
+                                <p className="font-medium text-small">
                                     {service.category.name}
                                 </p>
-                                <p>Mercedes, BMW, etc...</p>
+                                <p className="text-default-500">Mercedes, BMW, etc...</p>
                             </div>
                         </div>
                     ))}
