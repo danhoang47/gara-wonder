@@ -19,3 +19,4 @@ export { default as getScheduleSlot } from "./getScheduleSlot";
 
 export { default as updateService } from "./updateServices";
 export { default as addNewService } from "./addNewServices";
+export { default as getDistance } from './getDistance'

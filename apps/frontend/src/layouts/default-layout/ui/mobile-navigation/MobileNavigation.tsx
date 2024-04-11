@@ -17,6 +17,7 @@ function MobileNavigation() {
                         location.pathname.includes(item.path) && "opacity-100",
                     )}
                     href={item.path}
+                    key={item.key}
                 >
                     <div>
                         <FontAwesomeIcon

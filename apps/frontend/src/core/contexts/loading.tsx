@@ -33,7 +33,6 @@ export default function LoadingContextProvider({ children }: ContainerProps) {
         unload
     }), [load, unload])
 
-    console.log(loadMap)
     return (
         <LoadingContext.Provider value={loadingContextValue}>
             {children}

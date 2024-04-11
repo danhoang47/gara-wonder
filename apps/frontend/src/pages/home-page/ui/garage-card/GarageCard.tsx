@@ -1,3 +1,4 @@
+import { getDistance } from "@/api";
 import { WithOwnerGarage } from "@/api/garages/getGarages";
 import { Carousel } from "@/core/ui";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -11,7 +12,7 @@ import {
     Link,
 } from "@nextui-org/react";
 import clsx from "clsx";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 
 export type GarageCardProps = {
     garage: WithOwnerGarage;
@@ -42,8 +43,28 @@ function GarageCard({
         images,
         owner,
         isFavorite,
+        location,
     } = garage;
     const renderedImages = [backgroundImage, ...images];
+    const [distance, setDistance] = useState<string>();
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { coords } = position;
+
+            const distance = await getDistance(
+                {
+                    lat: coords.latitude,
+                    lng: coords.longitude,
+                },
+                {
+                    lat: location.coordinates[1],
+                    lng: location.coordinates[0],
+                },
+            );
+            setDistance(distance.text);
+        });
+    }, []);
 
     return (
         <Card
@@ -93,10 +114,10 @@ function GarageCard({
                             {description}
                         </p>
                         <p className="text-sm text-default-500">{address}</p>
+                        <p className="text-sm text-default-500">{distance && `Cách vị trí của bạn ${distance}`}</p>
                     </div>
                     <Avatar src={owner.photoURL} className="shrink-0" />
                 </div>
-                <p>{}</p>
             </CardBody>
             <Button
                 isIconOnly
