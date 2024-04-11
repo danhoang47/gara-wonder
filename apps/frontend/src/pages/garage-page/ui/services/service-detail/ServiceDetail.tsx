@@ -1,6 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CategoryDetail from "../category-detail";
-import { faWrench } from "@fortawesome/free-solid-svg-icons";
 import {
     Button,
     Chip,
@@ -15,11 +13,14 @@ import { useState } from "react";
 import useSWRImmutable from "swr/immutable";
 import { getCategoryById } from "@/api";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
+import { Brand } from "@/core/types";
 
 export default function ServiceDetail({
     service,
+    brands,
 }: {
     service: WithCategoryService;
+    brands?: Brand[];
 }) {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const { isLoading: isCategoryLoading, data: categoryData } =
@@ -29,7 +30,7 @@ export default function ServiceDetail({
         <>
             <div className="flex justify-between w-full items-center">
                 <div className="flex items-center gap-2">
-                    <FontAwesomeIcon icon={faWrench} size="xl" />
+                    <img src={categoryData?.icon} alt="" />
                     <CategoryDetail
                         service={service}
                         isCategoryLoading={isCategoryLoading}
@@ -87,11 +88,60 @@ export default function ServiceDetail({
                             VND
                         </p>
                         <p className="font-medium">Thời gian hoàn thành</p>
+                        {service.estimateDuration ? (
+                            <p className="font-medium text-sm">
+                                <span className="text-xl font-semibold">
+                                    {(service.estimateDuration[0]
+                                        ? service.estimateDuration[0] + `-`
+                                        : "") +
+                                        service.estimateDuration[1]}{" "}
+                                    ngày
+                                </span>
+                            </p>
+                        ) : (
+                            <p className="text-xl font-semibold">
+                                Không có thời gian cụ thể
+                            </p>
+                        )}
                         <p> {service.estimateDuration}</p>
                         <p className="font-medium">Các loại xe được hỗ trợ</p>
+                        {service.brandIds === "all" ? (
+                            <Chip
+                                variant="bordered"
+                                radius="sm"
+                                size="lg"
+                                classNames={{ base: "p-3" }}
+                            >
+                                <p className="font-medium text-sm">
+                                    Hỗ trợ mọi loại xe
+                                </p>
+                            </Chip>
+                        ) : (
+                            <div className="flex gap-2 flex-wrap">
+                                {brands
+                                    ?.filter(
+                                        ({ _id }) =>
+                                            service.brandIds?.includes(_id),
+                                    )
+                                    .map((brand) => (
+                                        <Chip
+                                            variant="bordered"
+                                            radius="sm"
+                                            size="lg"
+                                            classNames={{ base: "p-3" }}
+                                        >
+                                            <p className="font-medium text-sm">
+                                                {brand.name}
+                                            </p>
+                                        </Chip>
+                                    ))}
+                            </div>
+                        )}
                         <p className="font-medium">Thông tin chung</p>
                         <div className="min-h-[10rem] rounded-lg border-2 p-2">
-                            <p>{service.category.description}</p>
+                            <p className="px-0">
+                                {service.category.description}
+                            </p>
                         </div>
                     </ModalBody>
 

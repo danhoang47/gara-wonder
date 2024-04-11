@@ -6,12 +6,13 @@ import {
     PopoverTrigger,
 } from "@nextui-org/react";
 import { DatePicker } from "@/core/ui";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useOrderContext } from "@/pages/garage-page/hooks";
 import moment from "moment";
 
 function SelectInput() {
     const [localOrderTime, setLocalOrderTime] = useState<number>();
+    const [localInputTime, setLocalInputTime] = useState<string>();
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
     const {
         order: { orderTime },
@@ -23,6 +24,11 @@ function SelectInput() {
         // TODO: need to set start of this date
         return new Date(orderTime).getDate() > new Date().getDate();
     }, [orderTime]);
+    useEffect(() => {
+        setLocalInputTime(
+            moment(localOrderTime).format("YYYY/MM/DD").toString(),
+        );
+    }, [localOrderTime]);
 
     return (
         <Popover
@@ -58,7 +64,7 @@ function SelectInput() {
                             label="Ngày đặt"
                             placeholder="YYYY/MM/dd"
                             variant="bordered"
-                            value={moment(localOrderTime).format("YYYY/MM/DD")}
+                            value={localInputTime}
                             classNames={{
                                 base: "max-w-44",
                                 inputWrapper:
@@ -67,6 +73,7 @@ function SelectInput() {
                             isInvalid={isOrderTimeInvalid}
                             onValueChange={(value) => {
                                 const orderDate = moment(value, "YYYY MM DD");
+                                setLocalInputTime(value);
                                 if (
                                     value.length === 10 &&
                                     orderDate.isValid()
