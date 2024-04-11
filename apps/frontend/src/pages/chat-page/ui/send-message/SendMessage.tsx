@@ -48,7 +48,7 @@ const SendMessage = ({
     const handleSubmit = (e: any, replyFrom?: Message) => {
         if (e.key === "Enter" || e.type === "click") {
             e.preventDefault();
-            if (!content && !pasteImage.length) {
+            if (!content && !pasteImage.length && !selectedServices) {
                 return;
             }
 
@@ -101,6 +101,10 @@ const SendMessage = ({
     const emitTyping = useDebouncedValue(room, content);
 
     const onServiceSelected = (service: WithCategoryService) => {
+        const isExist = selectedServices.some(
+            (selectedService) => service._id === selectedService._id,
+        );
+        if (isExist) return;
         setSelectedServices((prev) => [...prev, service]);
     };
 
