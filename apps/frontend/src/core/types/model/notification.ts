@@ -12,7 +12,7 @@ export type NotificationBase = Model & {
 };
 
 export type OrderNotification = NotificationBase & {
-    type: NotificationType.Order;
+    type: NotificationType.Order | NotificationType.Evaluation;
     content: {
         orderId: string;
         status: OrderStatus;

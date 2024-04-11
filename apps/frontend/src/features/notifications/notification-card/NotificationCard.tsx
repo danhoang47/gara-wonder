@@ -9,16 +9,16 @@ import {
 } from "@/core/types";
 import { Avatar } from "@nextui-org/react";
 import clsx from "clsx";
-import "moment/locale/vi";
 import moment from "moment";
+import "moment/dist/locale/vi";
 import { memo, useMemo } from "react";
 import useSWRImmutable from "swr/immutable";
+
+moment.locale("vi")
 
 export type NotificationCardProps = {
     notification: Notification;
 };
-
-moment.locale("vi");
 
 const getKey = (type: NotificationType, from: string) => {
     switch (type) {
@@ -57,6 +57,14 @@ const getOrderStatusTitle = (orderStatus: OrderStatus) => {
             return "đã hủy";
         case OrderStatus.Rejected:
             return "đã bị hủy";
+        case OrderStatus.Completed:
+            return "đã hoàn thành";
+        case OrderStatus.Fixing: 
+            return "đang được sửa chữa";
+        case OrderStatus.PaymentRequest: 
+            return "đang chờ thanh toán";
+        case OrderStatus.Preparing:
+            return "đang chuẩn bị";
         default:
             throw new Error("INVALID orderStatus");
     }
@@ -82,7 +90,7 @@ function NotificationCard({ notification }: NotificationCardProps) {
     const getNotificationTitle = () => {
         if (!subject) return undefined;
 
-        if (type === NotificationType.Order) {
+        if (type === NotificationType.Order || type === NotificationType.Evaluation) {
             return (
                 <div>
                     <span>Đơn sửa chữa </span>
