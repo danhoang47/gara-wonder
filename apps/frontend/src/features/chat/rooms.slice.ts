@@ -121,7 +121,7 @@ const roomSlice = createSlice({
                     };
                 });
 
-                roomsAdapter.setAll(state.rooms, cloned);
+                roomsAdapter.upsertMany(state.rooms, cloned);
             })
             .addCase(getListRooms.rejected, (state) => {
                 state.fetchingStatus = FetchStatus.Rejected;
@@ -182,14 +182,17 @@ const roomSlice = createSlice({
     },
 });
 
-export const getListRooms = createAsyncThunk("rooms/getRooms", async () => {
-    try {
-        const result = await getRooms();
-        return result;
-    } catch (err) {
-        return Promise.reject(err);
-    }
-});
+export const getListRooms = createAsyncThunk(
+    "rooms/getRooms",
+    async (roomIds: string[]) => {
+        try {
+            const result = await getRooms(roomIds);
+            return result;
+        } catch (err) {
+            return Promise.reject(err);
+        }
+    },
+);
 
 export const trackingActivityStatus = createAsyncThunk(
     "tracking/trackingActivity",

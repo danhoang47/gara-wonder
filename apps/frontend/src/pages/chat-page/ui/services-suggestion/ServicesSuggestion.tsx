@@ -2,23 +2,19 @@ import { getGarageServices } from "@/api";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
 import { faLightbulb } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@nextui-org/react";
+import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 import useSWRImmutable from "swr/immutable";
 
 export type ServiceSuggestionProps = {
     garageId?: string;
-    onServiceSelected?: (service: WithCategoryService) => void;
+    onServiceSelected: (service: WithCategoryService) => void;
 };
 
-function ServicesSuggestion({ garageId }: ServiceSuggestionProps) {
-    const { data } = useSWRImmutable(
-        `service/${garageId}`,
-        getGarageServices,
-    );
+function ServicesSuggestion({
+    garageId,
+    onServiceSelected,
+}: ServiceSuggestionProps) {
+    const { data } = useSWRImmutable(`service/${garageId}`, getGarageServices);
     const services = data?.data;
 
     return (
@@ -38,17 +34,20 @@ function ServicesSuggestion({ garageId }: ServiceSuggestionProps) {
                         <p className="font-medium">Gợi ý dịch vụ</p>
                     </div>
                     {services?.map((service) => (
-                        <div className="py-2 flex gap-4 hover:opacity-60 cursor-pointer transition-opacity">
+                        <div
+                            className="py-2 flex gap-4 hover:opacity-60 cursor-pointer transition-opacity"
+                            onClick={() => {
+                                onServiceSelected(service);
+                            }}
+                        >
                             <div className="flex items-center">
-                                <img src={service.category.icon} />
+                                <img src={service.category.icon} alt="" />
                             </div>
                             <div>
                                 <p className="font-medium text-base">
                                     {service.category.name}
                                 </p>
-                                <p>
-                                    Mercedes, BMW, etc...
-                                </p>
+                                <p>Mercedes, BMW, etc...</p>
                             </div>
                         </div>
                     ))}

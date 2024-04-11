@@ -4,6 +4,7 @@ import { auth } from "@/components/firebase";
 import { updateToken } from "@/features/user/user.slice";
 import { Message, Room } from "@/core/types/model";
 import { Response } from "@/core/types";
+import { WithCategoryService } from "../garages/getGarageServices";
 
 const chatInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL + "/room",
@@ -53,10 +54,13 @@ const globalConfig: RetryConfig = {
     retryDelay: 1000,
 };
 
-export const getRooms = async () => {
+export const getRooms = async (roomIds?: string[]) => {
     try {
+        const url =
+            roomIds && roomIds.length !== 0 ? `?roomIds=${roomIds.join()}` : "";
+
         const result = await chatInstance.get<Response<Room[]>>(
-            "/",
+            url,
             globalConfig,
         );
         return result.data;
@@ -127,6 +131,10 @@ export const muteRoom = async (roomId: string, isMute: boolean) => {
     }
 };
 
+export type MessageWithServices = Omit<Message, "serviceIds"> & {
+    services?: WithCategoryService[];
+};
+
 export const getMessages = async (
     roomId: string,
     limit?: number,
@@ -139,7 +147,7 @@ export const getMessages = async (
             url += `&cursor=${cursor}`;
         }
 
-        const result = await chatInstance.get<Response<Message[]>>(
+        const result = await chatInstance.get<Response<MessageWithServices[]>>(
             url,
             globalConfig,
         );
