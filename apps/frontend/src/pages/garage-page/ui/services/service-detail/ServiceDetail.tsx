@@ -88,7 +88,7 @@ export default function ServiceDetail({
                             VND
                         </p>
                         <p className="font-medium">Thời gian hoàn thành</p>
-                        {service.estimateDuration ? (
+                        {service.estimateDuration[0] ? (
                             <p className="font-medium text-sm">
                                 <span className="text-xl font-semibold">
                                     {(service.estimateDuration[0]
