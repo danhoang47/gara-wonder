@@ -21,12 +21,7 @@ function CategoryDetail({
                 {isCategoryLoading ? (
                     <Skeleton className="w-40 h-4 " />
                 ) : (
-                    <p
-                        className="font-medium cursor-pointer hover:underline transition-all"
-                        onClick={openModal}
-                    >
-                        {categoryData?.name}
-                    </p>
+                    <p className="font-medium ">{categoryData?.name}</p>
                 )}
                 <SupportedChip isSupport={service.status} />
             </div>
@@ -36,7 +31,10 @@ function CategoryDetail({
                 ) : (
                     <p>
                         {categoryData?.description}{" "}
-                        <span className="text-primary cursor-pointer hover:text-primary-700">
+                        <span
+                            className="text-primary  hover:text-primary-700 cursor-pointer hover:underline transition-all "
+                            onClick={openModal}
+                        >
                             Xem tất cả xe được hỗ trợ
                         </span>
                     </p>

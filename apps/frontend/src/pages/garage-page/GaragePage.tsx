@@ -47,8 +47,8 @@ const GaragePage = () => {
                         />
                     </div>
                     <div className="my-6">
-                        <div className="w-full flex gap-4">
-                            <div className="flex flex-col gap-4">
+                        <div className="w-full flex gap-4 justify-between">
+                            <div className="flex flex-col gap-4 flex-1">
                                 <div className="border-b-1 pb-8 border-zinc-300">
                                     <GarageOwnerAndStaffInfoPreview
                                         garageOwner={basicInfo?.data[0]?.userId}

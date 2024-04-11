@@ -15,9 +15,6 @@ import { faCheckCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
 function BookingForm() {
     const navigate = useNavigate();
     const { order } = useOrderContext();
-    useEffect(() => {
-        console.log(order);
-    }, [order]);
 
     const [isDomReady, setDomReady] = useState<boolean>(false);
     const [hasAddedToCart, setAddedToCart] = useState<boolean>(false);
@@ -52,8 +49,8 @@ function BookingForm() {
         if (hasAddedToCart) {
             window.scroll({
                 top: 0,
-                behavior: "smooth"
-            })
+                behavior: "smooth",
+            });
             setTimeout(() => {
                 setAddedToCart(false);
             }, 3000);
@@ -95,7 +92,8 @@ function BookingForm() {
                     </Button>
                 </div>
             </div>
-            {isDomReady && hasAddedToCart && 
+            {isDomReady &&
+                hasAddedToCart &&
                 createPortal(
                     <Overlay>
                         <div className="flex sticky container justify-end mx-auto">

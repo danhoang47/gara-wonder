@@ -48,3 +48,12 @@ body,
 ::-webkit-scrollbar-thumb:hover {
     background-color: darken($color: #a4a4a4, $amount: 1.8);
 }
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}

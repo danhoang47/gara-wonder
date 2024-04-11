@@ -14,7 +14,7 @@ function Services() {
         "brands",
         getBrands,
     );
-    console.log(brands);
+
 
     return (
         <div>
@@ -29,7 +29,11 @@ function Services() {
             ) : (
                 <div className="flex flex-col gap-4">
                     {servicesList?.data.map((service, index) => (
-                        <ServiceDetail key={index} service={service} />
+                        <ServiceDetail
+                            key={index}
+                            service={service}
+                            brands={brands}
+                        />
                     ))}
                 </div>
             )}
