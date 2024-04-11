@@ -49,6 +49,7 @@ function UserProfileMenu() {
                             <img
                                 src={user.photoURL}
                                 className="w-full h-full"
+                                alt="User's profile picture"
                             />
                         </div>
                     ) : (

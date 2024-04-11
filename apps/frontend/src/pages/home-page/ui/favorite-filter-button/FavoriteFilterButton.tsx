@@ -14,7 +14,7 @@ function FavoriteFilterButton() {
             disableRipple
             variant="bordered"
             className={clsx(
-                "border-danger-100 border",
+                "favoriteFilterButton border-danger-100 border",
                 isFilteredByFavorite && "border-danger-300",
             )}
             startContent={
@@ -35,7 +35,7 @@ function FavoriteFilterButton() {
                 }
             }}
         >
-            <span className="text-danger">Yêu thích</span>
+            <span className="text-danger favoriteFilterButtonTitle">Yêu thích</span>
         </Button>
     );
 }

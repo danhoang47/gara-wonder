@@ -38,7 +38,7 @@ export default function Dialog({
     onNegativePress,
 }: DialogProps) {
     return (
-        <Modal isOpen={isOpen} onClose={onClose} hideCloseButton>
+        <Modal isOpen={isOpen} onClose={onClose} hideCloseButton placement="center">
             <ModalContent>
                 <ModalBody>
                     <div className="mt-4 flex justify-center">

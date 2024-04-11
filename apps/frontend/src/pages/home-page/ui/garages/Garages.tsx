@@ -28,7 +28,7 @@ function Garages() {
     const { garages, fetchingStatus, isReload, onNext, onUpdateGarage } =
         useGarages(viewMode);
     const changeViewModeButtonLabel =
-        viewMode === "grid" ? "Map view" : "List view";
+        viewMode === "grid" ? "Bản đồ" : "Danh sách";
     const changeViewModeButtonIcon =
         viewMode === "grid" ? faMapLocationDot : faList;
 
@@ -72,7 +72,7 @@ function Garages() {
         <div className="garages flex-1 px-10">
             {renderGarages()}
             <Button
-                className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black z-10 shadow-sm"
+                className="changeViewModeButton fixed bottom-4 left-1/2 -translate-x-1/2 bg-black z-10 shadow-sm"
                 endContent={
                     <FontAwesomeIcon
                         icon={changeViewModeButtonIcon}

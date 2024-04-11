@@ -20,7 +20,6 @@ function Categories() {
                 items={categories || []}
                 classNames={{
                     item: "w-auto",
-                    wrapper: "px-10",
                     button: "bg-background border-2",
                     base: "gap-2"
                 }}

@@ -8,6 +8,7 @@ import {
     RegionTabs,
     UserProfileMenu,
     CartLinkButton,
+    MobileNavigation
 } from "./ui";
 import { useAppSelector } from "@/core/hooks";
 import { Role } from "@/core/types";
@@ -38,7 +39,7 @@ const DefaultLayout = () => {
     }, [location]);
 
     return (
-        <div data-testid={DefaultLayout.name} className="flex flex-col">
+        <div data-testid={DefaultLayout.name} className="flex flex-col h-full">
             <Header
                 leftContent={<BrandLogo />}
                 middleContent={shouldShowMiddleContent && <RegionTabs />}
@@ -59,7 +60,10 @@ const DefaultLayout = () => {
                     </>
                 }
             />
-            <Outlet />
+            <div className="flex-grow">
+                <Outlet />
+            </div>
+            <MobileNavigation />
         </div>
     );
 };

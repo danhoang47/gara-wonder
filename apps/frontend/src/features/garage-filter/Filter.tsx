@@ -4,6 +4,8 @@ import FilterModal from "./FilterModal";
 import { useFilterParams } from "@/pages/home-page/hooks";
 import { useAppSelector } from "@/core/hooks";
 
+import "./Filter.styles.scss"
+
 function Filter() {
     const [isFilterOpen, setFilterOpen] = useState<boolean>();
     const filter = useAppSelector(state => state.filter)

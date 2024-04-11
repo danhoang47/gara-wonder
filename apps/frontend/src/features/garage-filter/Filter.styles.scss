@@ -1,0 +1,11 @@
+.openFilterButton {
+    @media screen and (max-width: 840px) {
+        width: 40px;
+        min-width: 40px !important;
+        padding: 0;
+        
+        .openFilterButtonTitle {
+            display: none;
+        }
+    }
+}

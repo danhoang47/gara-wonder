@@ -18,7 +18,7 @@ export default function AccountSettings() {
     }, [userData]);
 
     return (
-        <div className="w-full max-w-[1024px] mx-auto px-unit-0">
+        <div className="w-full max-w-[1024px] mx-auto px-10">
             <div className="py-14">
                 <p className="font-bold text-3xl">Tài khoản,</p>
                 <p className="text-lg">
@@ -49,7 +49,7 @@ export default function AccountSettings() {
                                 />
                             </div>
 
-                            <p className="font-medium text-xl">{item.title}</p>
+                            <p className="font-semibold text-xl">{item.title}</p>
                             <p className="text-sm text-default-500">
                                 {item.description}
                             </p>

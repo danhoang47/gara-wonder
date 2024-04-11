@@ -7,7 +7,7 @@ const UserSettings = () => {
     const observerRefs = useRef<any>([]);
 
     return (
-        <div className="max-w-[810px]  w-full mx-auto mt-4 grid grid-cols-4 gap-10 mt-10 ">
+        <div className="max-w-[810px]  w-full mx-auto grid grid-cols-4 gap-10 mt-10 px-10">
             <div className="col-span-3 ">
                 <h2 className="font-semibold text-2xl mb-4">
                     Thiết lập người dùng
