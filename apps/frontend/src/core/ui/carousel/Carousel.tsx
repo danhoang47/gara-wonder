@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, ScrollShadow } from "@nextui-org/react";
 import { useLayoutEffect, useRef, useState } from "react";
 
 import "./Carousel.styles.scss";
@@ -15,6 +15,7 @@ export type CarouselProps<T> = {
     >;
     showNavigationOnHover?: boolean;
     onNavigate?: (type: "back" | "next") => void;
+    enableShadow?: boolean;
 };
 
 function Carousel<T>({
@@ -23,6 +24,7 @@ function Carousel<T>({
     startIndex = 0,
     classNames,
     onNavigate,
+    enableShadow = false,
 }: CarouselProps<T>) {
     const [index, setIndex] = useState<number>(startIndex);
     const [maxIndex, setMaxIndex] = useState<number>(-1);
@@ -87,9 +89,11 @@ function Carousel<T>({
 
     return (
         <div className={clsx("carouselWrapper", classNames?.wrapper)}>
-            <div
+            <ScrollShadow
                 className={clsx("carousel", classNames?.base)}
                 ref={containerRef}
+                isEnabled={enableShadow}
+                orientation="horizontal"
             >
                 {items.map((value, index) => (
                     <div
@@ -103,7 +107,7 @@ function Carousel<T>({
                         {renderItem(value, index)}
                     </div>
                 ))}
-            </div>
+            </ScrollShadow>
             <Button
                 isIconOnly
                 radius="full"

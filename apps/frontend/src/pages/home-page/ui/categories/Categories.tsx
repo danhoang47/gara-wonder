@@ -26,6 +26,7 @@ function Categories() {
                 renderItem={(category) => (
                     <CategoryOption category={category} key={category._id} />
                 )}
+                enableShadow
             />
         </div>
     );
