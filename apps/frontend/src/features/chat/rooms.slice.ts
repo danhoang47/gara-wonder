@@ -6,24 +6,25 @@ import {
     EntityState,
 } from "@reduxjs/toolkit";
 import {
+    MessageWithServices,
     createRoom,
     deleteRoom,
     getRooms,
     muteRoom,
     trackingActivity,
 } from "@/api/chat";
-import { FetchStatus, Message, Room, RoomStatus } from "@/core/types";
+import { FetchStatus, Room, RoomStatus } from "@/core/types";
 import { AppState } from "@/store";
 
 export type RoomEntry = Omit<Room, "messages"> & {
-    messages: EntityState<Message, string>;
+    messages: EntityState<MessageWithServices, string>;
 };
 
 const roomsAdapter = createEntityAdapter<RoomEntry, string>({
     selectId: (room) => room.roomId,
 });
 
-const messagesAdapter = createEntityAdapter<Message, string>({
+const messagesAdapter = createEntityAdapter<MessageWithServices, string>({
     selectId: (message) => message._id,
     sortComparer: (a, b) => a.createdAt - b.createdAt,
 });

@@ -18,7 +18,7 @@ export default function FilterSection({
     classNames
 }: FilterSectionProps) {
     return (
-        <div className="pb-8 border-b">
+        <div className="pb-8 border-b last:border-none">
             <div className="mb-5">
                 <h3 className={clsx("text-xl font-bold", classNames?.title)}>{title}</h3>
                 <p className={clsx("text-zinc text-sm", classNames?.description)}>{description}</p>
