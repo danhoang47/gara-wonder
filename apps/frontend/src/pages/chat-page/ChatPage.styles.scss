@@ -1,13 +1,39 @@
-.chat-bubble {
-    padding: 4px 10px;
+.chat-bubble.left {
     background-color: #ebf4fb;
+    border-top-right-radius: 5vh;
+    border-bottom-right-radius: 5vh;
+
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
 }
 
-.chat-bubble-gradient {
-    background: rgb(156, 154, 252);
-    background: linear-gradient(
-        185deg,
-        rgba(156, 154, 252, 1) 0%,
-        rgba(200, 133, 245, 1) 100%
-    );
+.service {
+    border-radius: 2vh;
+}
+
+.test > div:first-child .chat-bubble.left,
+.test > div:first-child .service.left {
+    border-top-left-radius: 5vh;
+}
+
+.test > div:last-child .chat-bubble.left,
+.test > div:last-child .service.left {
+    border-bottom-left-radius: 5vh;
+}
+
+//right
+.chat-bubble.right {
+    border-top-left-radius: 5vh;
+    border-bottom-left-radius: 5vh;
+
+    border-bottom-right-radius: 12px;
+    border-top-right-radius: 12px;
+}
+.test > div:first-child .chat-bubble.right,
+.test > div:first-child .service.right {
+    border-top-right-radius: 5vh;
+}
+.test > div:last-child .chat-bubble.right,
+.test > div:last-child .service.right {
+    border-bottom-right-radius: 5vh;
 }

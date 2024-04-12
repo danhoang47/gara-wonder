@@ -130,7 +130,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                     </div>
                                 )}
 
-                                <div className="flex flex-col gap-1 max-w-[80%]">
+                                <div className="test flex flex-col gap-0.5 max-w-[80%]">
                                     {item.map((item2: MessageWithServices) => {
                                         return (
                                             <div
@@ -146,16 +146,16 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                         0 && (
                                                         <div
                                                             className={clsx(
-                                                                " py-3 px-3 mb-1.5 border-2 rounded-xl w-[280px]",
+                                                                "service py-3 px-3 my-0.5 bg-default-100 w-[280px]",
                                                                 item2.authorId ===
                                                                     userId
                                                                     ? "right self-end"
-                                                                    : "self-start",
+                                                                    : "left self-start",
                                                             )}
                                                         >
-                                                            <div className="w-full">
-                                                                <div className="border-b pb-1">
-                                                                    <p className="font-medium">
+                                                            <div className="w-full ">
+                                                                <div className="border-b  border-b-[#ccc] pb-1">
+                                                                    <p className="font-medium text-center">
                                                                         Gợi ý
                                                                         dịch vụ
                                                                     </p>
@@ -165,7 +165,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                         service,
                                                                     ) => (
                                                                         <div className="pt-2">
-                                                                            <div className="flex items-center gap-2">
+                                                                            <div className="flex items-center bg-default-200 rounded-md p-2 justify-center gap-2">
                                                                                 <img
                                                                                     src={
                                                                                         service
@@ -247,14 +247,14 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                             {item2?.content && (
                                                                 <div
                                                                     className={clsx(
-                                                                        "chat-bubble relative rounded-3xl max-w-full",
+                                                                        "chat-bubble relative max-w-full",
                                                                         item2.authorId ===
                                                                             userId
                                                                             ? "right self-end bg-primary text-white"
-                                                                            : "self-start",
+                                                                            : "left self-start",
                                                                     )}
                                                                 >
-                                                                    <p className="m-1 break-words">
+                                                                    <p className="py-2.5 px-5 break-words">
                                                                         {
                                                                             item2?.content
                                                                         }
@@ -292,6 +292,22 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                             </div>
                         );
                     })}
+                    {room.isTyping && (
+                        <div className="flex items-center gap-1">
+                            <div className="w-[25px] h-[25px] shrink-0">
+                                <Avatar
+                                    src={room?.photoURL}
+                                    alt=""
+                                    className="h-full w-full"
+                                />
+                            </div>
+                            <div className="typing flex gap-0.5 bg-default-200 w-fit px-2.5 py-2 rounded-full">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 

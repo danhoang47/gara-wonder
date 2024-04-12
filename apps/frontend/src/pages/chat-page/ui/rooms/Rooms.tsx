@@ -39,6 +39,7 @@ const Rooms = ({ rooms, onRoomSelected, selectedRoom }: IListUserProps) => {
                                 name={room?.displayName}
                                 alt=""
                                 size="lg"
+                                className="shrink-0"
                             />
                             <div className="grow overflow-hidden">
                                 <h2
