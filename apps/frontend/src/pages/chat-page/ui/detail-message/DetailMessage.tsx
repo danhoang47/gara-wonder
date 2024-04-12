@@ -232,7 +232,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                 ?._id && (
                                                                 <div
                                                                     className={clsx(
-                                                                        "translate-y-1.5 mb-[-4px] cursor-pointer bg-[#ccc] rounded-3xl w-fit ",
+                                                                        "translate-y-1.5 mb-[-4px] cursor-pointer bg-[#f3f3f3] rounded-3xl w-fit ",
                                                                         item2.authorId ===
                                                                             userId
                                                                             ? "right self-end ml-auto"
