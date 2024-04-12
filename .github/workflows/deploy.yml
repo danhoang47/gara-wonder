@@ -27,7 +27,7 @@ jobs:
          npm i
          npm i @rollup/rollup-linux-x64-gnu
          cd apps/frontend/
-         echo 'test: ${{vars.TEST_VAR}}'
+         echo 'test: $vars.TEST_VAR'
          echo 'VITE_FIREBASE_API_KEY=${{secrets.VITE_FIREBASE_API_KEY}} 
                VITE_GOOGLE_MAPS_API_KEY=${{secrets.VITE_GOOGLE_MAPS_API_KEY}}  
                VITE_API_URL=${{secrets.VITE_API_URL}} 
