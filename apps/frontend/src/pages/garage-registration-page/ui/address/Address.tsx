@@ -31,6 +31,10 @@ function Address() {
         : defaultLatLng;
 
     useEffect(() => {
+        setGarageRegistrationStateValue("address", "")
+    }, [])
+
+    useEffect(() => {
         let isStale = false;
 
         const getGeocodingFromAddress = async () => {
