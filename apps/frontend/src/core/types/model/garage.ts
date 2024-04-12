@@ -86,6 +86,7 @@ export type GarageFilter = {
     brands?: string[];
     distance?: number;
     additional?: string[];
+    isFavorite?: string | boolean
 };
 
 export type GarageQueryParams = GarageFilter & Paging & {

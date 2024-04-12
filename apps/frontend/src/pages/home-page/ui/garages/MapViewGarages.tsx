@@ -3,20 +3,15 @@ import { ViewModeGaragesProps } from "./Garages";
 import GarageMarker from "../garage-marker/GarageMarker";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import GridViewGarages from "./GridViewGarages";
 import { debounce } from "@/utils";
 
-type Position = {
-    lat?: string | null;
-    lng?: string | null;
-};
-
 const DEFAULT_CENTER = {
-    lat: 15.9895821,
-    lng: 108.2419703,
+    lat: 16.02963,
+    lng: 108.238675,
 };
 
 export default function MapViewGarages(props: ViewModeGaragesProps) {
@@ -24,10 +19,9 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [isOpenGridView, setOpenGridView] = useState<boolean>(false);
     const [hoveredGarageId, setHoveredGarageId] = useState<string>();
-    const center: Position = {
-        lat: searchParams.get("lat"),
-        lng: searchParams.get("lng"),
-    };
+    const [defaultCenter, setDefaultCenter] =
+        useState<google.maps.LatLngLiteral>();
+
     const onCenterChange = debounce(
         (lat: number | undefined, lng: number | undefined) => {
             if (!lat || !lng) return;
@@ -38,7 +32,8 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
 
                 return prev;
             });
-        }, 500
+        },
+        500,
     );
 
     const onHoverGarageCard = (garageId: string) => {
@@ -48,6 +43,37 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
     const onHoverOutGarageCard = () => {
         setHoveredGarageId(undefined);
     };
+
+    useEffect(() => {
+        const lat = searchParams.get("lat");
+        const lng = searchParams.get("lng");
+
+        if (lat && lng) {
+            setDefaultCenter({
+                lat: Number.parseFloat(lat),
+                lng: Number.parseFloat(lng),
+            });
+        } else {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { coords } = position;
+                    const { latitude, longitude } = coords;
+                    console.log(latitude, longitude)
+
+                    setDefaultCenter({
+                        lat: latitude,
+                        lng: longitude,
+                    });
+                },
+                () => {
+                    setDefaultCenter({
+                        lat: DEFAULT_CENTER.lat,
+                        lng: DEFAULT_CENTER.lng,
+                    });
+                },
+            );
+        }
+    }, []);
 
     return (
         <div className="h-[calc(100vh-177px)] -mx-10 flex relative overflow-y-hidden">
@@ -62,7 +88,7 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
             )}
             <div className="flex-grow h-full sticky basis-0">
                 <Button
-                    className="absolute bg-default-50 left-2 top-2 z-10"
+                    className="absolute bg-default-50 left-10 top-10 z-10"
                     onPress={() => setOpenGridView((prev) => !prev)}
                     endContent={
                         <FontAwesomeIcon
@@ -75,16 +101,13 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
                     {!isOpenGridView && <span>Hiển thị danh sách</span>}
                 </Button>
                 <Map
+                    key={defaultCenter?.lat + "" + defaultCenter?.lng}
                     mapId={"513c015c554b1aac"}
-                    defaultCenter={{
-                        lat: center.lat
-                            ? Number.parseFloat(center.lat)
-                            : DEFAULT_CENTER.lat,
-                        lng: center.lng
-                            ? Number.parseFloat(center.lng)
-                            : DEFAULT_CENTER.lng,
+                    defaultCenter={defaultCenter || {
+                        lat: DEFAULT_CENTER.lat,
+                        lng: DEFAULT_CENTER.lng,
                     }}
-                    defaultZoom={8}
+                    defaultZoom={12}
                     mapTypeId={"roadmap"}
                     disableDefaultUI
                     onZoomChanged={(event) => {
