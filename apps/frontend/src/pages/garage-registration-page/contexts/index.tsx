@@ -39,16 +39,19 @@ type GarageRegistrationConstraints = {
 
 const garageRegistrationConstraints: GarageRegistrationConstraints = {
     name: {
-        required: "Garage's name is required",
-        min: [3, "Garage's name is must be larger than 3 characters"],
-        max: [100, "Garage's name is must be smaller than 100 characters"],
+        required: "Tên của garage là bắt buộc",
+        min: [3, "Tên của garage phải dài hơn 3 ký tự"],
+        max: [100, "Tên của garage phải ngắn hơn 100 ký tự"],
     },
     address: {
-        required: "Address is required",
+        required: "Địa chỉ là bắt buộc",
     },
     location: {
         required: "",
     },
+    services: {
+        required: ""
+    }
 };
 
 const validate = (
@@ -57,7 +60,7 @@ const validate = (
 ): [boolean, string | undefined] => {
     if (!constraint) return [true, undefined];
 
-    if (constraint.required && !value) {
+    if (constraint.required && !value || (Array.isArray(value) && value.length === 0)) {
         return [false, constraint.required];
     }
 
@@ -84,6 +87,8 @@ export function GarageRegistrationContextProvider({
     const [garageRegistrationState, setGarageRegistrationState] =
         useState<GarageRegistration>({
             defaultSlot: 10,
+            address: "",
+            name: "",
         });
     const [garageRegistrationErrors, setGarageRegistrationErrors] =
         useState<GarageRegistrationErrors>({});

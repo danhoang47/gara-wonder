@@ -51,7 +51,7 @@ const garagesSlice = createSlice({
 
 export const getListGarages = createAsyncThunk("garages/getGarages", async (params?: GarageQueryParams) => {
     try {
-        const result = await getGarages({...params, limit: 4});
+        const result = await getGarages({...params, limit: 20});
         return result
     } catch(err) {
         throw new Error()

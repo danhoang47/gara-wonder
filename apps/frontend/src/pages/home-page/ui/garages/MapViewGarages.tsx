@@ -33,7 +33,7 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
                 return prev;
             });
         },
-        500,
+        1000,
     );
 
     const onHoverGarageCard = (garageId: string) => {

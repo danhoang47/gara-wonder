@@ -3,7 +3,7 @@ import RegistrationSection from "../registration-section";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import ServiceTemplateModal from "./ServiceTemplateModal";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Service } from "@/core/types";
 import ServiceCard from "./ServiceCard";
 import { useGarageRegistrationContext } from "../../hooks";
@@ -86,6 +86,10 @@ export default function Services() {
             prev.filter((serviceId) => serviceId !== service?.categoryId),
         );
     };
+
+    useEffect(() => {
+        setGarageRegistrationStateValue("services", [])
+    }, [])
 
     return (
         <>
