@@ -39,7 +39,7 @@ const DefaultLayout = () => {
     }, [location]);
 
     return (
-        <div data-testid={DefaultLayout.name} className="flex flex-col h-full">
+        <div data-testid={DefaultLayout.name} className="flex flex-col min-h-full">
             <Header
                 leftContent={<BrandLogo />}
                 middleContent={shouldShowMiddleContent && <RegionTabs />}

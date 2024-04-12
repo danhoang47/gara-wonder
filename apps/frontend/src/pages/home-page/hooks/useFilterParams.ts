@@ -10,6 +10,7 @@ const keys: Array<keyof GarageFilter> = [
     "brands",
     "additional",
     "distance",
+    "isFavorite",
 ];
 
 function useFilterParams() {

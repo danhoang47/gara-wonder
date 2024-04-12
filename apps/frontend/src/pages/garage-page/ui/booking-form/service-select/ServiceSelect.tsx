@@ -3,7 +3,7 @@ import useSWRImmutable from "swr/immutable";
 
 import useOrderContext from "@/pages/garage-page/hooks/useOrderContext";
 import { getGarageServices } from "@/api";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 export default function ServiceSelect() {
     const { order, setOrderValue } = useOrderContext();
@@ -30,6 +30,15 @@ export default function ServiceSelect() {
 
         return order.serviceIds;
     }, [order.serviceIds, services?.data.length]);
+
+    useEffect(() => {
+        if (services?.data) {
+            setOrderValue(
+                "serviceIds",
+                services.data.map((service) => service._id!),
+            );
+        }
+    }, [services?.data]);
 
     return (
         <Select

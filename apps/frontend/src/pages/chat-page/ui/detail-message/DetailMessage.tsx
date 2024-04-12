@@ -146,7 +146,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                         0 && (
                                                         <div
                                                             className={clsx(
-                                                                "service p-3 mb-0.5 bg-default-100 w-[280px]",
+                                                                "service py-3 px-3 my-0.5 bg-default-100 w-[280px]",
                                                                 item2.authorId ===
                                                                     userId
                                                                     ? "right self-end"
