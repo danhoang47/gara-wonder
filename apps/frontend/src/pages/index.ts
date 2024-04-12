@@ -8,3 +8,4 @@ export { default as ProductsPage } from "./products-page";
 export { default as UserSettingsPage } from "./user-settings-page";
 export { default as ChatPage } from "./chat-page";
 export { default as PaymentPage } from './payment-page'
+export { default as ErrorPage } from './error-page'
