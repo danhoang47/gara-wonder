@@ -15,7 +15,7 @@ import {
     faReply,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, Spinner, Tooltip } from "@nextui-org/react";
+import { Avatar, Button, Link, Spinner, Tooltip } from "@nextui-org/react";
 import { ObjectId } from "bson";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
@@ -154,8 +154,8 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                             )}
                                                         >
                                                             <div className="w-full ">
-                                                                <div className="border-b  border-b-[#ccc] pb-1">
-                                                                    <p className="font-medium text-center">
+                                                                <div className="pb-1">
+                                                                    <p className="font-medium text-sm text-center">
                                                                         Gợi ý
                                                                         dịch vụ
                                                                     </p>
@@ -165,24 +165,29 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                         service,
                                                                     ) => (
                                                                         <div className="pt-2">
-                                                                            <div className="flex items-center bg-default-200 rounded-md p-2 justify-center gap-2">
-                                                                                <img
-                                                                                    src={
-                                                                                        service
-                                                                                            .category
-                                                                                            .icon
-                                                                                    }
-                                                                                    alt=""
-                                                                                    className="w-[16px] h-[16px] object-cover"
-                                                                                />
-                                                                                <p className="font-medium text-small">
-                                                                                    {
-                                                                                        service
-                                                                                            .category
-                                                                                            .name
-                                                                                    }
-                                                                                </p>
-                                                                            </div>
+                                                                            <Link
+                                                                                href={`/garages/${room.garageId}`}
+                                                                                className="w-full text- cursor-pointer"
+                                                                            >
+                                                                                <div className="flex w-full items-center bg-background shadow-sm rounded-md p-2 justify-center gap-2">
+                                                                                    <img
+                                                                                        src={
+                                                                                            service
+                                                                                                .category
+                                                                                                .icon
+                                                                                        }
+                                                                                        alt=""
+                                                                                        className="w-[16px] h-[16px] object-contain"
+                                                                                    />
+                                                                                    <p className="font-medium text-small">
+                                                                                        {
+                                                                                            service
+                                                                                                .category
+                                                                                                .name
+                                                                                        }
+                                                                                    </p>
+                                                                                </div>
+                                                                            </Link>
                                                                         </div>
                                                                     ),
                                                                 )}
@@ -227,14 +232,14 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                 ?._id && (
                                                                 <div
                                                                     className={clsx(
-                                                                        "translate-y-1.5 mb-[-4px] cursor-pointer bg-[#ccc] rounded-3xl chat-bubble ",
+                                                                        "translate-y-1.5 mb-[-4px] cursor-pointer bg-[#ccc] rounded-3xl w-fit ",
                                                                         item2.authorId ===
                                                                             userId
-                                                                            ? "self-end"
-                                                                            : "self-start",
+                                                                            ? "right self-end ml-auto"
+                                                                            : "left self-start",
                                                                     )}
                                                                 >
-                                                                    <p className="m-1 break-words">
+                                                                    <p className="break-words py-2.5 px-5">
                                                                         {
                                                                             item2
                                                                                 ?.replyFrom
@@ -247,10 +252,10 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                             {item2?.content && (
                                                                 <div
                                                                     className={clsx(
-                                                                        "chat-bubble relative max-w-full",
+                                                                        "chat-bubble relative max-w-full w-fit",
                                                                         item2.authorId ===
                                                                             userId
-                                                                            ? "right self-end bg-primary text-white"
+                                                                            ? "right self-end bg-primary text-white ml-auto"
                                                                             : "left self-start",
                                                                     )}
                                                                 >
