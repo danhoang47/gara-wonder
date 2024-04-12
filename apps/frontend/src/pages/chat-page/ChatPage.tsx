@@ -33,7 +33,7 @@ const ChatPage = () => {
         ) {
             setSelectedRoom(rooms.find(({ _id }) => _id === roomId));
         }
-    }, [roomId, fetchingStatus, fetchingStatusActivity]);
+    }, [roomId, fetchingStatus, fetchingStatusActivity, rooms]);
 
     useEffect(() => {
         if (!selectedRoom) return;
