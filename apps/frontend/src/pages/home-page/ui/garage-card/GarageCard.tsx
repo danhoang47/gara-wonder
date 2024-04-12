@@ -13,6 +13,7 @@ import {
 } from "@nextui-org/react";
 import clsx from "clsx";
 import { memo, useEffect, useState } from "react";
+import useSWRImmutable from "swr/immutable";
 
 export type GarageCardProps = {
     garage: WithOwnerGarage;
@@ -46,23 +47,25 @@ function GarageCard({
         location,
     } = garage;
     const renderedImages = [backgroundImage, ...images];
-    const [distance, setDistance] = useState<string>();
+    const [currentPosition, setCurrentPosition] =
+        useState<google.maps.LatLngLiteral>();
+    const { data: distance } = useSWRImmutable(
+        [currentPosition, location.coordinates],
+        ([currentPosition, coordinates]) =>
+            getDistance(currentPosition, {
+                lat: coordinates[1],
+                lng: coordinates[0],
+            }),
+    );
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(async (position) => {
             const { coords } = position;
 
-            const distance = await getDistance(
-                {
-                    lat: coords.latitude,
-                    lng: coords.longitude,
-                },
-                {
-                    lat: location.coordinates[1],
-                    lng: location.coordinates[0],
-                },
-            );
-            setDistance(distance.text);
+            setCurrentPosition({
+                lat: coords.latitude,
+                lng: coords.longitude,
+            });
         });
     }, []);
 
@@ -114,7 +117,9 @@ function GarageCard({
                             {description}
                         </p>
                         <p className="text-sm text-default-500">{address}</p>
-                        <p className="text-sm text-default-500">{distance && `Cách vị trí của bạn ${distance}`}</p>
+                        <p className="text-sm text-default-500">
+                            {distance && `Cách vị trí của bạn ${distance.text}`}
+                        </p>
                     </div>
                     <Avatar src={owner.photoURL} className="shrink-0" />
                 </div>

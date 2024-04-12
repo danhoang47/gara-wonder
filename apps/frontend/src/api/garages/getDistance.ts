@@ -1,13 +1,13 @@
 
 export default async function getDistance(
-    origin: google.maps.LatLngLiteral,
+    origin: google.maps.LatLngLiteral | undefined,
     destination: google.maps.LatLngLiteral,
 ) {
     try {
         const service = new google.maps.DistanceMatrixService();
         const response = await service.getDistanceMatrix({
             destinations: [destination],
-            origins: [origin],
+            origins: [origin!],
             travelMode: google.maps.TravelMode.DRIVING
         });
 

@@ -23,6 +23,7 @@ import { useEffect, useMemo } from "react";
 import { createGarage, initGarage, uploadGarageImages } from "@/api";
 import { notify } from "@/features/toasts/toasts.slice";
 import { FetchStatus, Role } from "@/core/types";
+import { setRoleToGarageOwner } from "@/features/user/user.slice";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export enum RegistrationSection {
@@ -101,6 +102,7 @@ const GarageRegistrationPage = () => {
                         description: "Successfully register your garage",
                     }),
                 );
+                dispatch(setRoleToGarageOwner())
                 navigate(`/garages/${result.data._id}/management`);
             }
         } catch (error) {

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { FetchStatus, User } from "@/core/types";
+import { FetchStatus, Role, User } from "@/core/types";
 import { getGarageByOwnerId, getUser, updateUserProfile } from "@/api";
 export enum Type {
     SignIn = 0,
@@ -48,6 +48,12 @@ const userSlice = createSlice({
         },
         signUp(state) {
             state.type = Type.SignUp 
+        },
+        setRoleToGarageOwner(state) {
+            return {
+                ...state,
+                role: Role.GarageOwner
+            }
         }
     },
     extraReducers(builder) {
@@ -109,7 +115,7 @@ export const updateUser = createAsyncThunk(
     }
 )
 
-export const { signOut, setUserToken, setEmptyUser, updateToken, signUp } =
+export const { signOut, setUserToken, setEmptyUser, updateToken, signUp, setRoleToGarageOwner } =
     userSlice.actions;
 
 export default userSlice.reducer;
