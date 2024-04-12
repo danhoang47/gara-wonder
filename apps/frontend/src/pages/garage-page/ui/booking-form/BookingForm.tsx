@@ -120,6 +120,7 @@ function BookingForm() {
                                 <div className="mt-4 flex gap-2">
                                     <div className="w-20 h-20">
                                         <img
+                                            alt=""
                                             className="object-cover h-full w-full"
                                             src="https://images.unsplash.com/photo-1551522435-a13afa10f103?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwZ2FyYWdlfGVufDB8fDB8fHww"
                                         />
