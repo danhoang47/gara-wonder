@@ -47,7 +47,7 @@ jobs:
             rm -rf /var/www/html/*
          source: "./apps/frontend/dist/**"
          target: "/var/www/html/"
-         strip_coments: 3
+         strip_components: 3
 
       
          
