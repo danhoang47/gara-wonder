@@ -88,13 +88,13 @@ export default function ServiceDetail({
                             VND
                         </p>
                         <p className="font-medium">Thời gian hoàn thành</p>
-                        {service.estimateDuration[0] ? (
+                        {service?.estimateDuration ? (
                             <p className="font-medium text-sm">
                                 <span className="text-xl font-semibold">
-                                    {(service.estimateDuration[0]
-                                        ? service.estimateDuration[0] + `-`
+                                    {(service?.estimateDuration[0]
+                                        ? service?.estimateDuration[0] + `-`
                                         : "") +
-                                        service.estimateDuration[1]}{" "}
+                                        service?.estimateDuration[1]}{" "}
                                     ngày
                                 </span>
                             </p>
@@ -123,11 +123,12 @@ export default function ServiceDetail({
                                         ({ _id }) =>
                                             service.brandIds?.includes(_id),
                                     )
-                                    .map((brand) => (
+                                    .map((brand, key) => (
                                         <Chip
                                             variant="bordered"
                                             radius="sm"
                                             size="lg"
+                                            key={key}
                                             classNames={{ base: "p-3" }}
                                         >
                                             <p className="font-medium text-sm">
