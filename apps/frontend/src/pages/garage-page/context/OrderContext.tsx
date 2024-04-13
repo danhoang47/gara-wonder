@@ -2,6 +2,7 @@ import { ContainerProps, Order } from "@/core/types";
 import {
     createContext,
     useCallback,
+    useEffect,
     useMemo,
     useState,
 } from "react";
@@ -22,9 +23,11 @@ export const OrderContext = createContext<OrderContextType>(
 );
 
 export default function OrderContextProvider({ children }: ContainerProps) {
-    const { garageId } = useParams()
+    const { garageId } = useParams();
     const [order, setOrder] = useState<Order>({ garageId } as Order);
-
+    useEffect(() => {
+        console.log(order);
+    }, [order]);
     const setOrderValue = useCallback(
         <K extends keyof OrderInfo>(k: K, v: OrderInfo[K]) => {
             setOrder((prev) => ({
