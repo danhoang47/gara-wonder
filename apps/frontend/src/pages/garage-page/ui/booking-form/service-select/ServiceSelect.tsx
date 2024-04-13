@@ -7,38 +7,35 @@ import { useEffect, useMemo } from "react";
 
 export default function ServiceSelect() {
     const { order, setOrderValue } = useOrderContext();
+
     const { isLoading: isServicesLoading, data: services } = useSWRImmutable(
         `service/${order.garageId}`,
         getGarageServices,
     );
     const renderedServices = useMemo(() => {
-        const { car } = order;
-
-        return car
+        const result = order.car
             ? services?.data.filter((service) => {
                   if (service.brandIds === "all") {
                       return true;
                   }
-                  return service.brandIds?.includes(car.brandId!);
+                  return service.brandIds?.includes(order.car.brandId!);
               })
             : services?.data;
-    }, [order, services]);
+
+        return result;
+    }, [services, order]);
     const selectedKeys = useMemo(() => {
         if (order.serviceIds?.length === services?.data.length) {
+            console.log(order.serviceIds, services?.data);
+
             return "all";
         }
-
-        return order.serviceIds;
-    }, [order.serviceIds, services?.data.length]);
-
+        if (order.serviceIds) return order.serviceIds;
+        return [];
+    }, [order.serviceIds, services?.data]);
     useEffect(() => {
-        if (services?.data) {
-            setOrderValue(
-                "serviceIds",
-                services.data.map((service) => service._id!),
-            );
-        }
-    }, [services?.data]);
+        console.log(selectedKeys);
+    }, [selectedKeys]);
 
     return (
         <Select
@@ -50,6 +47,12 @@ export default function ServiceSelect() {
             variant="bordered"
             isRequired
             selectedKeys={selectedKeys}
+            isInvalid={Boolean(!renderedServices?.length)}
+            errorMessage={() => {
+                if (order?.car)
+                    return "Xe của bạn không được hỗ trợ bởi bất kì dịch vụ nào";
+            }}
+            isDisabled={Boolean(!order?.car)}
             color="primary"
             onSelectionChange={(keys) => {
                 if (keys === "all") {
