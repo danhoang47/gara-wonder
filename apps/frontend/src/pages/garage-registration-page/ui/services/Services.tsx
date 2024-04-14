@@ -88,7 +88,7 @@ export default function Services() {
     };
 
     useEffect(() => {
-        setGarageRegistrationStateValue("services", [])
+        setGarageRegistrationStateValue("services", services?.length ? services : [])
     }, [])
 
     return (

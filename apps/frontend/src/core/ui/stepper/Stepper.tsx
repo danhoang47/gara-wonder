@@ -67,6 +67,7 @@ function Stepper({
                 <p
                     contentEditable={allowKeyboard}
                     className={clsx("outline-none text-center")}
+                    suppressContentEditableWarning
                 >
                     {value || defaultValue}
                 </p>
