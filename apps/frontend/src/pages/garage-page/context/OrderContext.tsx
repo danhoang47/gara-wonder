@@ -25,9 +25,7 @@ export const OrderContext = createContext<OrderContextType>(
 export default function OrderContextProvider({ children }: ContainerProps) {
     const { garageId } = useParams();
     const [order, setOrder] = useState<Order>({ garageId } as Order);
-    useEffect(() => {
-        console.log(order);
-    }, [order]);
+   
     const setOrderValue = useCallback(
         <K extends keyof OrderInfo>(k: K, v: OrderInfo[K]) => {
             setOrder((prev) => ({

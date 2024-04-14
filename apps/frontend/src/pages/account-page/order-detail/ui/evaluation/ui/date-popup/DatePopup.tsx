@@ -31,7 +31,6 @@ function DatePopup({
             : {},
     );
     useEffect(() => {
-        console.log(dateRange, pickDate, moment(0).toISOString());
         setEvaluationValue("estimateDuration", [
             Number(pickDate?.from) || null,
             Number(pickDate?.to) || null,

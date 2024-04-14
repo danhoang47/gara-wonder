@@ -11,7 +11,6 @@ import clsx from "clsx";
 function GarageNavbar() {
     const location = useLocation();
     const navigate = useNavigate();
-    console.log(location.pathname);
     const indicateRoute = useMemo(() => {
         const list = navList.filter((el) => {
             if (location.pathname.includes(el.link) && el.link !== "") {

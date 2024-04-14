@@ -17,7 +17,6 @@ moment.locale("vi");
 function OrderDetail() {
     const { orderId, garageId } = useParams();
     moment.locale("es");
-    console.log(moment().fromNow());
     const { load, unload } = useContext(LoadingContext);
 
     const { isLoading: isOrderLoading, data: order } = useSWRImmutable(
