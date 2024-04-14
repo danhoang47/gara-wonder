@@ -18,6 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
 import { useAppDispatch } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
+import deleteService from "@/api/garages/deleteService";
 
 export default function ServicesSetting() {
     const { garageId } = useParams();
@@ -149,10 +150,38 @@ export default function ServicesSetting() {
     const onRemoveServiceButtonPress = (
         service: Partial<Service> | undefined,
     ) => {
-        setServiceList(serviceList?.filter(({ _id }) => _id !== service?._id));
-        setSelectedCategoryIds((prev) =>
-            prev.filter((serviceId) => serviceId !== service?.categoryId),
-        );
+        try {
+            deleteService(garageId, service?._id).then((resp) => {
+                if (resp.statusCode === 200) {
+                    refetch();
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: `Xóa dịch vụ thành công`,
+                            description: `Đã xác nhận xóa dịch vụ thành công`,
+                            delay: 4000,
+                        }),
+                    );
+                    setServiceList(
+                        serviceList?.filter(({ _id }) => _id !== service?._id),
+                    );
+                    setSelectedCategoryIds((prev) =>
+                        prev.filter(
+                            (serviceId) => serviceId !== service?.categoryId,
+                        ),
+                    );
+                }
+            });
+        } catch (error) {
+            dispatch(
+                notify({
+                    type: "failure",
+                    title: "Xác nhận thất bại",
+                    description: "Một số lỗi xảy ra khi xác nhận",
+                    delay: 4000,
+                }),
+            );
+        }
     };
 
     return (

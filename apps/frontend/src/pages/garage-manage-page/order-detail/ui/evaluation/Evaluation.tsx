@@ -23,10 +23,12 @@ const ProgressButton = ({
     status,
     setModalOpen,
     setNextModalOpen,
+    evaluationProvided,
 }: {
     status: number;
     setModalOpen: () => void;
     setNextModalOpen: () => void;
+    evaluationProvided: boolean;
 }) => {
     if (status === 0)
         return (
@@ -34,6 +36,7 @@ const ProgressButton = ({
                 <Button
                     color="primary"
                     className="w-[14rem]"
+                    isDisabled={evaluationProvided}
                     onClick={() => setModalOpen()}
                 >
                     Đánh giá
@@ -41,6 +44,7 @@ const ProgressButton = ({
                 <Button
                     color="default"
                     className="w-[14rem]"
+                    isDisabled={evaluationProvided}
                     onClick={() => setModalOpen()}
                 >
                     Tới thanh toán
@@ -78,11 +82,13 @@ function Evaluation({
     handOverTime,
     services,
     refetch,
+    evaluationProvided,
 }: {
     status?: number;
     handOverTime?: number;
     services?: OrderDetailType["services"];
     refetch: () => void;
+    evaluationProvided: boolean;
 }) {
     const [isEvaluationModalOpen, setIsEvaluationModalOpen] =
         useState<boolean>(false);
@@ -99,6 +105,8 @@ function Evaluation({
             keys.includes("estimateDuration");
         return filledKeys;
     }, [evaluation]);
+
+    
 
     const priceValidate: boolean = useMemo(() => {
         const servicesLength: boolean =
@@ -238,6 +246,7 @@ function Evaluation({
                 setNextModalOpen={() => {
                     setIsNextModalOpen(true);
                 }}
+                evaluationProvided={evaluationProvided}
             />
             <Modal
                 isOpen={isEvaluationModalOpen}

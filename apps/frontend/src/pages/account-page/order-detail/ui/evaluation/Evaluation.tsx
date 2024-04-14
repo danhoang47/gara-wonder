@@ -23,7 +23,7 @@ const ProgressButton = ({
     status: number;
     setModalOpen: () => void;
 }) => {
-    if (status !== 0)
+    if (status === 0)
         return (
             <>
                 <div className="w-full h-1 border-t-2" />
@@ -38,6 +38,23 @@ const ProgressButton = ({
                 </div>
             </>
         );
+
+    if (status === 2) {
+        return (
+            <>
+                <div className="w-full h-1 border-t-2" />
+                <div className="p-4 flex flex-col gap-6 items-end">
+                    <Button
+                        color="primary"
+                        className="w-[14rem]"
+                        onClick={() => setModalOpen()}
+                    >
+                        Xem đơn thanh toán
+                    </Button>
+                </div>
+            </>
+        );
+    }
 };
 
 function Evaluation({
@@ -60,7 +77,6 @@ function Evaluation({
         getOrderEvaluation(orderId),
     );
     const dispatch = useAppDispatch();
-   
 
     const onSubmit = async () => {
         try {

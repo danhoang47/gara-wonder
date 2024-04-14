@@ -21,12 +21,14 @@ function OrderDetail() {
     const { load, unload } = useContext(LoadingContext);
 
     const { isLoading: isOrderLoading, data: order } = useSWRImmutable(
-        `${orderId}`,
+        user.token ? `${orderId}` : null,
         () => getUserOrderById(orderId, user.token),
     );
     const refetch = () => {
         mutate(`${orderId}`);
     };
+
+
     useEffect(() => {
         if (isOrderLoading) load("order-detail");
         else unload("order-detail");
