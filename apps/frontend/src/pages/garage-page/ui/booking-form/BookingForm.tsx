@@ -37,18 +37,8 @@ function BookingForm() {
             order.orderTime &&
             order?.serviceIds?.length
         ) {
-            console.log(
-                Boolean(
-                    order.car?.brandId &&
-                        order.orderTime &&
-                        order?.serviceIds?.length,
-                ),
-            );
-
             return false;
         }
-        console.log(true);
-
         return true;
     }, [order]);
 

@@ -60,9 +60,7 @@ function Evaluation({
         getOrderEvaluation(orderId),
     );
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        console.log(evaluation);
-    }, [evaluation]);
+   
 
     const onSubmit = async () => {
         try {

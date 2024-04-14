@@ -23,7 +23,6 @@ function ImagesOverlay({
     useEffect(() => {
         if (imageRef != "") {
             const element = document.getElementById(imageRef as string);
-            console.log("run this");
             element?.scrollIntoView();
         } else {
             window.scrollTo(0, 0);

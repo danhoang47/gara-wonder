@@ -38,9 +38,6 @@ export default function EvaluationContextProvider({
             [k]: v,
         }));
     };
-    useEffect(() => {
-        console.log(evaluation);
-    }, [evaluation]);
 
     const EvaluationContextValue = useMemo(
         () => ({

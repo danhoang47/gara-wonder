@@ -32,7 +32,7 @@ function BrandInputModal({
     brands,
     isBrandLoading,
 }: BrandInputModalProps) {
-    const [localCar, setLocalCar] = useState<Car>(car);
+    const [localCar, setLocalCar] = useState<Partial<Car>>(car);
     const [isModelLoading, setModelLoading] = useState<boolean>();
     const [models, setModels] = useState<Model[]>([]);
     const selectedBrand = useMemo(
@@ -40,16 +40,32 @@ function BrandInputModal({
         [brands, localCar.brandId],
     );
 
-    const disabledSaveButton = useMemo(
-        () =>
-            Object.keys(localCar).length < 3 &&
+    const isYearValid: boolean = useMemo(() => {
+        if (localCar.releaseYear)
+            return (
+                localCar.releaseYear > new Date().getFullYear() ||
+                localCar.releaseYear < new Date(0).getFullYear()
+            );
+        return false;
+    }, [localCar.releaseYear]);
+
+    const disabledSaveButton = useMemo(() => {
+        const isValid =
+            Object.keys(localCar).length === 3 &&
+            // @ts-expect-error check null
             !Object.values(localCar).includes(null) &&
-            !Object.values(localCar).includes(NaN),
-        [localCar],
-    );
+            !Object.values(localCar).includes(NaN);
+        return isValid && !isYearValid;
+    }, [localCar, isYearValid]);
 
     useEffect(() => {
-        if (!localCar?.brandId || !selectedBrand) return;
+        if (!localCar?.brandId || !selectedBrand) {
+            return;
+        }
+        if (localCar.brandId !== car.brandId) {
+            const { model, ...newCar } = localCar;
+            setLocalCar(newCar);
+        }
 
         let isStale = false;
 
@@ -68,10 +84,10 @@ function BrandInputModal({
         return () => {
             isStale = true;
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [localCar?.brandId, selectedBrand]);
-    useEffect(() => {
-        console.log(localCar, !Object.values(localCar).includes(NaN));
-    }, [localCar]);
+
+
 
     return (
         <div className="w-[30rem] p-5">
@@ -129,16 +145,22 @@ function BrandInputModal({
                         input: " [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
                     }}
                     max={new Date().getFullYear()}
+                    isInvalid={isYearValid}
                     value={localCar.releaseYear?.toString()}
                     isDisabled={Boolean(!localCar.brandId)}
                     onValueChange={(value) => {
-                        console.log(value);
                         setLocalCar((prev) => ({
                             ...prev,
                             releaseYear: Number.parseInt(value),
                         }));
                     }}
                 />
+                {isYearValid && (
+                    <p className="text-red-400">
+                        Nhập sai thông tin năm. Xin vui lòng nhập từ năm 1970
+                        đến {new Date().getFullYear()}
+                    </p>
+                )}
             </div>
             <div className="flex gap-2 pt-3 justify-end">
                 <Button variant="light" onPress={onDismiss}>
@@ -146,9 +168,8 @@ function BrandInputModal({
                 </Button>
                 <Button
                     className="bg-foreground"
-                    disabled={disabledSaveButton}
-                    onPress={() => onSave && onSave(localCar)}
-                    isDisabled={disabledSaveButton}
+                    onPress={() => onSave && onSave(localCar as Car)}
+                    isDisabled={!disabledSaveButton}
                 >
                     <p className="text-background">Lưu</p>
                 </Button>
