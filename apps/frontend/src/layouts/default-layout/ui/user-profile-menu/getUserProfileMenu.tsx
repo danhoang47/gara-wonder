@@ -1,5 +1,5 @@
 import { SignInTrigger, SignOutTrigger } from "@/features/user";
-import { Link } from "@nextui-org/react";
+import { Link } from "react-router-dom";
 
 type MenuItem = {
     key: string;
@@ -33,7 +33,7 @@ const getUserProfileMenu = (
                         key: "k4",
                         component: (
                             <Link
-                                href={`supplier-registration`}
+                                to={`supplier-registration`}
                                 className="text-foreground text-small"
                                 onClick={(e) => {
                                     if (!isLogin) {
@@ -52,7 +52,7 @@ const getUserProfileMenu = (
                         key: "k3",
                         component: (
                             <Link
-                                href={`garage-registration`}
+                                to="/garage-registration"
                                 className="text-foreground text-small"
                                 onClick={(e) => {
                                     if (!isLogin) {
@@ -84,7 +84,7 @@ const getUserProfileMenu = (
                     key: "k1",
                     component: (
                         <Link
-                            href={`/garages/${garageId}/management`}
+                            to={`/garages/${garageId}/management`}
                             className="text-foreground text-small"
                         >
                             Quản lý Garage
@@ -102,7 +102,7 @@ const getUserProfileMenu = (
                     key: "k1",
                     component: (
                         <Link
-                            href={`/products/${garageId}/management`}
+                            to={`/products/${garageId}/management`}
                             className="text-foreground text-small"
                         >
                             Quản lý Kho hàng
@@ -120,7 +120,7 @@ const getUserProfileMenu = (
                     key: "k3",
                     component: (
                         <Link
-                            href={`garage-registration`}
+                            to={`garage-registration`}
                             className="text-foreground text-small"
                             onClick={(e) => {
                                 if (!isLogin) {
@@ -146,7 +146,7 @@ const getUserProfileMenu = (
                     key: "k3",
                     component: (
                         <Link
-                            href={`supplier-registration`}
+                            to={`supplier-registration`}
                             className="text-foreground text-small"
                             onClick={(e) => {
                                 if (!isLogin) {
@@ -171,7 +171,7 @@ const getUserProfileMenu = (
                     key: "k1",
                     component: (
                         <Link
-                            href={`/account/settings`}
+                            to={`/account/settings`}
                             className="text-foreground text-small"
                         >
                             Cài đặt tài khoản
