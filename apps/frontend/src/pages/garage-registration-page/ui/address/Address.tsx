@@ -1,5 +1,5 @@
 import { Input } from "@nextui-org/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 
 import RegistrationSection from "../registration-section";
@@ -23,16 +23,17 @@ function Address() {
     } = useGarageRegistrationContext();
     const { address, location } = garageRegistrationState;
     const debouncedAddress = useDebouncedValue(address, 500);
+    const [center, setCenter] = useState<google.maps.LatLng>();
     const position = location
         ? {
-            lat: location.coordinates[1],
-            lng: location.coordinates[0],
-        }
+              lat: location.coordinates[1],
+              lng: location.coordinates[0],
+          }
         : defaultLatLng;
 
     useEffect(() => {
-        setGarageRegistrationStateValue("address", "")
-    }, [])
+        setGarageRegistrationStateValue("address", address || "");
+    }, []);
 
     useEffect(() => {
         let isStale = false;
@@ -45,8 +46,14 @@ function Address() {
                 if (!isStale) {
                     const { lat, lng } = data.results[0].geometry.location;
                     setGarageRegistrationStateValue("location", {
-                        coordinates: [lng, lat]
+                        coordinates: [lng, lat],
                     });
+                    setCenter(
+                        new google.maps.LatLng({
+                            lat,
+                            lng,
+                        }),
+                    );
                 }
             }
         };
@@ -82,15 +89,28 @@ function Address() {
                     <Map
                         mapId={"36cc488b1b7a7759"}
                         defaultCenter={position}
+                        center={center}
                         defaultZoom={14}
                         mapTypeId={"roadmap"}
                         disableDefaultUI
                         onDrag={(event) => {
-                            const latlng = event.map.getCenter()
+                            const latlng = event.map.getCenter();
                             if (latlng) {
                                 setGarageRegistrationStateValue("location", {
-                                    coordinates:  [latlng.lng(), latlng.lat()]
+                                    coordinates: [latlng.lng(), latlng.lat()],
                                 });
+                            }
+                        }}
+                        onDragstart={() => {
+                            setCenter(undefined);
+                        }}
+                        onDragend={(event) => {
+                            const latlng = event.map.getCenter();
+                            if (latlng) {
+                                setGarageRegistrationStateValue("location", {
+                                    coordinates: [latlng.lng(), latlng.lat()],
+                                });
+                                setCenter(latlng);
                             }
                         }}
                     >

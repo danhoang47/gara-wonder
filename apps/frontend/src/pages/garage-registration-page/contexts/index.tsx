@@ -47,11 +47,11 @@ const garageRegistrationConstraints: GarageRegistrationConstraints = {
         required: "Địa chỉ là bắt buộc",
     },
     location: {
-        required: "",
+        required: "Địa điểm trên bản đồ là bắt buộc",
     },
     services: {
-        required: ""
-    }
+        required: "Garage của bạn phải có ít nhất một dịch vụ",
+    },
 };
 
 const validate = (
@@ -60,8 +60,14 @@ const validate = (
 ): [boolean, string | undefined] => {
     if (!constraint) return [true, undefined];
 
-    if (constraint.required && !value || (Array.isArray(value) && value.length === 0)) {
-        return [false, constraint.required];
+    if (constraint?.required) {
+        if (!value) return [false, constraint.required];
+
+        const isArray = Array.isArray(value);
+
+        if (isArray && (value.length === 0 || !value)) {
+            return [false, constraint.required];
+        }
     }
 
     if (typeof value === "string") {

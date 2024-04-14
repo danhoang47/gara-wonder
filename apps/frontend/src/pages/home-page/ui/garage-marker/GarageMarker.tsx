@@ -53,8 +53,9 @@ function GarageMarker({
                 lat: location.coordinates[1],
                 lng: location.coordinates[0],
             }}
-            className="cursor-pointer relative"
+            className={clsx("cursor-pointer relative", isOpenGarageCard && "z-10")}
             onClick={() => setOpenGarageCard((prev) => !prev)}
+            zIndex={isOpenGarageCard ? 10 : 0}
         >
             <div
                 className={clsx(
