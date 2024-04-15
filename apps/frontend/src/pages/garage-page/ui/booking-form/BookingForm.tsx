@@ -2,10 +2,10 @@ import { Button } from "@nextui-org/react";
 import BrandInput from "./brand-input";
 import ServiceSelect from "./service-select";
 import SelectInput from "./select-input";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useOrderContext } from "../../hooks";
-import { useAppDispatch } from "@/core/hooks";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { orderAdded } from "@/features/cart/cart.slice";
 import { createPortal } from "react-dom";
 import { Overlay } from "@/core/ui";
@@ -13,12 +13,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function BookingForm() {
+    const { garageId } = useParams();
     const navigate = useNavigate();
     const { order } = useOrderContext();
-
+    const user = useAppSelector((state) => state.user.value);
     const [isDomReady, setDomReady] = useState<boolean>(false);
     const [hasAddedToCart, setAddedToCart] = useState<boolean>(false);
     const dispatch = useAppDispatch();
+    const disabledBook = useMemo(
+        () => user?.garageId === garageId,
+        [user?.garageId, garageId],
+    );
 
     const onBookPress = () => {
         navigate("/book", {
@@ -73,7 +78,7 @@ function BookingForm() {
                     <Button
                         color="primary"
                         radius="sm"
-                        isDisabled={validateForm}
+                        isDisabled={validateForm || disabledBook}
                         disableAnimation
                         onClick={onBookPress}
                         className="w-full"
@@ -84,7 +89,7 @@ function BookingForm() {
                         color="default"
                         radius="sm"
                         variant="bordered"
-                        isDisabled={validateForm}
+                        isDisabled={validateForm || disabledBook}
                         disableAnimation
                         onClick={onAddToCart}
                         className="w-full"
