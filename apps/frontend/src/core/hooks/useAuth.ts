@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector, useLoadingContext } from ".";
-import { getAdditionalUserInfo, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import {
     Type,
     getGarageByUserId,
