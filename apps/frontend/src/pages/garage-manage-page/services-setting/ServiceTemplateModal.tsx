@@ -46,8 +46,8 @@ export default function ServiceTemplateModal({
 }: ServiceTemplateModalProps) {
     const [localService, setLocalService] = useState<Partial<Service>>({
         _id: nanoid(),
-        highestPrice: 100,
-        lowestPrice: 0,
+        highestPrice: 10000000,
+        lowestPrice: 1000000,
         estimationType: EstimateType.Exact,
         estimateDuration: undefined,
         brandIds: "all",
@@ -223,12 +223,16 @@ export default function ServiceTemplateModal({
                             type="number"
                             value={String(localService.lowestPrice)}
                             endContent={"VND"}
-                            onValueChange={(price) =>
-                                setLocalService((prev) => ({
-                                    ...prev,
-                                    lowestPrice: Number(price),
-                                }))
-                            }
+                            onValueChange={(price) => {
+                                if (
+                                    Number(price) < localService.highestPrice!
+                                ) {
+                                    setLocalService((prev) => ({
+                                        ...prev,
+                                        lowestPrice: Number(price),
+                                    }));
+                                }
+                            }}
                             classNames={{
                                 inputWrapper: "border",
                             }}
@@ -244,12 +248,14 @@ export default function ServiceTemplateModal({
                             type="number"
                             value={String(localService.highestPrice)}
                             endContent="VND"
-                            onValueChange={(price) =>
-                                setLocalService((prev) => ({
-                                    ...prev,
-                                    highestPrice: Number(price),
-                                }))
-                            }
+                            onValueChange={(price) => {
+                                if (Number(price) > localService.lowestPrice!) {
+                                    setLocalService((prev) => ({
+                                        ...prev,
+                                        highestPrice: Number(price),
+                                    }));
+                                }
+                            }}
                             classNames={{
                                 inputWrapper: "border",
                             }}
