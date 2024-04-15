@@ -138,7 +138,7 @@ function DatePicker({
             <div className="datePickerCarousel" ref={carouselRef}>
                 {renderedMonth?.map((month) => (
                     <DatePickerCalendar
-                        disabledDates={disabledDates}
+                        disabledDates={[{ from: undefined, to: new Date() }, ...disabledDates]}
                         key={month}
                         mode={mode}
                         month={month}
