@@ -69,6 +69,7 @@ export default function DatePickerCalendar({
                         ? "snap-center w-full"
                         : "snap-start w-[calc(50%-6px)]",
                 ),
+                weekDayWrapper: "text-center"
             }}
             disabledDates={disabledDates}
             renderDate={(date, disabled) => (

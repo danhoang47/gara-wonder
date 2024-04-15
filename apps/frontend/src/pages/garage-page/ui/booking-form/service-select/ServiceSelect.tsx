@@ -3,10 +3,21 @@ import useSWRImmutable from "swr/immutable";
 
 import useOrderContext from "@/pages/garage-page/hooks/useOrderContext";
 import { getGarageServices } from "@/api";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+
 
 export default function ServiceSelect() {
     const { order, setOrderValue } = useOrderContext();
+    const [urlSearchParams] = useSearchParams();
+    const suggestionServices = useMemo(() => {
+        const suggestionServicesParam = urlSearchParams.get("sg")
+        if (suggestionServicesParam) {
+            return suggestionServicesParam.split(",")
+        } 
+
+        return undefined
+    }, [urlSearchParams])
 
     const { isLoading: isServicesLoading, data: services } = useSWRImmutable(
         `service/${order.garageId}`,
@@ -29,8 +40,9 @@ export default function ServiceSelect() {
             return "all";
         }
         if (order.serviceIds) return order.serviceIds;
+        if (suggestionServices) return suggestionServices
         return [];
-    }, [order.serviceIds, services?.data]);
+    }, [order.serviceIds, services?.data, suggestionServices]);
 
     return (
         <div>
