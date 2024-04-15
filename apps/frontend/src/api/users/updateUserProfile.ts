@@ -8,8 +8,8 @@ export default async function updateUserProfile(formData: FormData) {
     try {
         const token = await auth.currentUser?.getIdToken();
         const result = await axios<Response<User>>({
-            method: "post",
-            url: `${baseUsersUrl}/update`,
+            method: "put",
+            url: `${baseUsersUrl}`,
             data: formData,
             headers: { 
                 "Content-Type": "multipart/form-data",

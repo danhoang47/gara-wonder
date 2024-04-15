@@ -88,7 +88,7 @@ export default function ServiceDetail({
                             VND
                         </p>
                         <p className="font-medium">Thời gian hoàn thành</p>
-                        {service?.estimateDuration ? (
+                        {service?.estimateDuration?.length !== 0 ? (
                             <p className="font-medium text-sm">
                                 <span className="text-xl font-semibold">
                                     {(service?.estimateDuration[0]
@@ -103,7 +103,6 @@ export default function ServiceDetail({
                                 Không có thời gian cụ thể
                             </p>
                         )}
-                        <p> {service.estimateDuration}</p>
                         <p className="font-medium">Các loại xe được hỗ trợ</p>
                         {service.brandIds === "all" ? (
                             <Chip

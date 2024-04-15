@@ -18,5 +18,6 @@ export { default as getOrderEvaluation } from "./getOrderEvaluation";
 export { default as getScheduleSlot } from "./getScheduleSlot";
 
 export { default as updateService } from "./updateServices";
+export { default as delteService } from "./deleteService";
 export { default as addNewService } from "./addNewServices";
-export { default as getDistance } from './getDistance'
+export { default as getDistance } from "./getDistance";

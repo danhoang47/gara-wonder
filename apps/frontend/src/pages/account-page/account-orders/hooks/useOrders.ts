@@ -28,12 +28,14 @@ export default function useOrders() {
         [userData],
         async (params) => {
             const paging = params[1];
-            const results = await getUserOrders(
-                userData.token,
-                paging.limit,
-                paging?.nextCursor,
-            );
-            return results;
+            if (userData.token) {
+                const results = await getUserOrders(
+                    userData.token,
+                    paging.limit,
+                    paging?.nextCursor,
+                );
+                return results;
+            }
         },
         DEFAULT_PAGING,
     );

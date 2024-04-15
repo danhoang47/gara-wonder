@@ -41,6 +41,7 @@ function OrderDetail() {
                         {/* Evaluation */}
                         <Evaluation
                             status={order?.status}
+                            evaluationProvided={Boolean(order?.evaluationId)}
                             handOverTime={order?.handOverTime}
                             services={order?.services}
                             refetch={refetch}
