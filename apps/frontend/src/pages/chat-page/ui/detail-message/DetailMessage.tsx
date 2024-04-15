@@ -45,6 +45,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
     const messages = useAppSelector((state) =>
         selectMessages(state.rooms.rooms.entities[room.roomId]),
     );
+    const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
     const group = (data: Message[]) => {
         let previousId: string | undefined = undefined;
@@ -102,6 +103,16 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
 
         return () => clearInterval(id);
     }, [dispatch, room?.garageId, room?.roomId, room?.userId, userId]);
+
+    const handleSelectedService = (serviceId: string) => {
+        const removeIndex = selectedServices.indexOf(serviceId);
+        if (removeIndex > -1) {
+            selectedServices.splice(removeIndex, 1);
+            setSelectedServices((prev) => [...prev]);
+        } else {
+            setSelectedServices((prev) => [...prev, serviceId]);
+        }
+    };
 
     return room ? (
         <div className="flex flex-col col-span-4 overflow-hidden h-full">
@@ -165,20 +176,21 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                         service,
                                                                     ) => (
                                                                         <div className="pt-2">
-                                                                            <Link
-                                                                                href={`/garages/${room.garageId}`}
-                                                                                className="w-full text- cursor-pointer"
+                                                                            <Button
+                                                                                onClick={() => {
+                                                                                    handleSelectedService(
+                                                                                        service._id as string,
+                                                                                    );
+                                                                                }}
+                                                                                className={clsx(
+                                                                                    "w-full text- cursor-pointer bg-background",
+                                                                                    selectedServices.includes(
+                                                                                        service._id as string,
+                                                                                    ) &&
+                                                                                        "bg-primary-400 text-white",
+                                                                                )}
                                                                             >
-                                                                                <div className="flex w-full items-center bg-background shadow-sm rounded-md p-2 justify-center gap-2">
-                                                                                    <img
-                                                                                        src={
-                                                                                            service
-                                                                                                .category
-                                                                                                .icon
-                                                                                        }
-                                                                                        alt=""
-                                                                                        className="w-[16px] h-[16px] object-contain"
-                                                                                    />
+                                                                                <div className="flex w-full items-center shadow-sm rounded-md p-2 justify-center gap-2">
                                                                                     <p className="font-medium text-small">
                                                                                         {
                                                                                             service
@@ -187,9 +199,27 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                                         }
                                                                                     </p>
                                                                                 </div>
-                                                                            </Link>
+                                                                            </Button>
                                                                         </div>
                                                                     ),
+                                                                )}
+                                                                {selectedServices.length >
+                                                                    0 && (
+                                                                    <Link
+                                                                        href={`/garages/${
+                                                                            room.garageId
+                                                                        }?sg=${selectedServices.join()}`}
+                                                                        className={clsx(
+                                                                            "w-full text- cursor-pointer  mt-2",
+                                                                        )}
+                                                                    >
+                                                                        <div className="flex w-full items-center rounded-md p-2 justify-center gap-2">
+                                                                            <p className="font-medium text-xs hover:text-primary">
+                                                                                Đặt
+                                                                                ngay
+                                                                            </p>
+                                                                        </div>
+                                                                    </Link>
                                                                 )}
                                                             </div>
                                                         </div>
