@@ -29,7 +29,7 @@ export type Paging = {
 export type Image = Model & {
     width: number,
     height: number,
-    url: string
+    url: string,
 }
 
 export const enum Status {

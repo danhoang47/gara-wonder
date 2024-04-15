@@ -61,7 +61,15 @@ const GarageRegistrationPage = () => {
         }
     };
 
-    async function onRegistrationFinish(garage: any) {}
+    async function onRegistrationFinish(supplier: unknown) {
+        // API-1: luu thong tin supplier
+        // axios.post(/api/supplier, supplier)
+
+        // API-2: luu anh cua product
+        // axios.post(/api/supplier/product/photo/upload, )
+        // Product: { _id, images: File[] }
+        // product: { _id: 1, images: [File, File, File]}
+    }
 
     return (
         <div className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0">
