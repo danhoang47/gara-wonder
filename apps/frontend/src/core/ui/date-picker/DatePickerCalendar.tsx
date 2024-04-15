@@ -4,12 +4,14 @@ import CalendarCell from "../calendar/CalendarCell";
 import { DatePickerMode } from "./DatePicker";
 import clsx from "clsx";
 import { DateRange } from "@/core/types";
+import { DisabledDate } from "../calendar/Calendar";
 
 export type DatePickerCalendarBaseProps = {
     month: number;
     year: number;
     onDateSelected: (date: Date) => void;
     mode: DatePickerMode;
+    disabledDates?: DisabledDate[]
 };
 
 export type SingleModeProps = DatePickerCalendarBaseProps & {
@@ -30,6 +32,7 @@ export default function DatePickerCalendar({
     onDateSelected,
     selectedDate,
     year,
+    disabledDates = []
 }: DatePickerCalendarProps) {
     const getSelectedClassName = (date: Date) => {
         if (mode === "single") {
@@ -67,7 +70,7 @@ export default function DatePickerCalendar({
                         : "snap-start w-[calc(50%-6px)]",
                 ),
             }}
-            disabledDates={[{ from: undefined, to: new Date() }]}
+            disabledDates={disabledDates}
             renderDate={(date, disabled) => (
                 <CalendarCell
                     key={date.getTime()}

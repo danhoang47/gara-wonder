@@ -6,11 +6,12 @@ import "./DatePicker.styles.scss";
 import { usePrevious } from "@/core/hooks";
 import DatePickerCalendar from "./DatePickerCalendar";
 import { DateRange } from "@/core/types";
+import { DisabledDate } from "../calendar/Calendar";
 
 export type DatePickerMode = "single" | "range";
 
 export type DatePickerBaseProps = {
-    disabledDates?: Date[];
+    disabledDates?: DisabledDate[];
     defaultYear?: number;
     defaultMonth?: number;
     disallowEmptySelection?: boolean;
@@ -40,6 +41,7 @@ function DatePicker({
     selectedDate,
     disallowEmptySelection = false,
     onSelectedChange,
+    disabledDates = []
 }: DatePickerProps) {
     const [year, setYear] = useState<number>(defaultYear);
     const [month, setMonth] = useState<number>(defaultMonth);
@@ -136,6 +138,7 @@ function DatePicker({
             <div className="datePickerCarousel" ref={carouselRef}>
                 {renderedMonth?.map((month) => (
                     <DatePickerCalendar
+                        disabledDates={disabledDates}
                         key={month}
                         mode={mode}
                         month={month}

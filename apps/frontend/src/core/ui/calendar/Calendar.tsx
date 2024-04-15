@@ -10,11 +10,11 @@ const NUMBER_OF_COLUMN = 7;
 const columns = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 export type DateRange = {
-    from?: Date | number,
-    to: Date | number
-}
+    from?: Date | number;
+    to?: Date | number;
+};
 
-export type DisabledDate = Date | number | string | DateRange
+export type DisabledDate = Date | number | string | DateRange;
 
 export type CalendarProps = {
     year: number;
@@ -24,39 +24,53 @@ export type CalendarProps = {
     renderHeader?: (date: Date) => React.ReactNode;
     classNames?: Partial<
         Record<
-            "wrapper" | "dateWrapper" | "dateCell" | "row" | "headerCell" |
-            "weekDayWrapper" | "weekDay" ,
-            string 
+            | "wrapper"
+            | "dateWrapper"
+            | "dateCell"
+            | "row"
+            | "headerCell"
+            | "weekDayWrapper"
+            | "weekDay",
+            string
         >
     >;
     onDateClick?: (dates: Date) => void;
-    showWeekDays?: boolean,
-    showHeader?: boolean,
+    showWeekDays?: boolean;
+    showHeader?: boolean;
 };
 
 const checkIfDateDisabled = (date: Date, disabledDates?: DisabledDate[]) => {
     if (!disabledDates) return true;
 
     for (const disabledDate of disabledDates) {
-        const startOfDate = moment(new Date(date)).startOf("day")
+        const startOfDate = moment(new Date(date)).startOf("day");
 
         if (
             typeof disabledDate === "string" ||
             typeof disabledDate === "number" ||
             disabledDate instanceof Date
         ) {
-            const startOfDisabledDate = moment(new Date(disabledDate)).startOf("day");
+            const startOfDisabledDate = moment(new Date(disabledDate)).startOf(
+                "day",
+            );
 
             if (isTwoDateSame(startOfDate, startOfDisabledDate)) {
                 return true;
             }
         } else {
-            let startOfDisabledFromDate = disabledDate?.from && moment(disabledDate?.from).startOf("day")
-            let startOfDisabledToDate = moment(disabledDate?.to).startOf("day")
+            const startOfDisabledFromDate =
+                disabledDate?.from && moment(disabledDate?.from).startOf("day");
+            const startOfDisabledToDate = moment(disabledDate?.to).startOf(
+                "day",
+            );
 
             if (
                 startOfDisabledFromDate &&
-                isInRange(startOfDate, startOfDisabledFromDate, startOfDisabledToDate)
+                isInRange(
+                    startOfDate,
+                    startOfDisabledFromDate,
+                    startOfDisabledToDate,
+                )
             ) {
                 return true;
             }
@@ -115,7 +129,13 @@ const Calendar = ({
             )}
             <div className="flex flex-row">
                 {columns.map((column) => (
-                    <div key={column} className={clsx("basis-[calc(100%/7)] py-2", classNames?.weekDayWrapper)}>
+                    <div
+                        key={column}
+                        className={clsx(
+                            "basis-[calc(100%/7)] py-2",
+                            classNames?.weekDayWrapper,
+                        )}
+                    >
                         <p className="text-default-400">{column}</p>
                     </div>
                 ))}
@@ -133,7 +153,10 @@ const Calendar = ({
                                 <CalendarCell
                                     key={date.getTime()}
                                     date={date}
-                                    disabled={checkIfDateDisabled(date, disabledDates)}
+                                    disabled={checkIfDateDisabled(
+                                        date,
+                                        disabledDates,
+                                    )}
                                     onClick={onDateClick}
                                 />
                             ),
