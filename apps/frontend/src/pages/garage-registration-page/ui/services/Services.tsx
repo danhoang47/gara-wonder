@@ -97,9 +97,9 @@ export default function Services() {
                 header={
                     <div className="flex justify-between items-center">
                         <div>
-                            <span>Services</span>
+                            <span>Dịch vụ</span>
                             <p className="text-sm text-foreground font-normal">
-                                Provide the services your garage will serves
+                                Tùy chọn những dịch vụ mà garage của bạn cung cấp
                             </p>
                         </div>
                         <Button
@@ -116,7 +116,7 @@ export default function Services() {
                                 (categories?.length || 0)
                             }
                         >
-                            Add Service
+                            Thêm dịch vụ
                         </Button>
                     </div>
                 }

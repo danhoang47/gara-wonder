@@ -60,23 +60,26 @@ export default function ServiceTemplateModal({
     );
 
     useEffect(() => {
+        if (!isOpen) return;
+
         if (type === "edit" && service) {
             setLocalService(service);
         } else {
             setLocalService({
                 _id: nanoid(),
-                highestPrice: 100,
-                lowestPrice: 0,
+                highestPrice: 10000000,
+                lowestPrice: 100000,
             });
         }
-    }, [type, service]);
+    }, [type, service, isOpen]);
 
-    const resetLocalService = () =>
+    const resetLocalService = () => {
         setLocalService({
             _id: nanoid(),
-            highestPrice: 100,
-            lowestPrice: 0,
+            highestPrice: 10000000,
+            lowestPrice: 100000,
         });
+    };
 
     const renderBrandSelectValue = (
         brs: SelectedItems<Brand>,
@@ -166,7 +169,7 @@ export default function ServiceTemplateModal({
                                 _id: "all",
                                 createdAt: 0,
                                 updatedAt: 0,
-                                name: "Select All",
+                                name: "Tất cả",
                             },
                             ...(brands || []),
                         ]}
