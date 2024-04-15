@@ -71,10 +71,11 @@ function BookingForm() {
 
     useEffect(() => {
         if (formRef.current && suggestionServices) {
-            formRef.current.scrollIntoView({
-                behavior: "smooth",
+            const { current } = formRef
+            current.scrollIntoView({
                 block: "center",
-            });
+                behavior: "smooth"
+            })
         }
     }, [formRef, suggestionServices]);
 
