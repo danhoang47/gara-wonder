@@ -2,8 +2,8 @@ import { Button } from "@nextui-org/react";
 import BrandInput from "./brand-input";
 import ServiceSelect from "./service-select";
 import SelectInput from "./select-input";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useOrderContext } from "../../hooks";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { orderAdded } from "@/features/cart/cart.slice";
@@ -14,11 +14,17 @@ import { faCheckCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function BookingForm() {
     const { garageId } = useParams();
+    const formRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
     const { order } = useOrderContext();
     const user = useAppSelector((state) => state.user.value);
     const [isDomReady, setDomReady] = useState<boolean>(false);
     const [hasAddedToCart, setAddedToCart] = useState<boolean>(false);
+    const [urlSearchParams] = useSearchParams();
+    const suggestionServices = useMemo(
+        () => urlSearchParams.get("sg"),
+        [urlSearchParams],
+    );
     const dispatch = useAppDispatch();
     const disabledBook = useMemo(
         () => user?.garageId === garageId,
@@ -63,8 +69,20 @@ function BookingForm() {
         }
     }, [hasAddedToCart]);
 
+    useEffect(() => {
+        if (formRef.current && suggestionServices) {
+            formRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+        }
+    }, [formRef, suggestionServices]);
+
     return (
-        <div className="px-5 py-8 border-zinc-200 border-2 rounded-md">
+        <div
+            className="px-5 py-8 border-zinc-200 border-2 rounded-md"
+            ref={formRef}
+        >
             <div className="flex flex-col gap-6 ">
                 <p className="font-semibold text-xl leading-5">Đặt dịch vụ</p>
                 <div className="flex flex-col gap-3 relative">
