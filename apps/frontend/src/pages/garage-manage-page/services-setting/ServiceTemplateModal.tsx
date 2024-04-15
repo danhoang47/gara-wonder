@@ -60,6 +60,8 @@ export default function ServiceTemplateModal({
     );
 
     useEffect(() => {
+        if (!isOpen) return;
+
         if (type === "edit" && service) {
             setLocalService(service);
         } else {
@@ -69,7 +71,7 @@ export default function ServiceTemplateModal({
                 lowestPrice: 0,
             });
         }
-    }, [type, service]);
+    }, [type, service, isOpen]);
 
     const resetLocalService = () =>
         setLocalService({

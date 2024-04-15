@@ -10,7 +10,7 @@ export type HeaderProps = StylableProps & {
     middleContent?: React.ReactNode;
 };
 
-const garageRegex = new RegExp(/^\/garages\/[a-zA-Z0-9]*$/g)
+const garageRegex = new RegExp(/^\/garages\/[a-zA-Z0-9]*$/)
 
 function Header({
     leftContent,
