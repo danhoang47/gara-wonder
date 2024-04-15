@@ -13,12 +13,10 @@ function LandingPage() {
         <div id="landing" className="pb-10 overflow-auto">
             <div className="h-[60vh] flex gap-4">
                 <div className="flex flex-col grow basis-0 justify-center h-full ml-10">
-                    <h1 className="text-3xl font-medium">
-                        Trở thành{" "}
-                        <span className="font-semibold">Nhà cung cấp</span> của
-                        hệ thống chuỗi garage lớn nhất tại Việt Nam
+                    <h1 className="text-3xl font-semibold">
+                        Trở thành Nhà cung cấp của hệ thống chuỗi garage lớn nhất tại Việt Nam
                     </h1>
-                    <p className="text-xl text-default-500">
+                    <p className="text-defaul text-default-500">
                         Cung cấp những dịch vụ và trải nghiệm tốt nhất
                     </p>
                     <Button
