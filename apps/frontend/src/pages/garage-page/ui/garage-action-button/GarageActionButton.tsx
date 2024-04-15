@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { createNewRoom, selectRooms } from "@/features/chat/rooms.slice";
 import { FetchStatus } from "@/core/types";
+import { Button } from "@nextui-org/react";
 
 function GarageActionButton() {
     const dispatch = useAppDispatch();
@@ -24,14 +25,15 @@ function GarageActionButton() {
     const rooms = useAppSelector((state) => selectRooms(state));
 
     return (
-        <div className="flex gap-4">
-            <FontAwesomeIcon
-                icon={faComment}
+        <div className="flex">
+            <Button
+                size="md"
+                variant="light"
                 className={clsx(
                     "cursor-pointer",
                     user.garageId === garageId && "hidden",
                 )}
-                onClick={async () => {
+                onPress={async () => {
                     const isExistRoom = rooms.find(
                         (room) => room.garageId === garageId,
                     );
@@ -50,23 +52,48 @@ function GarageActionButton() {
                         navigate(`/chat/${room._id}`);
                     }
                 }}
-            />
-            <FontAwesomeIcon
-                icon={faHeart}
+                startContent={<FontAwesomeIcon icon={faComment} />}
+            >
+                <span className="font-medium">Nhắn tin</span>
+            </Button>
+            <Button
+                size="md"
+                variant="light"
                 className={clsx(
                     "cursor-pointer",
-                    isFavorite ? "text-red-500" : "text-black",
+                    user.garageId === garageId && "hidden",
                 )}
-                onClick={() => setIsFavorite(!isFavorite)}
-            />
-            <FontAwesomeIcon
-                icon={faFlag}
+                startContent={
+                    <FontAwesomeIcon
+                        icon={faHeart}
+                        className={clsx(
+                            "cursor-pointer",
+                            isFavorite ? "text-red-500" : "text-black",
+                        )}
+                    />
+                }
+            >
+                <span className="font-medium">Yêu thích</span>
+            </Button>
+            <Button
+                size="md"
+                variant="light"
                 className={clsx(
                     "cursor-pointer",
-                    isFlag ? "text-primary" : "text-black",
+                    user.garageId === garageId && "hidden",
                 )}
-                onClick={() => setIsFlag(!isFlag)}
-            />
+                startContent={
+                    <FontAwesomeIcon
+                        icon={faFlag}
+                        className={clsx(
+                            "cursor-pointer",
+                            isFlag ? "text-primary" : "text-black",
+                        )}
+                    />
+                }
+            >
+                <span className="font-medium">Báo cáo</span>
+            </Button>
         </div>
     );
 }
