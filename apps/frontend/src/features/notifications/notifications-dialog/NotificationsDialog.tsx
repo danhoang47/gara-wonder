@@ -1,28 +1,36 @@
+import { useAppSelector } from "@/core/hooks";
+import { Role } from "@/core/types";
 import { Tab, Tabs } from "@nextui-org/react";
 import React, { useState } from "react";
 
-export type Region = "general" | "orders"
+export type Region = "general" | "orders";
 
 export type NotificationsDialogProps = {
-    defaultRegion: Region,
-    customerNotifications: React.ReactNode,
-    garageNotifications?: React.ReactNode,
-}
+    defaultRegion: Region;
+    customerNotifications: React.ReactNode;
+    garageNotifications?: React.ReactNode;
+};
 
 function NotificationsDialog({
     defaultRegion,
     customerNotifications,
-    garageNotifications
+    garageNotifications,
 }: NotificationsDialogProps) {
     const [region, setRegion] = useState<Region>(defaultRegion);
+    const user = useAppSelector((state) => state.user.value);
+    const isBelongToGarage =
+        user?.role === Role.GarageOwner || user?.role === Role.Staff;
 
     const onRenderNotifications = (): React.ReactNode => {
-        switch(region) {
-            case "general": return <>{customerNotifications}</>
-            case "orders": return <>{garageNotifications}</>
-            default: return undefined
+        switch (region) {
+            case "general":
+                return <>{customerNotifications}</>;
+            case "orders":
+                return <>{garageNotifications}</>;
+            default:
+                return undefined;
         }
-    }
+    };
 
     return (
         <div className="w-full flex flex-col">
@@ -37,31 +45,33 @@ function NotificationsDialog({
                     <div className="-ml-2">
                         <Tabs
                             classNames={{
-                                tabList: "gap-0"
-                            }} 
-                            variant="underlined" 
+                                tabList: "gap-0",
+                            }}
+                            variant="underlined"
                             defaultSelectedKey={region}
                             onSelectionChange={(selectedRegion) => {
                                 if (typeof selectedRegion === "string") {
-                                    setRegion(selectedRegion as Region)
+                                    setRegion(selectedRegion as Region);
                                 }
                             }}
                         >
-                            <Tab key="general" title="Chung"/>
-                            <Tab key="orders" title="Đơn hàng" />
+                            <Tab key="general" title="Chung" />
+                            {isBelongToGarage && (
+                                <Tabs key="orders" title="Đơn hàng" />
+                            )}
                         </Tabs>
                     </div>
                     <div className="ml-auto">
                         <Tabs
                             classNames={{
                                 tabList: "bg-background gap-0 px-0",
-                            }} 
+                            }}
                             defaultSelectedKey="all"
                             radius="full"
                             disableAnimation
                         >
-                            <Tab key="all" title="Tất cả"/>
-                            <Tab key="unread" title="Chưa đọc"/>
+                            <Tab key="all" title="Tất cả" />
+                            <Tab key="unread" title="Chưa đọc" />
                         </Tabs>
                     </div>
                 </div>
