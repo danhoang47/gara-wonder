@@ -1,4 +1,5 @@
 import {
+    useAppDispatch,
     useAppSelector,
     useLoadingContext,
     useModalContext,
@@ -14,6 +15,9 @@ import {
     Navigation,
     Products,
 } from "./ui";
+import { createSupplier } from "@/api/supplier";
+import { notify } from "@/features/toasts/toasts.slice";
+import { SupplierRegistration } from "@/core/types";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export enum RegistrationSection {
@@ -32,6 +36,10 @@ export type GarageFormState = {
 };
 
 const GarageRegistrationPage = () => {
+    const dispatch = useAppDispatch();
+    const user = useAppSelector((state) => state.user.value);
+    const token = useAppSelector((state) => state.user.token);
+
     const {
         currentSectionIndex,
         allowContinue,
@@ -61,7 +69,37 @@ const GarageRegistrationPage = () => {
         }
     };
 
-    async function onRegistrationFinish(garage: any) {}
+    async function onRegistrationFinish(supplier: SupplierRegistration) {
+        load("registrationSaveLoad");
+
+        // uploadGarageImages(garage.backgroundImage, garage.images);
+        supplier.userId = user?._id;
+        try {
+            const result = await createSupplier(supplier, token!);
+
+            if (result.statusCode === 200) {
+                dispatch(
+                    notify({
+                        type: "success",
+                        title: "Register Supplier",
+                        description: "Successfully register your supplier",
+                    }),
+                );
+                // dispatch(setRoleToGarageOwner())
+                // navigate(`/garages/${result.data._id}/management`);
+            }
+        } catch (error) {
+            dispatch(
+                notify({
+                    type: "failure",
+                    title: "Register Supplier",
+                    description: "Some error occured, please try again later",
+                }),
+            );
+        } finally {
+            unload("registrationSaveLoad");
+        }
+    }
 
     return (
         <div className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0">
