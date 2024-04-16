@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, HttpStatusCode } from "axios";
 import { EnhancedStore } from "@reduxjs/toolkit";
 import { auth } from "@/components/firebase";
 import { updateToken } from "@/features/user/user.slice";
-import { Message, Room } from "@/core/types/model";
+import { Message, Room, RoomType } from "@/core/types/model";
 import { Response } from "@/core/types";
 import { WithCategoryService } from "../garages/getGarageServices";
 
@@ -57,7 +57,7 @@ const globalConfig: RetryConfig = {
 export const getRooms = async (roomIds?: string[]) => {
     try {
         const url =
-            roomIds && roomIds.length !== 0 ? `?roomIds=${roomIds.join()}` : "";
+            roomIds && roomIds.length !== 0 ? `?roomIds=${roomIds.join(",")}` : "";
 
         const result = await chatInstance.get<Response<Room[]>>(
             url,
@@ -73,16 +73,18 @@ export type TrackingStatus = Pick<Room, "isOnline" | "lastActiveAt" | "_id">;
 
 export const trackingActivity = async (
     userId: string,
-    garageId: string,
+    entityId: string,
     roomId: string,
+    type: RoomType
 ) => {
     try {
         const result = await chatInstance.post<Response<TrackingStatus>>(
             "/trackingActivity",
             {
                 userId,
-                garageId,
+                entityId,
                 roomId,
+                type
             },
             globalConfig,
         );

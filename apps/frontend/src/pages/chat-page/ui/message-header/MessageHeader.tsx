@@ -53,7 +53,7 @@ const MessageHeader = ({
                 )}
             </div>
             <div className="leading-none">
-                <Link href={`/garages/${room.garageId}`}>
+                <Link href={`/garages/${room.entityId}`}>
                     <h2 className="font-semibold text-black">
                         {room?.displayName}
                     </h2>
