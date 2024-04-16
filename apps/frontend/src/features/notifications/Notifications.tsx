@@ -16,10 +16,20 @@ import { hasAllGarageNotificationsRead } from "./garage-notifications.slice";
 import CustomerNotifications from "./customer-notifications";
 import GarageNotifications from "./garage-notifications";
 import useGarageNotifications from "./useGarageNotifications";
+import { Role } from "@/core/types";
 
 function Notifications() {
     const { open } = useModalContext();
     const user = useAppSelector((state) => state.user.value);
+    const isBelongToGarage = useMemo(() => {
+        if (!user) return false;
+
+        return (
+            user?.role === Role.GarageOwner ||
+            user?.role === Role.Staff ||
+            user?.role === Role.GarageOwnerAndSupplier
+        );
+    }, [user]);
     const hasCustomerNotificationsAllRead = useAppSelector((state) =>
         hasAllNotificationsRead(state.notifications),
     );
@@ -80,6 +90,7 @@ function Notifications() {
             </PopoverTrigger>
             <PopoverContent className="w-[420px] p-0">
                 <NotificationsDialog
+                    hasOrderNotifications={isBelongToGarage}
                     defaultRegion="general"
                     customerNotifications={
                         <CustomerNotifications
@@ -89,11 +100,13 @@ function Notifications() {
                         />
                     }
                     garageNotifications={
-                        <GarageNotifications
-                            isLoading={isGarageNotificationsLoading}
-                            isReload={isGarageNotificationsReload}
-                            onNext={onGarageNotificationsNext}
-                        />
+                        isBelongToGarage && (
+                            <GarageNotifications
+                                isLoading={isGarageNotificationsLoading}
+                                isReload={isGarageNotificationsReload}
+                                onNext={onGarageNotificationsNext}
+                            />
+                        )
                     }
                 />
             </PopoverContent>

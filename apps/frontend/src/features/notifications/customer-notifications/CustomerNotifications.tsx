@@ -35,8 +35,9 @@ function CustomerNotifications({
         }
         if (!isLoading && notifications.length === 0) {
             return (
-                <div className="flex flex-col items-center py-4 gap-4">
+                <div className="flex flex-col items-center py-4 gap-4 h-[60vh] justify-center">
                     <img
+                        alt="empty notification image"
                         src="https://cdn-icons-png.freepik.com/512/7486/7486744.png"
                         className="max-w-24 opacity-40"
                     />

@@ -22,8 +22,8 @@ const Rooms = ({ rooms, onRoomSelected, selectedRoom }: IListUserProps) => {
                 {rooms.length > 0 ? (
                     rooms.map((room) => (
                         <div
-                            key={room.garageId}
-                            className={`rounded-lg flex items-center gap-2 px-3 py-2 rounded transition ease-linear  ${
+                            key={room.entityId}
+                            className={`rounded-lg flex items-center gap-2 px-3 py-2 transition ease-linear  ${
                                 selectedRoom?._id === room._id &&
                                 "bg-[#e8f3ff] border-l-8 border-l-primary"
                             } ${

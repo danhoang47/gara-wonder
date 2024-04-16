@@ -1,5 +1,3 @@
-import { useAppSelector } from "@/core/hooks";
-import { Role } from "@/core/types";
 import { Tab, Tabs } from "@nextui-org/react";
 import React, { useState } from "react";
 
@@ -9,17 +7,16 @@ export type NotificationsDialogProps = {
     defaultRegion: Region;
     customerNotifications: React.ReactNode;
     garageNotifications?: React.ReactNode;
+    hasOrderNotifications: boolean,
 };
 
 function NotificationsDialog({
     defaultRegion,
     customerNotifications,
     garageNotifications,
+    hasOrderNotifications
 }: NotificationsDialogProps) {
     const [region, setRegion] = useState<Region>(defaultRegion);
-    const user = useAppSelector((state) => state.user.value);
-    const isBelongToGarage =
-        user?.role === Role.GarageOwner || user?.role === Role.Staff;
 
     const onRenderNotifications = (): React.ReactNode => {
         switch (region) {
@@ -56,9 +53,7 @@ function NotificationsDialog({
                             }}
                         >
                             <Tab key="general" title="Chung" />
-                            {isBelongToGarage && (
-                                <Tabs key="orders" title="Đơn hàng" />
-                            )}
+                            <Tab key="orders" title="Đơn hàng" hidden={!hasOrderNotifications}/>
                         </Tabs>
                     </div>
                     <div className="ml-auto">

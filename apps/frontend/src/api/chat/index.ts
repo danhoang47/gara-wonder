@@ -92,14 +92,11 @@ export const trackingActivity = async (
     }
 };
 
-export const createRoom = async (userId: string, garageId: string) => {
+export const createRoom = async (params: unknown) => {
     try {
         const result = await chatInstance.post<Response<Room>>(
             "/",
-            {
-                userId,
-                garageId,
-            },
+            params,
             globalConfig,
         );
         return result.data;

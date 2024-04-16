@@ -13,7 +13,7 @@ import {
     muteRoom,
     trackingActivity,
 } from "@/api/chat";
-import { FetchStatus, Room, RoomStatus } from "@/core/types";
+import { FetchStatus, Room, RoomStatus, RoomType } from "@/core/types";
 import { AppState } from "@/store";
 
 export type RoomEntry = Omit<Room, "messages"> & {
@@ -210,10 +210,14 @@ export const trackingActivityStatus = createAsyncThunk(
 
 export const createNewRoom = createAsyncThunk(
     "rooms/createRoom",
-    async (params: { userId: string; garageId: string }) => {
+    async (params: {
+        userId: string;
+        entityId: string;
+        type: RoomType;
+        attachEntityId?: string;
+    }) => {
         try {
-            const { userId, garageId } = params;
-            const result = await createRoom(userId, garageId);
+            const result = await createRoom(params);
             return result;
         } catch (err) {
             return Promise.reject(err);
