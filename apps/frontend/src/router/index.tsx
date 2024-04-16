@@ -12,7 +12,7 @@ import { FullPageLoad } from "@/core/ui";
 import {
     ErrorPage,
     PaymentPage,
-    Product,
+    ProductPage,
     ProductsPage,
     UserSettingsPage,
 } from "@/pages";
@@ -166,7 +166,7 @@ const router = createBrowserRouter(
                     <Route path=":roomId" element={<ChatPage />}></Route>
                 </Route>
                 <Route path="payment" element={<PaymentPage />} />
-                <Route path="products/:productId" element={<Product />} />
+                <Route path="products/:productId" element={<ProductPage />} />
             </Route>
             <Route
                 path="garages/:garageId/management"
