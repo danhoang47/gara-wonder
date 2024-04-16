@@ -17,7 +17,7 @@ import {
 } from "./ui";
 import { createSupplier } from "@/api/supplier";
 import { notify } from "@/features/toasts/toasts.slice";
-import { SupplierRegistration } from "@/core/types";
+import { SupplierRegistration } from "./contexts"; 
 
 // eslint-disable-next-line react-refresh/only-export-components
 export enum RegistrationSection {
