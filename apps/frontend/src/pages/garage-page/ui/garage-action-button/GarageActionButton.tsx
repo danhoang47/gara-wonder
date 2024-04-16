@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { createNewRoom, selectRooms } from "@/features/chat/rooms.slice";
-import { FetchStatus } from "@/core/types";
+import { FetchStatus, RoomType } from "@/core/types";
 import { Button } from "@nextui-org/react";
 
 function GarageActionButton() {
@@ -46,7 +46,8 @@ function GarageActionButton() {
                         const { data: room } = await dispatch(
                             createNewRoom({
                                 userId: user.value?._id || "",
-                                garageId: garageId || "",
+                                entityId: garageId || "",
+                                type: RoomType.WithGarage,
                             }),
                         ).unwrap();
                         navigate(`/chat/${room._id}`);

@@ -1,23 +1,34 @@
 import { createContext, useState, useMemo, useCallback } from "react";
 
-import { ContainerProps, SupplierRegistration } from "@/core/types";
+import { ContainerProps, Product, Supplier } from "@/core/types";
+import { ObjectId } from "bson";
 
 export type FieldConstraint = {
     required?: string;
     min?: [number, string];
     max?: [number, string];
 };
-export type Supplier = Partial<SupplierRegistration>;
+
+export type RegistrationProduct = Partial<
+    Omit<Product, "images" | "_id"> & {
+        images?: File[];
+        _id: ObjectId;
+    }
+>;
+
+export type SupplierRegistration = Omit<Partial<Supplier>, "products"> & {
+    products: RegistrationProduct[];
+};
 
 export type SupplierRegistrationErrors = {
     [K in keyof Supplier]?: string;
 };
 
 export type SupplierRegistrationContextType = {
-    supplierRegistrationState: Supplier;
+    supplierRegistrationState: SupplierRegistration;
     setSupplierRegistrationStateValue: <K extends keyof Supplier>(
         key: K,
-        value: Supplier[K],
+        value: SupplierRegistration[K],
     ) => void;
     supplierRegistrationErrors: SupplierRegistrationErrors;
 };
@@ -41,7 +52,7 @@ const supplierRegistrationConstraints: SupplierRegistrationConstraints = {
         required: "Address is required",
     },
     location: {
-        required: "",
+        required: "Required",
     },
 };
 
@@ -76,12 +87,14 @@ export function SupplierRegistrationContextProvider({
     children,
 }: ContainerProps) {
     const [supplierRegistrationState, setSupplierRegistrationState] =
-        useState<Supplier>({});
+        useState<SupplierRegistration>({
+            products: [],
+        });
     const [supplierRegistrationErrors, setSupplierRegistrationErrors] =
         useState<SupplierRegistrationErrors>({});
 
     const setSupplierRegistrationStateValue = useCallback(
-        <K extends keyof Supplier>(key: K, value: Supplier[K]) => {
+        <K extends keyof SupplierRegistration>(key: K, value: SupplierRegistration[K]) => {
             const [isValid, errorMessage] = validate(
                 value,
                 supplierRegistrationConstraints[key],
