@@ -4,8 +4,9 @@ export { default as GaragePage } from "./garage-page";
 export { default as BookPage } from "./book-page";
 export { default as CartPage } from "./cart-page";
 export { default as LandingPage } from "./landing-page";
+export { default as Product } from "./product-page";
 export { default as ProductsPage } from "./products-page";
 export { default as UserSettingsPage } from "./user-settings-page";
 export { default as ChatPage } from "./chat-page";
-export { default as PaymentPage } from './payment-page'
-export { default as ErrorPage } from './error-page'
+export { default as PaymentPage } from "./payment-page";
+export { default as ErrorPage } from "./error-page";
