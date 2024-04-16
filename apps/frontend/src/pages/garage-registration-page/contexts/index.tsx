@@ -3,19 +3,21 @@ import { createContext, useState, useMemo, useCallback } from "react";
 import { ContainerProps, Garage } from "@/core/types";
 
 export type FieldConstraint = {
-    required?: string,
-    min?: [number, string],
-    max?: [number, string]
-}
+    required?: string;
+    min?: [number, string];
+    max?: [number, string];
+};
 
-export type GarageRegistration = Partial<Omit<Garage, "images" | "backgroundImage" | "additionalServices">> & {
-    backgroundImage?: File,
-    images?: File[],
-    additionalServices: string[]
-}
+export type GarageRegistration = Partial<
+    Omit<Garage, "images" | "backgroundImage" | "additionalServices">
+> & {
+    backgroundImage?: File;
+    images?: File[];
+    additionalServices?: string[];
+};
 
 export type GarageRegistrationErrors = {
-    [K in keyof GarageRegistration]: string;
+    [K in keyof GarageRegistration]?: string;
 };
 
 export type GarageRegistrationContextType = {
@@ -37,16 +39,19 @@ type GarageRegistrationConstraints = {
 
 const garageRegistrationConstraints: GarageRegistrationConstraints = {
     name: {
-        required: "Garage's name is required",
-        min: [3, "Garage's name is must be larger than 3 characters"],
-        max: [100, "Garage's name is must be smaller than 100 characters"],
+        required: "Tên của garage là bắt buộc",
+        min: [3, "Tên của garage phải dài hơn 3 ký tự"],
+        max: [100, "Tên của garage phải ngắn hơn 100 ký tự"],
     },
     address: {
-        required: "Address is required"
+        required: "Địa chỉ là bắt buộc",
     },
     location: {
-        required: ""
-    }
+        required: "Địa điểm trên bản đồ là bắt buộc",
+    },
+    services: {
+        required: "Garage của bạn phải có ít nhất một dịch vụ",
+    },
 };
 
 const validate = (
@@ -55,8 +60,14 @@ const validate = (
 ): [boolean, string | undefined] => {
     if (!constraint) return [true, undefined];
 
-    if (constraint.required && !value) {
-        return [false, constraint.required];
+    if (constraint?.required) {
+        if (!value) return [false, constraint.required];
+
+        const isArray = Array.isArray(value);
+
+        if (isArray && (value.length === 0 || !value)) {
+            return [false, constraint.required];
+        }
     }
 
     if (typeof value === "string") {
@@ -81,7 +92,9 @@ export function GarageRegistrationContextProvider({
 }: ContainerProps) {
     const [garageRegistrationState, setGarageRegistrationState] =
         useState<GarageRegistration>({
-            defaultSlot: 10
+            defaultSlot: 10,
+            address: "",
+            name: "",
         });
     const [garageRegistrationErrors, setGarageRegistrationErrors] =
         useState<GarageRegistrationErrors>({});
@@ -104,7 +117,7 @@ export function GarageRegistrationContextProvider({
             if (isValid) {
                 setGarageRegistrationErrors((prev) => {
                     if (prev[key]) {
-                        const newErrors = {...prev};
+                        const newErrors = { ...prev };
                         delete newErrors[key];
 
                         return newErrors;

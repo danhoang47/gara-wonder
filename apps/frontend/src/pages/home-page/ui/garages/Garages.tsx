@@ -10,23 +10,25 @@ import MapViewGarages from "./MapViewGarages";
 import GridViewGarages from "./GridViewGarages";
 import useViewMode from "../../hooks/useViewMode";
 
-import "./Garages.styles.scss"
+import "./Garages.styles.scss";
 import { WithOwnerGarage } from "@/api/garages/getGarages";
 
 export type ViewModeGaragesProps = {
     isLoading: boolean;
     isReload: boolean;
-    error?: any;
+    error?: unknown;
     garages?: WithOwnerGarage[];
     onNext: () => void;
+    onUpdateGarage: (garage: WithOwnerGarage) => void;
 };
 
 function Garages() {
     const [viewMode, onViewModeChange] = useViewMode();
     const { open } = useModalContext();
-    const { garages, fetchingStatus, isReload, onNext } = useGarages(viewMode);
+    const { garages, fetchingStatus, isReload, onNext, onUpdateGarage } =
+        useGarages(viewMode);
     const changeViewModeButtonLabel =
-        viewMode === "grid" ? "Map view" : "List view";
+        viewMode === "grid" ? "Bản đồ" : "Danh sách";
     const changeViewModeButtonIcon =
         viewMode === "grid" ? faMapLocationDot : faList;
 
@@ -48,12 +50,13 @@ function Garages() {
             isLoading: fetchingStatus === FetchStatus.Fetching,
             isReload,
             garages,
-            onNext
+            onNext,
+            onUpdateGarage,
         };
 
         switch (viewMode) {
             case "grid":
-                return <GridViewGarages {...props}/>;
+                return <GridViewGarages {...props} />;
             case "map":
                 return <MapViewGarages {...props} />;
             default:
@@ -66,10 +69,10 @@ function Garages() {
     }, []);
 
     return (
-        <div className="garages flex-1">
+        <div className="garages flex-1 px-10">
             {renderGarages()}
             <Button
-                className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black z-10 shadow-sm"
+                className="changeViewModeButton fixed bottom-4 left-1/2 -translate-x-1/2 bg-black z-10 shadow-sm"
                 endContent={
                     <FontAwesomeIcon
                         icon={changeViewModeButtonIcon}
@@ -79,7 +82,6 @@ function Garages() {
                 onPress={() =>
                     onViewModeChange(viewMode === "grid" ? "map" : "grid")
                 }
-                disableAnimation
                 variant="solid"
             >
                 <span className="font-medium text-white">

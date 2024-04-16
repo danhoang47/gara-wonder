@@ -16,7 +16,9 @@ const PriceRangeFilterSection = lazy(() => import("./PriceRangeFilterSection"));
 const RatingFilterSection = lazy(() => import("./RatingFilterSection"));
 const BrandFilterSection = lazy(() => import("./BrandFilterSection"));
 const DistanceFilterSection = lazy(() => import("./DistanceFilterSection"));
-const AdditionalServiceFilterSection = lazy(() => import("./AdditionalServiceFilterSection"));
+const AdditionalServiceFilterSection = lazy(
+    () => import("./AdditionalServiceFilterSection"),
+);
 
 export type FilterModalProps = {
     isOpen?: boolean;
@@ -35,16 +37,23 @@ function FilterModal({
 
     useEffect(() => {
         if (isOpen) {
-            document.getElementById("root")!.classList.add("overflow-y-hidden")
+            document.getElementById("root")!.classList.add("overflow-y-hidden");
         } else {
-            document.getElementById("root")!.classList.remove("overflow-y-hidden")
+            document
+                .getElementById("root")!
+                .classList.remove("overflow-y-hidden");
         }
-    }, [isOpen])
+    }, [isOpen]);
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onDismiss} size="3xl" classNames={{
-            wrapper: "overflow-y-hidden"
-        }}>
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={onDismiss}
+            size="3xl"
+            classNames={{
+                wrapper: "overflow-y-hidden",
+            }}
+        >
             <ModalContent className="max-h-[90%]">
                 <ModalHeader>
                     <p className="text-base flex-grow">Filter</p>
@@ -67,18 +76,25 @@ function FilterModal({
                             dispatch(clearFilterValue());
                             onClear();
                         }}
+                        className="data-[hover=true]:bg-background data-[hover=true]:opacity-80 transition-opacity"
                     >
-                        <p className="font-semibold text-base">Clear all</p>
+                        <p className="font-semibold text-base">
+                            Bỏ chọn tất cả
+                        </p>
                     </Button>
                     <div className="ml-auto gap-1 flex">
-                        <Button variant="light" onPress={onDismiss}>
-                            <span>Cancel</span>
+                        <Button
+                            variant="light"
+                            onPress={onDismiss}
+                            className="data-[hover=true]:bg-background data-[hover=true]:opacity-80 transition-opacity"
+                        >
+                            <span className="font-medium text-default-500">Hủy bỏ</span>
                         </Button>
                         <Button
                             className="bg-black text-white"
                             onPress={onSave}
                         >
-                            <span className="text-base">Save</span>
+                            <span className="text-base">Tìm kiếm</span>
                         </Button>
                     </div>
                 </ModalFooter>

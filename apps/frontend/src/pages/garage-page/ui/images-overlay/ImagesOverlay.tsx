@@ -1,8 +1,4 @@
 import { Image } from "@/core/types";
-import {
-    faHeart,
-    faShareFromSquare,
-} from "@fortawesome/free-regular-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
@@ -23,10 +19,7 @@ function ImagesOverlay({
     useEffect(() => {
         if (imageRef != "") {
             const element = document.getElementById(imageRef as string);
-            console.log("run this");
             element?.scrollIntoView();
-        } else {
-            window.scrollTo(0, 0);
         }
     }, [imageRef, isOpen]);
     return (
@@ -42,16 +35,6 @@ function ImagesOverlay({
                     onClick={closeGallery}
                 >
                     <FontAwesomeIcon icon={faArrowLeft} />
-                </div>
-                <div className="flex gap-3 items-center">
-                    <div className="flex gap-1 items-center rounded transition-background cursor-pointer p-2 hover:bg-gray-300 ">
-                        <FontAwesomeIcon icon={faShareFromSquare} />
-                        <p className="font-semibold">Share</p>
-                    </div>
-                    <div className="flex gap-1 items-center rounded transition-background cursor-pointer p-2 hover:bg-gray-300 ">
-                        <FontAwesomeIcon icon={faHeart} />
-                        <p className="font-semibold">Save</p>
-                    </div>
                 </div>
             </div>
             <div className="grid-wraper mx-auto w-1/2 h-full">

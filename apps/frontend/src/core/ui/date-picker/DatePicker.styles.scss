@@ -10,8 +10,90 @@
     > div {
         flex-shrink: 0;
     }
-    
+
     &::-webkit-scrollbar {
         display: none;
+    }
+
+    .dateCellWrapper {
+        position: relative;
+
+        .dateCell {
+            border-bottom: 2px solid transparent;
+
+            &::after,
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+            }
+
+            &:hover::before {
+                inset: -1;
+                z-index: 1;
+                border-radius: 999px;
+                border: 1px solid #000;
+            }
+
+            &.selected {
+                color: #fff;
+                background-color: #f7f7f7;
+
+                &.from {
+                    border-radius: 999px 0 0 999px;
+                }
+
+                &.to {
+                    border-radius: 0 999px 999px 0;
+                }
+
+                &::after {
+                    border-radius: 999px;
+                    background-color: #000;
+                }
+            }
+            &.middle {
+                &::after {
+                    background-color: #f7f7f7;
+                }
+            }
+            &.disabled {
+                color: #a1a1aa;
+                cursor: not-allowed;
+                text-decoration: line-through;
+
+                &:hover::before {
+                    border: none;
+                }
+            }
+        }
+
+        &:first-child {
+            .dateCell {
+                &.middle {
+                    &::after {
+                        background: linear-gradient(
+                            270deg,
+                            rgb(247, 247, 247) 50%,
+                            rgba(241, 241, 241, 0) 95%
+                        ) !important;
+                    }
+                }
+            }
+        }
+
+        &:last-child {
+            .dateCell {
+                &.middle {
+                    &::after {
+                        background: linear-gradient(
+                            90deg,
+                            rgb(247, 247, 247) 50%,
+                            rgba(241, 241, 241, 0) 95%
+                        ) !important;
+                    }
+                }
+            }
+        }
     }
 }

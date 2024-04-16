@@ -10,3 +10,5 @@ export { default as Services } from "./services";
 export { default as Description } from "./descriptions";
 export { default as SupportedChip } from "./supported-chip";
 export { default as ImagesOverlay } from "./images-overlay";
+export { default as MapWithLocation } from './map-with-location';
+export { default as Markup } from './markup'

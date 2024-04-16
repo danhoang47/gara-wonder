@@ -34,10 +34,21 @@ export type Rule = Model & {
     description?: string;
 };
 
+export enum CategoryType {
+    Fix = 0,
+    Upgrade,
+    Unwrap,
+    Wash,
+    Replace,
+    Exterior,
+    Interior
+}
+
 export type Category = Model & {
     name: string;
     description: string;
     icon: string;
+    type: CategoryType
 };
 
 export type Rating = {
@@ -75,6 +86,7 @@ export type GarageFilter = {
     brands?: string[];
     distance?: number;
     additional?: string[];
+    isFavorite?: string | boolean
 };
 
 export type GarageQueryParams = GarageFilter & Paging & {

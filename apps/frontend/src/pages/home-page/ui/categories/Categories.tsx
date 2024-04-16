@@ -5,7 +5,7 @@ import { getCategories } from "@/api";
 import { Carousel } from "@/core/ui";
 
 function Categories() {
-    const { isLoading, data: categories } = useSWR("category", getCategories, {
+    const { data: categories } = useSWR("category", getCategories, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -13,18 +13,20 @@ function Categories() {
 
     return (
         <div
-            className="flex-grow flex justify-center gap-2 px-"
+            className="grow shrink flex justify-center gap-2"
             role="radiogroup"
         >
             <Carousel
                 items={categories || []}
                 classNames={{
                     item: "w-auto",
-                    wrapper: "px-10",
+                    button: "bg-background border-2",
+                    base: "gap-2"
                 }}
                 renderItem={(category) => (
                     <CategoryOption category={category} key={category._id} />
                 )}
+                enableShadow
             />
         </div>
     );

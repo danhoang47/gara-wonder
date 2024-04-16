@@ -4,6 +4,7 @@ import { getUser } from "@/api";
 import { Garage } from "@/core/types";
 import { Avatar, AvatarGroup } from "@nextui-org/react";
 import { GarageBasicInfo } from "@/api/garages/getBasicGarageInfo";
+import { useModalContext } from "@/core/hooks";
 
 function GarageOwnerAndStaffInfoPreview({
     garageOwner,
@@ -13,11 +14,15 @@ function GarageOwnerAndStaffInfoPreview({
     staff?: GarageBasicInfo["staff"];
 }) {
     const { data: ownerDetail } = useSWRImmutable(garageOwner, getUser);
+    const { open } = useModalContext();
 
     return (
         <div className="flex gap-2 pt-5 md:pt-0">
             <div className="flex gap-3 min-w-40">
-                <div className="shrink-0">
+                <div
+                    className="shrink-0"
+                    onClick={() => open("profile", ownerDetail?.data._id)}
+                >
                     <Avatar
                         isBordered
                         src={ownerDetail?.data.photoURL}
@@ -27,7 +32,7 @@ function GarageOwnerAndStaffInfoPreview({
                     />
                 </div>
                 <div>
-                    <p className="text-sm text-gray-500">Garage Owner</p>
+                    <p className="text-sm text-gray-500">Chủ Garage</p>
                     <p className="font-medium text-black">
                         {ownerDetail?.data?.displayName}
                     </p>
@@ -49,13 +54,14 @@ function GarageOwnerAndStaffInfoPreview({
                                                 : "bg-zinc-300" +
                                                   " cursor-pointer",
                                     }}
+                                    onClick={() => open("profile", ava?._id)}
                                 />
                             );
                         })}
                     </AvatarGroup>
                 </div>
                 <div>
-                    <p className="text-sm text-gray-500">Garage Staff</p>
+                    <p className="text-sm text-gray-500">Nhân viên</p>
                     <p className="font-medium text-black">
                         {staff?.slice(0, 3).map((user, index) => {
                             if (index == 0)
@@ -71,7 +77,7 @@ function GarageOwnerAndStaffInfoPreview({
                             }
                         })}
                         {(staff?.length as number) > 3 &&
-                            ` and ${(staff?.length as number) - 3} more`}
+                            ` và thêm ${(staff?.length as number) - 3}`}
                     </p>
                 </div>
             </div>

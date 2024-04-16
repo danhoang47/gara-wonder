@@ -8,3 +8,16 @@ export { default as uploadGarageImages } from "./uploadGarageImages";
 export { default as getGarageImages } from "./getGarageImages";
 export { default as getBasicGarageInfo } from "./getBasicGarageInfo";
 export { default as getGarageServices } from "./getGarageServices";
+
+export { default as getGarageByOwnerId } from "./getGarageByOwnerId";
+export { default as addGarageToFavorites } from "./addGarageToFavorites";
+export { default as getDashboardInfo } from "./getDashboardInfo";
+
+export { default as getOrderEvaluation } from "./getOrderEvaluation";
+
+export { default as getScheduleSlot } from "./getScheduleSlot";
+
+export { default as updateService } from "./updateServices";
+export { default as delteService } from "./deleteService";
+export { default as addNewService } from "./addNewServices";
+export { default as getDistance } from "./getDistance";

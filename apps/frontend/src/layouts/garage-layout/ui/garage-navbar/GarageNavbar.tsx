@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { navList } from "../../constraints";
 import {
     Dropdown,
@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import clsx from "clsx";
 function GarageNavbar() {
     const location = useLocation();
-    console.log(location.pathname);
+    const navigate = useNavigate();
     const indicateRoute = useMemo(() => {
         const list = navList.filter((el) => {
             if (location.pathname.includes(el.link) && el.link !== "") {
@@ -22,14 +22,15 @@ function GarageNavbar() {
     }, [location]);
 
     return (
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-6">
             {navList.map((nav, index) => {
                 if (!nav.children) {
                     return (
                         <Link
                             className={clsx(
-                                "cursor-pointer hover:text-default-500 text-default-400",
-                                indicateRoute === nav.link && "text-medium text-foreground",
+                                "font-medium text-small cursor-pointer hover:text-default-500",
+                                indicateRoute !== nav.link &&
+                                    "text-default-400",
                             )}
                             key={index}
                             to={nav.link}
@@ -44,25 +45,40 @@ function GarageNavbar() {
                         className="cursor-pointer text-default-400"
                         key={index}
                     >
-                        <Dropdown classNames={{ content: "min-w-[7.5rem]" }}>
+                        <Dropdown
+                            classNames={{ content: "min-w-[7.5rem] p-0 py-1" }}
+                        >
                             <DropdownTrigger>
                                 <div
-                                    className="cursor-pointer text-default-400 hover:text-default-600 "
+                                    className="font-medium text-small cursor-pointer text-default-400 hover:text-default-600 "
                                     key={index}
                                 >
                                     {nav.title}
                                 </div>
                             </DropdownTrigger>
-                            <DropdownMenu>
+                            <DropdownMenu
+                                classNames={{
+                                    base: "px-0 ",
+                                    list: "p-0 !rounded-none",
+                                    emptyContent: "rounded-none",
+                                }}
+                                itemClasses={{
+                                    base: "rounded-none",
+                                }}
+                            >
                                 {nav.children.map((sub, index) => (
-                                    <DropdownItem key={index}>
-                                        <Link
-                                            className="cursor-pointer text-default-400 hover:text-default-600 "
-                                            to={sub.link}
-                                            relative="path"
-                                        >
+                                    <DropdownItem
+                                        key={index}
+                                        classNames={{
+                                            base: "p-0 ",
+                                        }}
+                                        onClick={() =>
+                                            navigate(`./${sub.link}`)
+                                        }
+                                    >
+                                        <p className="cursor-pointer text-default-400 hover:text-default-600 ">
                                             {sub.title}
-                                        </Link>
+                                        </p>
                                     </DropdownItem>
                                 ))}
                             </DropdownMenu>

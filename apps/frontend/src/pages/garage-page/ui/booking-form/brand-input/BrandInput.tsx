@@ -1,11 +1,7 @@
 import { getBrands } from "@/api";
 import { Brand, Car } from "@/core/types";
 import { useOrderContext } from "@/pages/garage-page/hooks";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@nextui-org/react";
+import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 
 import { useState } from "react";
 import useSWRImmutable from "swr/immutable";
@@ -54,7 +50,7 @@ function BrandInput() {
             }
             return `${selectedBrand?.name}`;
         }
-        return "Select your Car";
+        return "Chọn xe của bạn";
     };
     return (
         <>
@@ -68,10 +64,8 @@ function BrandInput() {
             >
                 <PopoverTrigger onClick={() => setIsBrandOpen(true)}>
                     <div className="h-[56px] border-2 rounded-xl hover:border-default-400 transition-colors px-3 py-2">
-                        <p className="text-sm text-primary">Date</p>
-                        <p className="text-sm">
-                            {getCarLabel() ? getCarLabel() : "Choose your car"}
-                        </p>
+                        <p className="text-sm text-primary">Xe</p>
+                        <p className="text-sm">{getCarLabel()}</p>
                     </div>
                 </PopoverTrigger>
 

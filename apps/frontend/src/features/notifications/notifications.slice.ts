@@ -12,7 +12,8 @@ const notificationsSlice = createSlice({
         notificationsReceived: notificationsAdapter.addMany,
         notificationAdded: notificationsAdapter.addOne,
         notificationUpdated: notificationsAdapter.updateOne,
-        notificationUpsert: notificationsAdapter.upsertMany
+        notificationUpsert: notificationsAdapter.upsertMany,
+        notificationReset: notificationsAdapter.removeAll
     }
 })
 
@@ -26,7 +27,8 @@ selectNotifications(state).every(({ hasRead }) => hasRead)
 export const {
     notificationsReceived,
     notificationAdded,
-    notificationUpsert
+    notificationUpsert,
+    notificationReset
 } = notificationsSlice.actions
 
 export default notificationsSlice.reducer

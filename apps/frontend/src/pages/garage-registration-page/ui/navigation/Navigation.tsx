@@ -39,8 +39,8 @@ export default function Navigation({
         currentSectionIndex === RegistrationSection.BasicInformation;
     const nextButtonLabel =
         currentSectionIndex !== RegistrationSection.Additional
-            ? "Continue"
-            : "Finish";
+            ? "Tiếp tục"
+            : "Hoàn thành";
 
     return (
         <div
@@ -57,7 +57,7 @@ export default function Navigation({
                     onPress={onBack}
                     isDisabled={isBackButtonDisabled}
                 >
-                    Back
+                    Trở lại
                 </Button>
                 <div>
                     <span className="text-lg select-none">{`${

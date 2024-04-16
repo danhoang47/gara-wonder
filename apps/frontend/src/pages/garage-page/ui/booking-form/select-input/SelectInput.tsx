@@ -6,12 +6,13 @@ import {
     PopoverTrigger,
 } from "@nextui-org/react";
 import { DatePicker } from "@/core/ui";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useOrderContext } from "@/pages/garage-page/hooks";
 import moment from "moment";
 
 function SelectInput() {
     const [localOrderTime, setLocalOrderTime] = useState<number>();
+    const [localInputTime, setLocalInputTime] = useState<string>();
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
     const {
         order: { orderTime },
@@ -23,6 +24,11 @@ function SelectInput() {
         // TODO: need to set start of this date
         return new Date(orderTime).getDate() > new Date().getDate();
     }, [orderTime]);
+    useEffect(() => {
+        setLocalInputTime(
+            moment(localOrderTime).format("YYYY/MM/DD").toString(),
+        );
+    }, [localOrderTime]);
 
     return (
         <Popover
@@ -35,11 +41,11 @@ function SelectInput() {
         >
             <PopoverTrigger onClick={() => setDatePickerOpen(true)}>
                 <div className="h-[56px] border-2 rounded-xl hover:border-default-400 transition-colors px-3 py-2">
-                    <p className="text-sm text-primary">Date</p>
+                    <p className="text-sm text-primary">Ngày đặt</p>
                     <p className="text-sm">
                         {localOrderTime
                             ? moment(localOrderTime).format("YYYY/MM/DD")
-                            : "Select your date"}
+                            : "Chọn ngày đặt"}
                     </p>
                 </div>
             </PopoverTrigger>
@@ -48,17 +54,17 @@ function SelectInput() {
                     <div className="flex justify-between">
                         <div className="">
                             <p className="shrink-0 text-lg font-bold">
-                                Pick Date
+                                Chọn ngày
                             </p>
                             <span className="text-small text-default-400 font-normal">
-                                Select a date to fix your car
+                                Chọn ngày dịch vụ cho xe
                             </span>
                         </div>
                         <Input
-                            label="Order Date"
+                            label="Ngày đặt"
                             placeholder="YYYY/MM/dd"
                             variant="bordered"
-                            value={moment(localOrderTime).format("YYYY/MM/DD")}
+                            value={localInputTime}
                             classNames={{
                                 base: "max-w-44",
                                 inputWrapper:
@@ -67,6 +73,7 @@ function SelectInput() {
                             isInvalid={isOrderTimeInvalid}
                             onValueChange={(value) => {
                                 const orderDate = moment(value, "YYYY MM DD");
+                                setLocalInputTime(value);
                                 if (
                                     value.length === 10 &&
                                     orderDate.isValid()
@@ -92,6 +99,7 @@ function SelectInput() {
                                     ? new Date(localOrderTime)
                                     : undefined
                             }
+                            show="single"
                         />
                     </div>
                     <div className="flex gap-2 py-2 justify-end px-4">
@@ -101,7 +109,7 @@ function SelectInput() {
                                 setDatePickerOpen(false);
                             }}
                         >
-                            <p className="text-default-400">Clear</p>
+                            <p className="text-default-400">Hủy</p>
                         </Button>
                         <Button
                             className="bg-foreground"
@@ -110,7 +118,7 @@ function SelectInput() {
                                 setDatePickerOpen(false);
                             }}
                         >
-                            <p className="text-background">Save</p>
+                            <p className="text-background">Lưu</p>
                         </Button>
                     </div>
                 </div>

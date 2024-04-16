@@ -7,15 +7,26 @@ import {
     PopoverTrigger,
 } from "@nextui-org/react";
 import { useState } from "react";
-import { userProfileMenuSections, guestProfileMenuSections } from "./constant";
-import { useAppSelector } from "@/core/hooks";
+import getUserProfileMenu from "./getUserProfileMenu";
+import { useAppSelector, useModalContext } from "@/core/hooks";
+import { Role } from "@/core/types";
 
 function UserProfileMenu() {
     const [isOpen, setOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user.value);
-    const profileMenuOptions = user
-        ? userProfileMenuSections
-        : guestProfileMenuSections;
+    const garageId = useAppSelector((state) => state.user.garageId);
+    const { open } = useModalContext();
+
+    const profileMenuOptions = getUserProfileMenu(
+        Boolean(user),
+        user?.role === Role.GarageOwner,
+        user?.role === Role.Supplier,
+        () => {
+            open("signIn");
+            setOpen(false);
+        },
+        garageId,
+    );
 
     return (
         <Popover
@@ -38,6 +49,7 @@ function UserProfileMenu() {
                             <img
                                 src={user.photoURL}
                                 className="w-full h-full"
+                                alt="User's profile picture"
                             />
                         </div>
                     ) : (

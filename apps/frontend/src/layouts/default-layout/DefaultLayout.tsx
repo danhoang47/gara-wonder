@@ -1,15 +1,22 @@
 import { useMemo } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import { BrandLogo, Header } from "@/core/ui";
-import { BecomeGaraOwnerLink, UserProfileMenu } from "./ui";
+import {
+    BecomeGaraOwnerLink,
+    ChatLinkButton,
+    RegionTabs,
+    UserProfileMenu,
+    CartLinkButton,
+    MobileNavigation
+} from "./ui";
 import { useAppSelector } from "@/core/hooks";
 import { Role } from "@/core/types";
-import CartLinkButton from "./ui/cart-link-button";
 import Notifications from "@/features/notifications";
 
 const DefaultLayout = () => {
     const user = useAppSelector((state) => state.user.value);
+    const location = useLocation();
     const shouldShowGarageRegistrationLink = useMemo(() => {
         if (!user) return true;
 
@@ -17,24 +24,46 @@ const DefaultLayout = () => {
 
         return role !== Role.GarageOwner;
     }, [user]);
+    const shouldShowSupplierRegistrationLink = useMemo(() => {
+        if (!user) return true;
+
+        const { role } = user;
+
+        return role !== Role.Supplier;
+    }, [user]);
+    const shouldShowMiddleContent = useMemo(() => {
+        return (
+            location.pathname.includes("/garages") ||
+            location.pathname.includes("/products")
+        );
+    }, [location]);
 
     return (
-        <div data-testid={DefaultLayout.name} className="h-full flex flex-col">
+        <div data-testid={DefaultLayout.name} className="flex flex-col min-h-full">
             <Header
                 leftContent={<BrandLogo />}
-                middleContent={<></>}
+                middleContent={shouldShowMiddleContent && <RegionTabs />}
                 rightContent={
                     <>
-                        {shouldShowGarageRegistrationLink && (
-                            <BecomeGaraOwnerLink />
-                        )}
+                        {shouldShowGarageRegistrationLink &&
+                            location.pathname.includes("/garages") && (
+                                <BecomeGaraOwnerLink />
+                            )}
+                        {shouldShowSupplierRegistrationLink &&
+                            location.pathname.includes("/products") && (
+                                <BecomeGaraOwnerLink />
+                            )}
                         <Notifications />
+                        <ChatLinkButton />
                         <CartLinkButton />
                         <UserProfileMenu />
                     </>
                 }
             />
-            <Outlet />
+            <div className="flex-grow">
+                <Outlet />
+            </div>
+            <MobileNavigation />
         </div>
     );
 };

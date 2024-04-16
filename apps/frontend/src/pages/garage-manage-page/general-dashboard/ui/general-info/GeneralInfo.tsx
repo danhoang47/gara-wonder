@@ -1,59 +1,88 @@
-import { faEnvelopeOpen, faFileAlt } from "@fortawesome/free-regular-svg-icons";
-import { faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { getDashboardInfo } from "@/api";
+import { faCar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
+import { Tab, Tabs } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { mutate } from "swr";
 
-function GeneralInfo() {
+function GeneralInfo({
+    garageId,
+    token,
+}: {
+    garageId?: string;
+    token?: string;
+}) {
+    const [selectType, setSelectType] = useState<string>("today");
+
+    const { data: generalData } = useSWR("tabData", () =>
+        getDashboardInfo(garageId, token, selectType),
+    );
+    useEffect(() => {
+        mutate("tabData"); // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectType]);
+
     return (
-        <div className="flex flex-col md:flex-row justify-between w-full gap-5 pt-5 ">
-            <Card className="relative min-w-full md:min-w-[30rem] p-7">
-                <CardHeader className="z-0">
-                    <p className="font-bold text-2xl ">Staff onsite</p>
-                </CardHeader>
-                <CardBody>
-                    <p className="text-6xl font-semibold">
-                        26{" "}
-                        <span className="text-3xl text-default-500">/30</span>
-                    </p>
-                </CardBody>
-                <CardFooter>
-                    <FontAwesomeIcon
-                        icon={faUserGroup}
-                        size="5x"
-                        className="absolute right-8 bottom-8 text-default-600"
-                    />
-                </CardFooter>
-            </Card>
-            <Card className="relative min-w-full md:min-w-[30rem] p-7">
-                <CardHeader className="z-0">
-                    <p className="font-bold text-2xl">Slot available</p>
-                </CardHeader>
-                <CardBody>
-                    <p className="text-6xl font-semibold">4</p>
-                </CardBody>
-                <CardFooter>
-                    <FontAwesomeIcon
-                        icon={faFileAlt}
-                        size="5x"
-                        className="absolute right-8 bottom-8 text-default-600"
-                    />
-                </CardFooter>
-            </Card>
-            <Card className="relative min-w-full md:min-w-[30rem] p-7">
-                <CardHeader className="z-0">
-                    <p className="font-bold text-2xl">Unread Messages</p>
-                </CardHeader>
-                <CardBody>
-                    <p className="text-6xl font-semibold">26</p>
-                </CardBody>
-                <CardFooter>
-                    <FontAwesomeIcon
-                        icon={faEnvelopeOpen}
-                        size="5x"
-                        className="absolute right-8 bottom-8 text-default-600"
-                    />
-                </CardFooter>
-            </Card>
+        <div className="w-full border-b-1 pb-[7.5rem]">
+            <div className="flex justify-between items-center">
+                <p className="font-semibold text-2xl">
+                    Hôm nay bạn có gì mới ?
+                </p>
+                <Tabs
+                    color="primary"
+                    aria-label="Tabs colors"
+                    radius="sm"
+                    selectedKey={selectType}
+                    onSelectionChange={(e: React.Key) => {
+                        setSelectType(e as string);
+                    }}
+                    classNames={{
+                        tabList: "bg-white",
+                        cursor: "rounded-md",
+                    }}
+                >
+                    <Tab key="today" title="Hôm nay" />
+                    <Tab key="tommorow" title="Ngày mai" />
+                </Tabs>
+            </div>
+            <div className="gridView pt-10 ">
+                <div className="max-w-[12rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100">
+                    <div>
+                        <div className="font-semibold text-2xl flex gap-3 items-center">
+                            <FontAwesomeIcon icon={faCar} />
+                            <p>{generalData?.numberOfOrderCheckInToday}</p>
+                        </div>
+                        <p className="text-medium pt-3">Check-ins</p>
+                    </div>
+                </div>
+                <div className="max-w-[12rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100">
+                    <div>
+                        <div className="font-semibold text-2xl flex gap-3 items-center">
+                            <FontAwesomeIcon icon={faCar} />
+                            <p>{generalData?.numberOfOrderCheckOutToday}</p>
+                        </div>
+                        <p className="text-medium pt-3">Checkouts</p>
+                    </div>
+                </div>
+                <div className="max-w-[15rem] h-32 p-4 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100">
+                    <div>
+                        <div className="font-semibold text-2xl flex gap-3 items-center">
+                            <FontAwesomeIcon icon={faCar} />
+                            <p>{generalData?.numberOfOrderInProgress}</p>
+                        </div>
+                        <p className="text-medium pt-3">Đang sửa chữa</p>
+                    </div>
+                </div>
+                <div className="max-w-[12rem] h-32 p-5 flex justify-center items-center shadow-md rounded-lg border-1 border-default-100">
+                    <div>
+                        <div className="font-semibold text-2xl flex gap-3 items-center">
+                            <FontAwesomeIcon icon={faCar} />
+                            <p>{generalData?.numberOdOrderNeedToEvaluate}</p>
+                        </div>
+                        <p className="text-medium pt-3">Chờ đánh giá</p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

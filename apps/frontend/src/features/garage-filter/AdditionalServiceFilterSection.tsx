@@ -11,8 +11,8 @@ export default function AdditionalServiceFilterSection() {
 
     return (
         <FilterSection
-            title="Additional Services"
-            description="This is not include tax and other fees"
+            title="Các tiện ích khác"
+            description="Dịch vụ khác bên cạnh các dịch vụ chính"
         >
             <CheckboxGroup
                 onValueChange={(data) => {

@@ -33,7 +33,7 @@ function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
     }
 
     return (
-        <div className="">
+        <div className="md:max-lg:-mx-4">
             <div className="relative hidden md:flex h-[25rem] gap-1">
                 <div
                     className="relative w-1/2 h-full cursor-pointer"

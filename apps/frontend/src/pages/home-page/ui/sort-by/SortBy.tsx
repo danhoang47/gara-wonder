@@ -52,8 +52,8 @@ function SortBy() {
             disableAnimation   
         >
             <DropdownTrigger>
-                <SortByButton className={clsx("border capitalize", isSortByMenuOpen && "border-black")}>
-                    {selectedSortByOption ? selectedSortByOption.title : "Sort By" }
+                <SortByButton className={clsx("openSortDropdownButton border capitalize", isSortByMenuOpen && "border-black")}>
+                    <span className="openSortDropdownButtonTitle">{selectedSortByOption ? selectedSortByOption.title : "Sắp xếp" }</span>
                 </SortByButton>
             </DropdownTrigger>
             <DropdownMenu

@@ -20,9 +20,9 @@ function Toast({ item }: ToastProps) {
 
     useEffect(() => {
         setTimeout(() => {
-            dispatch(removeToast(item.id))
-        }, item.delay)
-    }, [dispatch, item.delay, item.id])
+            dispatch(removeToast(item.id));
+        }, item.delay);
+    }, [dispatch, item.delay, item.id]);
 
     const getIcon = () => {
         switch (item.type) {

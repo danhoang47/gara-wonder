@@ -3,22 +3,22 @@ import { faArrowDownWideShort, faArrowUpWideShort } from "@fortawesome/free-soli
 const sortByOptions = [
     {
         key: "latest",
-        title: "Latest",
+        title: "Mới nhất",
         icon: faArrowUpWideShort
     },
     {
         key: "oldest",
-        title: "Oldest",
+        title: "Cũ nhất",
         icon: faArrowDownWideShort
     },
     {
         key: "desc",
-        title: "Price Desc",
+        title: "Giá giảm dần",
         icon: faArrowUpWideShort
     },
     {
         key: "asc",
-        title: "Price Asc",
+        title: "Giá tăng dần",
         icon: faArrowDownWideShort
     },
 ]

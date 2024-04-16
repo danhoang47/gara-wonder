@@ -1,33 +1,99 @@
 import { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as solid from "@fortawesome/free-solid-svg-icons";
-import * as regular from "@fortawesome/free-regular-svg-icons";
+import { faComment } from "@fortawesome/free-regular-svg-icons";
+import { faHeart, faFlag } from "@fortawesome/free-solid-svg-icons";
 
 import clsx from "clsx";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { createNewRoom, selectRooms } from "@/features/chat/rooms.slice";
+import { FetchStatus } from "@/core/types";
+import { Button } from "@nextui-org/react";
 
 function GarageActionButton() {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const user = useAppSelector((state) => state.user);
+    const fetchingStatus = useAppSelector(
+        (state) => state.rooms.fetchingStatus,
+    );
     const [isFavorite, setIsFavorite] = useState<boolean>(true);
     const [isFlag, setIsFlag] = useState<boolean>(true);
+    const { garageId } = useParams();
+
+    const rooms = useAppSelector((state) => selectRooms(state));
 
     return (
-        <div className="flex gap-2">
-            <FontAwesomeIcon
-                icon={isFavorite ? solid.faHeart : regular.faHeart}
+        <div className="flex">
+            <Button
+                size="md"
+                variant="light"
                 className={clsx(
                     "cursor-pointer",
-                    isFavorite ? "text-red-500" : "text-black",
+                    user.garageId === garageId && "hidden",
                 )}
-                onClick={() => setIsFavorite(!isFavorite)}
-            />
-            <FontAwesomeIcon
-                icon={isFlag ? solid.faFlag : regular.faFontAwesome}
+                onPress={async () => {
+                    const isExistRoom = rooms.find(
+                        (room) => room.garageId === garageId,
+                    );
+                    if (isExistRoom) {
+                        navigate(`/chat/${isExistRoom._id}`);
+                        return;
+                    }
+
+                    if (fetchingStatus !== FetchStatus.Fetching) {
+                        const { data: room } = await dispatch(
+                            createNewRoom({
+                                userId: user.value?._id || "",
+                                garageId: garageId || "",
+                            }),
+                        ).unwrap();
+                        navigate(`/chat/${room._id}`);
+                    }
+                }}
+                startContent={<FontAwesomeIcon icon={faComment} />}
+            >
+                <span className="font-medium">Nhắn tin</span>
+            </Button>
+            <Button
+                size="md"
+                variant="light"
                 className={clsx(
                     "cursor-pointer",
-                    isFlag ? "text-primary" : "text-black",
+                    user.garageId === garageId && "hidden",
                 )}
-                onClick={() => setIsFlag(!isFlag)}
-            />
+                startContent={
+                    <FontAwesomeIcon
+                        icon={faHeart}
+                        className={clsx(
+                            "cursor-pointer",
+                            isFavorite ? "text-red-500" : "text-black",
+                        )}
+                    />
+                }
+            >
+                <span className="font-medium">Yêu thích</span>
+            </Button>
+            <Button
+                size="md"
+                variant="light"
+                className={clsx(
+                    "cursor-pointer",
+                    user.garageId === garageId && "hidden",
+                )}
+                startContent={
+                    <FontAwesomeIcon
+                        icon={faFlag}
+                        className={clsx(
+                            "cursor-pointer",
+                            isFlag ? "text-primary" : "text-black",
+                        )}
+                    />
+                }
+            >
+                <span className="font-medium">Báo cáo</span>
+            </Button>
         </div>
     );
 }

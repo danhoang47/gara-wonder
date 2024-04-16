@@ -9,6 +9,8 @@ import {
     GarageHeader,
     GarageImagesPreview,
     GarageOwnerAndStaffInfoPreview,
+    MapWithLocation,
+    Markup,
     Services,
 } from "./ui";
 import { LoadingContext } from "@/core/contexts/loading";
@@ -30,47 +32,56 @@ const GaragePage = () => {
 
     return (
         <OrderContextProvider>
-            <div id="garage" className="relative">
-                <div className="container mx-auto mt-4">
+            <Markup garage={basicInfo?.data[0]}/>
+            <div id="garage" className="relative overflow-auto sm:px-4 pb-10">
+                <div className="w-full max-w-[1024px] mx-auto mt-4">
                     <div className="">
                         <GarageHeader
-                            name={basicInfo?.data[0].name}
-                            address={basicInfo?.data[0].address}
+                            name={basicInfo?.data[0]?.name}
+                            address={basicInfo?.data[0]?.address}
                         />
                     </div>
                     <div className="my-6">
                         <GarageImagesPreview
-                            backgroundImage={basicInfo?.data[0].backgroundImage}
+                            backgroundImage={
+                                basicInfo?.data[0]?.backgroundImage
+                            }
                         />
                     </div>
-                    <div className="my-6 block w-full gap-4 md:flex">
-                        <div className="w-full shrink-0 min-w-[25rem] md:max-w-[35rem] md:w-2/5 md:order-2">
-                            <BookingForm />
-                        </div>
-                        <div className="w-full flex flex-col gap-[30px]">
-                            <div className="border-b-1 pb-8 border-zinc-300">
-                                <GarageOwnerAndStaffInfoPreview
-                                    garageOwner={basicInfo?.data[0].userId}
-                                    staff={basicInfo?.data[0].staff}
-                                />
+                    <div className="my-6">
+                        <div className="w-full flex gap-4 justify-between">
+                            <div className="flex flex-col gap-4 flex-1">
+                                <div className="border-b-1 pb-8 border-zinc-300">
+                                    <GarageOwnerAndStaffInfoPreview
+                                        garageOwner={basicInfo?.data[0]?.userId}
+                                        staff={basicInfo?.data[0]?.staff}
+                                    />
+                                </div>
+                                <div className="border-b-1 pb-8 border-zinc-300">
+                                    <Services />
+                                </div>
+                                <div className="border-b-1 pb-8 border-zinc-300">
+                                    <AdditionalServices
+                                        additionalServices={
+                                            basicInfo?.data[0]
+                                                ?.additionalServices
+                                        }
+                                        isLoading={isInfoLoading}
+                                    />
+                                </div>
                             </div>
-                            <div className="border-b-1 pb-8 border-zinc-300">
-                                <Services />
-                            </div>
-                            <div className="border-b-1 pb-8 border-zinc-300">
-                                <AdditionalServices
-                                    additionalServices={
-                                        basicInfo?.data[0].additionalServices
-                                    }
-                                    isLoading={isInfoLoading}
-                                />
-                            </div>
-                            <div className="">
-                                <Description
-                                    description={basicInfo?.data[0].description}
-                                />
+                            <div className="w-full shrink-0 min-w-[25rem] md:max-w-[35rem] md:w-2/5 md:order-2">
+                                <BookingForm />
                             </div>
                         </div>
+                    </div>
+                    <div className="flex flex-col gap-4">
+                        <Description
+                            description={basicInfo?.data[0]?.description}
+                        />
+                        <MapWithLocation
+                            location={basicInfo?.data[0].location}
+                        />
                     </div>
                 </div>
             </div>

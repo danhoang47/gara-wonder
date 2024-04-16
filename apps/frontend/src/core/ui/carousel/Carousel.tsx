@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, ScrollShadow } from "@nextui-org/react";
 import { useLayoutEffect, useRef, useState } from "react";
 
 import "./Carousel.styles.scss";
@@ -15,6 +15,7 @@ export type CarouselProps<T> = {
     >;
     showNavigationOnHover?: boolean;
     onNavigate?: (type: "back" | "next") => void;
+    enableShadow?: boolean;
 };
 
 function Carousel<T>({
@@ -23,6 +24,7 @@ function Carousel<T>({
     startIndex = 0,
     classNames,
     onNavigate,
+    enableShadow = false,
 }: CarouselProps<T>) {
     const [index, setIndex] = useState<number>(startIndex);
     const [maxIndex, setMaxIndex] = useState<number>(-1);
@@ -43,8 +45,11 @@ function Carousel<T>({
     };
 
     useLayoutEffect(() => {
-        if (containerRef.current) {
-            const { current } = containerRef;
+        if (!containerRef.current) return;
+
+        const { current } = containerRef;
+
+        const calculateMaxIndex = () => {
             const { width } = current.getBoundingClientRect();
             const child = current.querySelector('[data-index="0"]');
 
@@ -62,7 +67,12 @@ function Carousel<T>({
                     });
                 }
             }
-        }
+        };
+
+        const observer = new ResizeObserver(calculateMaxIndex);
+        observer.observe(current);
+
+        return () => observer.unobserve(current);
     }, [containerRef, items.length]);
 
     useLayoutEffect(() => {
@@ -79,7 +89,12 @@ function Carousel<T>({
 
     return (
         <div className={clsx("carouselWrapper", classNames?.wrapper)}>
-            <div className="carousel" ref={containerRef}>
+            <ScrollShadow
+                className={clsx("carousel", classNames?.base)}
+                ref={containerRef}
+                isEnabled={enableShadow}
+                orientation="horizontal"
+            >
                 {items.map((value, index) => (
                     <div
                         key={index}
@@ -92,14 +107,15 @@ function Carousel<T>({
                         {renderItem(value, index)}
                     </div>
                 ))}
-            </div>
+            </ScrollShadow>
             <Button
                 isIconOnly
                 radius="full"
                 disableAnimation
                 size="sm"
                 className={clsx(
-                    "absolute top-1/2 -translate-y-1/2 left-2 border",
+                    "absolute top-1/2 -translate-y-1/2 left-2 border cursor-pointer",
+                    index === 0 && "opacity-0",
                     classNames?.button,
                 )}
                 onPress={onBackPress}
@@ -114,6 +130,7 @@ function Carousel<T>({
                 size="sm"
                 className={clsx(
                     "absolute top-1/2 -translate-y-1/2 right-2 border",
+                    index === maxIndex && "opacity-0",
                     classNames?.button,
                 )}
                 onPress={onNextPress}

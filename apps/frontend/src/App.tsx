@@ -5,7 +5,8 @@ import { APIProvider } from "@vis.gl/react-google-maps";
 import { ModalContextProvider } from "./core/contexts";
 import Toasts from "./features/toasts";
 import { useAuth } from "./core/hooks";
-import { NotificationsListener } from "./features/notifications";
+import { MessageListener } from "./features/chat";
+import { TrackingActivity } from "./features/user";
 
 function App() {
     const navigate = useNavigate();
@@ -13,16 +14,18 @@ function App() {
 
     return (
         <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-            <NotificationsListener>
-                <NextUIProvider navigate={navigate} className="h-full">
-                    <ModalContextProvider>
-                        <div className=" relative light text-foreground bg-background h-full">
-                            <Outlet />
-                        </div>
-                        <Toasts />
-                    </ModalContextProvider>
-                </NextUIProvider>
-            </NotificationsListener>
+            <NextUIProvider navigate={navigate} className="h-full">
+                <ModalContextProvider>
+                    <TrackingActivity>
+                        <MessageListener>
+                            <div className=" relative light text-foreground bg-background h-full">
+                                <Outlet />
+                            </div>
+                        </MessageListener>
+                    </TrackingActivity>
+                    <Toasts />
+                </ModalContextProvider>
+            </NextUIProvider>
         </APIProvider>
     );
 }

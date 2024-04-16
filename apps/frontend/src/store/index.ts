@@ -5,7 +5,12 @@ import { toastsReducer } from "@/features/toasts";
 import { userReducer } from "@/features/user";
 import { garageReducer } from "@/features/garages";
 import { cartReducer } from "@/features/cart";
-import { notificationsReducer } from "@/features/notifications";
+import {
+    garageNotificationsReducer,
+    notificationsReducer,
+} from "@/features/notifications";
+import { roomsReducer } from "@/features/chat";
+import { setup } from "@/api/chat";
 
 const store = configureStore({
     reducer: {
@@ -14,12 +19,17 @@ const store = configureStore({
         user: userReducer,
         garages: garageReducer,
         cart: cartReducer,
-        notifications: notificationsReducer
-    }
-})
+        notifications: notificationsReducer,
+        garageNotifications: garageNotificationsReducer,
+        rooms: roomsReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({ serializableCheck: false }),
+});
 
+setup(store);
 
-export type AppState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type AppState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

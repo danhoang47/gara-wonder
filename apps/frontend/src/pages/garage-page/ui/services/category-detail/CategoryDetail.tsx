@@ -1,22 +1,29 @@
-import useSWRImmutable from "swr/immutable";
 import { Skeleton } from "@nextui-org/react";
 
-import { Service } from "@/core/types";
+import { Category } from "@/core/types";
 import { SupportedChip } from "../..";
-import { getCategoryById } from "@/api";
+import { WithCategoryService } from "@/api/garages/getGarageServices";
 
-function CategoryDetail({ service }: { service: Service }) {
-    const { isLoading: isCategoryLoading, data: categoryData } =
-        useSWRImmutable(`${service.categoryId}`, getCategoryById);
+function CategoryDetail({
+    service,
+    categoryData,
+    isCategoryLoading,
+    openModal,
+}: {
+    service: WithCategoryService;
+    categoryData?: Category;
+    isCategoryLoading: boolean;
+    openModal: () => void;
+}) {
     return (
         <div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
                 {isCategoryLoading ? (
                     <Skeleton className="w-40 h-4 " />
                 ) : (
-                    <p className="font-medium">{categoryData?.name}</p>
+                    <p className="font-medium ">{categoryData?.name}</p>
                 )}
-                <SupportedChip isSupport={service.isSupported} />
+                <SupportedChip isSupport={service.status} />
             </div>
             <div className="text-sm text-zinc-500">
                 {isCategoryLoading ? (
@@ -24,8 +31,11 @@ function CategoryDetail({ service }: { service: Service }) {
                 ) : (
                     <p>
                         {categoryData?.description}{" "}
-                        <span className="text-primary cursor-pointer hover:text-primary-700">
-                            See all supported cars
+                        <span
+                            className="text-primary  hover:text-primary-700 cursor-pointer hover:underline transition-all "
+                            onClick={openModal}
+                        >
+                            Xem tất cả xe được hỗ trợ
                         </span>
                     </p>
                 )}

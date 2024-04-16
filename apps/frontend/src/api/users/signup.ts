@@ -13,6 +13,6 @@ export default async function signup(user: FirebaseUser): Promise<Response<User>
             throw new Error("signup: 'user' is undefined")
         }
     } catch (error) {
-        throw new Error(JSON.stringify(error))
+        return Promise.reject(error)
     }
 }

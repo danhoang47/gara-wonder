@@ -25,12 +25,12 @@ export default function OpenFilterButton({
             <Button
                 variant="bordered"
                 color="default"
-                className="border"
+                className="openFilterButton border"
                 radius="full"
                 onPress={onPress}
             >
                 <FontAwesomeIcon icon={faSliders} />
-                <span className="font-medium">Filter</span>
+                <span className="openFilterButtonTitle font-medium">Bộ lọc</span>
             </Button>
         </Badge>
     );

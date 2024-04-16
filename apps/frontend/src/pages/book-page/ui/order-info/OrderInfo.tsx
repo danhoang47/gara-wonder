@@ -9,35 +9,61 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useOrderContext } from "../../hooks";
 import { orderUpdated } from "@/features/cart/cart.slice";
 import createOrder from "@/api/order/createOrders";
+import { useState } from "react";
+import { HttpStatusCode } from "axios";
 
 function OrderInfo() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const { order } = useOrderContext();
     const { open } = useModalContext();
-    const { token } = useAppSelector((state) => state.user);
+    const {
+        token,
+        value: user,
+        garageId,
+    } = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.user.value);
+    const type = searchParams.get("type");
+    const isGarageBelongToCurrentUser = garageId === order.garageId;
+    const [isConfirmButtonLoading, setConfirmButtonLoading] =
+        useState<boolean>(false);
 
-    const onConfirmButtonPress = () => {
-        const type = searchParams.get("type");
-
+    const onConfirmButtonPress = async () => {
         if (!token) {
             open("signIn");
         }
+        if (garageId === order.garageId) return;
 
         if (type === "edit") {
             dispatch(orderUpdated(order));
             navigate("/cart");
         } else {
-            createOrder(
-                {
-                    ...order,
-                    userId: user?._id || "",
-                },
-                token,
-            );
+            setConfirmButtonLoading(true);
+            try {
+                const result = await createOrder(
+                    {
+                        ...order,
+                        userId: user?._id || "",
+                    },
+                    token,
+                );
+                if (result.statusCode === HttpStatusCode.Ok) {
+                    navigate(-1);
+                    open("orderSuccess");
+                }
+            } catch (_error) {
+                throw new Error(JSON.stringify(_error));
+            } finally {
+                setConfirmButtonLoading(false);
+            }
         }
+    };
+
+    const getConfirmButtonLabel = () => {
+        if (!token) return "Hãy đăng nhập để tiếp tục đặt đơn";
+
+        if (type === "edit") return "Lưu thông tin đơn sửa chữa";
+        else return "Đặt đơn sửa chữa";
     };
 
     return (
@@ -56,12 +82,10 @@ function OrderInfo() {
                     size="lg"
                     className="mt-8"
                     onPress={onConfirmButtonPress}
+                    isDisabled={isGarageBelongToCurrentUser}
+                    isLoading={isConfirmButtonLoading}
                 >
-                    <p>
-                        {token
-                            ? "Sign in to continue your booking"
-                            : "Book now"}
-                    </p>
+                    <p>{getConfirmButtonLabel()}</p>
                 </Button>
             </div>
         </div>

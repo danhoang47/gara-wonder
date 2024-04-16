@@ -3,7 +3,7 @@ import RegistrationSection from "../registration-section";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import ServiceTemplateModal from "./ServiceTemplateModal";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Service } from "@/core/types";
 import ServiceCard from "./ServiceCard";
 import { useGarageRegistrationContext } from "../../hooks";
@@ -87,15 +87,19 @@ export default function Services() {
         );
     };
 
+    useEffect(() => {
+        setGarageRegistrationStateValue("services", services?.length ? services : [])
+    }, [])
+
     return (
         <>
             <RegistrationSection
                 header={
                     <div className="flex justify-between items-center">
                         <div>
-                            <span>Services</span>
+                            <span>Dịch vụ</span>
                             <p className="text-sm text-foreground font-normal">
-                                Provide the services your garage will serves
+                                Tùy chọn những dịch vụ mà garage của bạn cung cấp
                             </p>
                         </div>
                         <Button
@@ -112,7 +116,7 @@ export default function Services() {
                                 (categories?.length || 0)
                             }
                         >
-                            Add Service
+                            Thêm dịch vụ
                         </Button>
                     </div>
                 }

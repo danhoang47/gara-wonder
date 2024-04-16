@@ -28,7 +28,7 @@ export default function ServiceCard({
                     {categoryName}
                 </h3>
                 <p className="text-sm">
-                    Supported Brands: {supportedBrands}
+                    Hãng xe được hỗ trợ: {supportedBrands}
                 </p>
             </div>
             <div className="ml-auto flex gap-2">

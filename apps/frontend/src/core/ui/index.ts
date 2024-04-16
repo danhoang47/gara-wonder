@@ -1,5 +1,4 @@
 export { default as Header } from "./header";
-export { default as ProtectedRoute } from "./protected-route";
 export { default as Overlay } from "./overlay";
 export { default as BrandLogo } from "./brand-logo";
 export { default as Input } from "./input";
@@ -13,3 +12,4 @@ export { default as UniformRadio } from "./uniform-radio";
 export { default as Calendar } from "./calendar";
 export { default as DatePicker } from "./date-picker";
 export { default as Chart } from "./chart";
+export { default as Table } from "./table";

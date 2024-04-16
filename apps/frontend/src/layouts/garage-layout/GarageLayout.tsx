@@ -9,11 +9,16 @@ const GarageLayout = () => {
     return (
         <div
             data-testid={GarageLayout.name}
-            className="h-full w-full flex flex-col"
+            className="h-full w-full flex flex-col "
         >
             <Header
-                leftContent={<BrandLogo />}
-                middleContent={<GarageNavbar />}
+                leftContent={
+                    <div className="flex gap-6">
+                        <BrandLogo />
+                        <GarageNavbar />
+                    </div>
+                }
+                middleContent={<></>}
                 rightContent={<UserProfileMenu />}
             />
             <Outlet />

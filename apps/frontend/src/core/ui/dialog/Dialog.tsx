@@ -31,17 +31,17 @@ export default function Dialog({
     icon = false,
     IconComponent,
     alt,
-    negativeLabel = "Cancel",
-    positiveLabel = "Got it",
+    negativeLabel = "Hủy",
+    positiveLabel = "Đã hiểu",
     showNegativeButton = true,
     onPositivePress,
     onNegativePress,
 }: DialogProps) {
     return (
-        <Modal isOpen={isOpen} onClose={onClose} hideCloseButton>
+        <Modal isOpen={isOpen} onClose={onClose} hideCloseButton placement="center">
             <ModalContent>
                 <ModalBody>
-                    <div className="mt-4">
+                    <div className="mt-4 flex justify-center">
                         {icon ? (
                             IconComponent
                         ) : (

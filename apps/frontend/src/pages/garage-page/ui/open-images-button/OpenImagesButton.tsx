@@ -13,7 +13,7 @@ function OpenImagesButton({ openGallery }: { openGallery: () => void }) {
                 onClick={openGallery}
             >
                 <FontAwesomeIcon icon={faList} />
-                <p>View image</p>
+                <p>Xem ảnh</p>
             </Button>
         </div>
     );

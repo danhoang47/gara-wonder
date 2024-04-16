@@ -1,10 +1,10 @@
 import axios from "axios";
 
 import { baseGaragesUrl } from ".";
-import { Model, Response } from "@/core/types";
+import { Garage, Response } from "@/core/types";
 import { GarageRegistration } from "@/pages/garage-registration-page/contexts";
 
-export default async function createGarage(garage: GarageRegistration): Promise<Response> {
+export default async function createGarage(garage: GarageRegistration): Promise<Response<Garage>> {
     try {   
         const formData = new FormData();
 

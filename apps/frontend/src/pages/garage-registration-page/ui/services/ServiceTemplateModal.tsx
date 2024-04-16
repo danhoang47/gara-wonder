@@ -46,37 +46,40 @@ export default function ServiceTemplateModal({
 }: ServiceTemplateModalProps) {
     const [localService, setLocalService] = useState<Partial<Service>>({
         _id: nanoid(),
-        highestPrice: 100,
-        lowestPrice: 0,
+        highestPrice: 10000000,
+        lowestPrice: 100000,
         estimationType: EstimateType.Exact,
         estimateDuration: undefined,
         brandIds: "all",
-        categoryId: undefined
+        categoryId: undefined,
     });
     const { categoryId, brandIds } = localService;
     const isSaveButtonDisabled = useMemo<boolean>(
-        () => !categoryId || !brandIds,
+        () => !categoryId || !brandIds || brandIds.length === 0,
         [categoryId, brandIds],
     );
 
     useEffect(() => {
+        if (!isOpen) return;
+
         if (type === "edit" && service) {
             setLocalService(service);
         } else {
             setLocalService({
                 _id: nanoid(),
-                highestPrice: 100,
-                lowestPrice: 0,
+                highestPrice: 10000000,
+                lowestPrice: 100000,
             });
         }
-    }, [type, service]);
+    }, [type, service, isOpen]);
 
-    const resetLocalService = () =>
+    const resetLocalService = () => {
         setLocalService({
             _id: nanoid(),
-            highestPrice: 100,
-            lowestPrice: 0,
+            highestPrice: 10000000,
+            lowestPrice: 100000,
         });
+    };
 
     const renderBrandSelectValue = (
         brs: SelectedItems<Brand>,
@@ -106,25 +109,32 @@ export default function ServiceTemplateModal({
 
     useEffect(() => {
         if (isOpen) {
-            document.getElementById("root")!.classList.add("overflow-y-hidden")
+            document.getElementById("root")!.classList.add("overflow-y-hidden");
         } else {
-            document.getElementById("root")!.classList.remove("overflow-y-hidden")
+            document
+                .getElementById("root")!
+                .classList.remove("overflow-y-hidden");
         }
-    }, [isOpen])
+    }, [isOpen]);
 
     return (
-        <Modal isOpen={isOpen} onClose={onModalClose} size="lg" scrollBehavior="inside">
+        <Modal
+            isOpen={isOpen}
+            onClose={onModalClose}
+            size="lg"
+            scrollBehavior="inside"
+        >
             <ModalContent className="max-h-[90%] flex-col flex-nowrap">
                 <ModalHeader className="px-6 justify-center">
-                    <p className="text-base">Add Service</p>
+                    <p className="text-base">Thêm dịch vụ</p>
                 </ModalHeader>
                 <Divider className="mb-4" />
                 <ModalBody className="flex gap-4 pb-6 px-6">
                     <Select
                         items={categories}
                         isLoading={isCategoriesLoading}
-                        placeholder="Select category"
-                        label="Category"
+                        placeholder="Chọn loại dịch vụ"
+                        label="Loại dịch vụ"
                         variant="bordered"
                         classNames={{
                             trigger: "border",
@@ -159,13 +169,13 @@ export default function ServiceTemplateModal({
                                 _id: "all",
                                 createdAt: 0,
                                 updatedAt: 0,
-                                name: "Select All",
+                                name: "Tất cả",
                             },
                             ...(brands || []),
                         ]}
                         isLoading={isBrandsLoading}
-                        placeholder="Select supported brands"
-                        label="Supported Brands"
+                        placeholder="Lựa chọn hãng xe được hỗ trợ..."
+                        label="Hãng xe được hỗ trợ"
                         selectionMode="multiple"
                         variant="bordered"
                         classNames={{
@@ -190,6 +200,8 @@ export default function ServiceTemplateModal({
                                         ),
                                     );
                                     return;
+                                } else {
+                                    onBrandSelectChange([]);
                                 }
                             } else if (localService.brandIds === "all") {
                                 onBrandSelectChange([]);
@@ -208,18 +220,22 @@ export default function ServiceTemplateModal({
                     <div className="flex gap-2 w-full items-center">
                         <Input
                             variant="bordered"
-                            placeholder="Enter lowest price"
-                            label="Lowest Price"
+                            placeholder="Nhập giá tiền thấp nhất..."
+                            label="Giá tiền thấp nhất"
                             isRequired
                             type="number"
                             value={String(localService.lowestPrice)}
-                            endContent={"$"}
-                            onValueChange={(price) =>
-                                setLocalService((prev) => ({
-                                    ...prev,
-                                    lowestPrice: Number(price),
-                                }))
-                            }
+                            endContent={"VND"}
+                            onValueChange={(price) => {
+                                if (
+                                    Number(price) < localService.highestPrice!
+                                ) {
+                                    setLocalService((prev) => ({
+                                        ...prev,
+                                        lowestPrice: Number(price),
+                                    }));
+                                }
+                            }}
                             classNames={{
                                 inputWrapper: "border",
                             }}
@@ -229,18 +245,20 @@ export default function ServiceTemplateModal({
                         </div>
                         <Input
                             variant="bordered"
-                            placeholder="Enter highest price"
-                            label="Highest Price"
+                            placeholder="Thêm giá tiền cao nhất..."
+                            label="Giá tiền cao nhất"
                             isRequired
                             type="number"
                             value={String(localService.highestPrice)}
-                            endContent="$"
-                            onValueChange={(price) =>
-                                setLocalService((prev) => ({
-                                    ...prev,
-                                    highestPrice: Number(price),
-                                }))
-                            }
+                            endContent="VND"
+                            onValueChange={(price) => {
+                                if (Number(price) > localService.lowestPrice!) {
+                                    setLocalService((prev) => ({
+                                        ...prev,
+                                        highestPrice: Number(price),
+                                    }));
+                                }
+                            }}
                             classNames={{
                                 inputWrapper: "border",
                             }}
@@ -248,10 +266,10 @@ export default function ServiceTemplateModal({
                     </div>
                     <div className="flex space-between items-center gap-2 p-3 border-2 rounded-medium">
                         <div>
-                            <p className="font-medium">Provided Evaluation</p>
+                            <p className="font-medium">Cung cấp đánh giá</p>
                             <span className="text-sm text-default-400">
-                                Evaluation will send to customer to provide
-                                information about the service
+                                Đánh giá sẽ được gửi cho người dùng để cung cấp
+                                cái nhìn tổng quan về tình trạng xe
                             </span>
                         </div>
                         <div>
@@ -291,7 +309,7 @@ export default function ServiceTemplateModal({
                             resetLocalService();
                         }}
                     >
-                        Cancel
+                        Hủy bỏ
                     </Button>
                     <Button
                         color="primary"
@@ -301,7 +319,7 @@ export default function ServiceTemplateModal({
                         }}
                         isDisabled={isSaveButtonDisabled}
                     >
-                        Save
+                        Lưu
                     </Button>
                 </ModalFooter>
             </ModalContent>
