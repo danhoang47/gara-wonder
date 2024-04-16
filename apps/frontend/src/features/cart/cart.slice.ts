@@ -26,7 +26,8 @@ const cartSlice = createSlice({
         },
         orderUpdated(state, action: PayloadAction<Order>) {
             return ordersAdapter.upsertOne(state, action)
-        }
+        },
+        orderReset: ordersAdapter.removeAll
     }
 })
 
@@ -34,7 +35,8 @@ export const {
     orderAdded,
     orderReceived,
     orderRemoved,
-    orderUpdated
+    orderUpdated,
+    orderReset
 } = cartSlice.actions
 
 export const { 
