@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Product.style.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInbox, faTruck } from "@fortawesome/free-solid-svg-icons";
-import { Category, Product } from "@/core/types/model/product";
+import { ProductCategory, Product } from "@/core/types/model/product";
 import { Image } from "@/core/types";
 
 function Product() {
@@ -11,10 +11,9 @@ function Product() {
     const [product, setProduct] = useState<Product>({
         category: 0,
         name: "Ttest name longlonglong longlonglong longlonglong longlonglong longlonglong longlonglong longlonglong",
-        type: "type",
+        type: 1,
         brandId: "Mercedes",
         series: ["1"],
-        models: ["1"],
         year: 2024,
         price: 5000000,
         _id: "string",
@@ -69,11 +68,11 @@ function Product() {
         product && setImgPreview(product.images[0]);
     }, [product]);
 
-    const getCategoryProduct = (option: Category) => {
+    const getCategoryProduct = (option: ProductCategory) => {
         switch (option) {
-            case Category.Exterior:
+            case ProductCategory.Exterior:
                 return "Ngoại thất";
-            case Category.Interior:
+            case ProductCategory.Interior:
                 return "Nội thất";
         }
     };
@@ -159,12 +158,12 @@ function Product() {
                                 +
                             </button>
                         </div>
-                        <div className="quantity-box-right">
+                        {/* <div className="quantity-box-right">
                             <div>
                                 Only <span>{product?.remain} items</span> Left !
                             </div>
                             <div>Don't miss it</div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="action-box-box">
                         <button className="button-buy">Buy now</button>
