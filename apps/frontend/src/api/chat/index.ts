@@ -56,7 +56,6 @@ const globalConfig: RetryConfig = {
 
 export const getRooms = async (roomIds?: string[]) => {
     try {
-        console.log(roomIds?.join(","))
         const url =
             roomIds && roomIds.length !== 0 ? `?roomIds=${roomIds.join(",")}` : "";
 

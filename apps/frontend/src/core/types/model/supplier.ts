@@ -1,8 +1,8 @@
-import { Product, User } from ".";
+import { Model, Product, User } from ".";
 
-export type Supplier = {
+export type Supplier = Model & {
     userId?: User["_id"];
-    backgroundURL?: string,
+    backgroundURL?: string;
     name: string;
     description: string;
     address: string;

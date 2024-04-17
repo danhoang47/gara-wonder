@@ -36,7 +36,7 @@ export default function ProfileDialog({
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalContent>
                 <ModalBody className="p-0">
-                    <div className="relative px-4">
+                    <div className="relative px-4 pb-10">
                         <div className="h-16 bg-primary-50 -mx-4" />
                         <div className="absolute left-4 bottom-0 ">
                             <Badge
@@ -57,21 +57,6 @@ export default function ProfileDialog({
                                 />
                             </Badge>
                         </div>
-                        <div className="flex justify-end py-2">
-                            <Button
-                                startContent={
-                                    <FontAwesomeIcon icon={faComment} />
-                                }
-                                endContent={
-                                    user?.isOnline && <FontAwesomeIcon icon={faDotCircle} className="text-success" size="sm"/>
-                                }
-                                variant="bordered"
-                                size="sm"
-                                className="border"
-                            >
-                                <span className="font-medium">Nhắn tin</span>
-                            </Button>
-                        </div>
                     </div>
                     <div className="px-4 flex flex-col pb-4">
                         <div>
@@ -87,7 +72,7 @@ export default function ProfileDialog({
                                 }}
                                 size="sm"
                                 variant="bordered"
-                                value={user?.phoneNumber === "null" ? "Chưa cung cấp" : user?.phoneNumber}
+                                value={user?.phoneNumber ? user.phoneNumber : "Chưa cung cấp"}
                             />
                         </div>
                         <div className="flex py-4 border-b">
