@@ -10,8 +10,11 @@ function TrackingActivity({ children }: ContainerProps) {
 
     useEffect(() => {
         if (user) {
+            socket.connect()
             socket.emit("user:ping", user._id);
         }
+
+        return () => { socket.disconnect() }
     }, [user]);
 
     return <>{children}</>;
