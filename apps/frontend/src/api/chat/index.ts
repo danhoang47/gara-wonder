@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, HttpStatusCode } from "axios";
 import { EnhancedStore } from "@reduxjs/toolkit";
 import { auth } from "@/components/firebase";
 import { updateToken } from "@/features/user/user.slice";
-import { Message, Room } from "@/core/types/model";
+import { Message, Room, RoomType } from "@/core/types/model";
 import { Response } from "@/core/types";
 import { WithCategoryService } from "../garages/getGarageServices";
 
@@ -56,8 +56,9 @@ const globalConfig: RetryConfig = {
 
 export const getRooms = async (roomIds?: string[]) => {
     try {
+        console.log(roomIds?.join(","))
         const url =
-            roomIds && roomIds.length !== 0 ? `?roomIds=${roomIds.join()}` : "";
+            roomIds && roomIds.length !== 0 ? `?roomIds=${roomIds.join(",")}` : "";
 
         const result = await chatInstance.get<Response<Room[]>>(
             url,
@@ -73,16 +74,18 @@ export type TrackingStatus = Pick<Room, "isOnline" | "lastActiveAt" | "_id">;
 
 export const trackingActivity = async (
     userId: string,
-    garageId: string,
+    entityId: string,
     roomId: string,
+    type: RoomType
 ) => {
     try {
         const result = await chatInstance.post<Response<TrackingStatus>>(
             "/trackingActivity",
             {
                 userId,
-                garageId,
+                entityId,
                 roomId,
+                type
             },
             globalConfig,
         );
@@ -92,14 +95,11 @@ export const trackingActivity = async (
     }
 };
 
-export const createRoom = async (userId: string, garageId: string) => {
+export const createRoom = async (params: unknown) => {
     try {
         const result = await chatInstance.post<Response<Room>>(
             "/",
-            {
-                userId,
-                garageId,
-            },
+            params,
             globalConfig,
         );
         return result.data;

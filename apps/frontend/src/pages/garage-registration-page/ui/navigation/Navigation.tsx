@@ -20,17 +20,17 @@ export default function Navigation({
     const getSectionTitle = () => {
         switch (currentSectionIndex) {
             case RegistrationSection.BasicInformation:
-                return "Basic Information";
+                return "Thông tin cơ bản";
             case RegistrationSection.Additional:
-                return "Additional";
+                return "Thông tin phụ";
             case RegistrationSection.Address:
-                return "Address";
+                return "Địa chỉ";
             case RegistrationSection.Images:
-                return "Images";
+                return "Ảnh nền";
             case RegistrationSection.Services:
-                return "Services";
+                return "Dịch vụ";
             case RegistrationSection.Slot:
-                return "Slot"
+                return "Số chỗ phục vụ"
             default:
                 throw new Error("Invalid RegistrationSection");
         }
@@ -44,12 +44,9 @@ export default function Navigation({
 
     return (
         <div
-            className="fixed bottom-0 w-full py-4 bg-foreground-50 z-10"
-            style={{
-                boxShadow: "0px -4px 10px 2px rgba(202, 202, 202, 0.26)",
-            }}
+            className="fixed bottom-0 z-10 w-full bg-background border-t h-16 px-10"
         >
-            <div className="flex justify-between container items-center mx-auto ">
+            <div className="flex justify-between container items-center mx-auto h-full">
                 <Button
                     startContent={<FontAwesomeIcon icon={faAngleLeft} />}
                     variant="bordered"
@@ -60,7 +57,7 @@ export default function Navigation({
                     Trở lại
                 </Button>
                 <div>
-                    <span className="text-lg select-none">{`${
+                    <span className="text-medium select-none font-medium">{`${
                         currentSectionIndex + 1
                     }. ${getSectionTitle()}`}</span>
                 </div>

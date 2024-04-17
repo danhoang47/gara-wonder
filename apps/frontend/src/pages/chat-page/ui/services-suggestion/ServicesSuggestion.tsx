@@ -30,7 +30,7 @@ function ServicesSuggestion({
                 </div>
             </PopoverTrigger>
             <PopoverContent className="min-w-[320px] px-4">
-                <div className="w-full">
+                <div className="w-full flex flex-col gap-2">
                     <div className="border-b py-2">
                         <p className="font-medium">Gợi ý dịch vụ</p>
                     </div>

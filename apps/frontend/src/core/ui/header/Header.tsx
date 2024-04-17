@@ -28,7 +28,7 @@ function Header({
         <div
             id="header"
             className={clsx(
-                "sticky top-0 z-20 shrink-0 bg-white",
+                "sticky top-0 z-40 shrink-0 bg-white",
                 isLandingPage || "border-b-1",
             )}
         >
@@ -41,7 +41,7 @@ function Header({
                     isGarageManagementPage && "max-w-full",
                 )}
             >
-                <div className="flex items-center justify-start h-full">
+                <div className="flex items-center justify-start h-full relative z-10">
                     {leftContent}
                 </div>
                 <div className="middle flex items-center justify-center h-full absolute">

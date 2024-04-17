@@ -204,7 +204,7 @@ const SendMessage = ({
                 <div className="cursor-pointer">
                     <FontAwesomeIcon icon={faImage} size="lg" color="#0070f0" />
                 </div>
-                {garageId === room.garageId && (
+                {garageId === room.entityId && (
                     <ServicesSuggestion
                         garageId={garageId}
                         onServiceSelected={onServiceSelected}

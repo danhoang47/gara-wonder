@@ -1,55 +1,37 @@
-import { useSupplierRegistrationContext } from "@/pages/supplier-registration-page/hooks";
-import React from "react";
 import ImagePreview from "./ImagePreview";
 import { FileInput } from "@/core/ui";
 
-const UploadImage = () => {
-    const {
-        supplierRegistrationState: { images },
-        setSupplierRegistrationStateValue,
-    } = useSupplierRegistrationContext();
+export type UploadImageProps = {
+    images?: File[];
+    onImageChanges: (images?: File[]) => void;
+};
 
-    const onImageRemove = (fileName: string) => {
-        setSupplierRegistrationStateValue(
-            "images",
-            images?.filter(({ name }) => name !== fileName),
-        );
-    };
-
-    const onMultipleFileInputValueChange = (fs: File[]) => {
-        if (!images) {
-            setSupplierRegistrationStateValue("images", fs);
-            return;
-        }
-
-        setSupplierRegistrationStateValue(
-            "images",
-            images
-                ? [
-                      ...images,
-                      ...fs.filter((file) => {
-                          return images.filter((imageFile) => {
-                              return file !== imageFile;
-                          });
-                      }),
-                  ]
-                : fs,
-        );
+const UploadImage = ({ images = [], onImageChanges }: UploadImageProps) => {
+    const onRemoveImage = (fileName: string) => {
+        const newImages = images.filter((image) => image.name !== fileName);
+        onImageChanges(newImages);
     };
 
     return (
-        <div className="max-w-[30%] w-[300px] flex flex-col gap-1">
+        <div className="max-w-[30%] w-full flex flex-col gap-1">
             {images?.map((file) => (
                 <ImagePreview
                     key={file.name}
                     file={file}
-                    onImageRemove={onImageRemove}
+                    onImageRemove={(fileName) => {
+                        // TODO: implement
+                        onRemoveImage(fileName);
+                    }}
                 />
             ))}
-            <div className="flex-1 w-full w-[300px]">
+            <div className="flex-1 w-full">
                 <FileInput
                     selectionMode="multiple"
-                    onValueChange={onMultipleFileInputValueChange}
+                    onValueChange={(fs) => {
+                        if (fs.length !== 0) {
+                            onImageChanges([...images, ...fs]);
+                        }
+                    }}
                     showLabel={false}
                 />
             </div>

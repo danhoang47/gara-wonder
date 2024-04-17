@@ -1,10 +1,52 @@
+import { getGarageSetting, updateGarageSetting } from "@/api";
+import { LoadingContext } from "@/core/contexts/loading";
+import { useAppDispatch } from "@/core/hooks";
+import { notify } from "@/features/toasts/toasts.slice";
 import { faGem } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BreadcrumbItem, Breadcrumbs, Button, Switch } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import useSWRImmutable from "swr/immutable";
 
 export default function OrderAcceptModeSetting() {
     const navigate = useNavigate();
+    const { garageId } = useParams();
+    const [mode, setMode] = useState<boolean>();
+    const { load, unload } = useContext(LoadingContext);
+    const dispatch = useAppDispatch();
+
+    const { isLoading, data: setting } = useSWRImmutable(
+        `${garageId}/management/mode`,
+        getGarageSetting,
+    );
+    useEffect(() => {
+        if (!isLoading) {
+            setMode(setting?.isAcceptOrderAuto);
+            unload("setting");
+        } else {
+            load("setting");
+        }
+    }, [isLoading]);
+
+    const onSave = () => {
+        if (mode !== setting?.isAcceptOrderAuto) {
+            updateGarageSetting(`${garageId}/management/mode`).then((resp) => {
+                if (resp.statusCode === 200) {
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: "Thay Đổi Cài Đặt Thành Công",
+                            description:
+                                "Thay đồi cài đặt garage tới khách hàng thành công",
+                            delay: 2000,
+                        }),
+                    );
+                    navigate("..");
+                }
+            });
+        }
+    };
     return (
         <div className=" relative grid grid-cols-12 gap-5 px-10 mt-10 h-[95%]">
             <div className="col-span-4 col-start-4">
@@ -43,8 +85,11 @@ export default function OrderAcceptModeSetting() {
                             </p>
                         </div>
                         <Switch
-                            defaultSelected
+                            isSelected={mode}
                             size="sm"
+                            onChange={() => {
+                                setMode(!mode);
+                            }}
                             aria-label="Automatic updates"
                         />
                     </div>
@@ -74,7 +119,12 @@ export default function OrderAcceptModeSetting() {
                 >
                     Hủy
                 </Button>
-                <Button className="" color="primary" radius="full">
+                <Button
+                    className=""
+                    color="primary"
+                    radius="full"
+                    onClick={() => onSave()}
+                >
                     Lưu
                 </Button>
             </div>

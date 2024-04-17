@@ -23,6 +23,7 @@ import MessageHeader from "../message-header";
 import SendMessage from "../send-message";
 import useMessages from "./useMessages";
 import { MessageWithServices } from "@/api/chat";
+import AttachEntity from "../attach-entity";
 
 interface IDetailMessageProps {
     room: RoomEntry;
@@ -85,14 +86,15 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
     }, [chatRef, messages.length]);
 
     useEffect(() => {
-        if (!userId || !room?.garageId) return;
+        if (!userId || !room?.entityId) return;
 
         const getTrackingStatus = async () => {
             dispatch(
                 trackingActivityStatus({
                     userId: room?.userId,
-                    garageId: room?.garageId,
+                    entityId: room?.entityId,
                     roomId: room?.roomId,
+                    type: room?.type,
                 }),
             );
         };
@@ -102,7 +104,14 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
         const id = setInterval(getTrackingStatus, 30000);
 
         return () => clearInterval(id);
-    }, [dispatch, room?.garageId, room?.roomId, room?.userId, userId]);
+    }, [
+        dispatch,
+        room?.entityId,
+        room?.roomId,
+        room?.type,
+        room?.userId,
+        userId,
+    ]);
 
     const handleSelectedService = (serviceId: string) => {
         const removeIndex = selectedServices.indexOf(serviceId);
@@ -117,7 +126,10 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
     return room ? (
         <div className="flex flex-col col-span-4 overflow-hidden h-full">
             <MessageHeader room={room} setSelectedRoom={setSelectedRoom} />
-
+            <AttachEntity
+                roomType={room.type}
+                attachEntityId={room.attachEntityId}
+            />
             <div ref={chatRef} className="overflow-y-auto grow">
                 <div className="overflow-y-auto px-4 py-3">
                     <div className="h-5" ref={ref} />
@@ -207,7 +219,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                     0 && (
                                                                     <Link
                                                                         href={`/garages/${
-                                                                            room.garageId
+                                                                            room.entityId
                                                                         }?sg=${selectedServices.join()}`}
                                                                         className={clsx(
                                                                             "w-full text- cursor-pointer  mt-2",

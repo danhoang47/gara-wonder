@@ -1,6 +1,8 @@
-import { Product } from ".";
+import { Product, User } from ".";
 
-export type SupplierRegistration = {
+export type Supplier = {
+    userId?: User["_id"];
+    backgroundURL?: string,
     name: string;
     description: string;
     address: string;
@@ -10,5 +12,4 @@ export type SupplierRegistration = {
     location: {
         coordinates: [number, number];
     };
-    images: File[];
 };

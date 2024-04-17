@@ -7,12 +7,17 @@ export enum RoomStatus {
     Ignore,
 }
 
-// user - garage
+export enum RoomType {
+    WithSupplier = 0,
+    WithGarage,
+    WithCustomer
+}
+
 export type Room = Model & {
     userId: string;
     roomId: string;
     status: RoomStatus;
-    garageId: string;
+    entityId: string;
     photoURL: string;
     displayName: string;
     latestMessage: Message;
@@ -20,4 +25,6 @@ export type Room = Model & {
     lastActiveAt?: number;
     messages: Message[];
     isTyping?: boolean;
+    type: RoomType;
+    attachEntityId: string,
 };

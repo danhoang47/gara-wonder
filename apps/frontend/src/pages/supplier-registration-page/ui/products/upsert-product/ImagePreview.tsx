@@ -30,7 +30,7 @@ export default function ImagePreview({
 
     return (
         <div className="relative">
-            <img src={imageURL} className="aspect-video object-cover rounded" />
+            <img src={imageURL} className="aspect-video object-cover rounded" alt=""/>
             {readonly || (
                 <div className="absolute top-1 right-1 flex gap-2">
                     <Button

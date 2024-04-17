@@ -11,7 +11,7 @@ import {
     Select,
     SelectItem,
 } from "@nextui-org/react";
-import { Product, ProductCategory } from "@/core/types";
+import { ProductCategory } from "@/core/types";
 import UploadImage from "./UploadImage";
 import { useEffect, useMemo, useState } from "react";
 import { useSupplierRegistrationContext } from "@/pages/supplier-registration-page/hooks";
@@ -19,79 +19,94 @@ import { ObjectId } from "bson";
 import useSWR from "swr";
 import { getBrands } from "@/api";
 import { getProductTypes } from "@/api/supplier";
+import { RegistrationProduct } from "@/pages/supplier-registration-page/contexts";
 
 export type UpsertProductModalProps = {
     isOpenUpsertProduct: boolean;
     onOpenChangeUpsertProduct: (isOpen: boolean) => void;
-    product?: Product;
+    product?: RegistrationProduct;
+};
+
+const DEFAULT_PRODUCT: RegistrationProduct = {
+    _id: undefined,
+    brandId: undefined,
+    category: undefined,
+    description: undefined,
+    images: [],
+    name: "",
+    price: 100000,
+    quantity: 10,
+    series: undefined,
+    type: undefined,
+    year: 2022,
 };
 
 const UpsertProductModal = ({
-    product = undefined,
+    product,
     isOpenUpsertProduct,
     onOpenChangeUpsertProduct,
 }: UpsertProductModalProps) => {
     const { supplierRegistrationState, setSupplierRegistrationStateValue } =
         useSupplierRegistrationContext();
 
-    const [localProduct, setLocalProduct] = useState<Product | undefined>(
-        product,
-    );
+    const [localProduct, setLocalProduct] = useState<RegistrationProduct>();
 
-    const onChangeValue = (
-        key: string,
-        value: string | number | File[] | undefined | any,
+    const onChangeValue = <K extends keyof RegistrationProduct>(
+        key: K,
+        value: RegistrationProduct[K],
     ) => {
         setLocalProduct((prev) => {
-            return { ...prev, [key]: value } as Product;
+            if (!prev) {
+                return {
+                    [key]: value,
+                };
+            }
+
+            return {
+                ...prev,
+                [key]: value,
+            };
         });
     };
 
-    const isSaveButtonDisabled = useMemo<boolean>(
-        () =>
-            !localProduct?.name ||
-            !localProduct?.description ||
-            !localProduct.brandId ||
-            !localProduct.category ||
-            !localProduct.price ||
-            !localProduct.quantity ||
-            !localProduct.series ||
-            !localProduct.type ||
-            !localProduct.year,
-        [
-            localProduct?.brandId,
-            localProduct?.category,
-            localProduct?.description,
-            localProduct?.name,
-            localProduct?.price,
-            localProduct?.quantity,
-            localProduct?.series,
-            localProduct?.type,
-            localProduct?.year,
-        ],
-    );
+    const isSaveButtonEnabled = useMemo(() => {
+        if (!localProduct) return false;
+
+        return (
+            Object.keys(localProduct) as (keyof RegistrationProduct)[]
+        ).every((key) => {
+            if (key === "createdAt" || key === "updatedAt" || key === "_id")
+                return true;
+
+            const value = localProduct[key];
+            if (Array.isArray(value)) {
+                return value.length !== 0;
+            }
+
+            return value !== undefined && value !== "";
+        });
+    }, [localProduct]);
 
     const onAddProduct = () => {
         const oldData = supplierRegistrationState.products;
         const _id = new ObjectId();
-        let newData: Product[] | undefined = [];
+        const newData: RegistrationProduct[] = [];
         if (!product) {
-            newData = [
-                ...(oldData || []),
-                { ...localProduct, _id: _id.toString() },
-            ] as Product[];
+            newData.push(...[...(oldData || []), { ...localProduct, _id }]);
         } else {
-            newData = oldData?.map((item: Product) => {
-                if (item._id === localProduct?._id) {
-                    return { ...item, ...localProduct };
-                }
+            newData.push(
+                ...oldData.map((item) => {
+                    if (localProduct?._id === item._id) {
+                        return { ...item, ...localProduct };
+                    }
 
-                return item;
-            });
+                    return item;
+                }),
+            );
         }
-        setLocalProduct(undefined);
+        setLocalProduct(DEFAULT_PRODUCT);
 
-        setSupplierRegistrationStateValue("products", newData as Product[]);
+        setSupplierRegistrationStateValue("products", newData);
     };
 
     const { isLoading: isBrandsLoading, data: brands } = useSWR(
@@ -107,6 +122,8 @@ const UpsertProductModal = ({
     useEffect(() => {
         if (product) {
             setLocalProduct(product);
+        } else {
+            setLocalProduct(DEFAULT_PRODUCT);
         }
     }, [product]);
 
@@ -116,15 +133,20 @@ const UpsertProductModal = ({
             onOpenChange={onOpenChangeUpsertProduct}
             size="3xl"
         >
-            <ModalContent>
+            <ModalContent className="h-[90vh]">
                 {(onClose) => (
                     <>
                         <ModalHeader className="justify-center">
                             <p>Thêm sản phẩm</p>
                         </ModalHeader>
                         <Divider />
-                        <ModalBody className="py-4 flex flex-row justify-between">
-                            <UploadImage />
+                        <ModalBody className="py-4 flex flex-row justify-between overflow-auto">
+                            <UploadImage
+                                images={localProduct?.images}
+                                onImageChanges={(images) => {
+                                    onChangeValue("images", images);
+                                }}
+                            />
 
                             <div className="flex flex-1 flex-col gap-3">
                                 <Input
@@ -274,7 +296,9 @@ const UpsertProductModal = ({
 
                                         onChangeValue(
                                             "type",
-                                            selectedId && Number(selectedId),
+                                            selectedId
+                                                ? Number(selectedId)
+                                                : undefined,
                                         );
                                         onChangeValue(
                                             "category",
@@ -309,7 +333,7 @@ const UpsertProductModal = ({
                                             keys,
                                         )[0] as string;
 
-                                        onChangeValue("series", selectedId);
+                                        onChangeValue("series", [selectedId]);
                                     }}
                                     classNames={{
                                         trigger: "border",
@@ -327,7 +351,7 @@ const UpsertProductModal = ({
                                     type="number"
                                     isRequired
                                     onValueChange={(value) => {
-                                        onChangeValue("year", value);
+                                        onChangeValue("year", Number(value));
                                     }}
                                     value={String(localProduct?.year)}
                                     classNames={{
@@ -347,7 +371,7 @@ const UpsertProductModal = ({
                                     />
                                 </div>
 
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center pb-4">
                                     <div>
                                         <p className="font-medium">Số lượng</p>
                                     </div>
@@ -378,7 +402,7 @@ const UpsertProductModal = ({
                                     onAddProduct();
                                     onClose();
                                 }}
-                                isDisabled={isSaveButtonDisabled}
+                                isDisabled={!isSaveButtonEnabled}
                             >
                                 {product ? "Sửa" : "Thêm"}
                             </Button>

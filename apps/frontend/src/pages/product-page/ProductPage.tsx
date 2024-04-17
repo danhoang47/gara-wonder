@@ -158,12 +158,12 @@ function ProductPage() {
                                 +
                             </button>
                         </div>
-                        {/* <div className="quantity-box-right">
+                        <div className="quantity-box-right">
                             <div>
                                 Only 1 items Left !
                             </div>
                             <div>Don't miss it</div>
-                        </div> */}
+                        </div>
                     </div>
                     <div className="action-box-box">
                         <button className="button-buy">Buy now</button>

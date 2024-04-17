@@ -30,6 +30,26 @@ const ProgressButton = ({
     setNextModalOpen: () => void;
     evaluationProvided: boolean;
 }) => {
+    if (status === -1)
+        return (
+            <div className="p-4 flex flex-col gap-6 items-end">
+                <Button
+                    color="primary"
+                    className="w-[14rem]"
+                    isDisabled={evaluationProvided}
+                    onClick={() => setNextModalOpen()}
+                >
+                    Chấp nhận đơn
+                </Button>
+                <Button
+                    color="default"
+                    className="w-[14rem]"
+                    onClick={() => setNextModalOpen()}
+                >
+                    Từ chối đơn
+                </Button>
+            </div>
+        );
     if (status === 0)
         return (
             <div className="p-4 flex flex-col gap-6 items-end">
@@ -51,19 +71,7 @@ const ProgressButton = ({
                 </Button>
             </div>
         );
-    if (status === -1) {
-        return (
-            <div className="p-4 flex flex-col gap-6 items-end">
-                <Button
-                    color="primary"
-                    className="w-[14rem]"
-                    onClick={() => setNextModalOpen()}
-                >
-                    Tới thanh toán
-                </Button>
-            </div>
-        );
-    }
+
     return (
         <div className="p-4 flex flex-col gap-6 items-end">
             <Button
@@ -105,8 +113,6 @@ function Evaluation({
             keys.includes("estimateDuration");
         return filledKeys;
     }, [evaluation]);
-
-    
 
     const priceValidate: boolean = useMemo(() => {
         const servicesLength: boolean =
@@ -295,6 +301,7 @@ function Evaluation({
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+            
             <Modal
                 isOpen={isNextModalOpen}
                 onOpenChange={() => setIsNextModalOpen(false)}

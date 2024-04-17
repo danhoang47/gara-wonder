@@ -76,7 +76,6 @@ const OTPForm = forwardRef<OTPFormRef, OTPFormProps>(
                 return;
             }
 
-            console.log(elementWillReceiveFocus);
             range.selectNodeContents(elementWillReceiveFocus);
             range.collapse(false);
             const selection = window.getSelection();

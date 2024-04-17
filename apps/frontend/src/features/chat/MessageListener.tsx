@@ -65,7 +65,7 @@ function MessageListener({ children }: ContainerProps) {
 
             getRooms();
 
-            const id = setInterval(getRooms, 5000);
+            const id = setInterval(getRooms, 10000);
 
             return () => clearInterval(id);
         }

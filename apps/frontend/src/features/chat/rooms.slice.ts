@@ -13,7 +13,7 @@ import {
     muteRoom,
     trackingActivity,
 } from "@/api/chat";
-import { FetchStatus, Room, RoomStatus } from "@/core/types";
+import { FetchStatus, Room, RoomStatus, RoomType } from "@/core/types";
 import { AppState } from "@/store";
 
 export type RoomEntry = Omit<Room, "messages"> & {
@@ -39,6 +39,9 @@ const roomSlice = createSlice({
     name: "rooms",
     initialState: initialState,
     reducers: {
+        roomReset(state) {
+            roomsAdapter.removeAll(state.rooms);
+        },
         receivedMessages: (state, action) => {
             const payload = action.payload;
             const roomId = payload.roomId;
@@ -197,10 +200,20 @@ export const getListRooms = createAsyncThunk(
 
 export const trackingActivityStatus = createAsyncThunk(
     "tracking/trackingActivity",
-    async (params: { userId: string; garageId: string; roomId: string }) => {
+    async (params: {
+        userId: string;
+        entityId: string;
+        roomId: string;
+        type: RoomType;
+    }) => {
         try {
-            const { userId, garageId, roomId } = params;
-            const result = await trackingActivity(userId, garageId, roomId);
+            const { userId, entityId, roomId, type } = params;
+            const result = await trackingActivity(
+                userId,
+                entityId,
+                roomId,
+                type,
+            );
             return result;
         } catch (err) {
             return Promise.reject(err);
@@ -210,10 +223,14 @@ export const trackingActivityStatus = createAsyncThunk(
 
 export const createNewRoom = createAsyncThunk(
     "rooms/createRoom",
-    async (params: { userId: string; garageId: string }) => {
+    async (params: {
+        userId: string;
+        entityId: string;
+        type: RoomType;
+        attachEntityId?: string;
+    }) => {
         try {
-            const { userId, garageId } = params;
-            const result = await createRoom(userId, garageId);
+            const result = await createRoom(params);
             return result;
         } catch (err) {
             return Promise.reject(err);
@@ -264,7 +281,7 @@ export const selectMessages = createSelector(
     },
 );
 
-export const { receivedMessages, receivedMessage, receivedTyping } =
+export const { receivedMessages, receivedMessage, receivedTyping, roomReset } =
     roomSlice.actions;
 
 export default roomSlice.reducer;

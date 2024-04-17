@@ -1,10 +1,13 @@
 import { Input } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 
 import RegistrationSection from "../registration-section";
 import { useGarageRegistrationContext } from "../../hooks";
 import { useDebouncedValue } from "@/core/hooks";
+import { getPlaceSuggestions } from "@/api/garages";
+import { PlacePrediction } from "@/api/garages/getPlaceSuggestions";
+import SuggestionAddress from "./SuggestionAddress";
 
 const googleMapUri =
     "https://maps.googleapis.com/maps/api/geocode/json?key=" +
@@ -22,8 +25,16 @@ function Address() {
         setGarageRegistrationStateValue,
     } = useGarageRegistrationContext();
     const { address, location } = garageRegistrationState;
-    const debouncedAddress = useDebouncedValue(address, 500);
+    const debouncedAddress = useDebouncedValue(address, 1000);
     const [center, setCenter] = useState<google.maps.LatLng>();
+    const [placePredictions, setPlacePredictions] = useState<PlacePrediction[]>(
+        [],
+    );
+    const [hasFocus, setFocus] = useState<boolean>(true);
+    const [hasVisit, setVisit] = useState<boolean>(false);
+    const hasShowPredictions = useMemo(() => {
+        return hasVisit && debouncedAddress && hasFocus && placePredictions.length !== 0;
+    }, [placePredictions.length, hasFocus, debouncedAddress, hasVisit]);
     const position = location
         ? {
               lat: location.coordinates[1],
@@ -57,7 +68,17 @@ function Address() {
                 }
             }
         };
+        const getPlaceSuggestionsFromAddress = async () => {
+            if (debouncedAddress) {
+                const predictions = await getPlaceSuggestions(debouncedAddress);
 
+                if (!isStale) {
+                    setPlacePredictions(predictions);
+                }
+            }
+        };
+
+        getPlaceSuggestionsFromAddress();
         getGeocodingFromAddress();
         return () => {
             isStale = true;
@@ -65,26 +86,63 @@ function Address() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedAddress]);
 
+    console.log(hasFocus)
     return (
         <RegistrationSection
-            header={"Address"}
+            header={"Địa chỉ"}
             description={
-                "Pointing our the cursor on the map to locale your address"
+                "Nhập địa chỉ và di chuyển con trỏ trên bản đồ tới vị trí bạn mong muốn"
             }
         >
             <div className="flex flex-wrap gap-3">
-                <Input
-                    variant="bordered"
-                    placeholder="Enter your street"
-                    label="Street"
-                    isRequired
-                    errorMessage={garageRegistrationErrors.address}
-                    isInvalid={Boolean(garageRegistrationErrors.address)}
-                    onValueChange={(v) =>
-                        setGarageRegistrationStateValue("address", v)
-                    }
-                    value={address}
-                />
+                <div
+                    className="grow relative z-10"
+                    tabIndex={0}
+                    onBlur={() => {
+                        setFocus(false)
+                    }}
+                    onFocusCapture={() => {
+                        setFocus(true)
+                    }}
+                >
+                    <Input
+                        variant="bordered"
+                        placeholder="Nhập vào địa chỉ cụ thể..."
+                        label="Địa chỉ cụ thể"
+                        isRequired
+                        errorMessage={
+                            !hasFocus && garageRegistrationErrors.address
+                        }
+                        isInvalid={
+                            !hasFocus &&
+                            Boolean(garageRegistrationErrors.address)
+                        }
+                        onValueChange={(v) =>
+                            setGarageRegistrationStateValue("address", v)
+                        }
+                        value={address}
+                        onMouseDown={() => setVisit(true)}
+                    />
+                    {hasShowPredictions && (
+                        <div
+                            className="absolute top-[56px] w-full bg-background shadow rounded-b-lg"
+                            role="list"
+                        >
+                            {placePredictions.map((placePrediction) => (
+                                <SuggestionAddress
+                                    key={placePrediction.placeId}
+                                    placePrediction={placePrediction}
+                                    onPress={(place) =>
+                                        setGarageRegistrationStateValue(
+                                            "address",
+                                            place.text.text,
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
                 <div className="h-80 w-full">
                     <Map
                         mapId={"36cc488b1b7a7759"}
