@@ -94,7 +94,10 @@ export function SupplierRegistrationContextProvider({
         useState<SupplierRegistrationErrors>({});
 
     const setSupplierRegistrationStateValue = useCallback(
-        <K extends keyof SupplierRegistration>(key: K, value: SupplierRegistration[K]) => {
+        <K extends keyof SupplierRegistration>(
+            key: K,
+            value: SupplierRegistration[K],
+        ) => {
             const [isValid, errorMessage] = validate(
                 value,
                 supplierRegistrationConstraints[key],

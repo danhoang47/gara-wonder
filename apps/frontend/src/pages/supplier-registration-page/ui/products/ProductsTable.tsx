@@ -73,7 +73,9 @@ const ProductsTable = ({ products, onRowSelected }: ProductsTableProps) => {
                 } else {
                     const _ids = Array.from(keys) as string[];
                     onRowSelected(
-                        products.filter(({ _id }) => _ids.includes(_id)),
+                        products.filter(({ _id }) =>
+                            _ids.toString().includes(_id),
+                        ),
                     );
                 }
             }}

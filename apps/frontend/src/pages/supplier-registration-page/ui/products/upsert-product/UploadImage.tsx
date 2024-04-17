@@ -4,9 +4,13 @@ import { FileInput } from "@/core/ui";
 export type UploadImageProps = {
     images?: File[];
     onImageChanges: (images?: File[]) => void;
-}
+};
 
 const UploadImage = ({ images = [], onImageChanges }: UploadImageProps) => {
+    const onRemoveImage = (fileName: string) => {
+        const newImages = images.filter((image) => image.name !== fileName);
+        onImageChanges(newImages);
+    };
 
     return (
         <div className="max-w-[30%] w-full flex flex-col gap-1">
@@ -16,6 +20,7 @@ const UploadImage = ({ images = [], onImageChanges }: UploadImageProps) => {
                     file={file}
                     onImageRemove={(fileName) => {
                         // TODO: implement
+                        onRemoveImage(fileName);
                     }}
                 />
             ))}
@@ -24,7 +29,7 @@ const UploadImage = ({ images = [], onImageChanges }: UploadImageProps) => {
                     selectionMode="multiple"
                     onValueChange={(fs) => {
                         if (fs.length !== 0) {
-                            onImageChanges(fs)
+                            onImageChanges([...images, ...fs]);
                         }
                     }}
                     showLabel={false}

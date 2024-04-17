@@ -96,7 +96,7 @@ const UpsertProductModal = ({
         } else {
             newData.push(
                 ...oldData.map((item) => {
-                    if (localProduct?._id?.equals(item._id)) {
+                    if (localProduct?._id === item._id) {
                         return { ...item, ...localProduct };
                     }
 
@@ -104,7 +104,7 @@ const UpsertProductModal = ({
                 }),
             );
         }
-        setLocalProduct(undefined);
+        setLocalProduct(DEFAULT_PRODUCT);
 
         setSupplierRegistrationStateValue("products", newData);
     };
