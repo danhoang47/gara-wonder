@@ -23,6 +23,7 @@ export type Service = Partial<
 
 export type Brand = Model & {
     name: string;
+    series: string[]
 };
 
 export type AdditionalService = Model & {
