@@ -102,7 +102,7 @@ const GarageRegistrationPage = () => {
                         description: "Successfully register your garage",
                     }),
                 );
-                dispatch(setRoleToGarageOwner())
+                dispatch(setRoleToGarageOwner(Role.GarageOwner));
                 navigate(`/garages/${result.data._id}/management`);
             }
         } catch (error) {
@@ -138,9 +138,9 @@ export default function GarageRegistrationPageWrapper() {
     const status = useAppSelector((state) => state.user.status);
     const shouldRenderGarageRegistration = useMemo(() => {
         if (!user) return false;
-        
-        return user.role !== Role.GarageOwner && user.role !== Role.Staff
-    }, [user])
+
+        return user.role !== Role.GarageOwner && user.role !== Role.Staff;
+    }, [user]);
 
     useEffect(() => {
         if (status === FetchStatus.Fetching || status === FetchStatus.None)
