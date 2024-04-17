@@ -1,6 +1,7 @@
 import axios from "axios";
 import { baseSupplierUrl } from ".";
-import { Response, SupplierRegistration } from "@/core/types";
+import { Response } from "@/core/types";
+import { SupplierRegistration } from "@/pages/supplier-registration-page/contexts";
 
 export default async function createSupplier(
     supplier: SupplierRegistration,

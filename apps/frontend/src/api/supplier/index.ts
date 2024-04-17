@@ -4,3 +4,4 @@ export { default as uploadProductCsv } from "./uploadProductCsv";
 export { default as getSampleCSV } from "./getSampleCSV";
 export { default as getProductTypes } from "./getProductTypes";
 export { default as createSupplier } from "./createSupplier";
+export { default as uploadSupplierPhotos } from "./uploadSupplierPhotos";

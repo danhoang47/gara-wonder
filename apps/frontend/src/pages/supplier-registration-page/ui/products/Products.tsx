@@ -9,6 +9,7 @@ import { useSupplierRegistrationContext } from "../../hooks";
 import UpsertProductModal from "./upsert-product";
 import { useState } from "react";
 import { Product } from "@/core/types";
+import { RegistrationProduct } from "../../contexts";
 
 export default function Products() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -17,11 +18,22 @@ export default function Products() {
         onOpen: onOpenUpSertProduct,
         onOpenChange: onOpenChangeUpsertProduct,
     } = useDisclosure();
-    const { supplierRegistrationState } = useSupplierRegistrationContext();
+    const { supplierRegistrationState, setSupplierRegistrationStateValue } =
+        useSupplierRegistrationContext();
 
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
     const hasShowEditButton = selectedProducts.length === 1;
     const hasShowDeleteButton = selectedProducts.length > 0;
+
+    const onRemoveProducts = () => {
+        const products = supplierRegistrationState.products;
+        const test = selectedProducts.map((item) => item._id.toString());
+        const newProducts = products.filter(
+            (product) => !test.includes(product._id?.toString() as string),
+        );
+        setSelectedProducts([]);
+        setSupplierRegistrationStateValue("products", newProducts);
+    };
 
     return (
         <>
@@ -51,6 +63,18 @@ export default function Products() {
                                     onPress={onOpenUpSertProduct}
                                 >
                                     Chỉnh sửa
+                                </Button>
+                            )}
+                            {hasShowDeleteButton && (
+                                <Button
+                                    variant="bordered"
+                                    startContent={
+                                        <FontAwesomeIcon icon={faPlus} />
+                                    }
+                                    className="border"
+                                    onPress={onRemoveProducts}
+                                >
+                                    Xóa
                                 </Button>
                             )}
                             <Button

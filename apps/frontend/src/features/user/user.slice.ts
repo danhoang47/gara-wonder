@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { FetchStatus, Role, User } from "@/core/types";
+import { FetchStatus, User } from "@/core/types";
 import { getGarageByOwnerId, getUser, updateUserProfile } from "@/api";
 export enum Type {
     SignIn = 0,
@@ -47,14 +47,14 @@ const userSlice = createSlice({
             state.token = action.payload;
         },
         signUp(state) {
-            state.type = Type.SignUp 
+            state.type = Type.SignUp;
         },
-        setRoleToGarageOwner(state) {
+        setRoleToGarageOwner(state, action) {
             return {
                 ...state,
-                role: Role.GarageOwner
-            }
-        }
+                role: action.payload,
+            };
+        },
     },
     extraReducers(builder) {
         builder
@@ -66,8 +66,8 @@ const userSlice = createSlice({
                 state.value = action.payload;
             })
             .addCase(getUserById.rejected, (state, action) => {
-                console.log(action.error)
-                state.status = FetchStatus.Rejected
+                console.log(action.error);
+                state.status = FetchStatus.Rejected;
             })
             .addCase(getGarageByUserId.fulfilled, (state, action) => {
                 state.garageId = action.payload._id;
@@ -77,8 +77,8 @@ const userSlice = createSlice({
             })
             .addCase(updateUser.fulfilled, (state, action) => {
                 state.status = FetchStatus.Fulfilled;
-                state.value = action.payload
-            })
+                state.value = action.payload;
+            });
     },
 });
 
@@ -88,7 +88,7 @@ export const getUserById = createAsyncThunk(
         try {
             return (await getUser(id)).data;
         } catch (error: unknown) {
-            return Promise.reject(error)
+            return Promise.reject(error);
         }
     },
 );
@@ -99,7 +99,7 @@ export const getGarageByUserId = createAsyncThunk(
         try {
             return (await getGarageByOwnerId(id)).data;
         } catch (error) {
-            return Promise.reject(error)
+            return Promise.reject(error);
         }
     },
 );
@@ -108,14 +108,20 @@ export const updateUser = createAsyncThunk(
     "user/updateUser",
     async (formData: FormData) => {
         try {
-            return (await updateUserProfile(formData)).data
-        } catch(error) {
-            return Promise.reject(error)
+            return (await updateUserProfile(formData)).data;
+        } catch (error) {
+            return Promise.reject(error);
         }
-    }
-)
+    },
+);
 
-export const { signOut, setUserToken, setEmptyUser, updateToken, signUp, setRoleToGarageOwner } =
-    userSlice.actions;
+export const {
+    signOut,
+    setUserToken,
+    setEmptyUser,
+    updateToken,
+    signUp,
+    setRoleToGarageOwner,
+} = userSlice.actions;
 
 export default userSlice.reducer;

@@ -15,9 +15,12 @@ import {
     Navigation,
     Products,
 } from "./ui";
-import { createSupplier } from "@/api/supplier";
+import { createSupplier, uploadSupplierPhotos } from "@/api/supplier";
 import { notify } from "@/features/toasts/toasts.slice";
-import { SupplierRegistration } from "./contexts"; 
+import { SupplierRegistration } from "./contexts";
+import { setRoleToGarageOwner } from "@/features/user/user.slice";
+import { Role } from "@/core/types";
+import { ObjectId } from "bson";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export enum RegistrationSection {
@@ -35,8 +38,9 @@ export type GarageFormState = {
     province: string;
 };
 
-const GarageRegistrationPage = () => {
+const SupplierRegistrationPage = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const user = useAppSelector((state) => state.user.value);
     const token = useAppSelector((state) => state.user.token);
 
@@ -71,8 +75,22 @@ const GarageRegistrationPage = () => {
 
     async function onRegistrationFinish(supplier: SupplierRegistration) {
         load("registrationSaveLoad");
+        const imagesProduct = supplier.products.reduce(
+            (acc, product) => {
+                if (product.images?.length) {
+                    return [
+                        ...acc,
+                        { _id: product._id, images: product.images },
+                    ];
+                }
 
-        // uploadGarageImages(garage.backgroundImage, garage.images);
+                return [...acc];
+            },
+            [] as Array<{ _id?: ObjectId; images?: File[] }>,
+        );
+
+        uploadSupplierPhotos(imagesProduct, token!);
+
         supplier.userId = user?._id;
         try {
             const result = await createSupplier(supplier, token!);
@@ -83,10 +101,11 @@ const GarageRegistrationPage = () => {
                         type: "success",
                         title: "Register Supplier",
                         description: "Successfully register your supplier",
+                        delay: 4000,
                     }),
                 );
-                // dispatch(setRoleToGarageOwner())
-                // navigate(`/garages/${result.data._id}/management`);
+                dispatch(setRoleToGarageOwner(Role.Supplier));
+                navigate(`/products`);
             }
         } catch (error) {
             dispatch(
@@ -94,6 +113,7 @@ const GarageRegistrationPage = () => {
                     type: "failure",
                     title: "Register Supplier",
                     description: "Some error occured, please try again later",
+                    delay: 4000,
                 }),
             );
         } finally {
@@ -114,7 +134,7 @@ const GarageRegistrationPage = () => {
     );
 };
 
-export default function GarageRegistrationPageWrapper() {
+export default function SupplierRegistrationPageWrapper() {
     const navigate = useNavigate();
     const { open } = useModalContext();
     const user = useAppSelector((state) => state.user.value);
@@ -128,7 +148,7 @@ export default function GarageRegistrationPageWrapper() {
 
     return (
         <SupplierRegistrationContextProvider>
-            <GarageRegistrationPage />
+            <SupplierRegistrationPage />
         </SupplierRegistrationContextProvider>
     );
 }
