@@ -29,17 +29,17 @@ export default function BasicInformation() {
 
     return (
         <RegistrationSection
-            header="Basic Information"
-            description="Some descriptive information about this part of registration"
+            header="Thông tin cơ bản"
+            description="Cung cấp một vài thông tin cơ bản về garage của bạn"
         >
             <div className="mb-2">
-                <p className="font-medium">Basic Information</p>
+                <p className="font-medium">Thông tin cơ bản</p>
             </div>
             <div className="flex flex-wrap gap-3">
                 <Input
                     variant="bordered"
-                    placeholder="Enter Garage Name"
-                    label="Garage Name"
+                    placeholder="Nhập vào tên garage"
+                    label="Tên garage"
                     value={garageRegistrationState.name}
                     onValueChange={(name) => {
                         setGarageRegistrationStateValue("name", name);
@@ -56,8 +56,8 @@ export default function BasicInformation() {
                 />
                 <Textarea
                     variant="bordered"
-                    placeholder="Enter Description"
-                    label="Description"
+                    placeholder="Nhập vào giới thiệu..."
+                    label="Giới thiệu chung"
                     multiple
                     minRows={6}
                     value={garageRegistrationState.description}

@@ -20,7 +20,6 @@ const registrationRegex = new RegExp(/^\/[\w]+-registration$/)
 const DefaultLayout = () => {
     const user = useAppSelector((state) => state.user.value);
     const location = useLocation();
-    console.log(location)
     const isRegistrationPage = useMemo(() => registrationRegex.test(location.pathname), [location])
     const shouldShowGarageRegistrationLink = useMemo(() => {
         if (!user) return true;
