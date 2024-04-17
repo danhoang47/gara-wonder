@@ -9,7 +9,8 @@ export enum RoomStatus {
 
 export enum RoomType {
     WithSupplier = 0,
-    WithGarage
+    WithGarage,
+    WithCustomer
 }
 
 export type Room = Model & {
