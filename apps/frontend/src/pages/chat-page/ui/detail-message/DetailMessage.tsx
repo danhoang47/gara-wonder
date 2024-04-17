@@ -126,10 +126,12 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
     return room ? (
         <div className="flex flex-col col-span-4 overflow-hidden h-full">
             <MessageHeader room={room} setSelectedRoom={setSelectedRoom} />
-            <AttachEntity
-                roomType={room.type}
-                attachEntityId={room.attachEntityId}
-            />
+            {room.attachEntityId && (
+                <AttachEntity
+                    roomType={room.type}
+                    attachEntityId={room.attachEntityId}
+                />
+            )}
             <div ref={chatRef} className="overflow-y-auto grow">
                 <div className="overflow-y-auto px-4 py-3">
                     <div className="h-5" ref={ref} />
