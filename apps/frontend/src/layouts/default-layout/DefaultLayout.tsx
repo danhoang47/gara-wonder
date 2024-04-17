@@ -13,10 +13,15 @@ import {
 import { useAppSelector } from "@/core/hooks";
 import { Role } from "@/core/types";
 import Notifications from "@/features/notifications";
+import clsx from "clsx";
+
+const registrationRegex = new RegExp(/^\/[\w]+-registration$/)
 
 const DefaultLayout = () => {
     const user = useAppSelector((state) => state.user.value);
     const location = useLocation();
+    console.log(location)
+    const isRegistrationPage = useMemo(() => registrationRegex.test(location.pathname), [location])
     const shouldShowGarageRegistrationLink = useMemo(() => {
         if (!user) return true;
 
@@ -60,7 +65,7 @@ const DefaultLayout = () => {
                     </>
                 }
             />
-            <div className="flex-grow">
+            <div className={clsx("flex-grow", isRegistrationPage && "z-30")}>
                 <Outlet />
             </div>
             <MobileNavigation />

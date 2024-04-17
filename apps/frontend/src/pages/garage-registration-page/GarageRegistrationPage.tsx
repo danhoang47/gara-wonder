@@ -119,7 +119,7 @@ const GarageRegistrationPage = () => {
     }
 
     return (
-        <div className="grid grid-cols-10 gap-5 px-10 mt-10 relative z-0">
+        <div className="grid grid-cols-10 gap-5 px-10 mt-10 relative">
             {renderPageSection()}
             <Navigation
                 currentSectionIndex={currentSectionIndex}
