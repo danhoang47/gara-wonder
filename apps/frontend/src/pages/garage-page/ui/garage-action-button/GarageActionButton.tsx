@@ -62,6 +62,7 @@ function GarageActionButton() {
                 }}
                 startContent={<FontAwesomeIcon icon={faComment} />}
                 isLoading={fetchingStatus === FetchStatus.Fetching}
+                spinnerPlacement="end"
             >
                 <span className="font-medium">Nhắn tin</span>
             </Button>
@@ -81,6 +82,7 @@ function GarageActionButton() {
                         )}
                     />
                 }
+                spinnerPlacement="end"
             >
                 <span className="font-medium">Yêu thích</span>
             </Button>
@@ -100,6 +102,7 @@ function GarageActionButton() {
                         )}
                     />
                 }
+                spinnerPlacement="end"
             >
                 <span className="font-medium">Báo cáo</span>
             </Button>
