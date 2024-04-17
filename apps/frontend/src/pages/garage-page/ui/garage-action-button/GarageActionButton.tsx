@@ -35,7 +35,7 @@ function GarageActionButton() {
                 )}
                 onPress={async () => {
                     const isExistRoom = rooms.find(
-                        (room) => room.garageId === garageId,
+                        (room) => room.entityId === garageId,
                     );
                     if (isExistRoom) {
                         navigate(`/chat/${isExistRoom._id}`);
@@ -43,17 +43,25 @@ function GarageActionButton() {
                     }
 
                     if (fetchingStatus !== FetchStatus.Fetching) {
-                        const { data: room } = await dispatch(
+                        dispatch(
                             createNewRoom({
                                 userId: user.value?._id || "",
                                 entityId: garageId || "",
                                 type: RoomType.WithGarage,
                             }),
-                        ).unwrap();
-                        navigate(`/chat/${room._id}`);
+                        ).then(({ payload }) => {
+                            if (
+                                typeof payload === "object" &&
+                                payload &&
+                                "data" in payload
+                            ) {
+                                navigate(`/chat/${payload?.data?._id}`);
+                            }
+                        });
                     }
                 }}
                 startContent={<FontAwesomeIcon icon={faComment} />}
+                isLoading={fetchingStatus === FetchStatus.Fetching}
             >
                 <span className="font-medium">Nhắn tin</span>
             </Button>
