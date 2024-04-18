@@ -12,6 +12,7 @@ import moment from "moment";
 import "moment/locale/vi";
 import EvaluationContextProvider from "../contexts/EvaluationContext";
 import { mutate } from "swr";
+import { formatCurrency } from "@/utils";
 moment.locale("vi");
 
 function OrderDetail() {
@@ -65,8 +66,13 @@ function OrderDetail() {
                                             <p className="font-semibold">
                                                 Giá:{" "}
                                                 <span>
-                                                    {service.lowestPrice}$ -{" "}
-                                                    {service.highestPrice}$
+                                                    {formatCurrency(
+                                                        service.lowestPrice as number,
+                                                    )}
+                                                    -{" "}
+                                                    {formatCurrency(
+                                                        service.highestPrice as number,
+                                                    )}
                                                 </span>
                                             </p>
                                             <p className="font-semibold">

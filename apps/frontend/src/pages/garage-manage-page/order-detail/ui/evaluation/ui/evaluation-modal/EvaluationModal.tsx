@@ -14,13 +14,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { OrderDetailType, ServiceOrderType } from "@/api/order/getOrderById";
 import { EvaluationContext } from "@/pages/garage-manage-page/contexts/EvaluationContext";
+import { formatCurrency } from "@/utils";
 
 export type DateRangeType = {
     from?: number | null;
     to?: number | null;
 };
 
-const ServiceInput = ({
+export const ServiceInput = ({
     serviceState,
     service,
     setServicePrice,
@@ -40,7 +41,7 @@ const ServiceInput = ({
             servicePrice > Number(service?.highestPrice) ||
             (servicePrice < Number(service?.lowestPrice) && servicePrice !== 0)
         ) {
-                setIsValid(false);
+            setIsValid(false);
             return;
         }
         setIsValid(true);
@@ -51,7 +52,8 @@ const ServiceInput = ({
             <div>
                 <p className="text-lg">{service.category.name} </p>
                 <p className="font-medium">
-                    ( min: {service.lowestPrice} - max: {service.highestPrice})
+                    ( min: {formatCurrency(service.lowestPrice as number)} -
+                    max: {formatCurrency(service.highestPrice as number)})
                 </p>
                 {!isValid && (
                     <p className="text-red-600">

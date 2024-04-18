@@ -8,10 +8,16 @@ import {
     ModalHeader,
 } from "@nextui-org/react";
 import { useContext, useMemo, useState } from "react";
-import { EvaluationModal, ProgressBar } from "./ui";
+import {
+    ConfirmModal,
+    EvaluationModal,
+    ProgressBar,
+    ProgressButton,
+} from "./ui";
 import { OrderDetailType } from "@/api/order/getOrderById";
 import {
     acceptOrder,
+    addOrderPrice,
     handleEvaluation,
     moveNextStep,
     uploadEvaluationImage,
@@ -23,91 +29,6 @@ import {
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
-
-const ProgressButton = ({
-    status,
-    setModalOpen,
-    setNextModalOpen,
-    setProvideOrder,
-    evaluationProvided,
-    isProvideEvaluation,
-    setOnAccept,
-}: {
-    status: number;
-    setModalOpen: () => void;
-    setNextModalOpen: () => void;
-    setProvideOrder: () => void;
-    evaluationProvided: boolean;
-    isProvideEvaluation: boolean;
-    setOnAccept: (str: string) => void;
-}) => {
-    if (status === -1)
-        return (
-            <div className="p-4 flex flex-col gap-6 items-end">
-                <Button
-                    color="primary"
-                    className="w-[14rem]"
-                    isDisabled={evaluationProvided}
-                    onClick={() => setOnAccept("accept")}
-                >
-                    Chấp nhận đơn
-                </Button>
-                <Button
-                    color="default"
-                    className="w-[14rem]"
-                    onClick={() => setOnAccept("reject")}
-                >
-                    Từ chối đơn
-                </Button>
-            </div>
-        );
-    if (status === 0 && isProvideEvaluation)
-        return (
-            <div className="p-4 flex flex-col gap-6 items-end">
-                <Button
-                    color="primary"
-                    className="w-[14rem]"
-                    isDisabled={evaluationProvided}
-                    onClick={() => setModalOpen()}
-                >
-                    Đánh giá
-                </Button>
-                <Button
-                    color="default"
-                    className="w-[14rem]"
-                    isDisabled={evaluationProvided}
-                    onClick={() => setModalOpen()}
-                >
-                    Tới thanh toán
-                </Button>
-            </div>
-        );
-    if (status === 0)
-        return (
-            <div className="p-4 flex flex-col gap-6 items-end">
-                <Button
-                    color="primary"
-                    className="w-[14rem]"
-                    isDisabled={evaluationProvided}
-                    onClick={() => setProvideOrder()}
-                >
-                    Xác nhận đơn sửa chữa
-                </Button>
-            </div>
-        );
-    if (status < 3)
-        return (
-            <div className="p-4 flex flex-col gap-6 items-end">
-                <Button
-                    color="primary"
-                    className="w-[14rem]"
-                    onClick={() => setNextModalOpen()}
-                >
-                    Tới bước tiếp theo
-                </Button>
-            </div>
-        );
-};
 
 function Evaluation({
     status,
@@ -261,7 +182,7 @@ function Evaluation({
             );
         }
     };
-    
+
     const onMoveNext = async () => {
         try {
             const result = await moveNextStep(
@@ -299,13 +220,57 @@ function Evaluation({
         }
     };
 
+    const onConfirmSubmit = async () => {
+        if (priceValidate) {
+            try {
+                const result = await addOrderPrice(
+                    garageId,
+                    evaluation as EvaluationInfo,
+                );
+                if (result.statusCode === 200) {
+                    setIsEvaluationModalOpen(false);
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: "Cập nhật Thành Công",
+                            description: "Cập nhật tới khách hàng thành công",
+                            delay: 2000,
+                        }),
+                    );
+                    onMoveNext();
+                    setIsConfirmModalOpen(false);
+                }
+            } catch (error) {
+                dispatch(
+                    notify({
+                        type: "failure",
+                        title: "Gửi Đánh Giá Thất Bại",
+                        description: "Một số lỗi xảy ra khi gửi đánh giá",
+                        delay: 2000,
+                    }),
+                );
+            }
+        } else if (!priceValidate) {
+            dispatch(
+                notify({
+                    type: "failure",
+                    title: "Nhập sai giá tiền",
+                    description: "Vui lòng nhập đúng giá tiền ",
+                    delay: 3000,
+                }),
+            );
+        }
+    };
+
     return (
         <div className="border-2 rounded-lg">
             <ProgressBar
                 status={status}
                 isProvideEvaluation={isHaveEvaluation}
             />
-            <div className="w-full h-1 border-t-2" />
+            {(status as number) < 3 && (
+                <div className="w-full h-1 border-t-2" />
+            )}
             <ProgressButton
                 status={status || 0}
                 setModalOpen={() => {
@@ -374,7 +339,7 @@ function Evaluation({
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-
+            {/* Next Modal */}
             <Modal
                 isOpen={isNextModalOpen}
                 onOpenChange={() => setIsNextModalOpen(false)}
@@ -414,6 +379,7 @@ function Evaluation({
                 </ModalContent>
             </Modal>
 
+            {/* Confirm not provided Evaluation service */}
             <Modal
                 isOpen={isConfirmModalOpen}
                 onOpenChange={() => setIsConfirmModalOpen(false)}
@@ -423,27 +389,25 @@ function Evaluation({
                 size="2xl"
             >
                 <ModalContent className="max-w-[600px]">
-                    <ModalHeader>
+                    <ModalHeader className="flex justify-center">
                         <p className="text-center text-lg font-bold">
                             Hoàn tất đơn sửa chữa
                         </p>
                     </ModalHeader>
-                    <Divider />
+
                     <ModalBody className="pb-4 overflow-auto text-lg">
-                        <p className="font-medium">
-                            Bạn có muốn di chuyển tới bước tiếp theo ?
-                        </p>
+                        <ConfirmModal services={services} />
                     </ModalBody>
 
                     <ModalFooter className="flex items-center justify-end">
                         <div className="flex gap-2 justify-end">
                             <Button
                                 variant="light"
-                                onClick={() => setIsNextModalOpen(false)}
+                                onClick={() => setIsConfirmModalOpen(false)}
                             >
                                 <p className="text-black">Đóng</p>
                             </Button>
-                            <Button color="primary" onClick={onMoveNext}>
+                            <Button color="primary" onClick={onConfirmSubmit}>
                                 <p className="text-background">
                                     Tới bước tiếp theo
                                 </p>
