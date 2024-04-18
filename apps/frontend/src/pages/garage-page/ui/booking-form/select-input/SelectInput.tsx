@@ -81,6 +81,10 @@ function SelectInput() {
                                     setLocalOrderTime(
                                         orderDate.toDate().getTime(),
                                     );
+                                    setOrderValue(
+                                        "orderTime",
+                                        orderDate.toDate().getTime(),
+                                    );
                                 }
                             }}
                             isClearable
@@ -91,6 +95,7 @@ function SelectInput() {
                             mode="single"
                             onSelectedChange={(date) => {
                                 setLocalOrderTime(date?.getTime());
+                                setOrderValue("orderTime", date?.getTime());
                             }}
                             defaultYear={2024}
                             defaultMonth={new Date().getMonth()}
