@@ -31,6 +31,7 @@ const messagesAdapter = createEntityAdapter<MessageWithServices, string>({
 
 const initialState = {
     fetchingStatus: FetchStatus.None,
+    fetchingStatusCreate: FetchStatus.None,
     fetchingStatusActivity: FetchStatus.None,
     rooms: roomsAdapter.getInitialState(),
 };
@@ -131,10 +132,10 @@ const roomSlice = createSlice({
                 state.fetchingStatus = FetchStatus.Rejected;
             })
             .addCase(createNewRoom.pending, (state) => {
-                state.fetchingStatus = FetchStatus.Fetching;
+                state.fetchingStatusCreate = FetchStatus.Fetching;
             })
             .addCase(createNewRoom.fulfilled, (state, action) => {
-                state.fetchingStatus = FetchStatus.Fulfilled;
+                state.fetchingStatusCreate = FetchStatus.Fulfilled;
                 const payload = action.payload;
                 const newRoomsState: RoomEntry[] = [
                     {
@@ -146,7 +147,7 @@ const roomSlice = createSlice({
                 roomsAdapter.setAll(state.rooms, newRoomsState);
             })
             .addCase(createNewRoom.rejected, (state) => {
-                state.fetchingStatus = FetchStatus.Rejected;
+                state.fetchingStatusCreate = FetchStatus.Rejected;
             })
 
             .addCase(deleteCurrentRoom.pending, (state) => {

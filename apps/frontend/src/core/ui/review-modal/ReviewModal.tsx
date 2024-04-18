@@ -14,7 +14,7 @@ import { Review } from "@/core/types";
 
 export type ReviewModalProps = {
     onClose: () => void;
-    onSave: () => void;
+    onSave: (review: Partial<Review>) => void;
     isOpen: boolean;
     entityId: string;
     entityName: string;
@@ -35,7 +35,6 @@ function ReviewModal({
         ratingPoint: 0,
     });
     const [startIndex, setStarIndex] = useState<number>(0);
-
     const onRatingHover = (event: React.MouseEvent<HTMLButtonElement>) => {
         const targetElement = event.currentTarget;
         const index = targetElement.getAttribute("data-index");
@@ -80,7 +79,14 @@ function ReviewModal({
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            classNames={{
+                closeButton:
+                    "z-10 bg-transparent hover:bg-transparent hover:text-foreground",
+            }}
+        >
             <ModalContent>
                 <ModalBody className="py-6 flex flex-col gap-4 relative">
                     <div className="bg-primary-50 flex gap-4 p-4 rounded-medium">
@@ -166,7 +172,7 @@ function ReviewModal({
                 <ModalFooter className="py-6">
                     <Button
                         color="primary"
-                        onPress={onSave}
+                        onPress={() => onSave(review)}
                         className="w-full"
                         isLoading={isLoading}
                     >

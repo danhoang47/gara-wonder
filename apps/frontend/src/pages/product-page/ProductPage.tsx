@@ -31,7 +31,7 @@ function ProductPage() {
     const navigate = useNavigate();
     const user = useAppSelector((state) => state.user);
     const fetchingStatus = useAppSelector(
-        (state) => state.rooms.fetchingStatus,
+        (state) => state.rooms.fetchingStatusCreate,
     );
     const rooms = useAppSelector((state) => selectRooms(state));
 

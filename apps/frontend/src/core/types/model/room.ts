@@ -10,7 +10,6 @@ export enum RoomStatus {
 export enum RoomType {
     WithSupplier = 0,
     WithGarage,
-    WithCustomer
 }
 
 export type Room = Model & {
@@ -26,5 +25,5 @@ export type Room = Model & {
     messages: Message[];
     isTyping?: boolean;
     type: RoomType;
-    attachEntityId: string,
+    attachEntityId: string;
 };

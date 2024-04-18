@@ -5,4 +5,5 @@ export type Review = Model & {
     ratingPoint: number;
     tags: string;
     entityId: string;
+    userId: string;
 };
