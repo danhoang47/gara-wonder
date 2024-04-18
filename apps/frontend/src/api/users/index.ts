@@ -8,3 +8,4 @@ export { default as confirmEvaluation } from "./confirmEvaluation";
 export { default as updateUserProfile } from "./updateUserProfile";
 export { default as persistPayment } from "./persistPayment";
 export { default as CreatePayment } from "./payment";
+export { default as cancelOrder } from "./cancelOrder";

@@ -12,6 +12,7 @@ import moment from "moment";
 import "moment/locale/vi";
 import { useAppSelector } from "@/core/hooks";
 import { mutate } from "swr";
+import { formatCurrency } from "@/utils";
 moment.locale("vi");
 
 function OrderDetail() {
@@ -27,7 +28,6 @@ function OrderDetail() {
     const refetch = () => {
         mutate(`${orderId}`);
     };
-
 
     useEffect(() => {
         if (isOrderLoading) load("order-detail");
@@ -65,8 +65,13 @@ function OrderDetail() {
                                         <p className="font-semibold">
                                             Giá:{" "}
                                             <span>
-                                                {service.lowestPrice}$ -{" "}
-                                                {service.highestPrice}$
+                                                {formatCurrency(
+                                                    service.lowestPrice as number,
+                                                )}
+                                                -{" "}
+                                                {formatCurrency(
+                                                    service.highestPrice as number,
+                                                )}
                                             </span>
                                         </p>
                                         <p className="font-semibold">

@@ -2,6 +2,7 @@ import { acceptOrder } from "@/api";
 import { OrderListType } from "@/api/order/getOrders";
 import { useAppDispatch } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
+import { formatCurrency } from "@/utils";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Chip, Link } from "@nextui-org/react";
@@ -13,7 +14,7 @@ function OrderCard({
     garageId,
 }: {
     order?: OrderListType;
-    garageId: string;
+    garageId?: string;
 }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -87,7 +88,7 @@ function OrderCard({
                         </div>
                         <div>
                             <p className="font-semibold text-lg">
-                                VND {order?.totalPrice}
+                                {formatCurrency(order?.totalPrice as number, "compact")}
                             </p>
                         </div>
                     </div>
@@ -134,8 +135,8 @@ function OrderCard({
                                 )}
                             </div>
                             <div className="pt-3 flex gap-2 justify-between items-center">
-                                <div>
-                                    {order?.status < 0 && (
+                                <div className="flex gap-2">
+                                    {order?.status as number < 0 && (
                                         <Chip color="primary">
                                             <p className="font-medium">
                                                 Cần chấp nhận
@@ -149,7 +150,7 @@ function OrderCard({
                                             </p>
                                         </Chip>
                                     )}
-                                    {order?.status > 0 && (
+                                    {order?.status as number > 0 && (
                                         <Chip color="primary">
                                             <p className="font-medium">
                                                 Đã chấp nhận
@@ -169,7 +170,7 @@ function OrderCard({
                                         </Chip>
                                     )}
                                 </div>
-                                {order?.status === -1 && (
+                                {order?.status as number === -1 && (
                                     <div className="flex gap-2">
                                         <Button
                                             onClick={() => {

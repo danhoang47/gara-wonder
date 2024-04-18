@@ -134,8 +134,11 @@ function Evaluation({
                     user.token,
                 );
                 if (result.statusCode === 200) {
-                    // @ts-expect-error location type conflict
-                    window.location = result.data.paymentUrl.vnpUrl as string;
+                    window.open(
+                        result.data.paymentUrl.vnpUrl as string,
+                        "_blank",
+                    );
+                    setConfirmModalOpen(false);
                 }
             } catch (error) {
                 dispatch(
@@ -154,7 +157,10 @@ function Evaluation({
     return (
         <div className="border-2 rounded-lg">
             <ProgressBar status={status || 0} />
-
+            {(status as number) < 4 ||
+                ((status as number) > 0 && (
+                    <div className="w-full h-1 border-t-2" />
+                ))}
             <ProgressButton
                 status={status || 0}
                 setConfirmModalOpen={() => {

@@ -24,4 +24,5 @@ export { default as getDistance } from "./getDistance";
 export { default as updateGarageSetting } from "./updateGarageSetting";
 export { default as getGarageSetting } from "./getGarageSetting";
 
-export { default as getPlaceSuggestions } from './getPlaceSuggestions'
+export { default as getPlaceSuggestions } from "./getPlaceSuggestions";
+export { default as getReviews } from "./getReviews";
