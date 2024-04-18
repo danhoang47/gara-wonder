@@ -10,7 +10,12 @@ import {
 import { useContext, useMemo, useState } from "react";
 import { EvaluationModal, ProgressBar } from "./ui";
 import { OrderDetailType } from "@/api/order/getOrderById";
-import { handleEvaluation, moveNextStep, uploadEvaluationImage } from "@/api";
+import {
+    acceptOrder,
+    handleEvaluation,
+    moveNextStep,
+    uploadEvaluationImage,
+} from "@/api";
 import {
     EvaluationContext,
     EvaluationInfo,
@@ -23,12 +28,18 @@ const ProgressButton = ({
     status,
     setModalOpen,
     setNextModalOpen,
+    setProvideOrder,
     evaluationProvided,
+    isProvideEvaluation,
+    setOnAccept,
 }: {
     status: number;
     setModalOpen: () => void;
     setNextModalOpen: () => void;
+    setProvideOrder: () => void;
     evaluationProvided: boolean;
+    isProvideEvaluation: boolean;
+    setOnAccept: (str: string) => void;
 }) => {
     if (status === -1)
         return (
@@ -37,20 +48,20 @@ const ProgressButton = ({
                     color="primary"
                     className="w-[14rem]"
                     isDisabled={evaluationProvided}
-                    onClick={() => setNextModalOpen()}
+                    onClick={() => setOnAccept("accept")}
                 >
                     Chấp nhận đơn
                 </Button>
                 <Button
                     color="default"
                     className="w-[14rem]"
-                    onClick={() => setNextModalOpen()}
+                    onClick={() => setOnAccept("reject")}
                 >
                     Từ chối đơn
                 </Button>
             </div>
         );
-    if (status === 0)
+    if (status === 0 && isProvideEvaluation)
         return (
             <div className="p-4 flex flex-col gap-6 items-end">
                 <Button
@@ -71,18 +82,31 @@ const ProgressButton = ({
                 </Button>
             </div>
         );
-
-    return (
-        <div className="p-4 flex flex-col gap-6 items-end">
-            <Button
-                color="primary"
-                className="w-[14rem]"
-                onClick={() => setNextModalOpen()}
-            >
-                Tới bước tiếp theo
-            </Button>
-        </div>
-    );
+    if (status === 0)
+        return (
+            <div className="p-4 flex flex-col gap-6 items-end">
+                <Button
+                    color="primary"
+                    className="w-[14rem]"
+                    isDisabled={evaluationProvided}
+                    onClick={() => setProvideOrder()}
+                >
+                    Xác nhận đơn sửa chữa
+                </Button>
+            </div>
+        );
+    if (status < 3)
+        return (
+            <div className="p-4 flex flex-col gap-6 items-end">
+                <Button
+                    color="primary"
+                    className="w-[14rem]"
+                    onClick={() => setNextModalOpen()}
+                >
+                    Tới bước tiếp theo
+                </Button>
+            </div>
+        );
 };
 
 function Evaluation({
@@ -101,6 +125,8 @@ function Evaluation({
     const [isEvaluationModalOpen, setIsEvaluationModalOpen] =
         useState<boolean>(false);
     const [isNextModalOpen, setIsNextModalOpen] = useState<boolean>(false);
+    const [isConfirmModalOpen, setIsConfirmModalOpen] =
+        useState<boolean>(false);
     const { garageId, orderId } = useParams();
     const { evaluation } = useContext(EvaluationContext);
     const dispatch = useAppDispatch();
@@ -199,7 +225,43 @@ function Evaluation({
             );
         }
     };
-
+    const onAccept = async (str: string) => {
+        try {
+            const result = await acceptOrder(str, garageId, orderId);
+            if (result.statusCode === 200) {
+                refetch();
+                setIsEvaluationModalOpen(false);
+                if (str === "accept")
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: "Chấp nhận đơn hàng",
+                            description: "Chấp nhận đơn hàng",
+                            delay: 2000,
+                        }),
+                    );
+                else
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: "Từ chối đơn hàng",
+                            description: "Từ chối đơn hàng",
+                            delay: 2000,
+                        }),
+                    );
+            }
+        } catch (error) {
+            dispatch(
+                notify({
+                    type: "failure",
+                    title: "Xử lý thất bại",
+                    description: "Một số lỗi xảy ra khi gửi xử lý",
+                    delay: 2000,
+                }),
+            );
+        }
+    };
+    
     const onMoveNext = async () => {
         try {
             const result = await moveNextStep(
@@ -240,7 +302,7 @@ function Evaluation({
     return (
         <div className="border-2 rounded-lg">
             <ProgressBar
-                status={status || 0}
+                status={status}
                 isProvideEvaluation={isHaveEvaluation}
             />
             <div className="w-full h-1 border-t-2" />
@@ -252,7 +314,14 @@ function Evaluation({
                 setNextModalOpen={() => {
                     setIsNextModalOpen(true);
                 }}
+                setProvideOrder={() => {
+                    setIsConfirmModalOpen(true);
+                }}
+                setOnAccept={(str: string) => {
+                    onAccept(str);
+                }}
                 evaluationProvided={evaluationProvided}
+                isProvideEvaluation={isHaveEvaluation}
             />
             <Modal
                 isOpen={isEvaluationModalOpen}
@@ -280,7 +349,11 @@ function Evaluation({
                         <div className="flex gap-2 items-center">
                             <p>Tổng cộng:</p>
                             <p className="font-bold text-black text-2xl">
-                                USD 280
+                                VND{" "}
+                                {evaluation?.services?.reduce(
+                                    (prev, next) => prev + next.price,
+                                    0,
+                                )}
                             </p>
                         </div>
                         <div className="flex gap-2 py-2 justify-end ">
@@ -301,7 +374,7 @@ function Evaluation({
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            
+
             <Modal
                 isOpen={isNextModalOpen}
                 onOpenChange={() => setIsNextModalOpen(false)}
@@ -314,6 +387,45 @@ function Evaluation({
                     <ModalHeader>
                         <p className="text-center text-lg font-bold">
                             Xác nhận
+                        </p>
+                    </ModalHeader>
+                    <Divider />
+                    <ModalBody className="pb-4 overflow-auto text-lg">
+                        <p className="font-medium">
+                            Bạn có muốn di chuyển tới bước tiếp theo ?
+                        </p>
+                    </ModalBody>
+
+                    <ModalFooter className="flex items-center justify-end">
+                        <div className="flex gap-2 justify-end">
+                            <Button
+                                variant="light"
+                                onClick={() => setIsNextModalOpen(false)}
+                            >
+                                <p className="text-black">Đóng</p>
+                            </Button>
+                            <Button color="primary" onClick={onMoveNext}>
+                                <p className="text-background">
+                                    Tới bước tiếp theo
+                                </p>
+                            </Button>
+                        </div>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            <Modal
+                isOpen={isConfirmModalOpen}
+                onOpenChange={() => setIsConfirmModalOpen(false)}
+                classNames={{
+                    wrapper: "overflow-y-hidden",
+                }}
+                size="2xl"
+            >
+                <ModalContent className="max-w-[600px]">
+                    <ModalHeader>
+                        <p className="text-center text-lg font-bold">
+                            Hoàn tất đơn sửa chữa
                         </p>
                     </ModalHeader>
                     <Divider />

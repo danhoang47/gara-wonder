@@ -1,6 +1,13 @@
 import axios, { AxiosError } from "axios";
 
-import { Evaluation, Image, Model, Response } from "@/core/types";
+import {
+    Category,
+    Evaluation,
+    Image,
+    Model,
+    Response,
+    Service,
+} from "@/core/types";
 import { baseGaragesUrl } from ".";
 
 export type EvaluationType = Model &
@@ -10,6 +17,7 @@ export type EvaluationType = Model &
         imageUploadingStatus: number;
         extraFee: number;
         description: string;
+        services: (Service & { category: Category; price: number })[];
     };
 export default async function getOrderEvaluation(id: string | undefined) {
     try {

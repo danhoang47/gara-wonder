@@ -1,12 +1,13 @@
-
+import { useParams } from "react-router-dom";
 import { OrderCard } from "..";
 import { OrderListType } from "@/api/order/getOrders";
 
 function OrderList({ orders }: { orders: OrderListType[] }) {
+    const { garageId } = useParams();
     return (
         <div className="w-1/2 flex flex-col gap-2 px-10">
             {orders?.map((order: OrderListType, index: number) => (
-                <OrderCard order={order} key={index} />
+                <OrderCard order={order} key={index} garageId={garageId}/>
             ))}
         </div>
     );

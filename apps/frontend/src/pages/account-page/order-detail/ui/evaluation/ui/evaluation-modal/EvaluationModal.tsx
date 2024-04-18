@@ -1,27 +1,10 @@
 import moment from "moment";
-import { OrderDetailType, ServiceOrderType } from "@/api/order/getOrderById";
 import { Evaluation, Image } from "@/core/types";
+import { EvaluationType } from "@/api/garages/getOrderEvaluation";
 
 export type DateRangeType = {
     from?: number | null;
     to?: number | null;
-};
-
-const ServiceInput = ({
-    servicePrice,
-    service,
-}: {
-    servicePrice?: number;
-    service: ServiceOrderType;
-}) => {
-    return (
-        <div className="flex justify-between">
-            <p className="text-lg">{service.category.name}</p>
-            <div className="flex items-center gap-2">
-                <p>{servicePrice}</p>
-            </div>
-        </div>
-    );
 };
 
 function EvaluationModal({
@@ -32,7 +15,7 @@ function EvaluationModal({
     estimateTime,
 }: {
     handOverTime?: number;
-    services?: OrderDetailType["services"];
+    services?: EvaluationType["services"];
     description?: string;
     images?: Image[];
     estimateTime?: Evaluation["estimateDuration"];
@@ -42,15 +25,10 @@ function EvaluationModal({
             <div className="flex flex-col gap-3">
                 <p className=" text-xl font-semibold">Dịch vụ</p>
                 {/* {services?.map((service, index) => (
-                    <ServiceInput
-                        key={index}
-                        service={service}
-                        servicePrice={
-                            evaluation?.services?.filter(
-                                (e) => e.serviceId === service._id,
-                            )[0].price
-                        }
-                    />
+                    <div className="flex justify-between" key={index}>
+                        <p>{service?.category?.name}</p>
+                        <p>{service?.price}</p>
+                    </div>
                 ))} */}
                 <div className="flex justify-between">
                     <p className="text-lg">Ngày lấy xe</p>
