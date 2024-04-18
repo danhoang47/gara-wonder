@@ -1,10 +1,57 @@
+import { acceptOrder } from "@/api";
 import { OrderListType } from "@/api/order/getOrders";
+import { useAppDispatch } from "@/core/hooks";
+import { notify } from "@/features/toasts/toasts.slice";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Chip, Link } from "@nextui-org/react";
+import { Button, Chip, Link } from "@nextui-org/react";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
-function OrderCard({ order }: { order?: OrderListType }) {
+function OrderCard({
+    order,
+    garageId,
+}: {
+    order?: OrderListType;
+    garageId: string;
+}) {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const onAccept = async (str: string) => {
+        try {
+            const result = await acceptOrder(str, garageId, order?._id);
+            if (result.statusCode === 200) {
+                if (str === "accept") {
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: "Chấp nhận đơn hàng",
+                            description: "Chấp nhận đơn hàng",
+                            delay: 2000,
+                        }),
+                    );
+                    navigate(`./${order?._id}`);
+                } else
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: "Từ chối đơn hàng",
+                            description: "Từ chối đơn hàng",
+                            delay: 2000,
+                        }),
+                    );
+            }
+        } catch (error) {
+            dispatch(
+                notify({
+                    type: "failure",
+                    title: "Xử lý thất bại",
+                    description: "Một số lỗi xảy ra khi gửi xử lý",
+                    delay: 2000,
+                }),
+            );
+        }
+    };
     return (
         <div className="max-w-[480px]">
             <div className="border-1 rounded-2xl p-5 shadow-sm">
@@ -44,7 +91,7 @@ function OrderCard({ order }: { order?: OrderListType }) {
                             </p>
                         </div>
                     </div>
-                    <div className="flex gap-6 items-center">
+                    <div className="">
                         <div>
                             <p className="font-semibold">
                                 {order?.services.map((e, index) => {
@@ -86,28 +133,62 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                     </>
                                 )}
                             </div>
-                            <div className="pt-3 flex gap-2">
-                                {order?.status <= 0 ? (
-                                    <Chip color="primary">
-                                        <p className="font-medium">
-                                            Cần chấp nhận
-                                        </p>
-                                    </Chip>
-                                ) : (
-                                    <Chip color="primary">
-                                        <p className="font-medium">
-                                            Đã chấp nhận
-                                        </p>
-                                    </Chip>
-                                )}
-                                {order?.evaluationRequired ? (
-                                    ""
-                                ) : (
-                                    <Chip color="default" variant="bordered">
-                                        <p className="font-medium text-default-500">
-                                            Không có đánh giá
-                                        </p>
-                                    </Chip>
+                            <div className="pt-3 flex gap-2 justify-between items-center">
+                                <div>
+                                    {order?.status < 0 && (
+                                        <Chip color="primary">
+                                            <p className="font-medium">
+                                                Cần chấp nhận
+                                            </p>
+                                        </Chip>
+                                    )}
+                                    {order?.status == 0 && (
+                                        <Chip color="primary">
+                                            <p className="font-medium">
+                                                Cần đánh giá
+                                            </p>
+                                        </Chip>
+                                    )}
+                                    {order?.status > 0 && (
+                                        <Chip color="primary">
+                                            <p className="font-medium">
+                                                Đã chấp nhận
+                                            </p>
+                                        </Chip>
+                                    )}
+                                    {order?.evaluationRequired ? (
+                                        ""
+                                    ) : (
+                                        <Chip
+                                            color="default"
+                                            variant="bordered"
+                                        >
+                                            <p className="font-medium text-default-500">
+                                                Không có đánh giá
+                                            </p>
+                                        </Chip>
+                                    )}
+                                </div>
+                                {order?.status === -1 && (
+                                    <div className="flex gap-2">
+                                        <Button
+                                            onClick={() => {
+                                                onAccept("reject");
+                                            }}
+                                            size="sm"
+                                        >
+                                            Từ chối
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                onAccept("accept");
+                                            }}
+                                            color="primary"
+                                            size="sm"
+                                        >
+                                            Chấp nhận
+                                        </Button>
+                                    </div>
                                 )}
                             </div>
                         </div>

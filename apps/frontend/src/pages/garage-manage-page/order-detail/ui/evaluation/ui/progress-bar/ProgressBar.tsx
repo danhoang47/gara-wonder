@@ -11,20 +11,26 @@ const ProgressBar = ({
     status,
     isProvideEvaluation,
 }: {
-    status: number;
+    status?: number;
     isProvideEvaluation: boolean;
 }) => {
     const checkProgress = (stat: number) => {
         if (status === stat) return `text-primary-500 border-primary-500 `;
+        // @ts-expect-error type number
         if (status > stat) return `text-white border-primary bg-primary`;
+        // @ts-expect-error type number
         if (status < stat) return `text-default-500 border-default-500`;
     };
     const checkProgressLine = (stat: number) => {
+        // @ts-expect-error type number
         if (status > stat) return `bg-primary text-primary`;
+        // @ts-expect-error type number
         if (status <= stat) return `bg-default-500`;
     };
     const checkProgressText = (stat: number) => {
+        // @ts-expect-error type number
         if (status >= stat) return `text-primary`;
+        // @ts-expect-error type number
         if (status < stat) return `text-default-500`;
     };
     return (
@@ -33,7 +39,7 @@ const ProgressBar = ({
                 <div
                     className={clsx(
                         "relative flex justify-center items-center rounded-full border-3 w-16 h-16 p-3",
-                        checkProgress(-1),
+                        checkProgress(0),
                     )}
                 >
                     <FontAwesomeIcon icon={faFileLines} size="2xl" />
@@ -50,14 +56,14 @@ const ProgressBar = ({
                 <div
                     className={clsx(
                         "relative flex justify-center items-center rounded-full border-3 w-16 h-16 p-3",
-                        checkProgress(-2),
+                        checkProgress(0),
                     )}
                 >
                     <FontAwesomeIcon icon={faFileLines} size="2xl" />
                     <p
                         className={clsx(
                             "absolute -bottom-7 text-sm font-semibold whitespace-nowrap",
-                            checkProgressText(-1),
+                            checkProgressText(0),
                         )}
                     >
                         Xem xét

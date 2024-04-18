@@ -44,8 +44,9 @@ function OrderDetail() {
                     <Evaluation
                         status={order?.status}
                         handOverTime={order?.handOverTime}
-                        services={order?.services}
                         refetch={refetch}
+                        garageId={order?.garageId}
+                        evaluationId={order?.evaluationId}
                     />
                     {/* User Information */}
                     <UserInfo user={order?.user} />

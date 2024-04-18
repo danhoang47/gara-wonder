@@ -7,21 +7,24 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@nextui-org/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { EvaluationModal, ProgressBar } from "./ui";
-import { OrderDetailType } from "@/api/order/getOrderById";
-import { confirmEvaluation, getOrderEvaluation } from "@/api";
-import { useParams } from "react-router-dom";
+import { CreatePayment, confirmEvaluation, getOrderEvaluation } from "@/api";
 import useSWRImmutable from "swr/immutable";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
+import { useParams } from "react-router-dom";
 
 const ProgressButton = ({
     status,
     setModalOpen,
+    setConfirmModalOpen,
+    setConfirm,
 }: {
     status: number;
     setModalOpen: () => void;
+    setConfirmModalOpen: () => void;
+    setConfirm: () => void;
 }) => {
     if (status === 0)
         return (
@@ -39,7 +42,7 @@ const ProgressButton = ({
             </>
         );
 
-    if (status === 2) {
+    if (status === 3) {
         return (
             <>
                 <div className="w-full h-1 border-t-2" />
@@ -47,9 +50,12 @@ const ProgressButton = ({
                     <Button
                         color="primary"
                         className="w-[14rem]"
-                        onClick={() => setModalOpen()}
+                        onClick={() => {
+                            setConfirmModalOpen();
+                            setConfirm();
+                        }}
                     >
-                        Xem đơn thanh toán
+                        Thanh toán
                     </Button>
                 </div>
             </>
@@ -60,57 +66,88 @@ const ProgressButton = ({
 function Evaluation({
     status,
     handOverTime,
-    services,
     refetch,
+    evaluationId,
+    garageId,
 }: {
     status?: number;
     handOverTime?: number;
-    services?: OrderDetailType["services"];
     refetch: () => void;
+    evaluationId?: string;
+    garageId?: string;
 }) {
+    const { orderId } = useParams();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user);
     const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
     const [confirm, setConfirm] = useState<string>("");
-    const { orderId } = useParams();
     const { data: evaluation } = useSWRImmutable("evaluation", () =>
-        getOrderEvaluation(orderId),
+        getOrderEvaluation(evaluationId),
     );
     const dispatch = useAppDispatch();
 
     const onSubmit = async () => {
-        try {
-            const result = await confirmEvaluation(
-                {
-                    evaluationId: evaluation?._id,
-                    type: confirm === "reject" ? 0 : 1,
-                },
-                user.token,
-            );
-            if (result.statusCode === 200) {
-                refetch();
+        if (confirm === "confirm" || confirm === "reject") {
+            try {
+                const result = await confirmEvaluation(
+                    {
+                        evaluationId: evaluation?._id,
+                        type: confirm === "reject" ? 0 : 1,
+                    },
+                    user.token,
+                );
+                if (result.statusCode === 200) {
+                    refetch();
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: `Đã xác nhận ${
+                                confirm === "confirm" ? "chấp nhận" : "hủy bỏ"
+                            } đơn hàng`,
+                            description: `Đã xác nhận ${
+                                confirm === "confirm" ? "chấp nhận" : "hủy bỏ"
+                            } đơn khách hàng thành công`,
+                            delay: 4000,
+                        }),
+                    );
+                    setConfirmModalOpen(false);
+                    setIsModalOpen(false);
+                }
+            } catch (error) {
                 dispatch(
                     notify({
-                        type: "success",
-                        title: `Đã xác nhận ${
-                            confirm === "confirm" ? "chấp nhận" : "hủy bỏ"
-                        } đơn hàng`,
-                        description: `Đã xác nhận ${
-                            confirm === "confirm" ? "chấp nhận" : "hủy bỏ"
-                        } đơn khách hàng thành công`,
+                        type: "failure",
+                        title: "Xác nhận thất bại",
+                        description: "Một số lỗi xảy ra khi xác nhận",
                         delay: 4000,
                     }),
                 );
+                setConfirmModalOpen(false);
             }
-        } catch (error) {
-            dispatch(
-                notify({
-                    type: "failure",
-                    title: "Xác nhận thất bại",
-                    description: "Một số lỗi xảy ra khi xác nhận",
-                    delay: 4000,
-                }),
-            );
+        } else {
+            try {
+                const result = await CreatePayment(
+                    {
+                        garageId: garageId,
+                        orderId: orderId,
+                    },
+                    user.token,
+                );
+                if (result.statusCode === 200) {
+                    // @ts-expect-error location type conflict
+                    window.location = result.data.paymentUrl.vnpUrl as string;
+                }
+            } catch (error) {
+                dispatch(
+                    notify({
+                        type: "failure",
+                        title: "Xác nhận thất bại",
+                        description: "Một số lỗi xảy ra khi xác nhận",
+                        delay: 4000,
+                    }),
+                );
+                setConfirmModalOpen(false);
+            }
         }
     };
 
@@ -120,6 +157,12 @@ function Evaluation({
 
             <ProgressButton
                 status={status || 0}
+                setConfirmModalOpen={() => {
+                    setConfirmModalOpen(true);
+                }}
+                setConfirm={() => {
+                    setConfirm("payment");
+                }}
                 setModalOpen={() => {
                     setIsModalOpen(true);
                 }}
@@ -142,7 +185,7 @@ function Evaluation({
                     <ModalBody className="pb-4 overflow-auto">
                         <EvaluationModal
                             handOverTime={handOverTime}
-                            services={services}
+                            services={evaluation?.services}
                             description={evaluation?.description}
                             images={evaluation?.evaluationImgs}
                             // TODO- change typo when backend update
@@ -155,7 +198,11 @@ function Evaluation({
                         <div className="flex gap-2 items-center">
                             <p>Tổng cộng:</p>
                             <p className="font-bold text-black text-2xl">
-                                USD 280
+                                VND{" "}
+                                {evaluation?.services?.reduce(
+                                    (prev, next) => prev + next.price,
+                                    0,
+                                )}
                             </p>
                         </div>
                         <div className="flex gap-2 py-2 justify-end ">
@@ -207,7 +254,9 @@ function Evaluation({
                         <p className="font-medium">
                             Bạn xác nhận{" "}
                             <span className="font-bold">
-                                {confirm === "confirm" ? "chấp nhận" : "hủy bỏ"}
+                                {confirm === "confirm" && "chấp nhận"}
+                                {confirm === "reject" && "hủy bỏ"}
+                                {confirm === "payment" && "thanh toán"}
                             </span>{" "}
                             đơn này không ?
                         </p>

@@ -20,6 +20,8 @@ export default function OrderAcceptModeSetting() {
         `${garageId}/management/mode`,
         getGarageSetting,
     );
+
+    
     useEffect(() => {
         if (!isLoading) {
             setMode(setting?.isAcceptOrderAuto);

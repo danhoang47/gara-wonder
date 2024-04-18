@@ -6,4 +6,5 @@ export { default as getUserOrders } from "./getUserOrders";
 export { default as getUserOrderById } from "./getUserOrderById";
 export { default as confirmEvaluation } from "./confirmEvaluation";
 export { default as updateUserProfile } from "./updateUserProfile";
-export { default as persistPayment } from './persistPayment'
+export { default as persistPayment } from "./persistPayment";
+export { default as CreatePayment } from "./payment";
