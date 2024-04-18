@@ -130,6 +130,8 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                 <AttachEntity
                     roomType={room.type}
                     attachEntityId={room.attachEntityId}
+                    displayName={room.displayName}
+                    entityId={room.entityId}
                 />
             )}
             <div ref={chatRef} className="overflow-y-auto grow">
@@ -191,6 +193,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                     ) => (
                                                                         <div className="pt-2">
                                                                             <Button
+                                                                                disableRipple
                                                                                 onClick={() => {
                                                                                     handleSelectedService(
                                                                                         service._id as string,
