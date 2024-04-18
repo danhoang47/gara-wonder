@@ -25,7 +25,12 @@ const GarageManagement: React.FC = () => {
             </div>
 
             <div className="flex w-full flex-col">
-                <Tabs aria-label="Dynamic tabs">
+                <Tabs
+                    aria-label="Dynamic tabs"
+                    classNames={{
+                        tab: "",
+                    }}
+                >
                     <Tab title="Thông tin chung">
                         <Card>
                             <CardBody>

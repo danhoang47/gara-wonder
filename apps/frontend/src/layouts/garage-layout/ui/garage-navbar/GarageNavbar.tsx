@@ -70,13 +70,13 @@ function GarageNavbar() {
                                     <DropdownItem
                                         key={index}
                                         classNames={{
-                                            base: "p-0 ",
+                                            base: "p-0",
                                         }}
                                         onClick={() =>
                                             navigate(`./${sub.link}`)
                                         }
                                     >
-                                        <p className="cursor-pointer text-default-400 hover:text-default-600 ">
+                                        <p className="text-small cursor-pointer text-default-400 hover:text-default-600 min-w-36">
                                             {sub.title}
                                         </p>
                                     </DropdownItem>
