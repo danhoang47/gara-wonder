@@ -4,12 +4,10 @@ import { Products, ProductsFilters } from "./ui";
 const ProductsPage = () => {
     return (
         <div className="px-10 grow flex flex-col opacity-100 z-0">
-            <div className="mt-5 h-[200px] ">
-                <img
-                    src="/banner.jpg"
-                    alt=""
-                    className="h-full w-full object-cover rounded-xl"
-                />
+            <div className="mt-5 h-[200px] bg-gradient-to-r from-primary-600 to-primary-400 rounded-large flex items-center">
+                <h1 className="ml-10 text-background text-[28px] font-bold">
+                    Mua bán sản phẩm
+                </h1>
             </div>
 
             <div className="flex items-center justify-between h-20 my-3">
