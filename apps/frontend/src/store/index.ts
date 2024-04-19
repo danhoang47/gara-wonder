@@ -10,6 +10,7 @@ import {
     notificationsReducer,
 } from "@/features/notifications";
 import { roomsReducer } from "@/features/chat";
+import { productsReducer } from "@/features/products";
 import { setup } from "@/api/chat";
 
 const store = configureStore({
@@ -22,6 +23,7 @@ const store = configureStore({
         notifications: notificationsReducer,
         garageNotifications: garageNotificationsReducer,
         rooms: roomsReducer,
+        products: productsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ serializableCheck: false }),

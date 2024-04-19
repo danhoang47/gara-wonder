@@ -32,7 +32,7 @@ const GaragePage = () => {
 
     return (
         <OrderContextProvider>
-            <Markup garage={basicInfo?.data[0]}/>
+            <Markup garage={basicInfo?.data[0]} />
             <div id="garage" className="relative overflow-auto sm:px-4 pb-10">
                 <div className="w-full max-w-[1024px] mx-auto mt-4">
                     <div className="">

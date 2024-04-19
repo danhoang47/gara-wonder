@@ -1,9 +1,8 @@
+import { WithBrandProduct } from "@/api/supplier/getProducts";
 import { Image } from "@/core/types";
-import { Product } from "@/core/types/model/product";
 import { Carousel } from "@/core/ui";
 import { formatCurrency } from "@/utils";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, CardBody, CardHeader, Link } from "@nextui-org/react";
 import clsx from "clsx";
@@ -11,12 +10,12 @@ import { memo } from "react";
 
 const ellipsisClassName = "overflow-x-hidden text-ellipsis whitespace-nowrap";
 
-interface IProduct {
-    product: Product;
-}
+type ProductProps = {
+    product: WithBrandProduct;
+};
 
-function ProductsCard({ product }: IProduct) {
-    const { name, brandId, price, remain, _id, images } = product;
+function ProductsCard({ product }: ProductProps) {
+    const { name, price, _id, images } = product;
     return (
         <Card className={clsx("gap-2 shadow-none relative")}>
             <CardHeader
@@ -55,16 +54,13 @@ function ProductsCard({ product }: IProduct) {
                         </Link>
                     </div>
                     <div>
-                        <p className="font-semibold">
-                            {formatCurrency(price)}
-                            <sup>vnd</sup>
-                        </p>
+                        <p className="font-semibold">{formatCurrency(price)}</p>
                     </div>
                 </div>
 
                 <div className="mb-2">
-                    <p className="text-sm text-default-500">{`Loại xe: ${brandId}`}</p>
-                    <p className="text-sm text-default-500">{`Còn lại: ${remain}`}</p>
+                    <p className="text-sm text-default-500">{`Loại xe: ${product.brand.name}`}</p>
+                    <p className="text-sm text-default-500">{`Còn lại: ${product.quantity}`}</p>
                 </div>
 
                 <Button
