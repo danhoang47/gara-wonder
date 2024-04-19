@@ -13,6 +13,7 @@ const toastsSlice = createSlice({
                     payload: {
                         ...toast,
                         id: nanoid(),
+                        delay: toast.delay || 3000
                     },
                 };
             },

@@ -19,7 +19,7 @@ export default function AccountPage() {
         }
     }, [navigate, open, user, status]);
     return (
-        <div>
+        <div className="relative">
             <Outlet />
         </div>
     );

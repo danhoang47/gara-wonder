@@ -1,14 +1,5 @@
 
-const numberRegex = new RegExp(/^\d+$/)
 
-export const isNumber = (str: unknown): str is number => {
-    if (typeof str === "number") {
-        return true;
-    }
-    
-    if (typeof str === "string") {
-        return numberRegex.test(str)
-    }
-
-    return false;
-}
+export { default as isPhoneNumber } from './isPhoneNumber'
+export { default as isEmail } from './isEmail'
+export { default as isNumber } from './isNumber'

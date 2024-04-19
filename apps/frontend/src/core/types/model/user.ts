@@ -26,6 +26,7 @@ export type User = Model & {
     isOnline: boolean;
     lastActiveAt: number;
     garageId?: string;
+    dob?: string
 };
 
 export type Authority = "WITH_ORDER" | "WITH_INCOME";
