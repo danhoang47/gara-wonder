@@ -25,4 +25,10 @@ export const accountMenus: AccountMenuType[] = [
         icon: "faChartBar",
         to: "orders",
     },
+    {
+        title: "Xe của bạn",
+        description: "Xem và lưu trữ các thông tin về xe của bạn",
+        icon: "faFutbol",
+        to: "cars",
+    },
 ];

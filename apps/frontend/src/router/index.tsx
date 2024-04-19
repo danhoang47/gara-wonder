@@ -62,6 +62,7 @@ const AccountSettingsPage = lazy(
 const ProfileSettings = lazy(
     () => import("@/pages/account-page/profile-settings"),
 );
+const CarSettings = lazy(() => import("@/pages/account-page/car-settings"));
 const AccountOrdersPage = lazy(
     () => import("@/pages/account-page/account-orders"),
 );
@@ -157,6 +158,14 @@ const router = createBrowserRouter(
                         element={
                             <Suspense fallback={<FullPageLoad />}>
                                 <AccountOrdersPage />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="cars"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <CarSettings />
                             </Suspense>
                         }
                     />

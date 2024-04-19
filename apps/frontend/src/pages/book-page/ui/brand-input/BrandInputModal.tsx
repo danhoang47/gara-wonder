@@ -79,7 +79,7 @@ function BrandInputModal({
         <Modal isOpen={isOpen} onOpenChange={onDismiss}>
             <ModalContent>
                 <ModalHeader>
-                    <p className="text-base">Edit Your Car</p>
+                    <p className="text-base">Chỉnh sửa xe</p>
                 </ModalHeader>
                 <ModalBody>
                     <Select

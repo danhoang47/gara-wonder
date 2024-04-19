@@ -1,5 +1,6 @@
 import { Image, Model, Status } from "./core";
 import { Garage } from "./garage";
+import { Car } from "./order";
 
 export const enum Role {
     User = 1,
@@ -28,6 +29,10 @@ export type User = Model & {
     garageId?: string;
     dob?: string
 };
+
+export type PersonalCar = Model & Car & {
+    memo: string,
+}
 
 export type Authority = "WITH_ORDER" | "WITH_INCOME";
 

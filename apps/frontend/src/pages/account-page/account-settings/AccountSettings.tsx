@@ -5,13 +5,12 @@ import { Card, CardBody } from "@nextui-org/react";
 import { AccountMenuType, accountMenus } from "./constraint";
 import { useContext, useEffect } from "react";
 import { LoadingContext } from "@/core/contexts/loading";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FetchStatus } from "@/core/types";
 
 export default function AccountSettings() {
     const user = useAppSelector((state) => state.user.value);
     const status = useAppSelector((state) => state.user.status);
-    const navigate = useNavigate();
     const { load, unload } = useContext(LoadingContext);
     useEffect(() => {
         if (status === FetchStatus.Fetching || status === FetchStatus.None) {
