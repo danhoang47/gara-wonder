@@ -64,7 +64,7 @@ function UserProfileMenu() {
                             <div
                                 key={key}
                                 aria-label={title}
-                                className="py-2 px-3 hover:bg-default-300 cursor-pointer min-w-40"
+                                className="py-2 px-3 hover:bg-default-100 cursor-pointer min-w-40"
                                 onClick={() => setOpen(false)}
                             >
                                 {component}

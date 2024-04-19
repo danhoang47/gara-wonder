@@ -31,4 +31,11 @@ export const accountMenus: AccountMenuType[] = [
         icon: "faFutbol",
         to: "cars",
     },
+    {
+        title: "Quản lý kinh doanh",
+        description:
+            "Xem các đơn vị kinh doanh bạn đang quản lý hoặc các đơn mời làm việc",
+        icon: "faCompass",
+        to: "business",
+    },
 ];
