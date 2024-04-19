@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 export type ImagePreviewProps = {
-    file: File;
+    file: File | string;
     readonly?: boolean;
     selectable?: boolean;
     onImageRemove?: (fileName: string) => void;
@@ -16,17 +16,20 @@ export default function ImagePreview({
     readonly = false,
     onImageRemove,
 }: ImagePreviewProps) {
-    const [imageURL, setImageURL] = useState<string>();
+    const [imageURL, setImageURL] = useState<string | undefined>();
 
     useEffect(() => {
         let objectURL: string;
-        if (file) {
-            objectURL = URL.createObjectURL(file);
+        // eslint-disable-next-line valid-typeof
+        if (typeof file === "object") {
+            objectURL = URL.createObjectURL(file as File);
             setImageURL(objectURL);
+        } else {
+            setImageURL(file as string);
         }
 
         return () => URL.revokeObjectURL(objectURL);
-    }, []);
+    }, [file]);
 
     return (
         <div className="relative">
@@ -40,7 +43,7 @@ export default function ImagePreview({
                         radius="full"
                         className="border-foreground-50"
                         onPress={() =>
-                            onImageRemove && onImageRemove(file.name)
+                            onImageRemove && onImageRemove(file?.name)
                         }
                     >
                         <FontAwesomeIcon
