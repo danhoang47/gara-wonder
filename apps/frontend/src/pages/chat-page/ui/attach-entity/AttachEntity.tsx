@@ -61,6 +61,7 @@ function AttachEntity({
                     type: "success",
                 }),
             );
+            mutate({ data: true, statusCode: 200 })
         } catch (error) {
             setReviewLoading(false);
             setReviewModalOpen(false);

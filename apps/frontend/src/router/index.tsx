@@ -59,6 +59,9 @@ const ChatPageWrapper = lazy(() => import("@/pages/chat-page/ChatPageWrapper"));
 const AccountSettingsPage = lazy(
     () => import("@/pages/account-page/account-settings"),
 );
+const ProfileSettings = lazy(
+    () => import("@/pages/account-page/profile-settings"),
+);
 const AccountOrdersPage = lazy(
     () => import("@/pages/account-page/account-orders"),
 );
@@ -134,10 +137,18 @@ const router = createBrowserRouter(
                 <Route path="user-settings" element={<UserSettingsPage />} />
                 <Route path="account" element={<AccountPage />}>
                     <Route
-                        path="settings"
+                        path=""
                         element={
                             <Suspense fallback={<FullPageLoad />}>
                                 <AccountSettingsPage />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="profile"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <ProfileSettings />
                             </Suspense>
                         }
                     />

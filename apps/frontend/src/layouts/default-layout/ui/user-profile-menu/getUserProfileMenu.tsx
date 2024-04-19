@@ -171,7 +171,7 @@ const getUserProfileMenu = (
                     key: "k1",
                     component: (
                         <Link
-                            to={`/account/settings`}
+                            to={`/account`}
                             className="text-foreground text-small"
                         >
                             Cài đặt tài khoản

@@ -10,7 +10,7 @@ export const accountMenus: AccountMenuType[] = [
         description:
             "Chỉnh sửa thông tin cá nhân của bạn như email, số điện thoại liên hệ",
         icon: "faUser",
-        to: "",
+        to: "profile",
     },
     {
         title: "Thông tin thẻ căn cước",

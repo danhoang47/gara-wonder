@@ -1,5 +1,5 @@
 
-const phoneNumberRegex = new RegExp(/\d+/i)
+const phoneNumberRegex = /\d+/i
 
 export default function isPhoneNumber(str: string | undefined): boolean {
     if (!str) return false;

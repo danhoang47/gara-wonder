@@ -15,14 +15,11 @@ export default function AccountPage() {
 
         if (!user) {
             navigate("/");
-        }
-
-        if (!user) {
             open("signIn");
         }
     }, [navigate, open, user, status]);
     return (
-        <div>
+        <div className="relative">
             <Outlet />
         </div>
     );

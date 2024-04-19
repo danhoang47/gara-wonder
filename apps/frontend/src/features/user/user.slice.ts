@@ -9,6 +9,7 @@ export enum Type {
 
 export type UserSliceState = {
     status: FetchStatus;
+    updateStatus: FetchStatus;
     type?: Type;
     value?: User;
     token?: string;
@@ -20,6 +21,7 @@ export type UserSliceState = {
 
 const initialState: UserSliceState = {
     status: FetchStatus.None,
+    updateStatus: FetchStatus.None
 };
 
 const userSlice = createSlice({
@@ -73,10 +75,10 @@ const userSlice = createSlice({
                 state.garageId = action.payload._id;
             })
             .addCase(updateUser.pending, (state) => {
-                state.status = FetchStatus.Fetching;
+                state.updateStatus = FetchStatus.Fetching;
             })
             .addCase(updateUser.fulfilled, (state, action) => {
-                state.status = FetchStatus.Fulfilled;
+                state.updateStatus = FetchStatus.Fulfilled;
                 state.value = action.payload;
             });
     },
