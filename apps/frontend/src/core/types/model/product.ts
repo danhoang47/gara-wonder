@@ -29,4 +29,5 @@ export type ProductFilter = {
     brandId?: string;
     series?: string;
     models?: string;
+    category?: ProductCategory;
 };

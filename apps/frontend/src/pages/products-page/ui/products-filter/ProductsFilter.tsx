@@ -8,7 +8,7 @@ const getCategoryName: Record<ProductCategory, string> = {
 
 export interface IFilterValue {
     label: string;
-    value: string;
+    value: string | number;
 }
 
 export interface IButtonFilter {
@@ -21,7 +21,7 @@ const ProductsFilter = () => {
     const buttonFilter: IButtonFilter[] = [
         {
             filterName: "Loại",
-            filterType: "type",
+            filterType: "category",
             filterValue: [
                 {
                     label: "Tất cả",
@@ -29,11 +29,11 @@ const ProductsFilter = () => {
                 },
                 {
                     label: getCategoryName[ProductCategory.Exterior],
-                    value: getCategoryName[ProductCategory.Exterior],
+                    value: ProductCategory.Exterior,
                 },
                 {
                     label: getCategoryName[ProductCategory.Interior],
-                    value: getCategoryName[ProductCategory.Interior],
+                    value: ProductCategory.Interior,
                 },
             ],
         },
@@ -59,42 +59,42 @@ const ProductsFilter = () => {
                 },
             ],
         },
-        {
-            filterName: "Series",
-            filterType: "series",
-            filterValue: [
-                {
-                    label: "Tất cả",
-                    value: "",
-                },
-                {
-                    label: "A",
-                    value: "A",
-                },
-                {
-                    label: "B",
-                    value: "B",
-                },
-            ],
-        },
-        {
-            filterName: "Models",
-            filterType: "models",
-            filterValue: [
-                {
-                    label: "Tất cả",
-                    value: "",
-                },
-                {
-                    label: "C200",
-                    value: "C200",
-                },
-                {
-                    label: "C300",
-                    value: "C300",
-                },
-            ],
-        },
+        // {
+        //     filterName: "Series",
+        //     filterType: "series",
+        //     filterValue: [
+        //         {
+        //             label: "Tất cả",
+        //             value: "",
+        //         },
+        //         {
+        //             label: "A",
+        //             value: "A",
+        //         },
+        //         {
+        //             label: "B",
+        //             value: "B",
+        //         },
+        //     ],
+        // },
+        // {
+        //     filterName: "Models",
+        //     filterType: "models",
+        //     filterValue: [
+        //         {
+        //             label: "Tất cả",
+        //             value: "",
+        //         },
+        //         {
+        //             label: "C200",
+        //             value: "C200",
+        //         },
+        //         {
+        //             label: "C300",
+        //             value: "C300",
+        //         },
+        //     ],
+        // },
     ];
     return (
         <div className="flex gap-3">

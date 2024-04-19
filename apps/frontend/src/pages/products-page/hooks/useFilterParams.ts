@@ -7,6 +7,7 @@ const keys: Array<keyof ProductFilter> = [
     "brandId",
     "series",
     "models",
+    "category",
 ];
 
 function useFilterParams() {

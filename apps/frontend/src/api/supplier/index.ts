@@ -1,4 +1,7 @@
 export const baseSupplierUrl = `${import.meta.env.VITE_API_URL}/supplier`;
+export const baseSupplierUrlWithoutSupplier = `${
+    import.meta.env.VITE_API_URL
+}/`;
 
 export { default as uploadProductCsv } from "./uploadProductCsv";
 export { default as getSampleCSV } from "./getSampleCSV";
