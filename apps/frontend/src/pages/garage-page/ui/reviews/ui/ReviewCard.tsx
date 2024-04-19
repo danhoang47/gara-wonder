@@ -3,6 +3,7 @@ import { Review } from "@/core/types";
 import { faStar as starNormal } from "@fortawesome/free-regular-svg-icons";
 import { faStar as starSolid } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Chip } from "@nextui-org/react";
 import moment from "moment";
 import useSWRImmutable from "swr/immutable";
 
@@ -12,6 +13,7 @@ export default function ReviewCard({
     review: Review & { userId: string };
 }) {
     const { data: user } = useSWRImmutable(review.userId, getUser);
+    const tagList = review.tags.split(",");
     const renderStar = (rating: number) => {
         return (
             <div className="flex gap-1">
@@ -48,7 +50,15 @@ export default function ReviewCard({
                 <span> · </span>
                 <p>{moment(review.createdAt).format("LL")}</p>
             </div>
-
+            <div className="flex gap-2 flex-wrap pt-2 pb-1">
+                {tagList.map((tag, index) => (
+                    <div key={index}>
+                        <Chip variant="solid" color="primary">
+                            {tag}
+                        </Chip>
+                    </div>
+                ))}
+            </div>
             <p className="pt-3 text-ellipsis line-height-3 max-h-[6rem]">
                 {review.content}
             </p>

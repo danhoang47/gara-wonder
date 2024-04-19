@@ -9,22 +9,32 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { EvaluationModal, ProgressBar } from "./ui";
-import { CreatePayment, confirmEvaluation, getOrderEvaluation } from "@/api";
+import {
+    CreatePayment,
+    addReview,
+    confirmEvaluation,
+    getBasicGarageInfo,
+    getOrderEvaluation,
+} from "@/api";
 import useSWRImmutable from "swr/immutable";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
 import { useParams } from "react-router-dom";
+import { ReviewModal } from "@/core/ui";
+import { Review, Service } from "@/core/types";
 
 const ProgressButton = ({
     status,
     setModalOpen,
     setConfirmModalOpen,
     setConfirm,
+    setReviewModal,
 }: {
     status: number;
     setModalOpen: () => void;
     setConfirmModalOpen: () => void;
     setConfirm: () => void;
+    setReviewModal: () => void;
 }) => {
     if (status === 0)
         return (
@@ -61,6 +71,25 @@ const ProgressButton = ({
             </>
         );
     }
+
+    if (status === 4) {
+        return (
+            <>
+                <div className="w-full h-1 border-t-2" />
+                <div className="p-4 flex flex-col gap-6 items-end">
+                    <Button
+                        color="primary"
+                        className="w-[14rem]"
+                        onClick={() => {
+                            setReviewModal();
+                        }}
+                    >
+                        Đánh giá dịch vụ
+                    </Button>
+                </div>
+            </>
+        );
+    }
 };
 
 function Evaluation({
@@ -80,9 +109,13 @@ function Evaluation({
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const user = useAppSelector((state) => state.user);
     const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
+    const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
     const [confirm, setConfirm] = useState<string>("");
     const { data: evaluation } = useSWRImmutable("evaluation", () =>
         getOrderEvaluation(evaluationId),
+    );
+    const { data: garage } = useSWRImmutable("garage", () =>
+        getBasicGarageInfo(garageId as string),
     );
     const dispatch = useAppDispatch();
 
@@ -153,7 +186,32 @@ function Evaluation({
             }
         }
     };
+    const onSentReview = async (service: Partial<Service>) => {
+        try {
+            const result = await addReview(service, garageId, user.token);
 
+            if (result.statusCode === 200) {
+                dispatch(
+                    notify({
+                        type: "success",
+                        title: `Đã xác nhận đánh giá garage`,
+                        description: `Đã xác nhận đánh giá garage`,
+                        delay: 4000,
+                    }),
+                );
+                setIsReviewOpen(false);
+            }
+        } catch (error) {
+            dispatch(
+                notify({
+                    type: "failure",
+                    title: "Gửi đánh giá thất bại",
+                    description: "Một số lỗi xảy ra khi xác nhận",
+                    delay: 4000,
+                }),
+            );
+        }
+    };
     return (
         <div className="border-2 rounded-lg">
             <ProgressBar status={status || 0} />
@@ -172,6 +230,7 @@ function Evaluation({
                 setModalOpen={() => {
                     setIsModalOpen(true);
                 }}
+                setReviewModal={() => setIsReviewOpen(true)}
             />
             <Modal
                 isOpen={isModalOpen}
@@ -283,6 +342,14 @@ function Evaluation({
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+            <ReviewModal
+                isOpen={isReviewOpen}
+                onClose={() => setIsReviewOpen(false)}
+                onSave={(review: Partial<Review>) => onSentReview(review)}
+                entityId={garageId as string}
+                entityName={garage?.data[0].name as string}
+                isLoading={false}
+            />
         </div>
     );
 }
