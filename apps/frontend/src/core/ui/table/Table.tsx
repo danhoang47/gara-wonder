@@ -80,9 +80,9 @@ function Table<T>({
     }, [tableBodyRef]);
 
     return (
-        <div role="table" className={clsx("", classNames?.tableWrapper)}>
+        <div role="table" className={clsx("relative h-full overflow-auto", classNames?.tableWrapper)}>
             <div
-                className={clsx("flex", classNames?.headerWrapper)}
+                className={clsx("flex sticky top-0 bg-background z-10", classNames?.headerWrapper)}
                 role="rowheader"
             >
                 {enableCheckAction && (
@@ -117,7 +117,7 @@ function Table<T>({
             <div
                 role="rowgroup"
                 ref={tableBodyRef}
-                className={clsx("flex flex-col", classNames?.bodyWrapper)}
+                className={clsx("flex flex-col relative z-0", classNames?.bodyWrapper)}
             >
                 {items.map((item, index) => (
                     <div

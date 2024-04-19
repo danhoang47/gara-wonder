@@ -34,10 +34,10 @@ function Header({
         >
             <div
                 className={clsx(
-                    "h-20 flex justify-between gap-2 relative px-10",
+                    "h-20 flex justify-between gap-2 relative",
                     className,
-                    (isGaragePage || isAccountPage) &&
-                        "w-full max-w-[1024px] mx-auto px-unit-0",
+                    (isGaragePage || isAccountPage) ?
+                        "w-full max-w-[1024px] mx-auto px-0" : "px-10",
                     isGarageManagementPage && "max-w-full",
                 )}
             >

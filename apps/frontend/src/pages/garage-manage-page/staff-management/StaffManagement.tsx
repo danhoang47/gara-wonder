@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
-import { Button, Input } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 
-import { Table } from "@/core/ui";
+import { EmailOrPhonePicker, Table } from "@/core/ui";
 import { columns, staffs } from "./constants";
-import { Staff } from "@/core/types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { Staff, User } from "@/core/types";
+import { createInvitations } from "@/api";
+import { useParams } from "react-router-dom";
+import SentInvitations from "./SentInvitations";
 
 function StaffManagement() {
     const [selectedStaffIds, setSelectedStaffIds] = useState<string[]>([]);
@@ -13,6 +14,11 @@ function StaffManagement() {
         () => selectedStaffIds.length === 1,
         [selectedStaffIds],
     );
+    const [pickedEntitis, setPickedEntities] = useState<User[]>([]);
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const [isSentInvitationsModalOpen, setIsSentInvitationsModalOpen] =
+        useState<boolean>(false);
+    const { garageId } = useParams();
 
     const onStaffSelected = (staff: Staff, isSelected: boolean) => {
         if (isSelected) {
@@ -24,38 +30,56 @@ function StaffManagement() {
         }
     };
 
+    const onInvite = async () => {
+        setLoading(true);
+        const results = await createInvitations(
+            garageId!,
+            pickedEntitis.map(({ _id }) => _id),
+        );
+        setLoading(false);
+    };
+
     return (
-        <div className="h-full">
-            <div className="sticky top-0 w-full px-4 py-6 bg-background">
+        <div className="h-full flex flex-col">
+            <div className="sticky top-0 w-full px-4 py-6 bg-background z-10">
                 <h1 className="font-semibold text-2xl z-10">
                     Quản lý nhân viên
                 </h1>
                 <p className="text-default-500">
                     Cung cấp các quyền hạn cho nhân viên của bạn
                 </p>
-            </div>
-            <div>
-                <div className="flex px-4 mb-4">
+                <div className="flex mt-4">
                     <div className="flex gap-2">
-                        <Input
-                            placeholder="Nhập email..."
-                            variant="bordered"
-                            size="sm"
-                            radius="lg"
-                            classNames={{
-                                base: "min-w-80",
-                                inputWrapper: "h-10",
-                            }}
-                            endContent={
-                                <FontAwesomeIcon
-                                    icon={faMagnifyingGlass}
-                                    className="text-default-400"
-                                />
+                        <EmailOrPhonePicker
+                            isLoading={isLoading}
+                            pickedEntitis={pickedEntitis}
+                            onValueChange={(entities) =>
+                                setPickedEntities(entities)
                             }
                         />
-                        <Button color="primary">
-                            <span className="px-2">Thêm nhân viên</span>
+                        <Button
+                            className="bg-default-200"
+                            disableRipple
+                            isLoading={isLoading}
+                            isDisabled={!pickedEntitis.length}
+                            onPress={onInvite}
+                        >
+                            <span className="px-1 text-default-600 font-medium">
+                                Thêm nhân viên
+                            </span>
                         </Button>
+                        <Button
+                            className="hover:bg-background"
+                            disableRipple
+                            variant="light"
+                            onPress={() => setIsSentInvitationsModalOpen(true)}
+                        >
+                            <p>Danh sách đã mời</p>
+                        </Button>
+                        <SentInvitations
+                            isOpen={isSentInvitationsModalOpen}
+                            onClose={() => setIsSentInvitationsModalOpen(false)}
+                        />
                     </div>
                     <div className="flex ml-auto gap-2">
                         {shouldShowActionButtons && (
@@ -70,6 +94,8 @@ function StaffManagement() {
                         )}
                     </div>
                 </div>
+            </div>
+            <div className="relative z-0 grow overflow-hidden">
                 <Table
                     items={staffs}
                     columns={columns}

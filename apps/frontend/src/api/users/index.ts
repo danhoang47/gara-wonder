@@ -9,4 +9,7 @@ export { default as updateUserProfile } from "./updateUserProfile";
 export { default as persistPayment } from "./persistPayment";
 export { default as CreatePayment } from "./payment";
 export { default as cancelOrder } from "./cancelOrder";
+export { default as getUsers } from "./getUsers";
+export { default as getInvitations } from "./getInvitations";
 export { default as addReview } from "./addReview";
+

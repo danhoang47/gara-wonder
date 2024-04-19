@@ -8,3 +8,5 @@ export * from "./message";
 export * from "./product";
 export * from "./supplier";
 export * from "./review";
+export * from "./supplier";
+export * from "./invitation";

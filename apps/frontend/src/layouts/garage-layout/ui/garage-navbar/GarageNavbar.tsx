@@ -63,20 +63,18 @@ function GarageNavbar() {
                                     emptyContent: "rounded-none",
                                 }}
                                 itemClasses={{
-                                    base: "rounded-none",
+                                    base: "rounded-none hover:bg-default-100",
+                                    wrapper: "hover:bg-default-100"
                                 }}
                             >
                                 {nav.children.map((sub, index) => (
                                     <DropdownItem
                                         key={index}
-                                        classNames={{
-                                            base: "p-0",
-                                        }}
                                         onClick={() =>
                                             navigate(`./${sub.link}`)
                                         }
                                     >
-                                        <p className="text-small cursor-pointer text-default-400 hover:text-default-600 min-w-36">
+                                        <p className="py-1 text-small cursor-pointer text-default-400 hover:text-default-600 min-w-40">
                                             {sub.title}
                                         </p>
                                     </DropdownItem>
