@@ -37,6 +37,7 @@ function ScheduleCalendar({
             ]}
             month={month}
             year={DEFAULT_YEAR}
+            weekDayFormat="long"
             renderHeader={(date) => (
                 <div className="sticky top-0 w-full px-10 py-6 bg-background flex gap-4">
                     <Button
@@ -50,7 +51,7 @@ function ScheduleCalendar({
                     >
                         <FontAwesomeIcon icon={faAngleLeft} />
                     </Button>
-                    <h2 className="font-semibold text-2xl z-10">
+                    <h2 className="font-semibold text-2xl z-10 capitalize">
                         {moment(date).format("MMMM YYYY")}
                     </h2>
                     <Button

@@ -6,26 +6,28 @@ import { AccountMenuType, accountMenus } from "./constraint";
 import { useContext, useEffect } from "react";
 import { LoadingContext } from "@/core/contexts/loading";
 import { useNavigate } from "react-router-dom";
+import { FetchStatus } from "@/core/types";
 
 export default function AccountSettings() {
-    const userData = useAppSelector((state) => state.user);
+    const user = useAppSelector((state) => state.user.value);
+    const status = useAppSelector((state) => state.user.status);
     const navigate = useNavigate();
     const { load, unload } = useContext(LoadingContext);
     useEffect(() => {
-        if (!userData.value) load("account-settings");
-        else unload("account-settings");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userData]);
+        if (status === FetchStatus.Fetching) {
+            load("account-settings");
+        } else {
+            unload("account-settings");
+        }
+    }, [status, load, unload]);
 
     return (
         <div className="w-full max-w-[1024px] mx-auto px-10">
             <div className="py-14">
                 <p className="font-bold text-3xl">Tài khoản,</p>
                 <p className="text-lg">
-                    <span className="font-semibold">
-                        {userData.value?.displayName}
-                    </span>
-                    , {userData.value?.email}.{" "}
+                    <span className="font-semibold">{user?.displayName}</span>,{" "}
+                    {user?.email}.{" "}
                     <span className="font-semibold underline">
                         Truy cập hồ sơ
                     </span>
@@ -49,7 +51,9 @@ export default function AccountSettings() {
                                 />
                             </div>
 
-                            <p className="font-semibold text-xl">{item.title}</p>
+                            <p className="font-semibold text-xl">
+                                {item.title}
+                            </p>
                             <p className="text-sm text-default-500">
                                 {item.description}
                             </p>

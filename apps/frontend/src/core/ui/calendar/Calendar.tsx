@@ -3,11 +3,12 @@ import moment from "moment";
 import CalendarCell from "./CalendarCell";
 import clsx from "clsx";
 import { isInRange, isTwoDateSame } from "@/utils";
+import weekDays, { WeekDay } from "./weekDays";
 
 const NUMBER_OF_CELL = 35;
 const NUMBER_OF_COLUMN = 7;
 
-const columns = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const columns: Array<WeekDay> = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 export type DateRange = {
     from?: Date | number;
@@ -37,6 +38,7 @@ export type CalendarProps = {
     onDateClick?: (dates: Date) => void;
     showWeekDays?: boolean;
     showHeader?: boolean;
+    weekDayFormat?: "long" | "short";
 };
 
 const checkIfDateDisabled = (date: Date, disabledDates?: DisabledDate[]) => {
@@ -91,6 +93,7 @@ const Calendar = ({
     renderHeader,
     onDateClick,
     classNames,
+    weekDayFormat = "short",
 }: CalendarProps) => {
     const thisMonth = useMemo(
         () => moment().year(year).month(month),
@@ -136,7 +139,9 @@ const Calendar = ({
                             classNames?.weekDayWrapper,
                         )}
                     >
-                        <p className="text-default-400">{column}</p>
+                        <p className="text-default-400">
+                            {weekDays[column][weekDayFormat]}
+                        </p>
                     </div>
                 ))}
             </div>
