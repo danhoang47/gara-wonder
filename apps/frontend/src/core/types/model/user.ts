@@ -27,12 +27,14 @@ export type User = Model & {
     isOnline: boolean;
     lastActiveAt: number;
     garageId?: string;
-    dob?: string
+    dob?: string;
+    cars: PersonalCar[];
 };
 
-export type PersonalCar = Model & Car & {
-    memo: string,
-}
+export type PersonalCar = Model &
+    Car & {
+        memo: string;
+    };
 
 export type Authority = "WITH_ORDER" | "WITH_INCOME";
 

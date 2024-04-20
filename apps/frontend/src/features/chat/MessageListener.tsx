@@ -19,8 +19,11 @@ function MessageListener({ children }: ContainerProps) {
         function onConnect() {
             setIsConnected(true);
         }
-        socket.on("connect", onConnect);
-    }, [user]);
+
+        if (user?._id) {
+            socket.on("connect", onConnect);
+        }
+    }, [user?._id]);
 
     useEffect(() => {
         const joinRooms = () => {

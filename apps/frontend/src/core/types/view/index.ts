@@ -1,4 +1,9 @@
-import { ConfirmationResult, RecaptchaVerifier, UserCredential } from "firebase/auth";
+import { AxiosRequestConfig } from "axios";
+import {
+    ConfirmationResult,
+    RecaptchaVerifier,
+    UserCredential,
+} from "firebase/auth";
 
 export type StylableProps = {
     className?: string;
@@ -20,6 +25,11 @@ declare global {
     interface Window {
         recaptchaVerifier: RecaptchaVerifier;
         confirmationResult: ConfirmationResult;
-        userCredential: UserCredential
+        userCredential: UserCredential;
     }
+}
+
+export interface RetryConfig extends AxiosRequestConfig {
+    retry: number;
+    retryDelay: number;
 }

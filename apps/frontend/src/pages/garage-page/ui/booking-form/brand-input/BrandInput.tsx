@@ -68,8 +68,7 @@ function BrandInput() {
                         <p className="text-sm">{getCarLabel()}</p>
                     </div>
                 </PopoverTrigger>
-
-                <PopoverContent>
+                <PopoverContent className="p-0">
                     <BrandInputModal
                         onDismiss={onModalDismiss}
                         onSave={onModalSave}
