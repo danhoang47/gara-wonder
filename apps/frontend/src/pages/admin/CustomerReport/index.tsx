@@ -1,8 +1,7 @@
-import AdminLayout from "@/admin/layout";
 import React from "react";
 
 const CustomerReport: React.FC = () => {
-    return <AdminLayout>Report</AdminLayout>;
+    return <>Report</>;
 };
 
 export default CustomerReport;

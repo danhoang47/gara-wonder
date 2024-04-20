@@ -14,12 +14,10 @@
     }
 
     .statis_track {
-        display: flex;
         padding: 10px 0;
         gap: 20px;
-        justify-content: space-between;
-        align-items: center;
-
+        display: grid;
+        grid-template-columns: repeat(5, minmax(100px, 1fr));
         .statis_child {
             display: flex;
             gap: 5px;
@@ -40,7 +38,6 @@
 
         .statis_track_box {
             padding: 20px;
-            border: 1px solid #d1cdcd;
             background-color: #fafafa;
             border-radius: 10px;
         }

@@ -12,6 +12,7 @@ import { EvaluationModal, ProgressBar } from "./ui";
 import {
     CreatePayment,
     addReview,
+    cancelOrder,
     confirmEvaluation,
     getBasicGarageInfo,
     getOrderEvaluation,
@@ -120,12 +121,12 @@ function Evaluation({
     const dispatch = useAppDispatch();
 
     const onSubmit = async () => {
-        if (confirm === "confirm" || confirm === "reject") {
+        if (confirm === "confirm") {
             try {
                 const result = await confirmEvaluation(
                     {
                         evaluationId: evaluation?._id,
-                        type: confirm === "reject" ? 0 : 1,
+                        type: 1,
                     },
                     user.token,
                 );
@@ -134,12 +135,35 @@ function Evaluation({
                     dispatch(
                         notify({
                             type: "success",
-                            title: `Đã xác nhận ${
-                                confirm === "confirm" ? "chấp nhận" : "hủy bỏ"
-                            } đơn hàng`,
-                            description: `Đã xác nhận ${
-                                confirm === "confirm" ? "chấp nhận" : "hủy bỏ"
-                            } đơn khách hàng thành công`,
+                            title: `Đã xác nhận chấp nhận đơn hàng`,
+                            description: `Đã xác nhận chấp nhận đơn khách hàng thành công`,
+                            delay: 4000,
+                        }),
+                    );
+                    setConfirmModalOpen(false);
+                    setIsModalOpen(false);
+                }
+            } catch (error) {
+                dispatch(
+                    notify({
+                        type: "failure",
+                        title: "Xác nhận thất bại",
+                        description: "Một số lỗi xảy ra khi xác nhận",
+                        delay: 4000,
+                    }),
+                );
+                setConfirmModalOpen(false);
+            }
+        } else if (confirm === "reject") {
+            try {
+                const result = await cancelOrder(garageId, orderId);
+                if (result.statusCode === 200) {
+                    refetch();
+                    dispatch(
+                        notify({
+                            type: "success",
+                            title: `Đã xác nhận chấp nhận đơn hàng`,
+                            description: `Đã xác nhận chấp nhận đơn khách hàng thành công`,
                             delay: 4000,
                         }),
                     );
