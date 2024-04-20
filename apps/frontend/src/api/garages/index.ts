@@ -16,6 +16,7 @@ export { default as getDashboardInfo } from "./getDashboardInfo";
 export { default as getOrderEvaluation } from "./getOrderEvaluation";
 
 export { default as getScheduleSlot } from "./getScheduleSlot";
+export { default as configScheduleSlot } from "./configScheduleSlot";
 
 export { default as updateService } from "./updateServices";
 export { default as delteService } from "./deleteService";
