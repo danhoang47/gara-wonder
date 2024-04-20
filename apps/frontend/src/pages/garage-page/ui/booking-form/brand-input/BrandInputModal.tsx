@@ -116,7 +116,7 @@ function BrandInputModal({
                                         <span
                                             className={clsx(
                                                 "text-default-400",
-                                                isSelected && "text-primary",
+                                                isSelected && "text-foreground",
                                             )}
                                         >
                                             <FontAwesomeIcon
@@ -131,7 +131,7 @@ function BrandInputModal({
                                     }
                                     className={clsx(
                                         "w-full relative h-auto py-3 gap-3 justify-between",
-                                        isSelected && "border-2 border-primary",
+                                        isSelected && "border-2 border-black",
                                     )}
                                     variant="bordered"
                                     onPress={() => {
@@ -170,7 +170,6 @@ function BrandInputModal({
                     </div>
                     <div className="flex flex-col gap-3">
                         <Select
-                            size="sm"
                             items={brands || []}
                             selectionMode="single"
                             label="Hãng"
@@ -199,7 +198,6 @@ function BrandInputModal({
                             )}
                         </Select>
                         <Select
-                            size="sm"
                             items={models}
                             selectionMode="single"
                             label="Model"
@@ -225,7 +223,6 @@ function BrandInputModal({
                         </Select>
 
                         <Input
-                            size="sm"
                             label="Năm phát hành"
                             placeholder="Năm phát hành"
                             variant="bordered"
