@@ -21,7 +21,11 @@ export type CalendarProps = {
     year: number;
     month: number;
     disabledDates?: DisabledDate[];
-    renderDate?: (date: Date, disabled: boolean) => React.ReactNode;
+    renderDate?: (
+        date: Date,
+        disabled: boolean,
+        index: number,
+    ) => React.ReactNode;
     renderHeader?: (date: Date) => React.ReactNode;
     classNames?: Partial<
         Record<
@@ -148,11 +152,12 @@ const Calendar = ({
             <div className="flex flex-col grow">
                 {rows.map((row, index) => (
                     <div className="flex grow" key={index}>
-                        {row.map((date) =>
+                        {row.map((date, index) =>
                             renderDate ? (
                                 renderDate(
                                     date,
                                     checkIfDateDisabled(date, disabledDates),
+                                    index,
                                 )
                             ) : (
                                 <CalendarCell

@@ -1,31 +1,60 @@
-import { useMemo, useState } from "react";
-
 import { isTwoDateSame } from "@/utils";
 import { ScheduleCalendar, SlotManipulation } from "./ui";
-import useSWR from "swr";
+import { useContext, useEffect, useState } from "react";
+import { mutate } from "swr";
 import { getScheduleSlot } from "@/api";
 import { useParams } from "react-router-dom";
-
+import { LoadingContext } from "@/core/contexts/loading";
+import useSWRImmutable from "swr/immutable";
+import moment from "moment";
+import { ScheduleType } from "@/api/garages/getScheduleSlot";
 function Schedule() {
-    const { garageId } = useParams();
-    const [selectedYear, setSelectedYear] = useState<number>(
-        new Date().getFullYear(),
-    );
-    const [selectedMonth, setSelectedMonth] = useState<number>(
-        new Date().getMonth() + 1,
-    );
     const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-    const queryParams = useMemo(() => {
+    const { garageId } = useParams();
+    const { load, unload } = useContext(LoadingContext);
+    const [calendarData, setCalendarData] = useState<ScheduleType>({});
+    const [year, setSelectedYear] = useState<number>(new Date().getFullYear());
+    const [month, setMonth] = useState<number>(new Date().getMonth());
+
+    const queryParams = () => {
         return {
-            startTime: new Date(selectedYear, selectedMonth - 1, 1).getTime(),
-            endTime: new Date(selectedYear, selectedMonth, 0).getTime(),
+            startTime: moment()
+                .year(year)
+                .month(month)
+                .clone()
+                .startOf("month")
+                .day(0)
+                .toDate()
+                .getTime(),
+            endTime: moment()
+                .year(year)
+
+                .month(month)
+                .endOf("month")
+                .endOf("day")
+                .day(6)
+                .toDate()
+                .getTime(),
         };
-    }, [selectedYear, selectedMonth]);
-    const {
-        isLoading: calendarLoading,
-        data: calendarData,
-        mutate: refechCalendar,
-    } = useSWR("calendar", () => getScheduleSlot(garageId, queryParams));
+    };
+    const { isLoading: calendarLoading, data: calendar } = useSWRImmutable(
+        "calendar",
+        () => getScheduleSlot(garageId, queryParams()),
+    );
+
+    useEffect(() => {
+        if (calendar) {
+            setTimeout(() => unload("schedule"), 1000);
+        }
+        load("schedule");
+    }, [calendarLoading]);
+    useEffect(() => {
+        setCalendarData({ ...calendarData, ...calendar });
+    }, [calendar]);
+
+    useEffect(() => {
+        mutate("calendar");
+    }, [month, year]);
 
     const checkIfDateSelected = (date: Date) => {
         return selectedDates.some((selectedDate: Date) =>
@@ -44,18 +73,28 @@ function Schedule() {
             setSelectedDates((prev) => [...prev, date]);
         }
     };
+    const onRemoveAll = () => {
+        setSelectedDates([]);
+    };
 
     return (
         <div className="flex h-full">
             <div className="grow h-full overflow-auto flex flex-col">
                 <ScheduleCalendar
+                    calendarData={calendarData}
+                    month={month}
+                    year={year}
+                    setMonth={(month: number) => setMonth(month)}
+                    setYear={(year: number) => setSelectedYear(year)}
                     onDateSelected={onDateSelected}
                     selectedDates={selectedDates}
                 />
             </div>
             <SlotManipulation
                 selectedDates={selectedDates}
+                calendarData={calendarData}
                 onRemoveDate={onDateSelected}
+                onRemoveAll={onRemoveAll}
             />
         </div>
     );
