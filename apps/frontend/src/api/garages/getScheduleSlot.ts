@@ -10,7 +10,12 @@ type queryType = {
 
 export type ScheduleType = Record<
     string,
-    { actualSlot: number; maximumSlot: number; disabled: boolean }
+    {
+        actualSlot: number;
+        maximumSlot: number;
+        disabled: boolean;
+        extraFee: number;
+    }
 >;
 export default async function getScheduleSlot(
     id: string | undefined,

@@ -53,7 +53,9 @@ function SlotManipulation({
                         [date.getTime()]: {
                             maximumSlot: calendarData[String(date.getTime())]
                                 ?.maximumSlot as number,
-                            extraFee: 0,
+                            extraFee:
+                                calendarData[String(date.getTime())]
+                                    ?.extraFee ?? 0,
                             disabled:
                                 calendarData[String(date.getTime())]
                                     ?.disabled ?? false,
