@@ -1,4 +1,3 @@
-import AdminLayout from "@/admin/layout";
 import React from "react";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import Information from "./Information";
@@ -7,7 +6,7 @@ import Payment from "./Payment";
 
 const GarageManagement: React.FC = () => {
     return (
-        <AdminLayout>
+        <>
             <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
                 <h2 style={{ fontSize: 25 }}>Garage Wonder 29</h2>
                 <div
@@ -64,7 +63,7 @@ const GarageManagement: React.FC = () => {
                     </Tab>
                 </Tabs>
             </div>
-        </AdminLayout>
+        </>
     );
 };
 

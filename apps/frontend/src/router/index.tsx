@@ -17,7 +17,7 @@ import {
     UserSettingsPage,
 } from "@/pages";
 import AccountPage from "@/pages/account-page";
-
+import AdminLayout from "@/pages/admin/AdminPage";
 
 const GarageRegistrationPage = lazy(
     () => import("@/pages/garage-registration-page"),
@@ -64,16 +64,18 @@ const ProfileSettings = lazy(
     () => import("@/pages/account-page/profile-settings"),
 );
 const CarSettings = lazy(() => import("@/pages/account-page/car-settings"));
-const PersonalBusiness = lazy(() => import("@/pages/account-page/personal-business"));
+const PersonalBusiness = lazy(
+    () => import("@/pages/account-page/personal-business"),
+);
 const AccountOrdersPage = lazy(
     () => import("@/pages/account-page/account-orders"),
 );
 const AccountOrderDetail = lazy(
     () => import("@/pages/account-page/order-detail"),
 );
-const DashBoard = lazy(() => import("@/admin/pages/GeneralDashboard"));
-const GarageManagement = lazy(() => import("@/admin/pages/GarageManagement"));
-const CustomerReport = lazy(() => import("@/admin/pages/CustomerReport"));
+const DashBoard = lazy(() => import("@/pages/admin/GeneralDashboard"));
+const GarageManagement = lazy(() => import("@/pages/admin/GarageManagement"));
+const CustomerReport = lazy(() => import("@/pages/admin/CustomerReport"));
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -294,30 +296,32 @@ const router = createBrowserRouter(
                     />
                 </Route>
             </Route>
-            <Route
-                path="admin/dashboard"
-                element={
-                    <Suspense fallback={<FullPageLoad />}>
-                        <DashBoard />
-                    </Suspense>
-                }
-            />
-            <Route
-                path="admin/garage-management"
-                element={
-                    <Suspense fallback={<FullPageLoad />}>
-                        <GarageManagement />
-                    </Suspense>
-                }
-            />
-            <Route
-                path="admin/report"
-                element={
-                    <Suspense fallback={<FullPageLoad />}>
-                        <CustomerReport />
-                    </Suspense>
-                }
-            />
+            <Route path="admin" element={<AdminLayout />}>
+                <Route
+                    path="dashboard"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <DashBoard />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="garage-management"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <GarageManagement />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="report"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <CustomerReport />
+                        </Suspense>
+                    }
+                />
+            </Route>
         </Route>,
     ),
 );

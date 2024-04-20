@@ -1,12 +1,11 @@
-import GarageList from "@/admin/components/GarageList";
-import Statistical from "@/admin/components/Statistical";
-import TrackSale from "@/admin/components/TrackSale";
-import AdminLayout from "@/admin/layout";
 import React from "react";
+import TrackSale from "../components/TrackSale";
+import Statistical from "../components/Statistical";
+import GarageList from "../components/GarageList";
 
 const DashBoard: React.FC = () => {
     return (
-        <AdminLayout>
+        <>
             <Statistical />
             <div>
                 <h2 style={{ fontSize: "24px", marginBottom: "20px" }}>
@@ -23,7 +22,7 @@ const DashBoard: React.FC = () => {
                 </h2>
                 <GarageList />
             </div>
-        </AdminLayout>
+        </>
     );
 };
 

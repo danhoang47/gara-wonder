@@ -1,12 +1,8 @@
-import React, { ReactNode } from "react";
-import Sidebar from "../components/Sidebar";
-import NavAdmin from "../components/NavAdmin";
+import Sidebar from "./components/Sidebar";
+import { Outlet } from "react-router-dom";
+import NavAdmin from "./components/NavAdmin";
 
-interface AdminLayoutProps {
-    children: ReactNode;
-}
-
-const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
+const AdminLayout = () => {
     return (
         <div style={{ width: "100%", display: "flex" }}>
             <Sidebar />
@@ -19,7 +15,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             >
                 <NavAdmin />
                 <div style={{ padding: "10px 10px 10px 250px" }}>
-                    {children}
+                    <Outlet />
                 </div>
             </div>
         </div>
