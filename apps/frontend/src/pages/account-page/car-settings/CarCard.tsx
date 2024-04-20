@@ -10,9 +10,17 @@ export type CarCardProps = {
     isDisabled?: boolean;
 };
 
-function CarCard({ car, onRemove, onUpdate, isDisabled = false }: CarCardProps) {
+function CarCard({
+    car,
+    onRemove,
+    onUpdate,
+    isDisabled = false,
+}: CarCardProps) {
     return (
-        <div className="flex items-center bg-background p-4 rounded-large border shadow focus:outline-2 outline-offset-1" tabIndex={0}>
+        <div
+            className="flex items-center bg-background p-4 rounded-large border shadow focus:outline-2 outline-offset-1"
+            tabIndex={0}
+        >
             <p className="font-semibold text-small">{car.memo}</p>
             <div className="ml-auto flex gap-2">
                 <Tooltip content="Chỉnh sửa">
@@ -20,7 +28,7 @@ function CarCard({ car, onRemove, onUpdate, isDisabled = false }: CarCardProps) 
                         isIconOnly
                         radius="full"
                         variant="bordered"
-                        className="border"
+                        className="border hover:border-black"
                         size="sm"
                         isDisabled={isDisabled}
                         disableRipple
@@ -37,10 +45,11 @@ function CarCard({ car, onRemove, onUpdate, isDisabled = false }: CarCardProps) 
                         isIconOnly
                         radius="full"
                         variant="bordered"
-                        className="border"
+                        className="border hover:border-black"
                         size="sm"
                         isDisabled={isDisabled}
                         disableRipple
+                        onPress={onRemove}
                     >
                         <FontAwesomeIcon
                             icon={faXmark}

@@ -46,7 +46,7 @@ function CarTemplateModal({
     isOpen,
     onClose,
     isLoading = false,
-    type = "create"
+    type = "create",
 }: CarTemplateModalProps) {
     const [localCar, setLocalCar] = useState<Partial<PersonalCar>>({});
     const [isModelLoading, setModelLoading] = useState<boolean>();
@@ -78,11 +78,11 @@ function CarTemplateModal({
 
     useEffect(() => {
         if (type === "edit") {
-            setLocalCar(car)
+            setLocalCar(car);
         } else {
             setLocalCar({})
         }
-    }, [type, car])
+    }, [car, type]);
 
     useEffect(() => {
         if (!localCar?.brandId || !selectedBrand) {
@@ -114,7 +114,7 @@ function CarTemplateModal({
     }, [localCar?.brandId, selectedBrand]);
 
     return (
-        <Modal isOpen={isOpen} onClose={() => { setLocalCar({}), onClose() }}>
+        <Modal isOpen={isOpen} onClose={onClose}>
             <ModalContent>
                 <ModalHeader className="border-b">
                     <p className="font-semibold text-center text-medium">

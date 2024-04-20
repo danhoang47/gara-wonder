@@ -1,53 +1,43 @@
-import axios, { AxiosRequestConfig, HttpStatusCode } from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { EnhancedStore } from "@reduxjs/toolkit";
 import { auth } from "@/components/firebase";
-import { updateToken } from "@/features/user/user.slice";
 import { Message, Room, RoomType } from "@/core/types/model";
-import { Response } from "@/core/types";
+import { Response, RetryConfig } from "@/core/types";
 import { WithCategoryService } from "../garages/getGarageServices";
 
 const chatInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL + "/room",
 });
 
-export const setup = (store: EnhancedStore) => {
-    chatInstance.interceptors.request.use(async (request) => {
-        const token = await auth.currentUser?.getIdToken();
-        request.headers.Authorization = "Bearer " + token;
+chatInstance.interceptors.request.use(async (request) => {
+    const token = await auth.currentUser?.getIdToken();
+    request.headers.Authorization = "Bearer " + token;
 
-        return request;
-    });
+    return request;
+});
 
-    chatInstance.interceptors.response.use(
-        (response) => response,
-        async (error) => {
-            const { config } = error;
+chatInstance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const { config } = error;
 
-            if (!config || !config.retry) {
-                return Promise.reject(error);
-            }
-            config.retry -= 1;
+        if (!config || !config.retry) {
+            return Promise.reject(error);
+        }
+        config.retry -= 1;
 
-            if (error.response.status === HttpStatusCode.Unauthorized) {
-                const newToken = await auth.currentUser?.getIdToken();
-                store?.dispatch(updateToken(newToken));
-                config.headers["Authorization"] = "Bearer " + newToken;
-            }
-            const delayRetryRequest = new Promise<void>((resolve) => {
-                setTimeout(() => {
-                    console.log("retry the request", config.url);
-                    resolve();
-                }, config.retryDelay || 1000);
-            });
-            return delayRetryRequest.then(() => chatInstance(config));
-        },
-    );
-};
-
-interface RetryConfig extends AxiosRequestConfig {
-    retry: number;
-    retryDelay: number;
-}
+        if (error.response.status === HttpStatusCode.Unauthorized) {
+            const newToken = await auth.currentUser?.getIdToken(true);
+            config.headers["Authorization"] = "Bearer " + newToken;
+        }
+        const delayRetryRequest = new Promise<void>((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, config.retryDelay || 1000);
+        });
+        return delayRetryRequest.then(() => chatInstance(config));
+    },
+);
 
 const globalConfig: RetryConfig = {
     retry: 3,
@@ -57,7 +47,9 @@ const globalConfig: RetryConfig = {
 export const getRooms = async (roomIds?: string[]) => {
     try {
         const url =
-            roomIds && roomIds.length !== 0 ? `?roomIds=${roomIds.join(",")}` : "";
+            roomIds && roomIds.length !== 0
+                ? `?roomIds=${roomIds.join(",")}`
+                : "";
 
         const result = await chatInstance.get<Response<Room[]>>(
             url,
@@ -75,7 +67,7 @@ export const trackingActivity = async (
     userId: string,
     entityId: string,
     roomId: string,
-    type: RoomType
+    type: RoomType,
 ) => {
     try {
         const result = await chatInstance.post<Response<TrackingStatus>>(
@@ -84,7 +76,7 @@ export const trackingActivity = async (
                 userId,
                 entityId,
                 roomId,
-                type
+                type,
             },
             globalConfig,
         );

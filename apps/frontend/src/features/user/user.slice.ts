@@ -1,6 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { FetchStatus, User } from "@/core/types";
-import { getGarageByOwnerId, getUser, updateUserProfile } from "@/api";
+import { FetchStatus, PersonalCar, User } from "@/core/types";
+import {
+    addPersonalCars,
+    getGarageByOwnerId,
+    getUser,
+    removePersonalCars,
+    updatePersonalCars,
+    updateUserProfile,
+} from "@/api";
 export enum Type {
     SignIn = 0,
     SignUp,
@@ -21,7 +28,7 @@ export type UserSliceState = {
 
 const initialState: UserSliceState = {
     status: FetchStatus.None,
-    updateStatus: FetchStatus.None
+    updateStatus: FetchStatus.None,
 };
 
 const userSlice = createSlice({
@@ -80,6 +87,27 @@ const userSlice = createSlice({
             .addCase(updateUser.fulfilled, (state, action) => {
                 state.updateStatus = FetchStatus.Fulfilled;
                 state.value = action.payload;
+            })
+            .addCase(createCars.pending, (state) => {
+                state.updateStatus = FetchStatus.Fetching;
+            })
+            .addCase(createCars.fulfilled, (state, action) => {
+                state.updateStatus = FetchStatus.Fulfilled;
+                state.value = action.payload;
+            })
+            .addCase(updateCar.pending, (state) => {
+                state.updateStatus = FetchStatus.Fetching;
+            })
+            .addCase(updateCar.fulfilled, (state, action) => {
+                state.updateStatus = FetchStatus.Fulfilled;
+                state.value = action.payload;
+            })
+            .addCase(removeCar.pending, (state) => {
+                state.updateStatus = FetchStatus.Fetching;
+            })
+            .addCase(removeCar.fulfilled, (state, action) => {
+                state.updateStatus = FetchStatus.Fulfilled;
+                state.value = action.payload;
             });
     },
 });
@@ -111,6 +139,39 @@ export const updateUser = createAsyncThunk(
     async (formData: FormData) => {
         try {
             return (await updateUserProfile(formData)).data;
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    },
+);
+
+export const createCars = createAsyncThunk(
+    "user/carAdded",
+    async (car: Partial<PersonalCar>) => {
+        try {
+            return await addPersonalCars(car);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    },
+);
+
+export const updateCar = createAsyncThunk(
+    "user/carUpdated",
+    async (car: Partial<PersonalCar>) => {
+        try {
+            return await updatePersonalCars(car);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    },
+);
+
+export const removeCar = createAsyncThunk(
+    "user/carRemoved",
+    async (carId: string) => {
+        try {
+            return await removePersonalCars(carId);
         } catch (error) {
             return Promise.reject(error);
         }

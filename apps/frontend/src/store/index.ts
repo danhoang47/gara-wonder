@@ -11,7 +11,6 @@ import {
 } from "@/features/notifications";
 import { roomsReducer } from "@/features/chat";
 import { productsReducer } from "@/features/products";
-import { setup } from "@/api/chat";
 
 const store = configureStore({
     reducer: {
@@ -28,8 +27,6 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ serializableCheck: false }),
 });
-
-setup(store);
 
 export type AppState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
