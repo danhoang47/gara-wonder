@@ -380,7 +380,7 @@ const UpsertProductModal = ({
                                             onChangeValue("quantity", value);
                                         }}
                                         allowKeyboard
-                                        value={localProduct?.quantity || 1}
+                                        value={localProduct?.quantity}
                                     />
                                 </div>
                             </div>

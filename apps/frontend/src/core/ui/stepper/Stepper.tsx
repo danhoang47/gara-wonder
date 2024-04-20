@@ -3,6 +3,7 @@ import { Button } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
+import { isNumber } from "@/utils";
 
 export type StepperProps = {
     value?: number;
@@ -15,6 +16,7 @@ export type StepperProps = {
     allowKeyboard?: boolean;
     size?: "sm" | "md" | "lg";
     step?: number;
+    endContent?: React.ReactNode;
 };
 
 type ButtonProps = React.ComponentProps<typeof Button>;
@@ -30,13 +32,14 @@ function Stepper({
     allowKeyboard = false,
     size = "sm",
     step = 1,
+    endContent
 }: StepperProps) {
     const buttonProps: ButtonProps = useMemo(
         () => ({
             isIconOnly: true,
             radius: "full",
             variant: "bordered",
-            className: clsx(classNames?.button, "border"),
+            className: clsx(classNames?.button, "border text-default-500 hover:text-foreground hover:border-black"),
             size: size,
         }),
         [classNames?.button, size],
@@ -63,14 +66,29 @@ function Stepper({
             >
                 <FontAwesomeIcon icon={faMinus} />
             </Button>
-            <div className={classNames?.text}>
-                <p
-                    contentEditable={allowKeyboard}
-                    className={clsx("outline-none text-center")}
-                    suppressContentEditableWarning
-                >
-                    {value || defaultValue}
-                </p>
+            <div className={clsx("w-fit", classNames?.text)}>
+                <input
+                    disabled={!allowKeyboard}
+                    className={clsx(`outline-none text-center`)}
+                    style={{
+                        width: value?.toString().length + "ch"
+                    }}
+                    onChange={(event) => {
+                        if (!isNumber(event.target.value)) return;
+
+                        const value = Number.parseInt(event.target.value);
+                        if (value >= min && value <= max) {
+                            onChange(value);
+                        }
+                    }}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                        }
+                    }}
+                    value={value ?? defaultValue}
+                />
+                {endContent}
             </div>
             <Button
                 {...buttonProps}
