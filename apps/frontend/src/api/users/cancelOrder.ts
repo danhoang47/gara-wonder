@@ -1,6 +1,5 @@
 import axios from "axios";
 
-import { baseUsersUrl } from ".";
 import { Response, User } from "@/core/types";
 
 export default async function cancelOrder(
@@ -9,7 +8,7 @@ export default async function cancelOrder(
 ): Promise<Response> {
     try {
         const result = await axios.post<Response<User>>(
-            baseUsersUrl + `/cancel`,
+            import.meta.env.VITE_API_URL + `/order/cancel`,
             {
                 garageId: garageId,
                 orderId: orderId,
