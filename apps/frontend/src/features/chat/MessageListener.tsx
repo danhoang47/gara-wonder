@@ -20,9 +20,7 @@ function MessageListener({ children }: ContainerProps) {
             setIsConnected(true);
         }
 
-        if (user?._id) {
-            socket.on("connect", onConnect);
-        }
+        socket.on("connect", onConnect);
     }, [user?._id]);
 
     useEffect(() => {
