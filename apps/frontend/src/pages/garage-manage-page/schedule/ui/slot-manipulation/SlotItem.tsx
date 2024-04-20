@@ -2,8 +2,8 @@ import { Stepper } from "@/core/ui";
 import { Switch } from "@nextui-org/react";
 
 export type SlotItemProps = {
+    extraFee: number;
     slotValue?: number;
-    extraFee?: number;
     disabled?: boolean;
     changeSlotValue: (value: number) => void;
     changeFeeValue: (value: number) => void;
