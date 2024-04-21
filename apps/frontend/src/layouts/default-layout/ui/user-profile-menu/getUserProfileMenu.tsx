@@ -9,10 +9,9 @@ type MenuItem = {
 
 const getUserProfileMenu = (
     isLogin: boolean,
-    isGarageOwner: boolean,
-    isSupplier: boolean,
     openMenu: () => void,
     garageId?: string,
+    supplierId?: string,
 ): Array<Record<"options", MenuItem[]>> => {
     const menuItems = [];
 
@@ -77,7 +76,7 @@ const getUserProfileMenu = (
         );
     }
 
-    if (isGarageOwner) {
+    if (garageId) {
         menuItems.push({
             options: [
                 {
@@ -95,7 +94,7 @@ const getUserProfileMenu = (
             ],
         });
     }
-    if (isSupplier) {
+    if (supplierId) {
         menuItems.push({
             options: [
                 {
@@ -113,7 +112,7 @@ const getUserProfileMenu = (
             ],
         });
     }
-    if (!isGarageOwner && isLogin) {
+    if (!garageId && isLogin) {
         menuItems.push({
             options: [
                 {
@@ -139,7 +138,7 @@ const getUserProfileMenu = (
         });
     }
 
-    if (!isSupplier && isLogin) {
+    if (!supplierId && isLogin) {
         menuItems.push({
             options: [
                 {

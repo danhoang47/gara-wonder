@@ -183,8 +183,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                             <div className="w-full ">
                                                                 <div className="pb-1">
                                                                     <p className="font-medium text-sm text-center">
-                                                                        Gợi ý
-                                                                        dịch vụ
+                                                                        Gợi ý dịch vụ
                                                                     </p>
                                                                 </div>
                                                                 {item2.services?.map(

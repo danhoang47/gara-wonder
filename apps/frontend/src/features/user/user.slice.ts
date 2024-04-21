@@ -115,8 +115,10 @@ const userSlice = createSlice({
             })
             .addCase(mutationInvitations.fulfilled, (state, action) => {
                 state.updateStatus = FetchStatus.Fulfilled;
-                state.value = action.payload;
-            })
+                if (action.payload) {
+                    state.value = action.payload;
+                }
+            });
     },
 });
 
@@ -188,14 +190,14 @@ export const removeCar = createAsyncThunk(
 
 export const mutationInvitations = createAsyncThunk(
     "user/invitations",
-    async ( { invitationId, type }: { invitationId: string, type: number }) => {
+    async ({ invitationId, type }: { invitationId: string; type: number }) => {
         try {
-            return await acceptOrRejectInvitations(invitationId, type)
+            return await acceptOrRejectInvitations(invitationId, type);
         } catch (error) {
-            return Promise.reject(error)   
+            return Promise.reject(error);
         }
-    }
-)
+    },
+);
 
 export const {
     signOut,
