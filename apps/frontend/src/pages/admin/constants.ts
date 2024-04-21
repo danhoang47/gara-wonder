@@ -13,13 +13,27 @@ export const fields = [
     },
 ];
 export const sorts = [
-    { key: "asc", label: "Trên xuống" },
+    { key: "asc", label: "Duới lên" },
     {
         key: "desc",
-        label: "Dưới lên",
+        label: "Trên xuống",
     },
 ];
-export const status = [{ key: 0, label: "Đợi chấp nhận" }];
+export const statusList = [
+    { key: 0, label: "Đợi chấp nhận" },
+    { key: 1, label: "Đã chấp nhận" },
+    { key: 2, label: "Từ chối" },
+    { key: 3, label: "Vô hiệu hóa" },
+    { key: 4, label: "Cấm" },
+];
+
+export const getStatusLabel = (numb: number) => {
+    if (numb === 0) return "Đợi chấp nhận";
+    if (numb === 1) return "Đã chấp nhận";
+    if (numb === 2) return "Từ chối";
+    if (numb === 3) return "Vô hiệu hóa";
+    if (numb === 4) return "Cấm";
+};
 
 export const years = [
     {

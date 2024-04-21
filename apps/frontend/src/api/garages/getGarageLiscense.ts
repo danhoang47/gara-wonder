@@ -7,13 +7,13 @@ export type GarageLiscense = {
     url?: string;
 };
 export default async function getGarageLiscense(
-    garageId: string, // server/:garageId
+    garageId?: string, // server/:garageId
 ) {
     try {
         // /garage/server/:garageId
-        const result = await axios.get<
-            Response<{ license: GarageLiscense[] }>
-        >(`${baseGaragesUrl}/${garageId}/management/license`);
+        const result = await axios.get<Response<{ license: GarageLiscense[] }>>(
+            `${baseGaragesUrl}/${garageId}/management/license`,
+        );
 
         return result.data;
     } catch (error) {
