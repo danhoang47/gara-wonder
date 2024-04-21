@@ -5,7 +5,7 @@ import { baseAdminUrl } from ".";
 export type GarageRequire = Garage;
 
 export default async function getAcceptRequireGarage(
-    status?: number,
+    status?: string,
     fieldName: string = "name",
     sort: string = "desc",
     year: string | number = 2024,
@@ -14,7 +14,7 @@ export default async function getAcceptRequireGarage(
         let url =
             baseAdminUrl +
             `/garages?fieldName=${fieldName}&sort=${sort}&year=${year}`;
-        if (status !== undefined) {
+        if (status !== undefined || status !== "") {
             url = url + `&status=${status}`;
         }
         const result = await axios.get<Response<Garage[]>>(url);

@@ -14,14 +14,14 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSWR from "swr";
-import { fields, sorts, years } from "../constants";
+import { fields, getStatusLabel, sorts, statusList, years } from "../constants";
 import "./garage.style.scss";
 
 export default function GarageManageList() {
     const [selectedYear, setSelectedYear] = useState([
-        new Date().getFullYear(),
+        String(new Date().getFullYear()),
     ]);
-    const [status, setStatus] = useState([]);
+    const [status, setStatus] = useState<[string]>([""]);
     const [fieldName, setFieldName] = useState(["name"]);
     const [sort, setSort] = useState(["asc"]);
     const {
@@ -45,19 +45,20 @@ export default function GarageManageList() {
             <div style={{ display: "flex", gap: 10, flexDirection: "column" }}>
                 <div style={{ display: "flex", gap: 10 }}>
                     <Select
-                        label="Chọn chế độ lọc"
-                        selectedKeys={sort}
+                        label="Chọn trạng thái"
+                        selectedKeys={status}
                         classNames={{ base: "max-w-[10rem]" }}
                         onChange={(e) => {
-                            setSort([e.target.value]);
+                            setStatus([e.target.value]);
                         }}
                     >
-                        {sorts.map((sorting) => (
-                            <SelectItem key={sorting.key}>
-                                {sorting.label}
+                        {statusList.map((status) => (
+                            <SelectItem key={status.key}>
+                                {status.label}
                             </SelectItem>
                         ))}
                     </Select>
+
                     <Select
                         label="Chọn trường lọc"
                         selectedKeys={fieldName}
@@ -77,11 +78,25 @@ export default function GarageManageList() {
                         selectedKeys={selectedYear}
                         classNames={{ base: "max-w-[10rem]" }}
                         onChange={(e) => {
-                            setSelectedYear([Number(e.target.value)]);
+                            setSelectedYear([e.target.value]);
                         }}
                     >
                         {years.map((year) => (
                             <SelectItem key={year.key}>{year.label}</SelectItem>
+                        ))}
+                    </Select>
+                    <Select
+                        label="Chọn chế độ lọc"
+                        selectedKeys={sort}
+                        classNames={{ base: "max-w-[10rem]" }}
+                        onChange={(e) => {
+                            setSort([e.target.value]);
+                        }}
+                    >
+                        {sorts.map((sorting) => (
+                            <SelectItem key={sorting.key}>
+                                {sorting.label}
+                            </SelectItem>
                         ))}
                     </Select>
                 </div>
@@ -123,7 +138,9 @@ export default function GarageManageList() {
                                         {/* @ts-expect-error displayName */}
                                         {row.userId?.displayName}
                                     </TableCell>
-                                    <TableCell>{row.status}</TableCell>
+                                    <TableCell>
+                                        {getStatusLabel(row.status)}
+                                    </TableCell>
                                     <TableCell>
                                         {moment(row.createdAt).format(
                                             "DD/MM/YYYY",
@@ -133,9 +150,14 @@ export default function GarageManageList() {
                                         <Button
                                             color="primary"
                                             radius="sm"
+                                            size="sm"
                                             className="text-white"
                                             onClick={() => {
-                                                navigate(`./${row._id}`);
+                                                navigate(`./${row._id}`, {
+                                                    state: {
+                                                        status: row.status,
+                                                    },
+                                                });
                                             }}
                                         >
                                             Truy cập

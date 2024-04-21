@@ -20,7 +20,9 @@ const DashBoard: React.FC = () => {
                 </div>
             </div>
             <div className="">
-                <h2 className="text-2xl font-semibold">Danh sách Garage</h2>
+                <h2 className="text-2xl font-semibold">
+                    Danh sách Garage đang chờ chấp nhận
+                </h2>
                 <GarageList />
             </div>
         </>

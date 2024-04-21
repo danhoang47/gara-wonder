@@ -19,7 +19,7 @@ import { fields, sorts, years } from "../../constants";
 const GarageList: React.FunctionComponent = () => {
     const navigate = useNavigate();
     const [selectedYear, setSelectedYear] = useState([
-        new Date().getFullYear(),
+        String(new Date().getFullYear()),
     ]);
     const [fieldName, setFieldName] = useState(["name"]);
     const [sort, setSort] = useState(["asc"]);
@@ -29,7 +29,7 @@ const GarageList: React.FunctionComponent = () => {
         data: tableData,
         mutate: refetch,
     } = useSWR("table", () =>
-        getAcceptRequireGarage(0, fieldName[0], sort[0], selectedYear[0]),
+        getAcceptRequireGarage("0", fieldName[0], sort[0], selectedYear[0]),
     );
     useEffect(() => {
         if (tableData) refetch();
@@ -38,20 +38,6 @@ const GarageList: React.FunctionComponent = () => {
         return (
             <div style={{ display: "flex", gap: 10, flexDirection: "column" }}>
                 <div style={{ display: "flex", gap: 10 }}>
-                    <Select
-                        label="Chọn chế độ lọc"
-                        selectedKeys={sort}
-                        classNames={{ base: "max-w-[10rem]" }}
-                        onChange={(e) => {
-                            setSort([e.target.value]);
-                        }}
-                    >
-                        {sorts.map((sorting) => (
-                            <SelectItem key={sorting.key}>
-                                {sorting.label}
-                            </SelectItem>
-                        ))}
-                    </Select>
                     <Select
                         label="Chọn trường lọc"
                         selectedKeys={fieldName}
@@ -71,11 +57,25 @@ const GarageList: React.FunctionComponent = () => {
                         selectedKeys={selectedYear}
                         classNames={{ base: "max-w-[10rem]" }}
                         onChange={(e) => {
-                            setSelectedYear([Number(e.target.value)]);
+                            setSelectedYear([e.target.value]);
                         }}
                     >
                         {years.map((year) => (
                             <SelectItem key={year.key}>{year.label}</SelectItem>
+                        ))}
+                    </Select>
+                    <Select
+                        label="Chọn chế độ lọc"
+                        selectedKeys={sort}
+                        classNames={{ base: "max-w-[10rem]" }}
+                        onChange={(e) => {
+                            setSort([e.target.value]);
+                        }}
+                    >
+                        {sorts.map((sorting) => (
+                            <SelectItem key={sorting.key}>
+                                {sorting.label}
+                            </SelectItem>
                         ))}
                     </Select>
                 </div>
@@ -87,6 +87,7 @@ const GarageList: React.FunctionComponent = () => {
                         aria-label="Example static collection table"
                         classNames={{
                             base: "max-h-[25rem] overflow-auto no-scrollbar",
+                            th: "bg-primary-500 text-white",
                         }}
                     >
                         <TableHeader>
@@ -97,13 +98,10 @@ const GarageList: React.FunctionComponent = () => {
                                 Chủ Garage
                             </TableColumn>
                             <TableColumn className="font-bold text-md">
-                                Trạng thái
-                            </TableColumn>
-                            <TableColumn className="font-bold text-md">
                                 Ngày khởi tạo
                             </TableColumn>
                             <TableColumn className="text-center font-bold text-md">
-                                Truy cập
+                                {""}
                             </TableColumn>
                         </TableHeader>
                         <TableBody items={tableData?.data}>
@@ -114,7 +112,6 @@ const GarageList: React.FunctionComponent = () => {
                                         {/* @ts-expect-error displayName */}
                                         {row.userId?.displayName}
                                     </TableCell>
-                                    <TableCell>{row.status}</TableCell>
                                     <TableCell>
                                         {moment(row.createdAt).format(
                                             "DD/MM/YYYY",
@@ -124,10 +121,16 @@ const GarageList: React.FunctionComponent = () => {
                                         <Button
                                             color="primary"
                                             radius="sm"
-                                            className="text-white"
+                                            size="sm"
+                                            className="text-white font-semibold w-[8rem]"
                                             onClick={() =>
                                                 navigate(
                                                     `../garage-management/${row._id}`,
+                                                    {
+                                                        state: {
+                                                            status: row.status,
+                                                        },
+                                                    },
                                                 )
                                             }
                                         >
