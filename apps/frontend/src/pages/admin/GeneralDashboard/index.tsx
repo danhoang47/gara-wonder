@@ -7,19 +7,20 @@ const DashBoard: React.FC = () => {
     return (
         <>
             <Statistical />
-            <div>
-                <h2 style={{ fontSize: "24px", marginBottom: "20px" }}>
-                    Theo dõi doanh số
-                </h2>
-                <div style={{ display: "flex", gap: "10px" }}>
+            <div className="pt-10">
+                <h2 className="text-2xl font-semibold">Theo dõi doanh số</h2>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(2,minmax(50%, 1fr))",
+                    }}
+                >
                     <TrackSale />
                     <TrackSale />
                 </div>
             </div>
             <div className="">
-                <h2 style={{ fontSize: "24px", marginBottom: "20px" }}>
-                    Danh sách Garage
-                </h2>
+                <h2 className="text-2xl font-semibold">Danh sách Garage</h2>
                 <GarageList />
             </div>
         </>

@@ -28,7 +28,7 @@ export default async function getOrders(
     cursor: string | undefined | null,
 ) {
     try {
-        let queryParams: string = `/${id}/management/orders?`;
+        let queryParams: string = `/${id}/management/orders?sort=asc&`;
 
         if (limit) {
             queryParams += `limit=${limit}`;
