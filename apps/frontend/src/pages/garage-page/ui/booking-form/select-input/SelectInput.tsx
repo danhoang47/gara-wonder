@@ -9,6 +9,9 @@ import { DatePicker } from "@/core/ui";
 import { useEffect, useMemo, useState } from "react";
 import { useOrderContext } from "@/pages/garage-page/hooks";
 import moment from "moment";
+import useSWR from "swr";
+import { useParams } from "react-router-dom";
+import { getScheduleSlot } from "@/api";
 
 function SelectInput() {
     const [localOrderTime, setLocalOrderTime] = useState<number>();
@@ -24,6 +27,25 @@ function SelectInput() {
         // TODO: need to set start of this date
         return new Date(orderTime).getDate() > new Date().getDate();
     }, [orderTime]);
+    const { garageId } = useParams();
+    const { isLoading, data: schedule } = useSWR(
+        `${garageId}/schedule`,
+        () =>
+            getScheduleSlot(garageId, {
+                startTime: moment().startOf("day").toDate().getTime(),
+                endTime: moment()
+                    .startOf("day")
+                    .add(1, "years")
+                    .toDate()
+                    .getTime(),
+            }),
+        {
+            refreshInterval: 30000, 
+            revalidateOnFocus: false,
+            refreshWhenHidden: true,
+        },
+    );
+
     useEffect(() => {
         setLocalInputTime(
             moment(localOrderTime).format("YYYY/MM/DD").toString(),
@@ -105,6 +127,7 @@ function SelectInput() {
                                     : undefined
                             }
                             show="single"
+                            isLoading={isLoading}
                         />
                     </div>
                     <div className="flex gap-2 py-2 justify-end px-4">
