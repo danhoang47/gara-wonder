@@ -3,11 +3,14 @@ import { BreadcrumbItem, Breadcrumbs, Button } from "@nextui-org/react";
 import useSWR from "swr";
 import InvitationCard from "./InvitationCard";
 import useSWRImmutable from "swr/immutable";
-import { useAppSelector } from "@/core/hooks";
+import { useAppSelector, useAuthLoading } from "@/core/hooks";
 import { Role } from "@/core/types";
 
 function PersonalBusiness() {
-    const { data: invitations } = useSWR("invitations", getInvitations);
+    const { data: invitations, mutate } = useSWR("invitations", getInvitations, {
+        revalidateOnFocus: false,
+    });
+    useAuthLoading(PersonalBusiness.name);
     const user = useAppSelector((state) => state.user.value);
     const { data: result } = useSWRImmutable(
         user?.garageId,
@@ -90,6 +93,7 @@ function PersonalBusiness() {
                             <InvitationCard
                                 key={invitation._id}
                                 invitation={invitation}
+                                onActionCompleted={() => mutate()}
                             />
                         ))}
                     </div>

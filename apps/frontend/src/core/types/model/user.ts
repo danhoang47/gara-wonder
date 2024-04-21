@@ -27,6 +27,7 @@ export type User = Model & {
     isOnline: boolean;
     lastActiveAt: number;
     garageId?: string;
+    supplierId?: string;
     dob?: string;
     cars: PersonalCar[];
 };
