@@ -28,7 +28,6 @@ function Schedule() {
                 .getTime(),
             endTime: moment()
                 .year(year)
-
                 .month(month)
                 .endOf("month")
                 .endOf("day")

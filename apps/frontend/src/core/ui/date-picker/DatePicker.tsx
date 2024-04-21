@@ -7,6 +7,7 @@ import { usePrevious } from "@/core/hooks";
 import DatePickerCalendar from "./DatePickerCalendar";
 import { DateRange } from "@/core/types";
 import { DisabledDate } from "../calendar/Calendar";
+import { ScheduleType } from "@/api/garages/getScheduleSlot";
 
 export type DatePickerMode = "single" | "range";
 
@@ -17,6 +18,8 @@ export type DatePickerBaseProps = {
     disallowEmptySelection?: boolean;
     mode: DatePickerMode;
     show?: "single" | "double";
+    isLoading?: boolean;
+    schedule?: ScheduleType
 };
 
 export type SingleModeProps = DatePickerBaseProps & {
@@ -41,7 +44,9 @@ function DatePicker({
     selectedDate,
     disallowEmptySelection = false,
     onSelectedChange,
-    disabledDates = []
+    disabledDates = [],
+    isLoading = false,
+    schedule = undefined
 }: DatePickerProps) {
     const [year, setYear] = useState<number>(defaultYear);
     const [month, setMonth] = useState<number>(defaultMonth);
