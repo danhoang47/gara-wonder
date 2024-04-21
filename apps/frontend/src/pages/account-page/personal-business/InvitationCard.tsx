@@ -1,5 +1,7 @@
 import { getBasicGarageInfo } from "@/api";
-import { Invitation } from "@/core/types";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { FetchStatus, Invitation } from "@/core/types";
+import { mutationInvitations } from "@/features/user/user.slice";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
@@ -16,6 +18,12 @@ function InvitationCard({ invitation }: InvitationCardProps) {
         getBasicGarageInfo,
     );
     const garage = result?.data[0];
+    const updateStatus = useAppSelector(state => state.user.updateStatus)
+    const dispatch = useAppDispatch()
+
+    const onMutateButtonPress = (type: number) => {
+        dispatch(mutationInvitations({ invitationId: invitation._id, type }))
+    }
 
     return (
         <div className="p-4 flex gap-4 border-b rounded-large border shadow">
@@ -35,10 +43,24 @@ function InvitationCard({ invitation }: InvitationCardProps) {
                 </span>
             </div>
             <div className="flex gap-2 items-center">
-                <Button size="sm" isIconOnly radius="full" variant="bordered">
+                <Button 
+                    size="sm" 
+                    isIconOnly 
+                    radius="full" 
+                    variant="bordered" 
+                    isLoading={updateStatus === FetchStatus.Fetching}
+                    onPress={() => onMutateButtonPress(1)}
+                >
                     <FontAwesomeIcon icon={faCheck} />
                 </Button>
-                <Button size="sm" isIconOnly radius="full" variant="bordered">
+                <Button 
+                    size="sm" 
+                    isIconOnly 
+                    radius="full" 
+                    variant="bordered" 
+                    isLoading={updateStatus === FetchStatus.Fetching}
+                    onPress={() => onMutateButtonPress(1)}
+                >
                     <FontAwesomeIcon icon={faXmark} />
                 </Button>
             </div>
