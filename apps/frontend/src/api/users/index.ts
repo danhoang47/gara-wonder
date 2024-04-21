@@ -49,3 +49,4 @@ export { default as addReview } from "./addReview";
 export { default as addPersonalCars } from "./addPersonalCars";
 export { default as removePersonalCars } from "./removePersonalCars";
 export { default as updatePersonalCars } from "./updatePersonalCars";
+export { default as acceptOrRejectInvitations } from './acceptOrRejectInvitations'

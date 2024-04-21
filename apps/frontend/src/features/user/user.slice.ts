@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { FetchStatus, PersonalCar, User } from "@/core/types";
 import {
+    acceptOrRejectInvitations,
     addPersonalCars,
     getGarageByOwnerId,
     getUser,
@@ -108,7 +109,14 @@ const userSlice = createSlice({
             .addCase(removeCar.fulfilled, (state, action) => {
                 state.updateStatus = FetchStatus.Fulfilled;
                 state.value = action.payload;
-            });
+            })
+            .addCase(mutationInvitations.pending, (state) => {
+                state.updateStatus = FetchStatus.Fetching;
+            })
+            .addCase(mutationInvitations.fulfilled, (state, action) => {
+                state.updateStatus = FetchStatus.Fulfilled;
+                state.value = action.payload;
+            })
     },
 });
 
@@ -177,6 +185,17 @@ export const removeCar = createAsyncThunk(
         }
     },
 );
+
+export const mutationInvitations = createAsyncThunk(
+    "user/invitations",
+    async ( { invitationId, type }: { invitationId: string, type: number }) => {
+        try {
+            return await acceptOrRejectInvitations(invitationId, type)
+        } catch (error) {
+            return Promise.reject(error)   
+        }
+    }
+)
 
 export const {
     signOut,
