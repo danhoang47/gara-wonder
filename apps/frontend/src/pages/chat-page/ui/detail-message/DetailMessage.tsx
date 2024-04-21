@@ -41,6 +41,7 @@ export type PayloadMessage = Omit<
 
 const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
     const userId = useAppSelector((state) => state.user.value?._id);
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const dispatch = useAppDispatch();
     const { onNext } = useMessages(room.roomId);
     const messages = useAppSelector((state) =>
@@ -49,23 +50,37 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
     const group = (data: Message[]) => {
-        let previousId: string | undefined = undefined;
         const newList: Message[][] = [];
+        let previousIndex: number = 0;
 
-        data.forEach(({ authorId }: { authorId: string }, index: number) => {
-            if (previousId !== authorId) {
-                previousId = authorId;
-                const grp = [];
-                for (let i = index; i < data.length; i++) {
-                    if (data[i].authorId === authorId) {
-                        grp.push(data[i]);
-                    } else {
-                        break;
-                    }
+        data.forEach(({ authorId }, index: number) => {
+            if (
+                (previousIndex && index < previousIndex) ||
+                previousIndex === data.length - 1
+            )
+                return;
+
+            const isAuthorUser = authorId === room.userId;
+            const grp = [];
+
+            for (let i = index; i < data.length; i++) {
+                if (
+                    (isAuthorUser && data[i].authorId === authorId) ||
+                    (!isAuthorUser && data[i].authorId !== room.userId)
+                ) {
+                    grp.push(data[i]);
+                } else {
+                    previousIndex = i;
+                    break;
                 }
 
-                newList.push(grp);
+                if (i === data.length - 1) {
+                    previousIndex = i;
+                    console.log(previousIndex);
+                }
             }
+
+            newList.push(grp);
         });
         return newList;
     };
@@ -123,6 +138,29 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
         }
     };
 
+    /**
+     * if authorId = userId => end
+     * else
+     *      if room.entityId = garageId => end
+     */
+    const checkIfMessageSentFromEntity = (authorId: string = "") => {
+        if (authorId === userId && room.userId === userId) {
+            return true;
+        }
+        if (
+            authorId !== userId &&
+            room.userId !== authorId &&
+            room.entityId === garageId
+        ) {
+            return true;
+        }
+        if (authorId === userId) {
+            return true;
+        }
+
+        return false;
+    };
+
     return room ? (
         <div className="flex flex-col col-span-4 overflow-hidden h-full">
             <MessageHeader room={room} setSelectedRoom={setSelectedRoom} />
@@ -143,11 +181,14 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                 key={index}
                                 className={clsx(
                                     "flex items-end gap-1 mb-2",
-                                    item[0].authorId === userId &&
-                                        "justify-end",
+                                    checkIfMessageSentFromEntity(
+                                        item[0].authorId,
+                                    ) && "justify-end",
                                 )}
                             >
-                                {item[0].authorId !== userId && (
+                                {!checkIfMessageSentFromEntity(
+                                    item[0].authorId,
+                                ) && (
                                     <div className="w-[25px] h-[25px] shrink-0">
                                         <Avatar
                                             src={room?.photoURL}
@@ -163,8 +204,9 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                             <div
                                                 key={item2._id}
                                                 className={clsx(
-                                                    "",
-                                                    item2.authorId === userId &&
+                                                    checkIfMessageSentFromEntity(
+                                                        item2.authorId,
+                                                    ) &&
                                                         "self-end flex flex-col",
                                                 )}
                                             >
@@ -174,8 +216,9 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                         <div
                                                             className={clsx(
                                                                 "service py-3 px-3 my-0.5 bg-default-100 w-[280px]",
-                                                                item2.authorId ===
-                                                                    userId
+                                                                checkIfMessageSentFromEntity(
+                                                                    item2.authorId,
+                                                                )
                                                                     ? "right self-end"
                                                                     : "left self-start",
                                                             )}
@@ -183,7 +226,8 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                             <div className="w-full ">
                                                                 <div className="pb-1">
                                                                     <p className="font-medium text-sm text-center">
-                                                                        Gợi ý dịch vụ
+                                                                        Gợi ý
+                                                                        dịch vụ
                                                                     </p>
                                                                 </div>
                                                                 {item2.services?.map(
@@ -266,8 +310,9 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                         </div>
                                                     }
                                                     placement={
-                                                        item2.authorId ===
-                                                        userId
+                                                        checkIfMessageSentFromEntity(
+                                                            item2.authorId,
+                                                        )
                                                             ? "left"
                                                             : "right"
                                                     }
@@ -279,8 +324,9 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                 <div
                                                                     className={clsx(
                                                                         "translate-y-1.5 mb-[-4px] cursor-pointer bg-[#f3f3f3] rounded-3xl w-fit ",
-                                                                        item2.authorId ===
-                                                                            userId
+                                                                        checkIfMessageSentFromEntity(
+                                                                            item2.authorId,
+                                                                        )
                                                                             ? "right self-end ml-auto"
                                                                             : "left self-start",
                                                                     )}
@@ -299,8 +345,9 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                 <div
                                                                     className={clsx(
                                                                         "chat-bubble relative max-w-full w-fit",
-                                                                        item2.authorId ===
-                                                                            userId
+                                                                        checkIfMessageSentFromEntity(
+                                                                            item2.authorId,
+                                                                        )
                                                                             ? "right self-end bg-primary text-white ml-auto"
                                                                             : "left self-start",
                                                                     )}
