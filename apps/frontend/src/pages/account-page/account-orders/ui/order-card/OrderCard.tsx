@@ -29,7 +29,8 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                     >
                                         {order?.car.brand.name}{" "}
                                         {order?.car.model} -{" "}
-                                        {order?.car.plateNumber}
+                                        {order?.car.plateNumber ??
+                                            order?.car.releaseYear}
                                     </Link>
                                 </div>
                                 <div className="flex gap-2 ">

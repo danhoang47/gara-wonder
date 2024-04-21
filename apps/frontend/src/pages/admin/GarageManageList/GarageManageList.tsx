@@ -100,14 +100,13 @@ const years = [
         label: 2018,
     },
 ];
-const GarageList: React.FunctionComponent = () => {
+export default function GarageManageList() {
     const {
         isLoading,
         data: tableData,
         mutate: refetch,
-    } = useSWR("table", () => getAcceptRequireGarage(0));
+    } = useSWR("table", () => getAcceptRequireGarage());
     const navigate = useNavigate();
-
     if (!isLoading)
         return (
             <div style={{ display: "flex", gap: 10, flexDirection: "column" }}>
@@ -151,13 +150,13 @@ const GarageList: React.FunctionComponent = () => {
                     </Dropdown>
                 </div>
 
-                <div className="pb-8">
+                <div>
                     <Table
                         isHeaderSticky
                         isStriped
                         aria-label="Example static collection table"
                         classNames={{
-                            base: "max-h-[25rem] overflow-auto no-scrollbar",
+                            base: "max-h-[35rem] overflow-auto no-scrollbar",
                         }}
                     >
                         <TableHeader>
@@ -177,7 +176,10 @@ const GarageList: React.FunctionComponent = () => {
                                 Truy cập
                             </TableColumn>
                         </TableHeader>
-                        <TableBody items={tableData?.data}>
+                        <TableBody
+                            items={tableData?.data}
+                            className="overflow-auto h-[40rem]"
+                        >
                             {(row) => (
                                 <TableRow key={row._id}>
                                     <TableCell>{row.name}</TableCell>
@@ -195,11 +197,9 @@ const GarageList: React.FunctionComponent = () => {
                                             color="success"
                                             radius="sm"
                                             className="text-white"
-                                            onClick={() =>
-                                                navigate(
-                                                    `../garages/${row._id}`,
-                                                )
-                                            }
+                                            onClick={() => {
+                                                navigate(`./${row._id}`);
+                                            }}
                                         >
                                             Truy cập
                                         </Button>
@@ -211,6 +211,4 @@ const GarageList: React.FunctionComponent = () => {
                 </div>
             </div>
         );
-};
-
-export default GarageList;
+}

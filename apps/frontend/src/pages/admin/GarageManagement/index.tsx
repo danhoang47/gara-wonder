@@ -26,6 +26,7 @@ const GarageManagement: React.FC = () => {
             <div className="flex w-full flex-col">
                 <Tabs
                     aria-label="Dynamic tabs"
+                    variant="underlined"
                     classNames={{
                         tab: "",
                     }}

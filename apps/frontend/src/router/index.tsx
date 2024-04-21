@@ -76,6 +76,7 @@ const AccountOrderDetail = lazy(
 const DashBoard = lazy(() => import("@/pages/admin/GeneralDashboard"));
 const GarageManagement = lazy(() => import("@/pages/admin/GarageManagement"));
 const CustomerReport = lazy(() => import("@/pages/admin/CustomerReport"));
+const GarageManageList = lazy(() => import("@/pages/admin/GarageManageList"));
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -307,6 +308,14 @@ const router = createBrowserRouter(
                 />
                 <Route
                     path="garage-management"
+                    element={
+                        <Suspense fallback={<FullPageLoad />}>
+                            <GarageManageList />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="garage-management/:garageId"
                     element={
                         <Suspense fallback={<FullPageLoad />}>
                             <GarageManagement />

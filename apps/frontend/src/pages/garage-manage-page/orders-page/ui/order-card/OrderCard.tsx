@@ -74,7 +74,8 @@ function OrderCard({
                                     >
                                         {order?.car.brand.name}{" "}
                                         {order?.car.model} -{" "}
-                                        {order?.car.plateNumber}
+                                        {order?.car.plateNumber ??
+                                            order?.car.releaseYear}
                                     </Link>
                                 </div>
                                 <div className="flex gap-2 ">
@@ -88,7 +89,10 @@ function OrderCard({
                         </div>
                         <div>
                             <p className="font-semibold text-lg">
-                                {formatCurrency(order?.totalPrice as number, "compact")}
+                                {formatCurrency(
+                                    order?.totalPrice as number,
+                                    "compact",
+                                )}
                             </p>
                         </div>
                     </div>
@@ -136,7 +140,7 @@ function OrderCard({
                             </div>
                             <div className="pt-3 flex gap-2 justify-between items-center">
                                 <div className="flex gap-2">
-                                    {order?.status as number < 0 && (
+                                    {(order?.status as number) < 0 && (
                                         <Chip color="primary">
                                             <p className="font-medium">
                                                 Cần chấp nhận
@@ -150,7 +154,7 @@ function OrderCard({
                                             </p>
                                         </Chip>
                                     )}
-                                    {order?.status as number > 0 && (
+                                    {(order?.status as number) > 0 && (
                                         <Chip color="primary">
                                             <p className="font-medium">
                                                 Đã chấp nhận
@@ -170,7 +174,7 @@ function OrderCard({
                                         </Chip>
                                     )}
                                 </div>
-                                {order?.status as number === -1 && (
+                                {(order?.status as number) === -1 && (
                                     <div className="flex gap-2">
                                         <Button
                                             onClick={() => {
