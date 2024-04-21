@@ -1,153 +1,89 @@
-import React, { useEffect } from "react";
-import {
-    Dropdown,
-    DropdownTrigger,
-    DropdownMenu,
-    DropdownItem,
-    Button,
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
-    Tab,
-} from "@nextui-org/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import useSWR from "swr";
 import { getAcceptRequireGarage } from "@/api/admin";
+import {
+    Button,
+    Select,
+    SelectItem,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+} from "@nextui-org/react";
 import moment from "moment";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-const months = [
-    {
-        key: 1,
-        label: "Tháng 1",
-    },
-    {
-        key: 2,
-        label: "Tháng 2",
-    },
-    {
-        key: 3,
-        label: "Tháng 3",
-    },
-    {
-        key: 4,
-        label: "Tháng 4",
-    },
-    {
-        key: 5,
-        label: "Tháng 5",
-    },
-    {
-        key: 6,
-        label: "Tháng 6",
-    },
-    {
-        key: 7,
-        label: "Tháng 7",
-    },
-    {
-        key: 8,
-        label: "Tháng 8",
-    },
-    {
-        key: 9,
-        label: "Tháng 9",
-    },
-    {
-        key: 10,
-        label: "Tháng 10",
-    },
-    {
-        key: 11,
-        label: "Tháng 11",
-    },
-    {
-        key: 12,
-        label: "Tháng 12",
-    },
-];
+import useSWR from "swr";
+import { fields, sorts, years } from "../constants";
+import "./garage.style.scss";
 
-const years = [
-    {
-        key: 2024,
-        label: 2024,
-    },
-    {
-        key: 2023,
-        label: 2023,
-    },
-    {
-        key: 2022,
-        label: 2022,
-    },
-    {
-        key: 2021,
-        label: 2021,
-    },
-    {
-        key: 2020,
-        label: 2020,
-    },
-    {
-        key: 2019,
-        label: 2019,
-    },
-    {
-        key: 2018,
-        label: 2018,
-    },
-];
 export default function GarageManageList() {
+    const [selectedYear, setSelectedYear] = useState([
+        new Date().getFullYear(),
+    ]);
+    const [status, setStatus] = useState([]);
+    const [fieldName, setFieldName] = useState(["name"]);
+    const [sort, setSort] = useState(["asc"]);
     const {
         isLoading,
         data: tableData,
         mutate: refetch,
-    } = useSWR("table", () => getAcceptRequireGarage());
+    } = useSWR("table", () =>
+        getAcceptRequireGarage(
+            status[0],
+            fieldName[0],
+            sort[0],
+            selectedYear[0],
+        ),
+    );
     const navigate = useNavigate();
+    useEffect(() => {
+        if (tableData) refetch();
+    }, [status, fieldName, sort, selectedYear]);
     if (!isLoading)
         return (
             <div style={{ display: "flex", gap: 10, flexDirection: "column" }}>
                 <div style={{ display: "flex", gap: 10 }}>
-                    <Dropdown classNames={{ content: "min-w-[10rem]" }}>
-                        <DropdownTrigger>
-                            <Button variant="bordered">
-                                Tháng 10{" "}
-                                <FontAwesomeIcon icon={faChevronDown} />
-                            </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu
-                            aria-label="Dynamic Actions"
-                            items={months}
-                        >
-                            {(months) => (
-                                <DropdownItem key={months.key}>
-                                    {months.label}
-                                </DropdownItem>
-                            )}
-                        </DropdownMenu>
-                    </Dropdown>
-
-                    <Dropdown classNames={{ content: "min-w-[5rem]" }}>
-                        <DropdownTrigger>
-                            <Button variant="bordered">
-                                Năm 2024{" "}
-                                <FontAwesomeIcon icon={faChevronDown} />
-                            </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu
-                            aria-label="Dynamic Actions"
-                            items={years}
-                        >
-                            {(years) => (
-                                <DropdownItem key={years.key}>
-                                    {years.label}
-                                </DropdownItem>
-                            )}
-                        </DropdownMenu>
-                    </Dropdown>
+                    <Select
+                        label="Chọn chế độ lọc"
+                        selectedKeys={sort}
+                        classNames={{ base: "max-w-[10rem]" }}
+                        onChange={(e) => {
+                            setSort([e.target.value]);
+                        }}
+                    >
+                        {sorts.map((sorting) => (
+                            <SelectItem key={sorting.key}>
+                                {sorting.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                    <Select
+                        label="Chọn trường lọc"
+                        selectedKeys={fieldName}
+                        classNames={{ base: "max-w-[10rem]" }}
+                        onChange={(e) => {
+                            setFieldName([e.target.value]);
+                        }}
+                    >
+                        {fields.map((field) => (
+                            <SelectItem key={field.key}>
+                                {field.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                    <Select
+                        label="Chọn năm"
+                        selectedKeys={selectedYear}
+                        classNames={{ base: "max-w-[10rem]" }}
+                        onChange={(e) => {
+                            setSelectedYear([Number(e.target.value)]);
+                        }}
+                    >
+                        {years.map((year) => (
+                            <SelectItem key={year.key}>{year.label}</SelectItem>
+                        ))}
+                    </Select>
                 </div>
 
                 <div>
@@ -156,7 +92,7 @@ export default function GarageManageList() {
                         isStriped
                         aria-label="Example static collection table"
                         classNames={{
-                            base: "max-h-[35rem] overflow-auto no-scrollbar",
+                            base: "scroll-table overflow-auto no-scrollbar",
                         }}
                     >
                         <TableHeader>
@@ -178,12 +114,13 @@ export default function GarageManageList() {
                         </TableHeader>
                         <TableBody
                             items={tableData?.data}
-                            className="overflow-auto h-[40rem]"
+                            className="overflow-auto max-h-[calc(100vh - 9.5rem)]"
                         >
                             {(row) => (
                                 <TableRow key={row._id}>
                                     <TableCell>{row.name}</TableCell>
                                     <TableCell>
+                                        {/* @ts-expect-error displayName */}
                                         {row.userId?.displayName}
                                     </TableCell>
                                     <TableCell>{row.status}</TableCell>
@@ -194,7 +131,7 @@ export default function GarageManageList() {
                                     </TableCell>
                                     <TableCell className="text-center flex justify-center">
                                         <Button
-                                            color="success"
+                                            color="primary"
                                             radius="sm"
                                             className="text-white"
                                             onClick={() => {

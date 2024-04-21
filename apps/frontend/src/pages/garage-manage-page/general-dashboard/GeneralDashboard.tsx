@@ -12,11 +12,10 @@ function GeneralDashboard() {
     const { garageId } = useParams();
     const userData = useAppSelector((state) => state.user);
 
-
-    const { data: generalData } = useSWR("generalData", () =>
-        getDashboardInfo(garageId,userData.token),
+    const { data: generalData } = useSWR(
+        userData.token ? "generalData" : null,
+        () => getDashboardInfo(garageId, userData.token),
     );
-
 
     return (
         <div className="grid grid-cols-12 gap-5 h-full">
