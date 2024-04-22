@@ -17,7 +17,7 @@ const ProgressButton = ({
     isProvideEvaluation: boolean;
     setOnAccept: (str: string) => void;
 }) => {
-    if (status == -2) return;
+    if (status <= -2) return;
     if (status === -1)
         return (
             <div className="p-4 flex flex-col gap-6 items-end">

@@ -170,6 +170,8 @@ function Evaluation({
                             delay: 2000,
                         }),
                     );
+
+                refetch();
             }
         } catch (error) {
             dispatch(

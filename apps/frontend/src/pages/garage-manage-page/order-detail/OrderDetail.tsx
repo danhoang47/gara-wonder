@@ -40,7 +40,7 @@ function OrderDetail() {
                 <div className="p-10 h-full overflow-auto ">
                     <div className="flex gap-2 items-center">
                         <p className="text-3xl font-bold">Chi tiết đơn hàng</p>
-                        {(order?.status as number) === -2 && (
+                        {(order?.status as number) <= -2 && (
                             <Chip color="danger" radius="sm" size="lg">
                                 <p className="font-medium">Đã hủy</p>
                             </Chip>
