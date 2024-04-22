@@ -1,4 +1,5 @@
 import { getDashboardInfo } from "@/api";
+import { useAppSelector } from "@/core/hooks";
 import { faCar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tab, Tabs } from "@nextui-org/react";
@@ -6,17 +7,13 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { mutate } from "swr";
 
-function GeneralInfo({
-    garageId,
-    token,
-}: {
-    garageId?: string;
-    token?: string;
-}) {
+function GeneralInfo({ garageId }: { garageId?: string }) {
     const [selectType, setSelectType] = useState<string>("today");
+    const userData = useAppSelector((state) => state.user);
 
-    const { data: generalData } = useSWR("tabData", () =>
-        getDashboardInfo(garageId, token, selectType),
+    const { data: generalData } = useSWR(
+        userData.token ? "tabData" : null,
+        () => getDashboardInfo(garageId, userData.token, selectType),
     );
     useEffect(() => {
         mutate("tabData"); // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -14,7 +14,7 @@ export type DashboardInfoType = {
 export default async function getDashboardInfo(
     id: string | undefined,
     token?: string,
-    type?: string,
+    type: string = "today",
 ) {
     try {
         const result = await axios.get<Response<DashboardInfoType>>(
