@@ -48,6 +48,7 @@ const roomSlice = createSlice({
             const payload = action.payload;
             const roomId = payload.roomId;
             const roomEntry = state.rooms.entities[roomId];
+
             if (roomEntry) {
                 messagesAdapter.upsertMany(
                     roomEntry.messages,
@@ -60,6 +61,12 @@ const roomSlice = createSlice({
             const roomId = payload.roomId;
             const roomEntry = state.rooms.entities[roomId];
             if (roomEntry) {
+                roomsAdapter.updateOne(state.rooms, {
+                    id: roomEntry.roomId,
+                    changes: {
+                        hasRead: false,
+                    },
+                });
                 roomEntry.messages = messagesAdapter.upsertOne(
                     roomEntry.messages,
                     payload,
@@ -88,9 +95,9 @@ const roomSlice = createSlice({
             roomEntry.isTyping = payload.isTyping;
         },
         markRoomAsRead: (state, action: PayloadAction<RoomEntry>) => {
-            const room = action.payload
-            roomsAdapter.upsertOne(state.rooms, room)
-        }
+            const room = action.payload;
+            roomsAdapter.upsertOne(state.rooms, room);
+        },
     },
     extraReducers(builder) {
         builder
@@ -288,14 +295,23 @@ export const selectMessages = createSelector(
 );
 
 export const hasAllMessageRead = (state: AppState) => {
-    return selectRooms(state).some(({ hasRead }) => hasRead)
-}
+    const rooms = selectRooms(state);
 
-export const { receivedMessages, receivedMessage, receivedTyping, roomReset } =
-    roomSlice.actions;
+    if (rooms.length === 0) {
+        return true;
+    }
+
+    return rooms.every(({ hasRead }) => hasRead);
+};
 
 export const {
-    selectById: selectRoomById
-} = roomsAdapter.getSelectors()
+    receivedMessages,
+    receivedMessage,
+    receivedTyping,
+    roomReset,
+    markRoomAsRead,
+} = roomSlice.actions;
+
+export const { selectById: selectRoomById } = roomsAdapter.getSelectors();
 
 export default roomSlice.reducer;

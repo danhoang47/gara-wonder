@@ -1,26 +1,29 @@
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
-import { ContainerProps, Message } from "@/core/types";
-import { useEffect, useState } from "react";
+import { ContainerProps, Message, Response, Room } from "@/core/types";
+import { useEffect, useMemo, useState } from "react";
 import {
+    RoomEntry,
     getListRooms,
+    markRoomAsRead,
     receivedMessage,
     receivedTyping,
-    selectRoomById,
     selectRooms,
 } from "./rooms.slice";
 import { socket } from "@/components/socket";
-import { useLocation } from "react-router-dom";
+import { useMatch } from "react-router-dom";
 
 function MessageListener({ children }: ContainerProps) {
     const user = useAppSelector((state) => state.user.value);
     const dispatch = useAppDispatch();
     const rooms = useAppSelector((state) => selectRooms(state));
     const [isConnected, setIsConnected] = useState<boolean>(false);
-    const location = useLocation();
-    // TODO: need to implement
-    // const currentRoom = useAppSelector((state) =>
-    //     selectRoomById(state.rooms.rooms, roomId || ""),
-    // );
+    const match = useMatch("/chat/:roomId");
+    const roomId = match?.params.roomId;
+    const currentRoom = useMemo(() => {
+        if (!roomId) return undefined;
+
+        return rooms.find((room) => room.roomId === roomId);
+    }, [rooms, roomId]);
 
     useEffect(() => {
         function onConnect() {
@@ -38,13 +41,22 @@ function MessageListener({ children }: ContainerProps) {
         };
 
         const markRoomAsReadSocket = () => {
-            socket.emit("room:read", {});
+            socket.emit(
+                "room:read",
+                {
+                    _id: currentRoom?._id,
+                    roomId: currentRoom?.roomId,
+                } as Partial<Room>,
+                (res: Response<RoomEntry>) => {
+                    dispatch(markRoomAsRead(res.data));
+                },
+            );
         };
 
         const receivedMessageSocket = (message: Message) => {
-            // TODO: need to implement
             dispatch(receivedMessage(message));
             if (roomId && message.roomId === roomId) {
+                markRoomAsReadSocket();
             }
         };
 

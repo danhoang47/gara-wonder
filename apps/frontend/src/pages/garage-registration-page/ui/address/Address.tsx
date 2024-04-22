@@ -86,7 +86,6 @@ function Address() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedAddress]);
 
-    console.log(hasFocus)
     return (
         <RegistrationSection
             header={"Địa chỉ"}
