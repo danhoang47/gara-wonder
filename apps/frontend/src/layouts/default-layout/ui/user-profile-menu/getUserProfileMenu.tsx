@@ -21,7 +21,9 @@ const getUserProfileMenu = (
                 options: [
                     {
                         key: "k1",
-                        component: <SignInTrigger />,
+                        component: (
+                            <SignInTrigger className="py-2 px-3 w-full block" />
+                        ),
                         title: "Sign in",
                     },
                 ],
@@ -33,7 +35,7 @@ const getUserProfileMenu = (
                         component: (
                             <Link
                                 to={`supplier-registration`}
-                                className="text-foreground text-small"
+                                className="text-foreground text-small py-2 px-3 w-full block"
                                 onClick={(e) => {
                                     if (!isLogin) {
                                         openMenu();
@@ -52,7 +54,7 @@ const getUserProfileMenu = (
                         component: (
                             <Link
                                 to="/garage-registration"
-                                className="text-foreground text-small"
+                                className="text-foreground text-small py-2 px-3 w-full block"
                                 onClick={(e) => {
                                     if (!isLogin) {
                                         openMenu();
@@ -68,7 +70,7 @@ const getUserProfileMenu = (
                     },
                     {
                         key: "k5",
-                        component: <p>Giúp đỡ</p>,
+                        component: <p className="py-2 px-3 w-full block">Giúp đỡ</p>,
                         title: "Help Center",
                     },
                 ],
@@ -84,7 +86,7 @@ const getUserProfileMenu = (
                     component: (
                         <Link
                             to={`/garages/${garageId}/management`}
-                            className="text-foreground text-small"
+                            className="text-foreground text-small py-2 px-3 w-full block"
                         >
                             Quản lý Garage
                         </Link>
@@ -102,7 +104,7 @@ const getUserProfileMenu = (
                     component: (
                         <Link
                             to={`/products/${garageId}/management`}
-                            className="text-foreground text-small"
+                            className="text-foreground text-small py-2 px-3 w-full block"
                         >
                             Quản lý Kho hàng
                         </Link>
@@ -120,7 +122,7 @@ const getUserProfileMenu = (
                     component: (
                         <Link
                             to={`garage-registration`}
-                            className="text-foreground text-small"
+                            className="text-foreground text-small py-2 px-3 w-full block"
                             onClick={(e) => {
                                 if (!isLogin) {
                                     openMenu();
@@ -146,7 +148,7 @@ const getUserProfileMenu = (
                     component: (
                         <Link
                             to={`supplier-registration`}
-                            className="text-foreground text-small"
+                            className="text-foreground text-small py-2 px-3 w-full block"
                             onClick={(e) => {
                                 if (!isLogin) {
                                     openMenu();
@@ -171,7 +173,7 @@ const getUserProfileMenu = (
                     component: (
                         <Link
                             to={`/account`}
-                            className="text-foreground text-small"
+                            className="text-foreground text-small py-2 px-3 w-full block"
                         >
                             Cài đặt tài khoản
                         </Link>
@@ -180,7 +182,7 @@ const getUserProfileMenu = (
                 },
                 {
                     key: "k2",
-                    component: <SignOutTrigger />,
+                    component: <SignOutTrigger className="py-2 px-3 w-full"/>,
                     title: "Sign out",
                 },
             ],

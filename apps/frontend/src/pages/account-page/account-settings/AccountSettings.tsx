@@ -8,6 +8,9 @@ import { LoadingContext } from "@/core/contexts/loading";
 import { Link } from "react-router-dom";
 import { FetchStatus } from "@/core/types";
 
+import "./AccountSettings.styles.scss"
+import { SignOutTrigger } from "@/features/user";
+
 export default function AccountSettings() {
     const user = useAppSelector((state) => state.user.value);
     const status = useAppSelector((state) => state.user.status);
@@ -21,26 +24,24 @@ export default function AccountSettings() {
     }, [status, load, unload]);
 
     return (
-        <div className="w-full max-w-[1024px] mx-auto px-10">
+        <div className="w-full max-w-[1024px] mx-auto px-10 accountSettings">
             <div className="py-14">
                 <p className="font-bold text-[28px]">Tài khoản,</p>
                 <p className="text-lg">
                     <span className="font-semibold">{user?.displayName}</span>,{" "}
                     {user?.email}.{" "}
-                    <span className="font-semibold underline">
-                        Truy cập hồ sơ
-                    </span>
+                    <SignOutTrigger className="inline-block font-semibold underline cursor-pointer"/>
                 </p>
             </div>
-            <div className="grid grid-cols-12 gap-3">
+            <div className="accountSettingEntranceCards">
                 {accountMenus.map((item: AccountMenuType, index) => (
                     <Link
                         key={index}
                         to={item.to}
-                        className="col-span-4 hover:opacity-60 transition-opacity"
+                        className="hover:opacity-60 transition-opacity"
                     >
                         <Card className="px-6 py-8">
-                            <CardBody className="text-left p-0 ">
+                            <CardBody className="text-left p-0 h-full">
                                 <div className="h-8 mb-6 font-bold">
                                     <FontAwesomeIcon
                                         //@ts-expect-error unmatch type string error
@@ -48,7 +49,6 @@ export default function AccountSettings() {
                                         className="h-8"
                                     />
                                 </div>
-
                                 <p className="font-semibold text-xl">
                                     {item.title}
                                 </p>

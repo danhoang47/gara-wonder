@@ -28,7 +28,7 @@ function Garages() {
     const { garages, fetchingStatus, isReload, onNext, onUpdateGarage } =
         useGarages(viewMode);
     const changeViewModeButtonLabel =
-        viewMode === "grid" ? "Bản đồ" : "Danh sách";
+        viewMode === "grid" ? "Hiện bản đồ" : "Hiện danh sách";
     const changeViewModeButtonIcon =
         viewMode === "grid" ? faMapLocationDot : faList;
 
@@ -65,6 +65,7 @@ function Garages() {
     };
 
     useEffect(() => {
+        document.title = "Tìm kiếm garage - Garawonder"
         requestLocationPermission();
     }, []);
 
@@ -72,7 +73,7 @@ function Garages() {
         <div className="garages flex-1 px-10">
             {renderGarages()}
             <Button
-                className="changeViewModeButton fixed bottom-4 left-1/2 -translate-x-1/2 bg-black z-10 shadow-sm"
+                className="changeViewModeButton fixed left-1/2 -translate-x-1/2 bg-black z-10 shadow-sm p-6"
                 endContent={
                     <FontAwesomeIcon
                         icon={changeViewModeButtonIcon}
@@ -83,6 +84,7 @@ function Garages() {
                     onViewModeChange(viewMode === "grid" ? "map" : "grid")
                 }
                 variant="solid"
+                radius="full"
             >
                 <span className="font-medium text-white">
                     {changeViewModeButtonLabel}

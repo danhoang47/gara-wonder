@@ -60,26 +60,30 @@ function GarageOwnerAndStaffInfoPreview({
                         })}
                     </AvatarGroup>
                 </div>
-                <div>
-                    <p className="text-sm text-gray-500">Nhân viên</p>
-                    <p className="font-medium text-black">
-                        {staff?.slice(0, 3).map((user, index) => {
-                            if (index == 0)
-                                return (
-                                    <span key={index}>{user.displayName}</span>
-                                );
-                            else {
-                                return (
-                                    <span key={index}>
-                                        , {user.displayName}
-                                    </span>
-                                );
-                            }
-                        })}
-                        {(staff?.length as number) > 3 &&
-                            ` và thêm ${(staff?.length as number) - 3}`}
-                    </p>
-                </div>
+                {Boolean(staff?.length) && (
+                    <div>
+                        <p className="text-sm text-gray-500">Nhân viên</p>
+                        <p className="font-medium text-black">
+                            {staff?.slice(0, 3).map((user, index) => {
+                                if (index == 0)
+                                    return (
+                                        <span key={index}>
+                                            {user.displayName}
+                                        </span>
+                                    );
+                                else {
+                                    return (
+                                        <span key={index}>
+                                            , {user.displayName}
+                                        </span>
+                                    );
+                                }
+                            })}
+                            {(staff?.length as number) > 3 &&
+                                ` và thêm ${(staff?.length as number) - 3}`}
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     );

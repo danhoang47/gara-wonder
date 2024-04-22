@@ -44,7 +44,7 @@ const ChatPage = () => {
     }, [selectedRoom]);
 
     return (
-        <div className="grid grid-cols-6 h-[calc(100vh-81px)] max-[840px]:h-[calc(100vh-142px)]">
+        <div className="grid grid-cols-6 h-[calc(100vh-81px)] max-[840px]:h-[calc(100vh-145px)]">
             <Rooms
                 rooms={rooms}
                 selectedRoom={selectedRoom}

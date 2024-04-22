@@ -10,7 +10,7 @@ export type HeaderProps = StylableProps & {
     middleContent?: React.ReactNode;
 };
 
-const garageRegex = new RegExp(/^\/garages\/[a-zA-Z0-9]*$/)
+const garageRegex = new RegExp(/^\/garages\/[a-zA-Z0-9]*$/);
 
 function Header({
     leftContent,
@@ -20,7 +20,7 @@ function Header({
 }: HeaderProps) {
     const location = useLocation();
     const isLandingPage = location.pathname === "/";
-    const isGaragePage = garageRegex.test(location.pathname)
+    const isGaragePage = garageRegex.test(location.pathname);
     const isAccountPage = location.pathname.includes("/account-settings");
     const isGarageManagementPage = location.pathname.includes("/management");
 
@@ -36,8 +36,9 @@ function Header({
                 className={clsx(
                     "h-20 flex justify-between gap-2 relative",
                     className,
-                    (isGaragePage || isAccountPage) ?
-                        "w-full max-w-[1024px] mx-auto px-0" : "px-10",
+                    isGaragePage || isAccountPage
+                        ? "garageHeader w-full max-w-[1024px] mx-auto px-0"
+                        : "px-10",
                     isGarageManagementPage && "max-w-full",
                 )}
             >

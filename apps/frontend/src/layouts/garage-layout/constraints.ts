@@ -8,7 +8,7 @@ export const navList: navType[] = [
     { title: "Tổng quan", link: "" },
     { title: "Lịch", link: "schedule" },
     { title: "Đơn sửa chữa", link: "orders" },
-    { title: "Tin nhắn", link: "message" },
+    { title: "Tin nhắn", link: "/chat" },
     {
         title: "Chi tiết",
         link: "",

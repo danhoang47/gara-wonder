@@ -26,4 +26,5 @@ export type Room = Model & {
     isTyping?: boolean;
     type: RoomType;
     attachEntityId: string;
+    hasRead?: boolean 
 };

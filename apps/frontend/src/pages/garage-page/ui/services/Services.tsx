@@ -19,7 +19,7 @@ function Services() {
     return (
         <div>
             <div className="pb-4">
-                <p className="text-xl text-black font-semibold">Dịch vụ</p>
+                <p className="text-xl text-black font-bold">Dịch vụ</p>
                 <p className="text-sm text-zinc-500">
                     Tất cả dịch vụ Garage này có
                 </p>

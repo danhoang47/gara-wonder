@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/core/hooks";
+import { useAppSelector, useAuthLoading } from "@/core/hooks";
 import { FetchStatus } from "@/core/types";
 import { selectRooms } from "@/features/chat/rooms.slice";
 import { useEffect, useState } from "react";
@@ -16,14 +16,21 @@ const ChatPageWrapper = () => {
     const [isMounted, setMounted] = useState<boolean>(false);
     const { roomId } = useParams();
 
+    useAuthLoading(ChatPageWrapper.name)
+
+    useEffect(() => {
+        document.title = "Tin nhắn";
+    }, []);
+
     useEffect(() => {
         if (roomId) return;
 
-        if (
-            fetchingStatus === FetchStatus.Fulfilled &&
-            rooms.length !== 0 &&
-            !isMounted
-        ) {
+        console.log(
+            fetchingStatus === FetchStatus.Fulfilled,
+            rooms.length,
+            !isMounted,
+        );
+        if (fetchingStatus === FetchStatus.Fulfilled && rooms.length !== 0) {
             navigate(`${rooms[0]?._id}`);
         }
     }, [fetchingStatus, navigate, rooms, roomId, isMounted]);

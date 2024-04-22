@@ -5,15 +5,22 @@ import {
     getListRooms,
     receivedMessage,
     receivedTyping,
+    selectRoomById,
     selectRooms,
 } from "./rooms.slice";
 import { socket } from "@/components/socket";
+import { useLocation } from "react-router-dom";
 
 function MessageListener({ children }: ContainerProps) {
     const user = useAppSelector((state) => state.user.value);
     const dispatch = useAppDispatch();
     const rooms = useAppSelector((state) => selectRooms(state));
     const [isConnected, setIsConnected] = useState<boolean>(false);
+    const location = useLocation();
+    // TODO: need to implement
+    // const currentRoom = useAppSelector((state) =>
+    //     selectRoomById(state.rooms.rooms, roomId || ""),
+    // );
 
     useEffect(() => {
         function onConnect() {
@@ -30,8 +37,15 @@ function MessageListener({ children }: ContainerProps) {
             });
         };
 
+        const markRoomAsReadSocket = () => {
+            socket.emit("room:read", {});
+        };
+
         const receivedMessageSocket = (message: Message) => {
+            // TODO: need to implement
             dispatch(receivedMessage(message));
+            if (roomId && message.roomId === roomId) {
+            }
         };
 
         const receivedTypingSocket = (response: {

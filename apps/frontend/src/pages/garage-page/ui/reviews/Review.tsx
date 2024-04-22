@@ -20,7 +20,7 @@ export default function Review() {
     return (
         <div>
             <div className="py-4">
-                <p className="text-2xl text-black font-semibold">
+                <p className="text-xl text-black font-bold">
                     {reviewList?.length} Đánh giá
                 </p>
                 <div className="review-grid pt-9">

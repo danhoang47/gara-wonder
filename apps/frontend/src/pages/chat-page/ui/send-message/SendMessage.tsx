@@ -101,10 +101,16 @@ const SendMessage = ({
     const emitTyping = useDebouncedValue(room, content);
 
     const onServiceSelected = (service: WithCategoryService) => {
-        const isExist = selectedServices.some(
+        const isExist = selectedServices.find(
             (selectedService) => service._id === selectedService._id,
         );
-        if (isExist) return;
+        if (isExist) {
+            setSelectedServices((prev) =>
+                prev.filter(({ _id }) => _id !== service._id),
+            );
+            return;
+        }
+
         setSelectedServices((prev) => [...prev, service]);
     };
 
@@ -201,13 +207,18 @@ const SendMessage = ({
             </div>
 
             <div className="flex items-center gap-4">
-                <div className="cursor-pointer">
-                    <FontAwesomeIcon icon={faImage} size="lg" color="#0070f0" />
+                <div className="cursor-pointer text-default-300 hover:text-primary">
+                    <FontAwesomeIcon
+                        icon={faImage}
+                        size="lg"
+                        className="transition-colors"
+                    />
                 </div>
                 {garageId === room.entityId && (
                     <ServicesSuggestion
                         garageId={garageId}
                         onServiceSelected={onServiceSelected}
+                        selectedServices={selectedServices}
                     />
                 )}
                 <Textarea
@@ -249,7 +260,7 @@ const SendMessage = ({
                     }}
                 />
                 <div
-                    className="cursor-pointer"
+                    className="cursor-pointer text-default-300 hover:text-primary "
                     onClick={(e) => {
                         if (replyMessage?._id) {
                             handleSubmit(e, replyMessage);
@@ -261,7 +272,7 @@ const SendMessage = ({
                     <FontAwesomeIcon
                         icon={faPaperPlane}
                         size="lg"
-                        color="#0070f0"
+                        className="transition-colors"
                     />
                 </div>
             </div>

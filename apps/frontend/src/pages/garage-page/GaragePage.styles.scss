@@ -1,0 +1,15 @@
+
+#garage {
+    @media screen and (max-width: 1024px) {
+        padding: 0 16px
+    }
+    @media screen and (min-width: 1025px) {
+        padding: 0 16px
+    }
+
+    .garageContent {
+        @media screen and (max-width: 840px) {
+            flex-direction: column;
+        }
+    }
+}

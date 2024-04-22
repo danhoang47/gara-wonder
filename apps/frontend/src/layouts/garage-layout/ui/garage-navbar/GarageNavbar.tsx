@@ -74,7 +74,7 @@ function GarageNavbar() {
                                             navigate(`./${sub.link}`)
                                         }
                                     >
-                                        <p className="py-1 text-small cursor-pointer text-default-400 hover:text-default-600 min-w-40">
+                                        <p className="py-1 px-2 text-small cursor-pointer hover:text-default-600 min-w-40">
                                             {sub.title}
                                         </p>
                                     </DropdownItem>

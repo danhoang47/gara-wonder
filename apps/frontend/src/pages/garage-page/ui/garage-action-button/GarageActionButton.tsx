@@ -25,12 +25,12 @@ function GarageActionButton() {
     const rooms = useAppSelector((state) => selectRooms(state));
 
     return (
-        <div className="flex">
+        <div className="flex gap-4 actionButtons">
             <Button
                 size="md"
                 variant="light"
                 className={clsx(
-                    "cursor-pointer",
+                    "cursor-pointer px-0 data-[hover=true]:bg-transparent",
                     user.garageId === garageId && "hidden",
                 )}
                 onPress={async () => {
@@ -70,7 +70,7 @@ function GarageActionButton() {
                 size="md"
                 variant="light"
                 className={clsx(
-                    "cursor-pointer",
+                    "cursor-pointer px-0 data-[hover=true]:bg-transparent",
                     user.garageId === garageId && "hidden",
                 )}
                 startContent={
@@ -90,7 +90,7 @@ function GarageActionButton() {
                 size="md"
                 variant="light"
                 className={clsx(
-                    "cursor-pointer",
+                    "cursor-pointer px-0 data-[hover=true]:bg-transparent",
                     user.garageId === garageId && "hidden",
                 )}
                 startContent={

@@ -1,8 +1,10 @@
 import { GarageActionButton } from "..";
 
+import "./GarageHeader.styles.scss"
+
 function GarageHeader({ name, address }: { name?: string; address?: string }) {
     return (
-        <div className="flex justify-between items-center ">
+        <div className="flex garageHeader">
             <div>
                 <span className="text-xs font-medium">522 Đã xem</span>
                 <div className="flex gap-2 items-center">

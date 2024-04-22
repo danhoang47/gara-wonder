@@ -25,6 +25,10 @@ const GarageManagePage = () => {
         }
     }, [navigate, open, user, status]);
 
+    useEffect(() => {
+        document.title = "Quản lý Garage"
+    }, [])
+
     return (
         <div
             id="garageManagement"
