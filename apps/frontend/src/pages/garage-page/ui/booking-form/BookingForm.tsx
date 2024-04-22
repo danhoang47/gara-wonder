@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react";
 import BrandInput from "./brand-input";
 import ServiceSelect from "./service-select";
-import SelectInput from "./select-input";
+import SelectInput from "./date-input";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useOrderContext } from "../../hooks";
@@ -11,6 +11,11 @@ import { createPortal } from "react-dom";
 import { Overlay } from "@/core/ui";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
+import useSWR from "swr";
+import { getScheduleSlot } from "@/api";
+import moment from "moment";
+import clsx from "clsx";
+import { DisabledDate } from "@/core/ui/calendar/Calendar";
 
 function BookingForm() {
     const { garageId } = useParams();
@@ -30,6 +35,36 @@ function BookingForm() {
         () => user?.garageId === garageId,
         [user?.garageId, garageId],
     );
+    const { isLoading, data: schedule } = useSWR(
+        `${garageId}/schedule`,
+        () =>
+            getScheduleSlot(garageId, {
+                startTime: moment().startOf("day").toDate().getTime(),
+                endTime: moment()
+                    .startOf("day")
+                    .add(1, "years")
+                    .toDate()
+                    .getTime(),
+            }),
+        {
+            refreshInterval: 30000, 
+            revalidateOnFocus: false,
+            refreshWhenHidden: true,
+        },
+    );
+    const disabledDates = useMemo(() => {
+        if (!schedule) return []
+
+        return Object.keys(schedule).reduce((acc, dateKey) => {
+            const config = schedule[dateKey]
+
+            if (config.disabled || config.actualSlot === config.maximumSlot) {
+                return [...acc, Number.parseInt(dateKey)]
+            }
+
+            return acc
+        }, [] as DisabledDate[])
+    }, [schedule])
 
     const onBookPress = () => {
         navigate("/book", {
@@ -81,13 +116,13 @@ function BookingForm() {
 
     return (
         <div
-            className="px-5 py-8 border-zinc-200 border-2 rounded-md"
+            className={clsx("px-5 py-8 border-zinc-200 border-2 rounded-md")}
             ref={formRef}
         >
             <div className="flex flex-col gap-6 ">
                 <p className="font-bold text-xl leading-5">Đặt dịch vụ</p>
                 <div className="flex flex-col gap-3 relative">
-                    <SelectInput />
+                    <SelectInput disabledDates={disabledDates}/>
                     <BrandInput />
                     <ServiceSelect />
                 </div>
