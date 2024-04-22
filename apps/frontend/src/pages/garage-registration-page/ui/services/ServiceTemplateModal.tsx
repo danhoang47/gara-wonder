@@ -32,6 +32,16 @@ export type ServiceTemplateModalProps = {
     selectedCategoryIds: string[];
 };
 
+const initialValue: Partial<Service> = {
+    _id: nanoid(),
+    highestPrice: 10000000,
+    lowestPrice: 100000,
+    estimationType: EstimateType.Exact,
+    estimateDuration: undefined,
+    brandIds: "all",
+    categoryId: undefined,
+};
+
 export default function ServiceTemplateModal({
     isOpen,
     categories,
@@ -44,15 +54,7 @@ export default function ServiceTemplateModal({
     service = undefined,
     selectedCategoryIds,
 }: ServiceTemplateModalProps) {
-    const [localService, setLocalService] = useState<Partial<Service>>({
-        _id: nanoid(),
-        highestPrice: 10000000,
-        lowestPrice: 100000,
-        estimationType: EstimateType.Exact,
-        estimateDuration: undefined,
-        brandIds: "all",
-        categoryId: undefined,
-    });
+    const [localService, setLocalService] = useState<Partial<Service>>({});
     const { categoryId, brandIds } = localService;
     const isSaveButtonDisabled = useMemo<boolean>(
         () => !categoryId || !brandIds || brandIds.length === 0,
@@ -65,11 +67,7 @@ export default function ServiceTemplateModal({
         if (type === "edit" && service) {
             setLocalService(service);
         } else {
-            setLocalService({
-                _id: nanoid(),
-                highestPrice: 10000000,
-                lowestPrice: 100000,
-            });
+            setLocalService(initialValue);
         }
     }, [type, service, isOpen]);
 
@@ -170,6 +168,7 @@ export default function ServiceTemplateModal({
                                 createdAt: 0,
                                 updatedAt: 0,
                                 name: "Tất cả",
+                                series: [],
                             },
                             ...(brands || []),
                         ]}

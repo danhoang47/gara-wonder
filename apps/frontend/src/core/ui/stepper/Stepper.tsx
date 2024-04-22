@@ -71,7 +71,7 @@ function Stepper({
                     disabled={!allowKeyboard}
                     className={clsx(`outline-none text-center`)}
                     style={{
-                        width: value?.toString().length + "ch"
+                        width: (value ? value?.toString().length : defaultValue?.toString().length) + "ch"
                     }}
                     onChange={(event) => {
                         if (!isNumber(event.target.value)) return;
