@@ -19,12 +19,20 @@ export const sorts = [
         label: "Trên xuống",
     },
 ];
+
 export const statusList = [
     { key: 0, label: "Đợi chấp nhận" },
     { key: 1, label: "Đã chấp nhận" },
     { key: 2, label: "Từ chối" },
     { key: 3, label: "Vô hiệu hóa" },
     { key: 4, label: "Cấm" },
+];
+
+export const orderStatusList = [
+    { key: "pending", label: "Đợi chấp nhận" },
+    { key: "accepted", label: "Đã chấp nhận" },
+    { key: "canceled", label: "Bị hủy" },
+    { key: "paid", label: "Đã thanh toán" },
 ];
 
 export const getStatusLabel = (numb: number) => {

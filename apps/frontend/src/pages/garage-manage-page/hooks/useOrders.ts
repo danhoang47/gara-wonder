@@ -9,7 +9,7 @@ const DEFAULT_PAGING: Paging = {
     limit: 5,
 };
 
-export default function useOrders() {
+export default function useOrders(status: string[], sort: string[]) {
     const [orders, setOrders] = useState<OrderListType[]>([]);
     const { garageId } = useParams();
     const getKey = useCallback(() => {
@@ -23,21 +23,26 @@ export default function useOrders() {
             setOrders([...orders, ...order]);
         }
     };
+    // const fetchFunc = useCallback(async (paging) => {}, [status, sort]);
+    // console.log(status, sort);
     const { isReload, isLoading, onNext } = useAsyncList<OrderListType>(
         getKey,
         onOrderLoaded,
-        [garageId],
+        [garageId, status, sort],
         async (params) => {
             const paging = params[1];
             const results = await getOrders(
                 garageId,
                 paging.limit,
                 paging?.nextCursor,
+                status[0],
+                sort[0],
             );
             return results;
         },
         DEFAULT_PAGING,
     );
+    console.log(isReload);
 
     return { orders, isReload, isLoading, onNext };
 }

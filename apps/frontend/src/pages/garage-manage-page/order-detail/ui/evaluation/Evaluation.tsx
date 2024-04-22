@@ -268,7 +268,7 @@ function Evaluation({
                 status={status}
                 isProvideEvaluation={isHaveEvaluation}
             />
-            {(status as number) < 3 && (
+            {(status as number) < 3 && (status as number) > -2 && (
                 <div className="w-full h-1 border-t-2" />
             )}
             <ProgressButton

@@ -26,9 +26,11 @@ export default async function getOrders(
     id: string | undefined,
     limit: number | undefined,
     cursor: string | undefined | null,
+    status: string = "",
+    sort: string = "asc",
 ) {
     try {
-        let queryParams: string = `/${id}/management/orders?sort=asc&`;
+        let queryParams: string = `/${id}/management/orders?sort=${sort}&`;
 
         if (limit) {
             queryParams += `limit=${limit}`;
@@ -36,6 +38,7 @@ export default async function getOrders(
         if (cursor) {
             queryParams += `&cursor=${cursor}`;
         }
+        if (status != "") queryParams += `&status=${status}`;
         if (queryParams.length !== 0) {
             queryParams = queryParams.slice(1);
         }
