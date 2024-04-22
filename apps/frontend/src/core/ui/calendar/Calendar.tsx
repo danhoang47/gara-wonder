@@ -48,15 +48,15 @@ export type CalendarProps = {
 const checkIfDateDisabled = (date: Date, disabledDates?: DisabledDate[]) => {
     if (!disabledDates) return true;
 
-    for (const disabledDate of disabledDates) {
-        const startOfDate = moment(new Date(date)).startOf("day");
+    const startOfDate = moment(new Date(date)).startOf("day");
 
+    for (const disabledDate of disabledDates) {
         if (
             typeof disabledDate === "string" ||
             typeof disabledDate === "number" ||
             disabledDate instanceof Date
         ) {
-            const startOfDisabledDate = moment(new Date(disabledDate)).startOf(
+            const startOfDisabledDate = moment(disabledDate).startOf(
                 "day",
             );
 

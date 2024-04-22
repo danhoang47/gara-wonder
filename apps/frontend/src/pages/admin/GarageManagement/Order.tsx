@@ -28,9 +28,8 @@ const Order: React.FC = () => {
                     top: "10px",
                 }}
             >
-                <DateRangePicker label="Stay duration" className="max-w-xs" />
+                <DateRangePicker className="max-w-xs h-10" />
                 <Select
-                    label="Chọn trạng thái"
                     selectedKeys={status}
                     classNames={{ base: "max-w-[10rem]" }}
                     onChange={(e) => {
@@ -45,7 +44,6 @@ const Order: React.FC = () => {
                 </Select>
 
                 <Select
-                    label="Chọn chế độ lọc"
                     selectedKeys={sort}
                     classNames={{ base: "max-w-[10rem]" }}
                     onChange={(e) => {
