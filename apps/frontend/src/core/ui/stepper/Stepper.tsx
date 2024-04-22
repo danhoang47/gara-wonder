@@ -32,14 +32,17 @@ function Stepper({
     allowKeyboard = false,
     size = "sm",
     step = 1,
-    endContent
+    endContent,
 }: StepperProps) {
     const buttonProps: ButtonProps = useMemo(
         () => ({
             isIconOnly: true,
             radius: "full",
             variant: "bordered",
-            className: clsx(classNames?.button, "border text-default-500 hover:text-foreground hover:border-black"),
+            className: clsx(
+                classNames?.button,
+                "border text-default-500 hover:text-foreground hover:border-black",
+            ),
             size: size,
         }),
         [classNames?.button, size],
@@ -71,7 +74,10 @@ function Stepper({
                     disabled={!allowKeyboard}
                     className={clsx(`outline-none text-center`)}
                     style={{
-                        width: (value ? value?.toString().length : defaultValue?.toString().length) + "ch"
+                        width:
+                            (value !== undefined
+                                ? value?.toString().length
+                                : defaultValue?.toString().length) + "ch",
                     }}
                     onChange={(event) => {
                         if (!isNumber(event.target.value)) return;

@@ -94,9 +94,8 @@ function SignInForm({
                     <Input
                         autoFocus
                         classNames={{
-                            base: "data-[focus=true]:outline-none",
                             inputWrapper: clsx(
-                                "bg-white border rounded-b-lg",
+                                "bg-white border rounded-b-lg group-data-[focus-visible=true]:ring-0",
                                 shouldShowInputError && "border-danger",
                             ),
                         }}
