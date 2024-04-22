@@ -17,14 +17,20 @@ import { auth } from "@/components/firebase";
 import clsx from "clsx";
 
 export type SignInModalProps = {
-    phoneNumber?: string,
+    phoneNumber?: string;
     onPhoneNumberChange: (value: string) => void;
     onClose: () => void;
     onSave?: () => void;
     isLoading: boolean;
 };
 
-function SignInForm({ onClose, phoneNumber, onPhoneNumberChange, onSave, isLoading }: SignInModalProps) {
+function SignInForm({
+    onClose,
+    phoneNumber,
+    onPhoneNumberChange,
+    onSave,
+    isLoading,
+}: SignInModalProps) {
     const dispatch = useAppDispatch();
     const [hasInputFocus, setInputFocus] = useState<boolean>(true);
     const isPhoneNumberValid = useMemo(
@@ -56,8 +62,8 @@ function SignInForm({ onClose, phoneNumber, onPhoneNumberChange, onSave, isLoadi
     }, [signInButtonId]);
 
     useEffect(() => {
-        onPhoneNumberChange("")
-    }, [])
+        onPhoneNumberChange("");
+    }, []);
 
     return (
         <>
@@ -86,7 +92,9 @@ function SignInForm({ onClose, phoneNumber, onPhoneNumberChange, onSave, isLoadi
                         isReadOnly
                     />
                     <Input
+                        autoFocus
                         classNames={{
+                            base: "data-[focus=true]:outline-none",
                             inputWrapper: clsx(
                                 "bg-white border rounded-b-lg",
                                 shouldShowInputError && "border-danger",
@@ -104,6 +112,11 @@ function SignInForm({ onClose, phoneNumber, onPhoneNumberChange, onSave, isLoadi
                             shouldShowInputError &&
                             "Vui lòng nhập đúng số điện thoại"
                         }
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter" && isPhoneNumberValid) {
+                                onSave && onSave();
+                            }
+                        }}
                     />
                 </div>
                 <Button
@@ -119,7 +132,7 @@ function SignInForm({ onClose, phoneNumber, onPhoneNumberChange, onSave, isLoadi
                 <Divider className="my-4" />
                 <div className="flex flex-col gap-2">
                     <GoogleSignInButton onSuccess={onClose} onError={onError} />
-                    <FBSignInButton/>
+                    <FBSignInButton />
                 </div>
             </ModalBody>
         </>

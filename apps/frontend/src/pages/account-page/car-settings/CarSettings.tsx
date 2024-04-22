@@ -6,7 +6,7 @@ import useSWRImmutable from "swr/immutable";
 
 import { getBrands } from "@/api";
 import { Car, FetchStatus, PersonalCar } from "@/core/types";
-import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { useAppDispatch, useAppSelector, useAuthLoading } from "@/core/hooks";
 import CarCard from "./CarCard";
 import CarTemplateModal from "./CarTemplateModal";
 import { createCars, removeCar, updateCar } from "@/features/user/user.slice";
@@ -22,6 +22,7 @@ function CarSettings() {
         getBrands,
     );
     const [selectedCar, setSelectedCar] = useState<Partial<PersonalCar>>({});
+    useAuthLoading(CarSettings.name)
 
     const onModalClose = () => {
         setSelectedCar({});

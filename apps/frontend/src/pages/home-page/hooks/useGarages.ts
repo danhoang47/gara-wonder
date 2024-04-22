@@ -34,7 +34,7 @@ const keys: (keyof GarageQueryParams)[] = [
 ];
 
 const useDeserializeGarageParams = (): GarageQueryParams => {
-    const token = useAppSelector((state) => state.user.token);
+    const _id = useAppSelector((state) => state.user.value?._id);
     const { filterParams } = useFilterParams();
     const [searchParams] = useSearchParams();
     const params = keys.reduce((acc, key) => {
@@ -53,9 +53,9 @@ const useDeserializeGarageParams = (): GarageQueryParams => {
         () => ({
             ...filterParams,
             ...params,
-            token
+            _id,
         }),
-        [filterParams, params, token],
+        [filterParams, params, _id],
     );
 
     return memoizedParams;
@@ -80,7 +80,7 @@ export default function useGarages(viewMode: ViewMode) {
     useEffect(() => {
         if (!isSameQueryParams) {
             dispatch(reloadGarages());
-            setCursor(undefined)
+            setCursor(undefined);
         }
     }, [dispatch, isSameQueryParams]);
 
@@ -98,6 +98,7 @@ export default function useGarages(viewMode: ViewMode) {
 
     useEffect(() => {
         if (status === FetchStatus.Fulfilled) {
+            console.log("FETCH GARAGES")
             dispatch(getListGarages({ ...queryParams, cursor }));
         }
     }, [status, JSON.stringify(queryParams), cursor]);
@@ -111,14 +112,16 @@ export default function useGarages(viewMode: ViewMode) {
     };
 
     const onUpdateGarage = (updatedGarage: WithOwnerGarage) => {
-        setGarages(prev => prev.map(garage => {
-            if (garage._id === updatedGarage._id) {
-                return updatedGarage
-            }
+        setGarages((prev) =>
+            prev.map((garage) => {
+                if (garage._id === updatedGarage._id) {
+                    return updatedGarage;
+                }
 
-            return garage
-        }))
-    }
+                return garage;
+            }),
+        );
+    };
 
     return { garages, fetchingStatus, isReload, onNext, onUpdateGarage };
 }

@@ -14,7 +14,7 @@ function AdditionalServices({
     return (
         <div>
             <div className="pb-4">
-                <p className="text-xl text-black font-semibold">
+                <p className="text-xl text-black font-bold">
                     Dịch vụ đi kèm
                 </p>
             </div>

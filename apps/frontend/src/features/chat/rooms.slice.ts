@@ -4,6 +4,7 @@ import {
     createSlice,
     createSelector,
     EntityState,
+    PayloadAction,
 } from "@reduxjs/toolkit";
 import {
     MessageWithServices,
@@ -86,6 +87,10 @@ const roomSlice = createSlice({
             const roomEntry = state.rooms.entities[roomId];
             roomEntry.isTyping = payload.isTyping;
         },
+        markRoomAsRead: (state, action: PayloadAction<RoomEntry>) => {
+            const room = action.payload
+            roomsAdapter.upsertOne(state.rooms, room)
+        }
     },
     extraReducers(builder) {
         builder
@@ -282,7 +287,15 @@ export const selectMessages = createSelector(
     },
 );
 
+export const hasAllMessageRead = (state: AppState) => {
+    return selectRooms(state).some(({ hasRead }) => hasRead)
+}
+
 export const { receivedMessages, receivedMessage, receivedTyping, roomReset } =
     roomSlice.actions;
+
+export const {
+    selectById: selectRoomById
+} = roomsAdapter.getSelectors()
 
 export default roomSlice.reducer;

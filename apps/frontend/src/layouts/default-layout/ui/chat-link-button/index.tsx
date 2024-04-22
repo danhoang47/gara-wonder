@@ -1,27 +1,37 @@
-import { useAppSelector, useModalContext } from "@/core/hooks";
-import { faComment } from "@fortawesome/free-regular-svg-icons";
+import { Link, Tooltip, Badge } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, Tooltip } from "@nextui-org/react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { faComment } from "@fortawesome/free-regular-svg-icons";
+
+import { useAppSelector, useModalContext } from "@/core/hooks";
+import { hasAllMessageRead } from "@/features/chat/rooms.slice";
 
 function ChatLinkButton() {
     const user = useAppSelector((state) => state.user.value);
-    const status = useAppSelector((state) => state.user.status);
+    const hasAllRead = useAppSelector(hasAllMessageRead);
     const { open } = useModalContext();
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        
-    }, [user, open, navigate]);
+    const onNavigateToChatButtonClick = (event: React.MouseEvent) => {
+        if (!user) {
+            open("signIn");
+            event.preventDefault();
+        }
+    };
 
     return (
         <Tooltip content="Tin nhắn">
             <Link
                 href="/chat"
-                className="bg-white w-10 h-10 flex justify-center items-center"
+                className="bg-white w-10 h-10 flex justify-center items-center rounded-full"
+                onClick={onNavigateToChatButtonClick}
             >
-                <FontAwesomeIcon icon={faComment} color="#000" />
+                <Badge
+                    content=""
+                    placement="bottom-right"
+                    color="primary"
+                    isInvisible={hasAllRead}
+                >
+                    <FontAwesomeIcon icon={faComment} color="#000" />
+                </Badge>
             </Link>
         </Tooltip>
     );

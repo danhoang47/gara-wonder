@@ -15,7 +15,13 @@ import {
     faReply,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, Button, Link, Spinner, Tooltip } from "@nextui-org/react";
+import {
+    Avatar,
+    Button,
+    Link,
+    Spinner,
+    Tooltip,
+} from "@nextui-org/react";
 import { ObjectId } from "bson";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
@@ -76,7 +82,6 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
 
                 if (i === data.length - 1) {
                     previousIndex = i;
-                    console.log(previousIndex);
                 }
             }
 
@@ -238,16 +243,21 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                             <Button
                                                                                 disableRipple
                                                                                 onClick={() => {
-                                                                                    handleSelectedService(
-                                                                                        service._id as string,
-                                                                                    );
+                                                                                    if (
+                                                                                        userId ===
+                                                                                        room.userId
+                                                                                    ) {
+                                                                                        handleSelectedService(
+                                                                                            service._id as string,
+                                                                                        );
+                                                                                    }
                                                                                 }}
                                                                                 className={clsx(
                                                                                     "w-full text- cursor-pointer bg-background",
                                                                                     selectedServices.includes(
                                                                                         service._id as string,
                                                                                     ) &&
-                                                                                        "bg-primary-400 text-white",
+                                                                                        "bg-primary-200 text-white",
                                                                                 )}
                                                                             >
                                                                                 <div className="flex w-full items-center shadow-sm rounded-md p-2 justify-center gap-2">
@@ -263,24 +273,27 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                         </div>
                                                                     ),
                                                                 )}
-                                                                {selectedServices.length >
-                                                                    0 && (
-                                                                    <Link
-                                                                        href={`/garages/${
-                                                                            room.entityId
-                                                                        }?sg=${selectedServices.join()}`}
-                                                                        className={clsx(
-                                                                            "w-full text- cursor-pointer  mt-2",
-                                                                        )}
-                                                                    >
-                                                                        <div className="flex w-full items-center rounded-md p-2 justify-center gap-2">
-                                                                            <p className="font-medium text-xs hover:text-primary">
-                                                                                Đặt
-                                                                                ngay
-                                                                            </p>
-                                                                        </div>
-                                                                    </Link>
-                                                                )}
+                                                                {Boolean(
+                                                                    selectedServices.length,
+                                                                ) &&
+                                                                    userId ===
+                                                                        room.userId && (
+                                                                        <Link
+                                                                            href={`/garages/${
+                                                                                room.entityId
+                                                                            }?sg=${selectedServices.join()}`}
+                                                                            className={clsx(
+                                                                                "w-full text- cursor-pointer  mt-2",
+                                                                            )}
+                                                                        >
+                                                                            <div className="flex w-full items-center rounded-md p-2 justify-center gap-2">
+                                                                                <p className="font-medium text-xs hover:text-primary">
+                                                                                    Đặt
+                                                                                    ngay
+                                                                                </p>
+                                                                            </div>
+                                                                        </Link>
+                                                                    )}
                                                             </div>
                                                         </div>
                                                     )}

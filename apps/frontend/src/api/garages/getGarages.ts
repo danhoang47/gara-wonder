@@ -1,3 +1,4 @@
+import { auth } from "@/components/firebase";
 import { baseGaragesUrl } from ".";
 import { Garage, GarageQueryParams, Response, User } from "@/core/types";
 
@@ -13,8 +14,9 @@ export type WithOwnerGarage = Omit<Garage, "userId"> & {
 export default async function getGarages(
     queryParams?: GarageQueryParams,
 ): Promise<Response<WithOwnerGarage[]>> {
-    const authHeader: HeadersInit = queryParams?.token
-        ? { Authorization: `Bearer ${queryParams.token}` }
+    const token = await auth.currentUser?.getIdToken();
+    const authHeader: HeadersInit = token
+        ? { Authorization: `Bearer ${token}` }
         : {};
     const cloned = {
         ...queryParams,

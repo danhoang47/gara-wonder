@@ -24,6 +24,6 @@ export default [
         key: "4",
         title: "Tài khoản",
         icon: faUser,
-        path: "/account/settings"
+        path: "/account"
     }
 ]

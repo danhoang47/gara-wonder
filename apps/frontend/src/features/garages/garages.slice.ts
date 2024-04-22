@@ -26,6 +26,7 @@ const garagesSlice = createSlice({
     reducers: {
         reloadGarages(state) {
             state.isReload = true
+            state.garages = []
         },
         unloadGarages(state) {
             state.isReload = false

@@ -1,6 +1,7 @@
 import { useModalContext } from "@/core/hooks";
+import { StylableProps } from "@/core/types";
 
-function SignInTrigger() {
+function SignInTrigger({ className }: StylableProps) {
     const { open } = useModalContext();
 
     return (
@@ -8,6 +9,7 @@ function SignInTrigger() {
             onClick={() => {
                 open("signIn");
             }}
+            className={className}
         >
             Đăng nhập
         </p>

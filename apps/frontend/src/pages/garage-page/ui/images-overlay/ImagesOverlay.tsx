@@ -25,7 +25,7 @@ function ImagesOverlay({
     return (
         <div
             className={clsx(
-                "absolute container z-50 bg-background min-w-full h-screen inset-0 overflow-y-scroll",
+                "absolute container z-50 bg-background min-w-full h-screen inset-0 overflow-y-scroll pb-4",
                 isOpen ? "block" : "hidden",
             )}
         >

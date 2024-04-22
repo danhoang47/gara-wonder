@@ -85,7 +85,7 @@ function BookingForm() {
             ref={formRef}
         >
             <div className="flex flex-col gap-6 ">
-                <p className="font-semibold text-xl leading-5">Đặt dịch vụ</p>
+                <p className="font-bold text-xl leading-5">Đặt dịch vụ</p>
                 <div className="flex flex-col gap-3 relative">
                     <SelectInput />
                     <BrandInput />

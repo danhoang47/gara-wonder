@@ -28,7 +28,7 @@ function MapWithLocation({ location }: MapWithLocationProps) {
 
     return (
         <div>
-            <h2 className="text-xl font-semibold mb-4">Vị trí trên bản đồ</h2>
+            <h2 className="text-xl font-bold mb-4">Vị trí trên bản đồ</h2>
             <div className="h-72">
                 <Map
                     key={center.lat+""+center.lng}

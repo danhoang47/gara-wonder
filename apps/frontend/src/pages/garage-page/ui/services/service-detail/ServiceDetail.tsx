@@ -14,6 +14,7 @@ import useSWRImmutable from "swr/immutable";
 import { getCategoryById } from "@/api";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
 import { Brand } from "@/core/types";
+import { formatCurrency } from "@/utils";
 
 export default function ServiceDetail({
     service,
@@ -29,8 +30,13 @@ export default function ServiceDetail({
     return (
         <>
             <div className="flex justify-between w-full items-center">
-                <div className="flex items-center gap-2">
-                    <img src={categoryData?.icon} alt="" />
+                <div className="flex items-center gap-4">
+                    <div className="min-w-8">
+                        <img
+                            src={categoryData?.icon}
+                            alt="Service Icon Image"
+                        />
+                    </div>
                     <CategoryDetail
                         service={service}
                         isCategoryLoading={isCategoryLoading}
@@ -42,16 +48,9 @@ export default function ServiceDetail({
                 </div>
 
                 <p className="font-semibold shrink-0">
-                    {String(service.lowestPrice as number).replace(
-                        /\B(?=(\d{3})+(?!\d))/g,
-                        ",",
-                    )}{" "}
-                    -{" "}
-                    {String(service.highestPrice as number).replace(
-                        /\B(?=(\d{3})+(?!\d))/g,
-                        ",",
-                    )}{" "}
-                    VND
+                    {formatCurrency(service.lowestPrice!, "standard")}
+                    <span className="mx-1">-</span>
+                    {formatCurrency(service.highestPrice!, "standard")}
                 </p>
             </div>
             <Modal

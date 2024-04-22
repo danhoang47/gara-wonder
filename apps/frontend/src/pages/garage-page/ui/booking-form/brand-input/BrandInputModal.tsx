@@ -99,14 +99,14 @@ function BrandInputModal({
             <p className="text-lg font-bold px-4 py-3 border-b">
                 Chọn xe của bạn
             </p>
-            <div className="p-4">
+            <div className="py-4">
                 <div className="flex flex-col gap-2 mb-4">
-                    <div>
+                    <div className="px-4">
                         <p className="font-medium text-small text-default-500">
                             Xe đã lưu
                         </p>
                     </div>
-                    <div>
+                    <div className="px-4 max-h-[152px] overflow-y-auto">
                         {personalCars?.map((car) => {
                             const isSelected = deepEqual(car, localCar);
 
@@ -130,7 +130,7 @@ function BrandInputModal({
                                         </span>
                                     }
                                     className={clsx(
-                                        "w-full relative h-auto py-3 gap-3 justify-between",
+                                        "w-full relative h-auto py-3 gap-3 justify-between mb-2",
                                         isSelected && "border-2 border-black",
                                     )}
                                     variant="bordered"
@@ -162,7 +162,7 @@ function BrandInputModal({
                         })}
                     </div>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 px-4">
                     <div>
                         <p className="font-medium text-small text-default-500">
                             Tạo mới xe
@@ -246,7 +246,7 @@ function BrandInputModal({
                         />
                     </div>
                 </div>
-                <div className="flex gap-2 pt-3 justify-end">
+                <div className="flex gap-2 pt-3 justify-end px-4">
                     <Button variant="light" onPress={onDismiss}>
                         <p className="text-default-400">Hủy</p>
                     </Button>

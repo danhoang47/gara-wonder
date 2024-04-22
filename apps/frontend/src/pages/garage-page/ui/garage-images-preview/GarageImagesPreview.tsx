@@ -60,6 +60,7 @@ function GarageImagesPreview({ backgroundImage }: { backgroundImage?: Image }) {
                                 }}
                             >
                                 <img
+                                    alt="garage images"
                                     src={img.url}
                                     className="w-full h-full object-cover"
                                 />

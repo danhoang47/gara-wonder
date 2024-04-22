@@ -18,6 +18,8 @@ import { getBasicGarageInfo } from "@/api";
 import OrderContextProvider from "./context/OrderContext";
 import Review from "./ui/reviews/Review";
 
+import "./GaragePage.styles.scss"
+
 const GaragePage = () => {
     const { garageId } = useParams();
     const { load, unload } = useContext(LoadingContext);
@@ -34,7 +36,7 @@ const GaragePage = () => {
     return (
         <OrderContextProvider>
             <Markup garage={basicInfo?.data[0]} />
-            <div id="garage" className="relative overflow-auto sm:px-4 pb-10">
+            <div id="garage" className="relative overflow-auto pb-10">
                 <div className="w-full max-w-[1024px] mx-auto mt-4">
                     <div className="">
                         <GarageHeader
@@ -50,7 +52,7 @@ const GaragePage = () => {
                         />
                     </div>
                     <div className="my-6">
-                        <div className="w-full flex gap-4 justify-between">
+                        <div className="w-full flex gap-4 justify-between garageContent">
                             <div className="flex flex-col gap-4 flex-1">
                                 <div className="border-b-1 pb-8 border-zinc-300">
                                     <GarageOwnerAndStaffInfoPreview
@@ -71,7 +73,7 @@ const GaragePage = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="w-full shrink-0 min-w-[25rem] md:max-w-[35rem] md:w-2/5 md:order-2">
+                            <div className="w-full shrink-0 min-w-[25rem] md:w-2/5 md:order-2">
                                 <BookingForm />
                             </div>
                         </div>
