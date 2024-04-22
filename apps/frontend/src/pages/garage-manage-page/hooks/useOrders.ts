@@ -14,7 +14,7 @@ export default function useOrders(status: string[], sort: string[]) {
     const { garageId } = useParams();
     const getKey = useCallback(() => {
         if (!garageId) return null;
-        return "notifications/" + garageId;
+        return "orders/" + garageId;
     }, [garageId]);
     const onOrderLoaded = (order: OrderListType[], isReload: boolean) => {
         if (isReload) {
@@ -23,8 +23,8 @@ export default function useOrders(status: string[], sort: string[]) {
             setOrders([...orders, ...order]);
         }
     };
-    // const fetchFunc = useCallback(async (paging) => {}, [status, sort]);
-    // console.log(status, sort);
+
+    console.log(status, sort);
     const { isReload, isLoading, onNext } = useAsyncList<OrderListType>(
         getKey,
         onOrderLoaded,
@@ -42,7 +42,6 @@ export default function useOrders(status: string[], sort: string[]) {
         },
         DEFAULT_PAGING,
     );
-    console.log(isReload);
 
     return { orders, isReload, isLoading, onNext };
 }
