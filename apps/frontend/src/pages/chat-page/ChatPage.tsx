@@ -24,22 +24,22 @@ const ChatPage = () => {
 
     useEffect(() => {
         if (fetchingStatus === FetchStatus.Fulfilled && !selectedRoom) {
-            setSelectedRoom(rooms.find(({ _id }) => _id === roomId));
+            setSelectedRoom(rooms.find(room => room.roomId === roomId));
         }
 
         if (
             fetchingStatus === FetchStatus.Fulfilled &&
             fetchingStatusActivity === FetchStatus.Fulfilled
         ) {
-            setSelectedRoom(rooms.find(({ _id }) => _id === roomId));
+            setSelectedRoom(rooms.find(room => room.roomId === roomId));
         }
     }, [roomId, fetchingStatus, fetchingStatusActivity, rooms]);
 
     useEffect(() => {
         if (!selectedRoom) return;
 
-        if (selectedRoom._id !== roomId) {
-            navigate(`/chat/${selectedRoom._id}`);
+        if (selectedRoom.roomId !== roomId) {
+            navigate(`/chat/${selectedRoom.roomId}`);
         }
     }, [selectedRoom]);
 

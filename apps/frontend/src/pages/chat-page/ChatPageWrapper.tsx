@@ -31,7 +31,7 @@ const ChatPageWrapper = () => {
             !isMounted,
         );
         if (fetchingStatus === FetchStatus.Fulfilled && rooms.length !== 0) {
-            navigate(`${rooms[0]?._id}`);
+            navigate(`${rooms[0]?.roomId}`);
         }
     }, [fetchingStatus, navigate, rooms, roomId, isMounted]);
 

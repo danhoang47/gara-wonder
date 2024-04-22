@@ -3,9 +3,10 @@ import {
     useAppSelector,
     useInfiniteScroll,
 } from "@/core/hooks";
-import { Message } from "@/core/types";
+import { Message, Response } from "@/core/types";
 import {
     RoomEntry,
+    markRoomAsRead,
     selectMessages,
     trackingActivityStatus,
 } from "@/features/chat/rooms.slice";
@@ -30,6 +31,7 @@ import SendMessage from "../send-message";
 import useMessages from "./useMessages";
 import { MessageWithServices } from "@/api/chat";
 import AttachEntity from "../attach-entity";
+import { socket } from "@/components/socket";
 
 interface IDetailMessageProps {
     room: RoomEntry;
@@ -142,6 +144,15 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
             setSelectedServices((prev) => [...prev, serviceId]);
         }
     };
+
+    useEffect(() => {
+        socket.emit("room:read", {
+            _id: room._id,
+            roomId: room.roomId
+        }, (res: Response<RoomEntry>) => {
+            dispatch(markRoomAsRead(res.data))
+        })
+    }, [room.roomId, dispatch])
 
     /**
      * if authorId = userId => end

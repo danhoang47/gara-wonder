@@ -57,11 +57,11 @@ const Rooms = ({ rooms, onRoomSelected, selectedRoom }: IListUserProps) => {
                                     )}
                                 >
                                     {room.isTyping ? (
-                                        <div className="typing flex gap-0.5 bg-default-200 w-fit px-2.5 py-2 rounded-full">
+                                        <span className="typing flex gap-0.5 bg-default-200 w-fit px-2.5 py-2 rounded-full">
                                             <span></span>
                                             <span></span>
                                             <span></span>
-                                        </div>
+                                        </span>
                                     ) : (
                                         room?.latestMessage?.content
                                     )}
