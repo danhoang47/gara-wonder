@@ -73,7 +73,7 @@ function GeneralDashboard() {
             </div>
             <div className="col-span-8 overflow-auto h-full pt-[8.5rem]">
                 <div className="max-w-[40rem] h-full m-auto">
-                    <GeneralInfo garageId={garageId} token={userData.token} />
+                    <GeneralInfo garageId={garageId}  />
                     <UpdateGarage />
                 </div>
             </div>
