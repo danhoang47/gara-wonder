@@ -17,7 +17,7 @@ export default function useOrders(status: string[], sort: string[]) {
         return "orders/" + garageId;
     }, [garageId]);
     const onOrderLoaded = (order: OrderListType[], isReload: boolean) => {
-        if (isReload) {
+    if (isReload) {
             setOrders(order);
         } else {
             setOrders([...orders, ...order]);
