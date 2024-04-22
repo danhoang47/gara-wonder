@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import Lottie from "react-lottie";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -19,7 +19,6 @@ function PaymentPage() {
     const [urlSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const { load, unload } = useLoadingContext();
-    const [isSuccess, setIsSuccess] = useState<boolean>();
     const params = useMemo(() => {
         const orderId = urlSearchParams.get("orderId");
         const vnp_TxnRef = urlSearchParams.get("vnp_TxnRef");
@@ -33,20 +32,20 @@ function PaymentPage() {
             vnp_ResponseCode,
         };
     }, [urlSearchParams]);
+    const isSuccess = useMemo(() => params.vnp_ResponseCode === "00", [params])
     const isValidURL = useMemo(() => {
         return (
             Object.keys(params).length === 4 &&
             Object.values(params).every((v) => v)
         );
-    }, []);
+    }, [params]);
     const { isLoading, data } = useSWRImmutable(
-        params.vnp_ResponseCode !== "00" && params,
+        params.vnp_ResponseCode === "00" ? params : null,
         persistPayment,
     );
 
     useEffect(() => {
         if (!isValidURL) {
-            // navigate("/")
             unload("payment");
         }
     }, [isValidURL]);

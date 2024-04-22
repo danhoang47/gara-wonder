@@ -8,6 +8,7 @@ import {
     useEffect,
     useImperativeHandle,
     useMemo,
+    useRef,
     useState,
 } from "react";
 
@@ -26,7 +27,7 @@ export type OTPFormRef = {
 
 const DEFAULT_OTP_LENGTH = 6;
 const DEFAULT_TRY_AGAIN_TIME = 3;
-const DEFAULT_EXPIRED_TIME = 15000;
+const DEFAULT_EXPIRED_TIME = 20000;
 const otpInputs = Array.from(new Array(DEFAULT_OTP_LENGTH));
 const HIDDEN_SYMBOLS = "****";
 
@@ -48,6 +49,7 @@ const OTPForm = forwardRef<OTPFormRef, OTPFormProps>(
                 phoneNumber.length - 4,
             )}${HIDDEN_SYMBOLS}`;
         }, [phoneNumber]);
+        const digitWrapperRef = useRef<HTMLDivElement>(null)
 
         const onCodeChange = (event: React.FormEvent<HTMLDivElement>) => {
             const range = document.createRange();
@@ -95,6 +97,12 @@ const OTPForm = forwardRef<OTPFormRef, OTPFormProps>(
                 setOtpCode((prev) => prev.slice(0, prev.length - 1));
             }
         };
+
+        useEffect(() => {
+            if (digitWrapperRef.current) {
+                digitWrapperRef.current.focus()
+            }
+        }, [digitWrapperRef])
 
         useEffect(() => {
             if (otpCode.length === DEFAULT_OTP_LENGTH) {
@@ -164,9 +172,10 @@ const OTPForm = forwardRef<OTPFormRef, OTPFormProps>(
                 </div>
                 <div className="mt-16">
                     <div
+                        ref={digitWrapperRef}
                         className="flex gap-6 justify-center mb-6"
                         onInputCapture={onCodeChange}
-                        tabIndex={-1}
+                        tabIndex={0}
                         onKeyDown={onCodeRemove}
                         onFocusCapture={(event) => {
                             if (!hasFocus) {

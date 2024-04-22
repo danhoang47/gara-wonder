@@ -75,8 +75,7 @@ const userSlice = createSlice({
                 state.status = FetchStatus.Fulfilled;
                 state.value = action.payload;
             })
-            .addCase(getUserById.rejected, (state, action) => {
-                console.log(action.error);
+            .addCase(getUserById.rejected, (state) => {
                 state.status = FetchStatus.Rejected;
             })
             .addCase(getGarageByUserId.fulfilled, (state, action) => {

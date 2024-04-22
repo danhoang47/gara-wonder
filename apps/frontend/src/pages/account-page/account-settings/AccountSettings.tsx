@@ -27,11 +27,11 @@ export default function AccountSettings() {
         <div className="w-full max-w-[1024px] mx-auto px-10 accountSettings">
             <div className="py-14">
                 <p className="font-bold text-[28px]">Tài khoản,</p>
-                <p className="text-lg">
+                <div className="text-lg">
                     <span className="font-semibold">{user?.displayName}</span>,{" "}
                     {user?.email}.{" "}
                     <SignOutTrigger className="inline-block font-semibold underline cursor-pointer"/>
-                </p>
+                </div>
             </div>
             <div className="accountSettingEntranceCards">
                 {accountMenus.map((item: AccountMenuType, index) => (

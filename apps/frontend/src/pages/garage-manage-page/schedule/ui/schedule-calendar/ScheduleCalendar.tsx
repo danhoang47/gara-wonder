@@ -56,7 +56,7 @@ function ScheduleCalendar({
                         >
                             <FontAwesomeIcon icon={faAngleLeft} />
                         </Button>
-                        <h2 className="font-semibold text-2xl z-10">
+                        <h2 className="font-semibold text-2xl z-10 capitalize">
                             {moment(date).format("MMMM YYYY")}
                         </h2>
                         <Button

@@ -23,8 +23,6 @@ function SignOutTrigger({
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { load, unload } = useLoadingContext();
-
-    console.log(location.pathname)
     
     const onSignOutButtonClick = () => {
         load("signOut");
