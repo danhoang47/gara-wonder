@@ -3,7 +3,7 @@ import { Tabs, Tab, Card, CardBody, Chip, Button } from "@nextui-org/react";
 import Information from "./Information";
 import Order from "./Order";
 import Payment from "./Payment";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import { getBasicGarageInfo } from "@/api";
 import { LoadingContext } from "@/core/contexts/loading";
@@ -13,6 +13,7 @@ import { notify } from "@/features/toasts/toasts.slice";
 
 const GarageManagement: React.FC = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [status, setStatus] = useState(location.state.status);
     const { garageId } = useParams();
     const dispatch = useAppDispatch();
@@ -39,6 +40,7 @@ const GarageManagement: React.FC = () => {
                     }),
                 );
                 setStatus(value);
+                navigate(".", { state: { status: value } });
             }
         } catch (error) {
             dispatch(
