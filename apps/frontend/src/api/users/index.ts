@@ -41,7 +41,7 @@ export { default as getUserOrderById } from "./getUserOrderById";
 export { default as confirmEvaluation } from "./confirmEvaluation";
 export { default as updateUserProfile } from "./updateUserProfile";
 export { default as persistPayment } from "./persistPayment";
-export { default as CreatePayment } from "./payment";
+export { default as createPayment } from "./payment";
 export { default as cancelOrder } from "./cancelOrder";
 export { default as getUsers } from "./getUsers";
 export { default as getInvitations } from "./getInvitations";
@@ -49,4 +49,4 @@ export { default as addReview } from "./addReview";
 export { default as addPersonalCars } from "./addPersonalCars";
 export { default as removePersonalCars } from "./removePersonalCars";
 export { default as updatePersonalCars } from "./updatePersonalCars";
-export { default as acceptOrRejectInvitations } from './acceptOrRejectInvitations'
+export { default as acceptOrRejectInvitations } from "./acceptOrRejectInvitations";

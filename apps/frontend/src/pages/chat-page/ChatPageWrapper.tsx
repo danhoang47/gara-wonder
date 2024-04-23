@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+
 import { useAppSelector, useAuthLoading } from "@/core/hooks";
 import { FetchStatus } from "@/core/types";
 import { selectRooms } from "@/features/chat/rooms.slice";
-import { useEffect, useState } from "react";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { Rooms } from "./ui";
 import EmptySelectedRoom from "./ui/empty-selected-room";
 import { FullPageLoad } from "@/core/ui";
@@ -13,39 +14,43 @@ const ChatPageWrapper = () => {
         (state) => state.rooms.fetchingStatus,
     );
     const navigate = useNavigate();
-    const [isMounted, setMounted] = useState<boolean>(false);
     const { roomId } = useParams();
+    const [isPop, setPop] = useState<boolean>(false);
 
-    useAuthLoading(ChatPageWrapper.name)
+    useAuthLoading(ChatPageWrapper.name);
 
     useEffect(() => {
         document.title = "Tin nhắn";
     }, []);
 
     useEffect(() => {
-        if (roomId) return;
+        if (isPop) {
+            return;
+        }
 
-        if (fetchingStatus === FetchStatus.Fulfilled && rooms.length !== 0) {
+        if (
+            fetchingStatus === FetchStatus.Fulfilled &&
+            rooms.length !== 0 &&
+            !roomId
+        ) {
             navigate(`${rooms[0]?.roomId}`);
         }
-    }, [fetchingStatus, navigate, rooms, roomId, isMounted]);
+    }, [fetchingStatus, navigate, rooms, roomId, isPop]);
 
     useEffect(() => {
         const onPopstate = () => {
-            navigate(-1);
+            setPop(true);
+            if (rooms.length !== 0) {
+                navigate(-1);
+            }
         };
-        setMounted(true);
 
         addEventListener("popstate", onPopstate);
 
         return () => removeEventListener("popstate", onPopstate);
-    }, [navigate]);
+    }, [navigate, rooms.length]);
 
-    if (
-        fetchingStatus !== FetchStatus.Fulfilled &&
-        rooms.length === 0 &&
-        !isMounted
-    ) {
+    if (fetchingStatus === FetchStatus.Fetching && !isPop && !roomId) {
         return <FullPageLoad />;
     }
 

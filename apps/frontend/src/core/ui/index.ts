@@ -15,3 +15,4 @@ export { default as Chart } from "./chart";
 export { default as Table } from "./table";
 export { default as ReviewModal } from "./review-modal";
 export { default as EmailOrPhonePicker } from "./email-or-phone-picker";
+export { default as Switch } from "./switch";

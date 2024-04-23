@@ -43,7 +43,7 @@ function PaymentPage() {
     }, [params]);
     const { isLoading, data } = useSWRImmutable(
         params.vnp_ResponseCode === "00" ? params : null,
-        persistPayment,
+        () => persistPayment(params),
     );
 
     useEffect(() => {

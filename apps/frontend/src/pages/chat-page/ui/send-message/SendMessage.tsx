@@ -70,6 +70,7 @@ const SendMessage = ({
                 receivedMessage({
                     ...sendMessage,
                     _id: sendMessage._id.toString(),
+                    hasRead: true
                 }),
             );
 
@@ -189,9 +190,12 @@ const SendMessage = ({
 
                 {pasteImage?.length > 0 && (
                     <div className="flex gap-2 p-2 overflow-x-auto ">
-                        {pasteImage.map((item: File) => {
+                        {pasteImage.map((item: File, index) => {
                             return (
-                                <div className="w-[120px] h-[80px] shrink-0 relative">
+                                <div
+                                    className="w-[120px] h-[80px] shrink-0 relative"
+                                    key={index}
+                                >
                                     <ImagePreview
                                         file={item}
                                         onImageRemove={() => {
@@ -224,11 +228,11 @@ const SendMessage = ({
                         hidden
                         accept="image/*"
                         onChange={(event) => {
-                            const files = event.target.files
+                            const files = event.target.files;
                             if (files?.length) {
-                                setPasteImage((prev) => ([...prev, ...files]))
+                                setPasteImage((prev) => [...prev, ...files]);
                             }
-                            event.target.value = null as any
+                            event.target.value = null as any;
                         }}
                     />
                 </div>

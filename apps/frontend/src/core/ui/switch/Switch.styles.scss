@@ -1,0 +1,40 @@
+
+.switch {
+    width: 48px;
+    height: 28px;
+    border-radius: 999px;
+    background-color: #efefef;
+    display: block;
+    position: relative;
+    transition: background-color 0.15s linear;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 4px;
+        left: 4px;
+        transition: all 0.15s linear;
+        border-radius: 50%;
+        background-color: white;
+        cursor: pointer;
+    }
+
+    input:checked ~ & {
+        background-color: #006fee;
+
+        &::before {
+            transform: translateX(100%);
+        }
+    }
+
+    &.disabled {
+        opacity: 0.6;
+    }
+
+    &.readonly {
+        opacity: 0.6;
+    }
+}

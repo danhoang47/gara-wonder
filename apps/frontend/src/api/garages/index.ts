@@ -1,4 +1,41 @@
+import { auth } from "@/components/firebase";
+import axios, { HttpStatusCode } from "axios";
+
 export const baseGaragesUrl = `${import.meta.env.VITE_API_URL}/garage`;
+
+const garageInstance = axios.create({
+    baseURL: baseGaragesUrl,
+});
+
+garageInstance.interceptors.request.use(async (request) => {
+    const token = await auth.currentUser?.getIdToken();
+    request.headers.Authorization = "Bearer " + token;
+
+    return request;
+});
+
+garageInstance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const { config } = error;
+
+        if (!config || !config.retry) {
+            return Promise.reject(error);
+        }
+        config.retry -= 1;
+
+        if (error.response.status === HttpStatusCode.Unauthorized) {
+            const newToken = await auth.currentUser?.getIdToken(true);
+            config.headers["Authorization"] = "Bearer " + newToken;
+        }
+        const delayRetryRequest = new Promise<void>((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, config.retryDelay || 1000);
+        });
+        return delayRetryRequest.then(() => garageInstance(config));
+    },
+);
 
 export { default as initGarage } from "./initGarage";
 export { default as createGarage } from "./createGarage";
@@ -32,3 +69,9 @@ export { default as getInvitationsByGarageId } from "./getInvitationsByGarageId"
 export { default as createInvitations } from "./createInvitations";
 export { default as getGarageLiscense } from "./getGarageLiscense";
 export { default as updateGarageLiscene } from "./updateLiscene";
+
+export { default as getStaffs } from "./getStaffs";
+export { default as updateStaffs } from "./updateStaffs";
+export { default as removeStaffs } from "./removeStaffs";
+
+export default garageInstance;

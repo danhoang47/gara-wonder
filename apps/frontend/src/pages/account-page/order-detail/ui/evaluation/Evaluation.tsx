@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import { EvaluationModal, ProgressBar } from "./ui";
 import {
-    CreatePayment,
+    createPayment,
     addReview,
     cancelOrder,
     confirmEvaluation,
@@ -185,7 +185,7 @@ function Evaluation({
             }
         } else {
             try {
-                const result = await CreatePayment(
+                const result = await createPayment(
                     {
                         garageId: garageId,
                         orderId: orderId,
