@@ -1,5 +1,4 @@
 import axios, { HttpStatusCode } from "axios";
-import { EnhancedStore } from "@reduxjs/toolkit";
 import { auth } from "@/components/firebase";
 import { Message, Room, RoomType } from "@/core/types/model";
 import { Response, RetryConfig } from "@/core/types";

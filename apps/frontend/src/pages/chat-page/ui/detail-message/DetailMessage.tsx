@@ -16,14 +16,7 @@ import {
     faReply,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    Avatar,
-    Button,
-    Link,
-    Spinner,
-    Tooltip,
-} from "@nextui-org/react";
-import { ObjectId } from "bson";
+import { Avatar, Button, Link, Spinner, Tooltip } from "@nextui-org/react";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import MessageHeader from "../message-header";
@@ -40,9 +33,8 @@ interface IDetailMessageProps {
 
 export type PayloadMessage = Omit<
     Message,
-    "images" | "_id" | "updatedAt" | "replyFrom"
+    "images" | "updatedAt" | "replyFrom"
 > & {
-    _id: ObjectId;
     images: File[];
     replyFrom?: Message;
 };
@@ -57,16 +49,34 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
     );
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
+    const checkIfMessageSentFromEntity = (authorId: string = "") => {
+        if (authorId === userId && room.userId === userId) {
+            return true;
+        }
+        if (
+            authorId !== userId &&
+            room.userId !== authorId &&
+            room.entityId === garageId
+        ) {
+            return true;
+        }
+        if (authorId === userId) {
+            return true;
+        }
+
+        return false;
+    };
+
     const group = (data: Message[]) => {
         const newList: Message[][] = [];
         let previousIndex: number = 0;
+        let isLastIndexEvaluation: boolean = false;
 
         data.forEach(({ authorId }, index: number) => {
             if (
                 (previousIndex && index < previousIndex) ||
-                previousIndex === data.length - 1
-            )
-                return;
+                isLastIndexEvaluation
+            ) return;
 
             const isAuthorUser = authorId === room.userId;
             const grp = [];
@@ -77,16 +87,18 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                     (!isAuthorUser && data[i].authorId !== room.userId)
                 ) {
                     grp.push(data[i]);
+                    isLastIndexEvaluation = true;
                 } else {
                     previousIndex = i;
+                    isLastIndexEvaluation = false;
                     break;
                 }
-
                 if (i === data.length - 1) {
                     previousIndex = i;
                 }
             }
 
+            if (index === data.length - 1) console.log("GRP", grp)
             newList.push(grp);
         });
         return newList;
@@ -146,36 +158,17 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
     };
 
     useEffect(() => {
-        socket.emit("room:read", {
-            _id: room._id,
-            roomId: room.roomId
-        }, (res: Response<RoomEntry>) => {
-            dispatch(markRoomAsRead(res.data))
-        })
-    }, [room.roomId, dispatch])
-
-    /**
-     * if authorId = userId => end
-     * else
-     *      if room.entityId = garageId => end
-     */
-    const checkIfMessageSentFromEntity = (authorId: string = "") => {
-        if (authorId === userId && room.userId === userId) {
-            return true;
-        }
-        if (
-            authorId !== userId &&
-            room.userId !== authorId &&
-            room.entityId === garageId
-        ) {
-            return true;
-        }
-        if (authorId === userId) {
-            return true;
-        }
-
-        return false;
-    };
+        socket.emit(
+            "room:read",
+            {
+                _id: room._id,
+                roomId: room.roomId,
+            },
+            (res: Response<RoomEntry>) => {
+                dispatch(markRoomAsRead(res.data));
+            },
+        );
+    }, [room.roomId, room._id, dispatch]);
 
     return room ? (
         <div className="flex flex-col col-span-4 overflow-hidden h-full">
@@ -220,10 +213,12 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                             <div
                                                 key={item2._id}
                                                 className={clsx(
+                                                    "flex flex-col gap-0.5",
                                                     checkIfMessageSentFromEntity(
                                                         item2.authorId,
-                                                    ) &&
-                                                        "self-end flex flex-col",
+                                                    )
+                                                        ? "self-end"
+                                                        : "self-start",
                                                 )}
                                             >
                                                 {item2.services &&
@@ -308,6 +303,31 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                             </div>
                                                         </div>
                                                     )}
+                                                <div
+                                                    className={clsx(
+                                                        "flex gap-0.5 w-full",
+                                                        checkIfMessageSentFromEntity(
+                                                            item2.authorId,
+                                                        ) && "self-end",
+                                                    )}
+                                                >
+                                                    {item2?.images?.map(
+                                                        (image) => (
+                                                            <div
+                                                                key={image._id}
+                                                                className="flex items-center justify-center"
+                                                            >
+                                                                <img
+                                                                    src={
+                                                                        image.url
+                                                                    }
+                                                                    alt=""
+                                                                    className="max-h-24 max-w-20 object-contain"
+                                                                />
+                                                            </div>
+                                                        ),
+                                                    )}
+                                                </div>
                                                 <Tooltip
                                                     content={
                                                         <div className="cursor-pointer flex gap-3 text-primary">
@@ -342,7 +362,14 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                     }
                                                 >
                                                     {item2?.content && (
-                                                        <span className="inline-block w-fit self-end">
+                                                        <div
+                                                            className={clsx(
+                                                                "inline-block w-fit",
+                                                                checkIfMessageSentFromEntity(
+                                                                    item2.authorId,
+                                                                ) && "self-end",
+                                                            )}
+                                                        >
                                                             {item2?.replyFrom
                                                                 ?._id && (
                                                                 <div
@@ -393,7 +420,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                                     )}
                                                                 </div>
                                                             )}
-                                                        </span>
+                                                        </div>
                                                     )}
                                                 </Tooltip>
                                                 {item2.isLoading && (

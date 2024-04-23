@@ -1,6 +1,6 @@
-import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { useAppDispatch, useAppSelector, usePrevious } from "@/core/hooks";
 import { ContainerProps, Message, Response, Room } from "@/core/types";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import {
     RoomEntry,
     getListRooms,
@@ -11,12 +11,16 @@ import {
 } from "./rooms.slice";
 import { socket } from "@/components/socket";
 import { useMatch } from "react-router-dom";
+import deepEqual from "deep-equal";
 
 function MessageListener({ children }: ContainerProps) {
     const user = useAppSelector((state) => state.user.value);
     const dispatch = useAppDispatch();
     const rooms = useAppSelector((state) => selectRooms(state));
-    const [isConnected, setIsConnected] = useState<boolean>(false);
+    const previousRooms = usePrevious(rooms);
+    const hasAnyRoomNew = useMemo(() => {
+        return !deepEqual(previousRooms, rooms);
+    }, [previousRooms, rooms]);
     const match = useMatch("/chat/:roomId");
     const roomId = match?.params.roomId;
     const currentRoom = useMemo(() => {
@@ -26,20 +30,20 @@ function MessageListener({ children }: ContainerProps) {
     }, [rooms, roomId]);
 
     useEffect(() => {
-        function onConnect() {
-            setIsConnected(true);
-        }
-
-        socket.on("connect", onConnect);
-    }, [user?._id]);
-
-    useEffect(() => {
         const joinRooms = () => {
             rooms.forEach((room) => {
-                socket.emit("room:join", room);
+                if (!previousRooms?.find(({ _id }) => room._id === _id)) {
+                    socket.emit("room:join", room);
+                }
             });
         };
 
+        if (rooms.length !== 0 || hasAnyRoomNew) {
+            joinRooms();
+        }
+    }, [hasAnyRoomNew, dispatch]);
+
+    useEffect(() => {
         const markRoomAsReadSocket = () => {
             socket.emit(
                 "room:read",
@@ -48,6 +52,7 @@ function MessageListener({ children }: ContainerProps) {
                     roomId: currentRoom?.roomId,
                 } as Partial<Room>,
                 (res: Response<RoomEntry>) => {
+                    console.log(res)
                     dispatch(markRoomAsRead(res.data));
                 },
             );
@@ -55,7 +60,7 @@ function MessageListener({ children }: ContainerProps) {
 
         const receivedMessageSocket = (message: Message) => {
             dispatch(receivedMessage(message));
-            if (roomId && message.roomId === roomId) {
+            if (roomId && message.roomId === roomId && currentRoom) {
                 markRoomAsReadSocket();
             }
         };
@@ -67,13 +72,10 @@ function MessageListener({ children }: ContainerProps) {
             dispatch(receivedTyping(response));
         };
 
-        if (isConnected && rooms.length !== 0) {
-            joinRooms();
-            socket.on("room:receive_message", receivedMessageSocket);
-            socket.on("room:receive_update_message", receivedMessageSocket);
-            socket.on("room:receive_typing", receivedTypingSocket);
-            socket.on("room:receive_idle", receivedTypingSocket);
-        }
+        socket.on("room:receive_message", receivedMessageSocket);
+        socket.on("room:receive_update_message", receivedMessageSocket);
+        socket.on("room:receive_typing", receivedTypingSocket);
+        socket.on("room:receive_idle", receivedTypingSocket);
 
         return () => {
             socket.off("room:receive_message", receivedMessageSocket);
@@ -81,7 +83,7 @@ function MessageListener({ children }: ContainerProps) {
             socket.off("room:receive_typing", receivedTypingSocket);
             socket.off("room:receive_idle", receivedTypingSocket);
         };
-    }, [rooms, isConnected, dispatch]);
+    }, [dispatch, currentRoom, roomId]);
 
     useEffect(() => {
         if (user) {

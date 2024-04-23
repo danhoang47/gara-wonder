@@ -21,6 +21,7 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
     const [hoveredGarageId, setHoveredGarageId] = useState<string>();
     const [defaultCenter, setDefaultCenter] =
         useState<google.maps.LatLngLiteral>();
+    const [openedGarageId, setOpenedGarageId] = useState<string>();
 
     const onCenterChange = debounce(
         (lat: number | undefined, lng: number | undefined) => {
@@ -58,7 +59,6 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
                 (position) => {
                     const { coords } = position;
                     const { latitude, longitude } = coords;
-                    console.log(latitude, longitude)
 
                     setDefaultCenter({
                         lat: latitude,
@@ -74,6 +74,14 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
             );
         }
     }, []);
+
+    const onGarageMarkerClick = (garageId: string) => {
+        if (openedGarageId !== garageId) {
+            setOpenedGarageId(garageId)
+        } else {
+            setOpenedGarageId(undefined)
+        }
+    }
 
     return (
         <div className="h-[calc(100vh-177px)] -mx-10 flex relative overflow-y-hidden">
@@ -125,6 +133,8 @@ export default function MapViewGarages(props: ViewModeGaragesProps) {
                             garage={garage}
                             onUpdateGarage={onUpdateGarage}
                             isHovered={hoveredGarageId === garage._id}
+                            isOpenGarageCard={openedGarageId === garage._id}
+                            onClick={onGarageMarkerClick}
                         />
                     ))}
                 </Map>

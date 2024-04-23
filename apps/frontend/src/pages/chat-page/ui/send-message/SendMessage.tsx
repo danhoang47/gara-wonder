@@ -2,7 +2,7 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 import {
     faImage,
@@ -38,6 +38,7 @@ const SendMessage = ({
 }: ISendMessageProps) => {
     const dispatch = useAppDispatch();
     const userId = useAppSelector((state) => state.user.value?._id);
+    const inputFileId = useId();
     const garageId = useAppSelector((state) => state.user.value?.garageId);
     const [pasteImage, setPasteImage] = useState<File[]>([]);
     const [content, setContent] = useState("");
@@ -53,11 +54,11 @@ const SendMessage = ({
             }
 
             const sendMessage: PayloadMessage = {
-                _id: new ObjectId(),
+                _id: new ObjectId().toString(),
                 authorId: userId!,
                 content,
                 createdAt: new Date().getTime(),
-                images: [],
+                images: pasteImage,
                 isLoading: true,
                 roomId: room.roomId,
                 status: MessageStatus.Exist,
@@ -208,10 +209,27 @@ const SendMessage = ({
 
             <div className="flex items-center gap-4">
                 <div className="cursor-pointer text-default-300 hover:text-primary">
-                    <FontAwesomeIcon
-                        icon={faImage}
-                        size="lg"
-                        className="transition-colors"
+                    <label htmlFor={inputFileId}>
+                        <FontAwesomeIcon
+                            icon={faImage}
+                            size="lg"
+                            className="transition-colors"
+                        />
+                    </label>
+                    <input
+                        type="file"
+                        multiple
+                        id={inputFileId}
+                        title="images"
+                        hidden
+                        accept="image/*"
+                        onChange={(event) => {
+                            const files = event.target.files
+                            if (files?.length) {
+                                setPasteImage((prev) => ([...prev, ...files]))
+                            }
+                            event.target.value = null as any
+                        }}
                     />
                 </div>
                 {garageId === room.entityId && (

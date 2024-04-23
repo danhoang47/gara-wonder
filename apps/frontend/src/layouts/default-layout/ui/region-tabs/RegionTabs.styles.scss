@@ -1,0 +1,15 @@
+
+.regionTabs {
+    .regionTabIcon {
+        display: none;
+    }
+
+    @media screen and (max-width: 680px) {
+        .regionTabIcon {
+            display: inline-block;
+        }
+        .regionTabTitle {
+            display: none;
+        }
+    }
+}
