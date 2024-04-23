@@ -29,10 +29,13 @@ export const statusList = [
 ];
 
 export const orderStatusList = [
-    { key: "pending", label: "Đợi chấp nhận" },
-    { key: "accepted", label: "Đã chấp nhận" },
-    { key: "canceled", label: "Bị hủy" },
-    { key: "paid", label: "Đã thanh toán" },
+    { key: "-2", label: "Bị hủy" },
+    { key: "-1", label: "Đợi chấp nhận" },
+    { key: "0", label: "Đang đánh giá" },
+    { key: "1", label: "Đang chuẩn bị" },
+    { key: "2", label: "Đang sửa chữa" },
+    { key: "3", label: "Đang thanh toán" },
+    { key: "4", label: "Đã thanh toán" },
 ];
 
 export const getStatusLabel = (numb: number) => {

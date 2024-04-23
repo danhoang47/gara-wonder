@@ -1,7 +1,7 @@
 // import { faFileLines } from "@fortawesome/free-regular-svg-icons";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@nextui-org/react";
+import { Button, Chip } from "@nextui-org/react";
 import { Evaluation, UserInfo } from "./ui";
 import { useParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
@@ -36,8 +36,19 @@ function OrderDetail() {
     }, [isOrderLoading]);
     return (
         <div className="p-10 h-full overflow-auto">
-            <p className="text-3xl font-bold">Chi tiết đơn hàng</p>
-
+            <div className="flex items-center gap-2">
+                <p className="text-3xl font-bold">Chi tiết đơn hàng</p>
+                {(order?.status as number) <= -2 && (
+                    <Chip color="danger" radius="sm" size="lg">
+                        <p className="font-medium">Đã bị hủy</p>
+                    </Chip>
+                )}
+                {(order?.status as number) === 4 && (
+                    <Chip color="primary" radius="sm" size="lg">
+                        <p className="font-medium">Đã hoàn thành</p>
+                    </Chip>
+                )}
+            </div>
             <div className="md:grid grid-cols-12 gap-4 pt-10">
                 <div className="col-span-9 flex flex-col gap-5">
                     {/* Evaluation */}

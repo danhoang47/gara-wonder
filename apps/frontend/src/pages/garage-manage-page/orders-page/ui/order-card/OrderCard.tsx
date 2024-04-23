@@ -121,7 +121,7 @@ function OrderCard({
                                         className="mr-2"
                                     />
                                     Order Date:{" "}
-                                    {moment(order?.handOverTime).format(
+                                    {moment(order?.orderTime).format(
                                         "DD/MM/YYYY",
                                     )}
                                 </p>

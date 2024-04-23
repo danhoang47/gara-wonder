@@ -22,11 +22,10 @@ export default function useAsyncList<T>(
         if (typeof getKey === "function") {
             return getKey();
         }
-
         return getKey;
     }, [getKey]);
     const { isLoading, data: response } = useSWR(
-        key && [getKey, isReload ? defaultPaging : paging],
+        key && [getKey, isReload ? defaultPaging : paging, dependencies],
         (params) => fetcher(params),
         {
             revalidateIfStale: false,
