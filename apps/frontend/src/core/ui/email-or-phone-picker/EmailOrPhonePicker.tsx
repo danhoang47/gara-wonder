@@ -22,9 +22,15 @@ function EmailOrPhonePicker({
 }: EmailOrPhonePickerProps) {
     const [searchText, setSearchText] = useState<string>("");
     const debounced = useDebouncedValue(searchText, 1000);
-    const { data: entities } = useSWRImmutable(debounced, (text) =>
-        getUsers(text, Role.User),
-    );
+    const { data: entities } = useSWRImmutable(debounced, async (text) => {
+        if (text.startsWith("+")) {
+            text = text.slice(1)
+        }
+        if (text.startsWith("0")) {
+            text = "84" + text.slice(1)
+        }
+        return await getUsers(text, Role.User)
+    });
     const [hasFocused, setFocused] = useState<boolean>(false);
 
     return (

@@ -32,7 +32,7 @@ function PaymentPage() {
             vnp_ResponseCode,
         };
     }, [urlSearchParams]);
-    const isSuccess = useMemo(() => params.vnp_ResponseCode === "00", [params])
+    const isSuccess = useMemo(() => params.vnp_ResponseCode === "00", [params]);
     const isValidURL = useMemo(() => {
         return (
             Object.keys(params).length === 4 &&
@@ -41,7 +41,7 @@ function PaymentPage() {
     }, [params]);
     const { isLoading, data } = useSWRImmutable(
         params.vnp_ResponseCode === "00" ? params : null,
-        persistPayment,
+        () => persistPayment(params),
     );
 
     useEffect(() => {

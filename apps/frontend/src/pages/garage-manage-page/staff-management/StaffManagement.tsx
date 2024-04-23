@@ -1,12 +1,13 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@nextui-org/react";
 
-import { EmailOrPhonePicker, Table } from "@/core/ui";
-import { columns, staffs } from "./constants";
+import { EmailOrPhonePicker } from "@/core/ui";
 import { Staff, User } from "@/core/types";
-import { createInvitations } from "@/api";
+import { createInvitations, getStaffs } from "@/api";
 import { useParams } from "react-router-dom";
 import SentInvitations from "./SentInvitations";
+import useSWR from "swr";
+import StaffTable from "./StaffTable";
 
 function StaffManagement() {
     const [selectedStaffIds, setSelectedStaffIds] = useState<string[]>([]);
@@ -19,16 +20,15 @@ function StaffManagement() {
     const [isSentInvitationsModalOpen, setIsSentInvitationsModalOpen] =
         useState<boolean>(false);
     const { garageId } = useParams();
-
-    const onStaffSelected = (staff: Staff, isSelected: boolean) => {
-        if (isSelected) {
-            setSelectedStaffIds((prev) => [...prev, staff._id]);
-        } else {
-            setSelectedStaffIds((prev) =>
-                prev.filter((id) => id !== staff._id),
-            );
-        }
-    };
+    const { isLoading: isStaffsLoading, data: staffs } = useSWR(
+        garageId,
+        getStaffs,
+        {
+            refreshInterval: 30000,
+            revalidateOnFocus: true,
+        },
+    );
+    const [localStaff, setLocalStaff] = useState<Staff>();
 
     const onInvite = async () => {
         setLoading(true);
@@ -37,6 +37,18 @@ function StaffManagement() {
             pickedEntitis.map(({ _id }) => _id),
         );
         setLoading(false);
+    };
+
+    useEffect(() => {
+        if (selectedStaffIds.length) {
+            setLocalStaff(
+                staffs?.find(({ _id }) => selectedStaffIds[0] === _id),
+            );
+        }
+    }, [selectedStaffIds, staffs]);
+
+    const onSelectedStaffValueChange = (staff: Staff) => {
+        setLocalStaff(staff);
     };
 
     return (
@@ -96,16 +108,16 @@ function StaffManagement() {
                 </div>
             </div>
             <div className="relative z-0 grow overflow-hidden">
-                <Table
-                    items={staffs}
-                    columns={columns}
-                    classNames={{
-                        headerWrapper: "bg-default-100 pl-4 py-3",
-                        headerTitle: "text-small font-medium text-default-500",
-                        row: "py-4 border-b hover:bg-foreground-50",
+                <StaffTable
+                    staffs={staffs || []}
+                    isLoading={isStaffsLoading}
+                    selectedStaffIds={selectedStaffIds}
+                    onStaffSelect={(ids) => {
+                        console.log("SELECTED IDS", ids);
+                        setSelectedStaffIds(ids);
                     }}
-                    enableCheckAction
-                    onCheck={onStaffSelected}
+                    selectedStaff={localStaff}
+                    onSelectedStaffValueChange={onSelectedStaffValueChange}
                 />
             </div>
         </div>

@@ -23,7 +23,7 @@ export type Service = Partial<
 
 export type Brand = Model & {
     name: string;
-    series: string[]
+    series: string[];
 };
 
 export type AdditionalService = Model & {
@@ -42,14 +42,14 @@ export enum CategoryType {
     Wash,
     Replace,
     Exterior,
-    Interior
+    Interior,
 }
 
 export type Category = Model & {
     name: string;
     description: string;
     icon: string;
-    type: CategoryType
+    type: CategoryType;
 };
 
 export type Rating = {
@@ -60,10 +60,10 @@ export type Rating = {
 };
 
 export type DateSlot = {
-    date: number,
-    slot: number,
-    numberOfOrder: number,
-}
+    date: number;
+    slot: number;
+    numberOfOrder: number;
+};
 
 // TODO: need certificate of business registration images
 export type Garage = BusinessEntity & {
@@ -74,8 +74,8 @@ export type Garage = BusinessEntity & {
     checkOut?: string;
     rules?: Rule[];
     rating: Rating;
-    enableInstantBooking?: boolean,
-    dateSlots?: DateSlot[]
+    enableInstantBooking?: boolean;
+    dateSlots?: DateSlot[];
 };
 
 export type GarageFilter = {
@@ -87,13 +87,25 @@ export type GarageFilter = {
     brands?: string[];
     distance?: number;
     additional?: string[];
-    isFavorite?: string | boolean
+    isFavorite?: string | boolean;
 };
 
-export type GarageQueryParams = GarageFilter & Paging & {
-    sortBy?: string,
-    category?: string,
-    token?: string,
-    lat?: string,
-    lng?: string,
-}
+export type GarageQueryParams = GarageFilter &
+    Paging & {
+        sortBy?: string;
+        category?: string;
+        token?: string;
+        lat?: string;
+        lng?: string;
+    };
+
+export type Staff = Model & {
+    authorities: string[];
+    userId: string;
+    garageId: string;
+    displayName: string;
+    email?: string;
+    phoneNumber?: string | null;
+    isOnline?: boolean;
+    photoURL?: string;
+};

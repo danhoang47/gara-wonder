@@ -64,7 +64,7 @@ const roomSlice = createSlice({
                 roomsAdapter.updateOne(state.rooms, {
                     id: roomEntry.roomId,
                     changes: {
-                        hasRead: false,
+                        hasRead: payload.hasRead,
                     },
                 });
                 roomEntry.messages = messagesAdapter.upsertOne(

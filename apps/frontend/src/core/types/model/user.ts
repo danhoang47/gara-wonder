@@ -38,10 +38,3 @@ export type PersonalCar = Model &
     };
 
 export type Authority = "WITH_ORDER" | "WITH_INCOME";
-
-export type Staff = User & {
-    role: Role.Staff;
-    authorities: Authority[];
-    garageId: string;
-    status: Status;
-};

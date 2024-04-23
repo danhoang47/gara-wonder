@@ -1,10 +1,10 @@
 import axios, { AxiosError, HttpStatusCode } from "axios";
 
-export default async function getUser(params: unknown) {
+export default async function persistPayment(params: unknown) {
     try {
         const result = await axios.post(
             import.meta.env.VITE_BASE_URL + "/payment/persist",
-            params
+            params,
         );
         return result.data;
     } catch (_error) {

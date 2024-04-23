@@ -9,7 +9,7 @@ export type PaymentType = {
         createDate: string;
     };
 };
-export default async function CreatePayment(
+export default async function createPayment(
     body: {
         garageId?: string;
         orderId?: string;

@@ -98,7 +98,6 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                 }
             }
 
-            if (index === data.length - 1) console.log("GRP", grp)
             newList.push(grp);
         });
         return newList;
@@ -305,7 +304,7 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                     )}
                                                 <div
                                                     className={clsx(
-                                                        "flex gap-0.5 w-full",
+                                                        "images gap-0.5 w-full",
                                                         checkIfMessageSentFromEntity(
                                                             item2.authorId,
                                                         ) && "self-end",
@@ -315,14 +314,14 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                                                         (image) => (
                                                             <div
                                                                 key={image._id}
-                                                                className="flex items-center justify-center"
+                                                                className="flex items-center justify-center bg-default-200"
                                                             >
                                                                 <img
                                                                     src={
                                                                         image.url
                                                                     }
                                                                     alt=""
-                                                                    className="max-h-24 max-w-20 object-contain"
+                                                                    className="h-24 object-contain"
                                                                 />
                                                             </div>
                                                         ),
