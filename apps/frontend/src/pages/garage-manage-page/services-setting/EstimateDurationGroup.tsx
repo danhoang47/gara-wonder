@@ -38,7 +38,7 @@ function EstimateDurationGroup({
                                 Dịch vụ kéo dài trong bao lâu?
                             </p>
                             <span className="text-sm text-default-400">
-                                Iplorem sumary esdwas
+                                Thời gian để hoàn thành dịch vụ này
                             </span>
                         </div>
                         <Stepper
@@ -55,9 +55,9 @@ function EstimateDurationGroup({
                     <div className="flex flex-col gap-2">
                         <div className="flex justify-between items-center border-b pb-4">
                             <div>
-                                <p className="font-medium">From:</p>
+                                <p className="font-medium">Từ:</p>
                                 <span className="text-sm text-default-400">
-                                    Iplorem sumary esdwas
+                                    Dịch vụ hoàn thành trong khoảng 
                                 </span>
                             </div>
                             <Stepper
@@ -79,9 +79,9 @@ function EstimateDurationGroup({
                         </div>
                         <div className="flex justify-between items-center">
                             <div>
-                                <p className="font-medium">To:</p>
+                                <p className="font-medium">Đến:</p>
                                 <span className="text-sm text-default-400">
-                                    Iplorem sumary esdwas
+                                    Dịch vụ kéo dài tối đa
                                 </span>
                             </div>
                             <Stepper
