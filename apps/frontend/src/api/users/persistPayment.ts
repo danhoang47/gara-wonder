@@ -1,10 +1,12 @@
 import axios, { AxiosError, HttpStatusCode } from "axios";
 
-export default async function persistPayment(params: unknown) {
+const SERVER_URL_TESTING_PURPOSE = "https://garage-wonder.onrender.com/api";
+
+export default async function getUser(params: unknown) {
     try {
         const result = await axios.post(
-            import.meta.env.VITE_BASE_URL + "/payment/persist",
-            params,
+            SERVER_URL_TESTING_PURPOSE + "/payment/persist",
+            params
         );
         return result.data;
     } catch (_error) {

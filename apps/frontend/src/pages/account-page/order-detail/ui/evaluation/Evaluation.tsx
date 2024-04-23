@@ -30,14 +30,16 @@ const ProgressButton = ({
     setConfirmModalOpen,
     setConfirm,
     setReviewModal,
+    isProvideEvaluation,
 }: {
     status: number;
     setModalOpen: () => void;
     setConfirmModalOpen: () => void;
     setConfirm: () => void;
     setReviewModal: () => void;
+    isProvideEvaluation: boolean;
 }) => {
-    if (status === 0)
+    if (status === 0 && isProvideEvaluation)
         return (
             <>
                 <div className="w-full h-1 border-t-2" />
@@ -72,7 +74,6 @@ const ProgressButton = ({
             </>
         );
     }
-
     if (status === 4) {
         return (
             <>
@@ -112,10 +113,11 @@ function Evaluation({
     const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
     const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
     const [confirm, setConfirm] = useState<string>("");
-    const { data: evaluation } = useSWRImmutable("evaluation", () =>
-        getOrderEvaluation(evaluationId),
+    const { data: evaluation } = useSWRImmutable(
+        evaluationId ? "evaluation" : null,
+        () => getOrderEvaluation(evaluationId),
     );
-    const { data: garage } = useSWRImmutable("garage", () =>
+    const { data: garage } = useSWRImmutable(garageId ? "garage" : null, () =>
         getBasicGarageInfo(garageId as string),
     );
     const dispatch = useAppDispatch();
@@ -245,6 +247,7 @@ function Evaluation({
                 ))}
             <ProgressButton
                 status={status || 0}
+                isProvideEvaluation={evaluationId !== undefined}
                 setConfirmModalOpen={() => {
                     setConfirmModalOpen(true);
                 }}
