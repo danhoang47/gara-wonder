@@ -3,7 +3,7 @@ import { useOrders } from "../hooks";
 import { CardSkeleton, OrderList } from "./ui";
 
 function Orders() {
-    const { orders, isLoading, onNext } = useOrders([""], ["asc"]);
+    const { orders, isLoading, onNext } = useOrders(["desc"]);
     const ref = useInfiniteScroll(onNext);
     return (
         <div className="overflow-y-auto h-full relative">

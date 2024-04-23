@@ -23,16 +23,18 @@ function PaymentPage() {
         const orderId = urlSearchParams.get("orderId");
         const vnp_TxnRef = urlSearchParams.get("vnp_TxnRef");
         const vnp_ResponseCode = urlSearchParams.get("vnp_ResponseCode");
-        const vnp_PayDate = urlSearchParams.get("20240411171001");
+        const vnp_PayDate = urlSearchParams.get("vnp_PayDate");
+        const garageId = urlSearchParams.get("garageId");
 
         return {
             orderId,
             vnp_PayDate,
             vnp_TxnRef,
             vnp_ResponseCode,
+            garageId,
         };
     }, [urlSearchParams]);
-    const isSuccess = useMemo(() => params.vnp_ResponseCode === "00", [params])
+    const isSuccess = useMemo(() => params.vnp_ResponseCode === "00", [params]);
     const isValidURL = useMemo(() => {
         return (
             Object.keys(params).length === 4 &&

@@ -19,7 +19,7 @@ export default async function getUserOrders(
             queryParams += `&cursor=${cursor}`;
         }
         const result = await axios.get<Response<OrderListType[]>>(
-            baseUsersUrl + queryParams,
+            baseUsersUrl + queryParams + `&status=0`,
 
             {
                 withCredentials: true,

@@ -2,15 +2,21 @@ import { useInfiniteScroll } from "@/core/hooks";
 import { useOrders } from "@/pages/garage-manage-page/hooks";
 import { CardSkeleton } from "@/pages/garage-manage-page/orders-page/ui";
 import { DateRangePicker, Select, SelectItem } from "@nextui-org/react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { orderStatusList, sorts } from "../constants";
 import OrderList from "./order-list";
 
 const Order: React.FC = () => {
     const [status, setStatus] = useState([""]);
     const [sort, setSort] = useState(["asc"]);
-
-    const { orders, isLoading, onNext } = useOrders(status, sort);
+    const { orders, isLoading, onNext } = useOrders(sort);
+    const filteredOrders = useMemo(() => {
+        const list = orders.filter((order) => {
+            if (status[0] === "") return true;
+            return order.status === Number(status[0]);
+        });
+        return list;
+    }, [orders, status]);
     const ref = useInfiniteScroll(onNext);
     return (
         <div
@@ -58,7 +64,7 @@ const Order: React.FC = () => {
                 </Select>
             </div>
             <div className="overflow-y-auto h-full relative">
-                <OrderList orders={orders} />
+                <OrderList orders={filteredOrders} />
                 {isLoading && <CardSkeleton />}
                 <div ref={ref} className="h-10" />
             </div>

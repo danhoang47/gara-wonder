@@ -35,7 +35,7 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                 </div>
                                 <div className="flex gap-2 ">
                                     <p className="text-sm">
-                                        {moment(order?.handOverTime).format(
+                                        {moment(order?.orderTime).format(
                                             "DD/MM/YYYY",
                                         )}
                                     </p>
@@ -73,7 +73,7 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                         className="mr-2"
                                     />
                                     Ngày đặt:{" "}
-                                    {moment(order?.handOverTime).format(
+                                    {moment(order?.orderTime).format(
                                         "DD/MM/YYYY",
                                     )}
                                 </p>
