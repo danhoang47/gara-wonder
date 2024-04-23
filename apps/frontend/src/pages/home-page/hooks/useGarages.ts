@@ -98,7 +98,6 @@ export default function useGarages(viewMode: ViewMode) {
 
     useEffect(() => {
         if (status === FetchStatus.Fulfilled) {
-            console.log("FETCH GARAGES")
             dispatch(getListGarages({ ...queryParams, cursor }));
         }
     }, [status, JSON.stringify(queryParams), cursor]);

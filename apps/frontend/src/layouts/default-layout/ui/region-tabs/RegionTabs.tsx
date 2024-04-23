@@ -1,7 +1,9 @@
+import { useLocation, useNavigate } from "react-router-dom";
+import { useMemo } from "react";
 import { Tab, Tabs } from "@nextui-org/react";
 import clsx from "clsx";
-import { useMemo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+
+import "./RegionTabs.styles.scss"
 
 const paths = [
     {
@@ -38,7 +40,20 @@ function RegionTabs() {
             {paths.map(({ path, title }) => (
                 <Tab
                     key={path}
-                    title={title}
+                    title={
+                        <div className="flex items-center justify-center gap-2">
+                            <p className="regionTabTitle">{title}</p>
+                            <span
+                                className={clsx("regionTabIcon",
+                                    path === "garages"
+                                        ? "material-symbols-outlined"
+                                        : "material-symbols-outlined",
+                                )}
+                            >
+                                {path === "garages" ? "garage_home" : "storefront"}
+                            </span>
+                        </div>
+                    }
                     className={clsx(currentPath === path && "shadow")}
                 />
             ))}

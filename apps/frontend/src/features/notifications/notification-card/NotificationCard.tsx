@@ -33,7 +33,6 @@ const fetchAvatar = async (
     type: NotificationType,
     from: string,
 ): Promise<User | GarageBasicInfo | undefined> => {
-    console.log(type);
     if (type === NotificationType.GarageOrder) {
         console.log("get user");
         return await getUser(from).then((user) => user.data);

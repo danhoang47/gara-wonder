@@ -12,6 +12,8 @@ export type GarageMarkerProps = {
     garage: WithOwnerGarage;
     onUpdateGarage: (garage: WithOwnerGarage) => void;
     isHovered?: boolean;
+    isOpenGarageCard?: boolean;
+    onClick: (garageId: string) => void;
 };
 
 const CARD_HEIGHT = 247;
@@ -20,10 +22,11 @@ function GarageMarker({
     garage,
     onUpdateGarage,
     isHovered = false,
+    isOpenGarageCard = false,
+    onClick
 }: GarageMarkerProps) {
     const { location, price } = garage;
     const token = useAppSelector((state) => state.user.token);
-    const [isOpenGarageCard, setOpenGarageCard] = useState<boolean>(false);
     const [shouldShowBottom, setShouldShowBottom] = useState<boolean>(false);
     const dispatch = useAppDispatch();
 
@@ -54,8 +57,8 @@ function GarageMarker({
                 lng: location.coordinates[0],
             }}
             className={clsx("cursor-pointer relative", isOpenGarageCard && "z-10")}
-            onClick={() => setOpenGarageCard((prev) => !prev)}
-            zIndex={isOpenGarageCard ? 10 : 0}
+            onClick={() => onClick(garage._id)}
+            zIndex={isOpenGarageCard || isHovered ? 10 : 0}
         >
             <div
                 className={clsx(

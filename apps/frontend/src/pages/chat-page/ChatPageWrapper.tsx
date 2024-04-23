@@ -25,11 +25,6 @@ const ChatPageWrapper = () => {
     useEffect(() => {
         if (roomId) return;
 
-        console.log(
-            fetchingStatus === FetchStatus.Fulfilled,
-            rooms.length,
-            !isMounted,
-        );
         if (fetchingStatus === FetchStatus.Fulfilled && rooms.length !== 0) {
             navigate(`${rooms[0]?.roomId}`);
         }
