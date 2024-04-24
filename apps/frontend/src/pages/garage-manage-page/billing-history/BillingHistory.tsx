@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom'
-import useSWR from 'swr';
 import BillingHistoryTable from './BillingHistoryTable';
 import BillingModal from './BillingModal';
 

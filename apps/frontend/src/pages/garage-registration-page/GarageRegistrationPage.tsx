@@ -102,7 +102,10 @@ const GarageRegistrationPage = () => {
                         description: "Successfully register your garage",
                     }),
                 );
-                dispatch(setRoleToGarageOwner(Role.GarageOwner));
+                dispatch(setRoleToGarageOwner({
+                    role: Role.GarageOwner,
+                    garageId: result.data._id
+                }));
                 navigate(`/garages/${result.data._id}/management`);
             }
         } catch (error) {

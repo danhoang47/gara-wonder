@@ -45,7 +45,7 @@ export type CalendarProps = {
     weekDayFormat?: "long" | "short";
 };
 
-const checkIfDateDisabled = (date: Date, disabledDates?: DisabledDate[]) => {
+export const checkIfDateDisabled = (date: Date, disabledDates?: DisabledDate[]) => {
     if (!disabledDates) return true;
 
     const startOfDate = moment(new Date(date)).startOf("day");
@@ -109,7 +109,7 @@ const Calendar = ({
         const dateOfMonth = firstSunday.toDate().getDate();
         const datesInMonth: Date[] = Array.from(new Array(NUMBER_OF_CELL)).map(
             (_, index) => {
-                const date = firstSunday.clone().toDate();
+                const date = firstSunday.clone().startOf("day").toDate();
                 date.setDate(index + dateOfMonth);
                 return date;
             },

@@ -2,7 +2,6 @@ import { Order } from "@/core/types";
 import { Table } from "./ui";
 import { useMemo } from "react";
 import { Column } from "../../core/ui/table/Table";
-import { Tab, Tabs } from "@nextui-org/react";
 import { useAppSelector } from "@/core/hooks";
 import { selectOrders } from "@/features/cart/cart.slice";
 import OrderCard from "./ui/order-card";
@@ -51,20 +50,6 @@ function CartPage() {
                 </span>
             </div>
             <div>
-                <div className="flex justify-center">
-                    <Tabs variant="underlined" aria-label="Tabs variants">
-                        <Tab
-                            key="garage"
-                            title="Đơn sửa chữa"
-                            className="text-base"
-                        />
-                        <Tab
-                            key="product"
-                            title="Đơn hàng"
-                            className="text-base"
-                        />
-                    </Tabs>
-                </div>
                 <Table
                     items={orders}
                     columns={columns}

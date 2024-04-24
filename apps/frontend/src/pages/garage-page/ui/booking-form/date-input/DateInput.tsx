@@ -1,40 +1,41 @@
+import { useEffect, useMemo, useState } from "react";
 import {
     Button,
-    Input,
+    DateInput as DateInputField,
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@nextui-org/react";
-import { DatePicker } from "@/core/ui";
-import { useEffect, useMemo, useState } from "react";
-import { useOrderContext } from "@/pages/garage-page/hooks";
 import moment from "moment";
-import { DisabledDate } from "@/core/ui/calendar/Calendar";
+import { CalendarDate } from "@internationalized/date";
+
+import { DatePicker } from "@/core/ui";
+import { useOrderContext } from "@/pages/garage-page/hooks";
+import { DisabledDate, checkIfDateDisabled } from "@/core/ui/calendar/Calendar";
 
 export type DateInputProps = {
-    disabledDates?: DisabledDate[]
-}
+    disabledDates?: DisabledDate[];
+};
 
 function DateInput({ disabledDates = [] }: DateInputProps) {
     const [localOrderTime, setLocalOrderTime] = useState<number>();
-    const [localInputTime, setLocalInputTime] = useState<string>();
+    const inputDate = useMemo(() => {
+        if (!localOrderTime) return undefined;
+        const date = moment(localOrderTime);
+
+        return new CalendarDate(date.year(), date.month() + 1, date.date());
+    }, [localOrderTime]);
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
     const {
         order: { orderTime },
         setOrderValue,
     } = useOrderContext();
-    const isOrderTimeInvalid = useMemo(() => {
-        if (!orderTime) return false;
-
-        // TODO: need to set start of this date
-        return new Date(orderTime).getDate() > new Date().getDate();
-    }, [orderTime]);
 
     useEffect(() => {
-        setLocalInputTime(
-            moment(localOrderTime).format("YYYY/MM/DD").toString(),
-        );
-    }, [localOrderTime]);
+        if (orderTime) {
+            setLocalOrderTime(orderTime)
+        }
+    }, [])
 
     return (
         <Popover
@@ -66,34 +67,38 @@ function DateInput({ disabledDates = [] }: DateInputProps) {
                                 Chọn ngày dịch vụ cho xe
                             </span>
                         </div>
-                        <Input
+                        <DateInputField
                             label="Ngày đặt"
-                            placeholder="YYYY/MM/dd"
                             variant="bordered"
-                            value={localInputTime}
+                            value={inputDate}
                             classNames={{
                                 base: "max-w-44",
                                 inputWrapper:
                                     "border data-[focus=true]:border-2",
                             }}
-                            isInvalid={isOrderTimeInvalid}
-                            onValueChange={(value) => {
-                                const orderDate = moment(value, "YYYY MM DD");
-                                setLocalInputTime(value);
+                            onChange={(value) => {
+                                if (!value) return;
+
+                                const inputDate = moment(
+                                    value.toDate("Asia/Ho_Chi_Minh"),
+                                );
+
                                 if (
-                                    value.length === 10 &&
-                                    orderDate.isValid()
+                                    !checkIfDateDisabled(inputDate.toDate(), [
+                                        { from: undefined, to: Date.now() },
+                                        ...disabledDates,
+                                    ]) &&
+                                    inputDate.isValid()
                                 ) {
                                     setLocalOrderTime(
-                                        orderDate.toDate().getTime(),
+                                        inputDate.toDate().getTime(),
                                     );
                                     setOrderValue(
                                         "orderTime",
-                                        orderDate.toDate().getTime(),
+                                        inputDate.toDate().getTime(),
                                     );
                                 }
                             }}
-                            isClearable
                         />
                     </div>
                     <div className="pt-5">
@@ -129,6 +134,7 @@ function DateInput({ disabledDates = [] }: DateInputProps) {
                                 setOrderValue("orderTime", localOrderTime);
                                 setDatePickerOpen(false);
                             }}
+                            isDisabled={!localOrderTime}
                         >
                             <p className="text-background">Lưu</p>
                         </Button>

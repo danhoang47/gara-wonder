@@ -11,6 +11,7 @@ import { orderUpdated } from "@/features/cart/cart.slice";
 import createOrder from "@/api/order/createOrders";
 import { useState } from "react";
 import { HttpStatusCode } from "axios";
+import { notify } from "@/features/toasts/toasts.slice";
 
 function OrderInfo() {
     const navigate = useNavigate();
@@ -52,7 +53,11 @@ function OrderInfo() {
                     open("orderSuccess");
                 }
             } catch (_error) {
-                throw new Error(JSON.stringify(_error));
+                dispatch(notify({
+                    title: "Đặt đơn sửa chữa",
+                    description: "Có vấn đề xảy ra, vui lòng tải lại trang và thử lại",
+                    type: "failure"  
+                }))
             } finally {
                 setConfirmButtonLoading(false);
             }
