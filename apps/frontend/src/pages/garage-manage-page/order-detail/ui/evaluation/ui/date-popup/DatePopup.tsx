@@ -42,9 +42,9 @@ function DatePopup({
         <div className="w-full p-4">
             <div className="flex justify-between">
                 <div className="">
-                    <p className="shrink-0 text-lg font-bold">Pick Date</p>
+                    <p className="shrink-0 text-lg font-bold">Chọn ngày đặt</p>
                     <span className="text-small text-default-400 font-normal">
-                        Select a date to fix your car
+                        Vui lòng chọn ngày đặt sửa xe
                     </span>
                 </div>
                 <div className="flex gap-2">

@@ -57,9 +57,9 @@ export default function DateInput() {
                 <ModalContent>
                     <ModalHeader className="justify-between">
                         <div className="">
-                            <p className="shrink-0">Pick Date</p>
+                            <p className="shrink-0">Chọn ngày đặt</p>
                             <span className="text-small text-default-400 font-normal">
-                                Select a date to fix your car
+                                Vui lòng chọn ngày đặt sửa xe
                             </span>
                         </div>
                         <Input
@@ -104,7 +104,7 @@ export default function DateInput() {
                                 variant="light"
                                 onPress={() => setDatePickerModalOpen(false)}
                             >
-                                <p className="text-default-400">Cancel</p>
+                                <p className="text-default-400">Hủy</p>
                             </Button>
                             <Button
                                 className="bg-foreground"
@@ -114,7 +114,7 @@ export default function DateInput() {
                                 }}
                                 disabled={Boolean(!localOrderTime)}
                             >
-                                <p className="text-background">Save</p>
+                                <p className="text-background">Lưu</p>
                             </Button>
                         </div>
                     </ModalFooter>
