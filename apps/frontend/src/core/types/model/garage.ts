@@ -109,3 +109,12 @@ export type Staff = Model & {
     isOnline?: boolean;
     photoURL?: string;
 };
+
+export type Bill = Model & {
+    garageId: string,
+    paidBy?: string,
+    hasPaid?: boolean,
+    paidTime: number,
+    totalIncome: number,
+    paidFee: number,
+}

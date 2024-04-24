@@ -2,54 +2,91 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@nextui-org/react";
 
 import { EmailOrPhonePicker } from "@/core/ui";
-import { Staff, User } from "@/core/types";
-import { createInvitations, getStaffs } from "@/api";
+import { FetchStatus, Staff, User } from "@/core/types";
+import { createInvitations, getStaffs, removeStaffs, updateStaffs } from "@/api";
 import { useParams } from "react-router-dom";
 import SentInvitations from "./SentInvitations";
 import useSWR from "swr";
 import StaffTable from "./StaffTable";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { notify } from "@/features/toasts/toasts.slice";
 
 function StaffManagement() {
-    const [selectedStaffIds, setSelectedStaffIds] = useState<string[]>([]);
+    const [selectedStaffId, setSelectedStaffId] = useState<string>();
     const shouldShowActionButtons = useMemo(
-        () => selectedStaffIds.length === 1,
-        [selectedStaffIds],
+        () => selectedStaffId,
+        [selectedStaffId],
     );
-    const [pickedEntitis, setPickedEntities] = useState<User[]>([]);
+    const dispatch = useAppDispatch()
+    const user = useAppSelector(state => state.user.value)
+    const [pickedEntities, setPickedEntities] = useState<User[]>([]);
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isSentInvitationsModalOpen, setIsSentInvitationsModalOpen] =
         useState<boolean>(false);
     const { garageId } = useParams();
-    const { isLoading: isStaffsLoading, data: staffs } = useSWR(
-        garageId,
+    const { isLoading: isStaffsLoading, data: staffs, mutate } = useSWR(
+        user && garageId,
         getStaffs,
         {
             refreshInterval: 30000,
             revalidateOnFocus: true,
         },
     );
-    const [localStaff, setLocalStaff] = useState<Staff>();
+    const [localStaffs, setLocalStaffs] = useState<Staff[]>([]);
+    const [updateState, setUpdateStatus] = useState<FetchStatus>(FetchStatus.None)
 
     const onInvite = async () => {
         setLoading(true);
-        const results = await createInvitations(
+        await createInvitations(
             garageId!,
-            pickedEntitis.map(({ _id }) => _id),
+            pickedEntities.map(({ _id }) => _id),
         );
         setLoading(false);
     };
 
     useEffect(() => {
-        if (selectedStaffIds.length) {
-            setLocalStaff(
-                staffs?.find(({ _id }) => selectedStaffIds[0] === _id),
-            );
+        if (staffs) {
+            setLocalStaffs(staffs);
         }
-    }, [selectedStaffIds, staffs]);
+    }, [staffs, selectedStaffId]);
 
-    const onSelectedStaffValueChange = (staff: Staff) => {
-        setLocalStaff(staff);
+    const onSelectedStaffValueChange = (staff: Partial<Staff>) => {
+        setLocalStaffs((prev) => {
+            return prev.map((s) => {
+                if (s._id === staff._id) {
+                    return { ...s, ...staff };
+                }
+
+                return s
+            });
+        });
     };
+
+    const onUpdateStaffAuthorities = async () => {
+        const { _id, authorities, garageId } = localStaffs.find(({ _id }) => _id === selectedStaffId)!
+        setUpdateStatus(FetchStatus.Fetching)
+        await updateStaffs(garageId, _id, authorities)
+        setUpdateStatus(FetchStatus.Fulfilled)
+        dispatch(notify({
+            title: "Cập nhật nhân viên",
+            type: "success",
+            description: "Cập nhật nhân viên thành công"
+        }))
+        mutate()
+    }
+
+    const onRemoveStaff = async () => {
+        const { _id, garageId } = localStaffs.find(({ _id }) => _id === selectedStaffId)!
+        setUpdateStatus(FetchStatus.Fetching)
+        await removeStaffs(garageId, _id)
+        setUpdateStatus(FetchStatus.Fulfilled)
+        dispatch(notify({
+            title: "Xóa nhân viên",
+            type: "success",
+            description: "Xóa nhân viên thành công"
+        }))
+        mutate()
+    }
 
     return (
         <div className="h-full flex flex-col">
@@ -64,7 +101,7 @@ function StaffManagement() {
                     <div className="flex gap-2">
                         <EmailOrPhonePicker
                             isLoading={isLoading}
-                            pickedEntitis={pickedEntitis}
+                            pickedEntitis={pickedEntities}
                             onValueChange={(entities) =>
                                 setPickedEntities(entities)
                             }
@@ -73,7 +110,7 @@ function StaffManagement() {
                             className="bg-default-200"
                             disableRipple
                             isLoading={isLoading}
-                            isDisabled={!pickedEntitis.length}
+                            isDisabled={!pickedEntities.length}
                             onPress={onInvite}
                         >
                             <span className="px-1 text-default-600 font-medium">
@@ -96,11 +133,11 @@ function StaffManagement() {
                     <div className="flex ml-auto gap-2">
                         {shouldShowActionButtons && (
                             <>
-                                <Button variant="bordered">
-                                    Xóa nhân viên
+                                <Button variant="bordered" onPress={onUpdateStaffAuthorities}>
+                                    Cập nhật quyền
                                 </Button>
-                                <Button variant="bordered">
-                                    Hủy hoạt động
+                                <Button variant="bordered" onPress={onRemoveStaff}>
+                                    Xóa nhân viên
                                 </Button>
                             </>
                         )}
@@ -109,15 +146,14 @@ function StaffManagement() {
             </div>
             <div className="relative z-0 grow overflow-hidden">
                 <StaffTable
-                    staffs={staffs || []}
-                    isLoading={isStaffsLoading}
-                    selectedStaffIds={selectedStaffIds}
-                    onStaffSelect={(ids) => {
-                        console.log("SELECTED IDS", ids);
-                        setSelectedStaffIds(ids);
+                    staffs={localStaffs || []}
+                    isLoading={isStaffsLoading || updateState === FetchStatus.Fetching}
+                    selectedStaffId={selectedStaffId}
+                    onStaffSelect={(id) => {
+                        setSelectedStaffId(id);
                     }}
-                    selectedStaff={localStaff}
                     onSelectedStaffValueChange={onSelectedStaffValueChange}
+                    isDisabled={updateState === FetchStatus.Fetching}
                 />
             </div>
         </div>

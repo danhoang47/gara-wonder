@@ -14,11 +14,11 @@ import moment from "moment";
 
 export type StaffTableProps = {
     staffs: Staff[];
-    selectedStaffIds: string[];
-    onStaffSelect: (ids: string[]) => void;
+    selectedStaffId?: string;
+    onStaffSelect: (id: string) => void;
     isLoading: boolean;
-    selectedStaff?: Staff;
-    onSelectedStaffValueChange: (staff: Staff) => void
+    onSelectedStaffValueChange: (staff: Partial<Staff>) => void;
+    isDisabled: boolean;
 };
 
 const headerTitle = [
@@ -32,12 +32,12 @@ const headerTitle = [
 ];
 
 function StaffTable({
-    staffs,
+    staffs = [],
     onStaffSelect,
-    selectedStaffIds,
+    selectedStaffId,
     isLoading,
-    selectedStaff,
-    onSelectedStaffValueChange
+    onSelectedStaffValueChange,
+    isDisabled = false
 }: StaffTableProps) {
     return (
         <Table
@@ -45,14 +45,11 @@ function StaffTable({
             selectionBehavior="replace"
             selectionMode="multiple"
             onSelectionChange={(keys) => {
-                console.log(Array.from(keys));
-                if (typeof keys === "string" && keys === "all") {
-                    onStaffSelect(staffs.map(({ _id }) => _id));
-                } else {
-                    onStaffSelect(Array.from(keys) as string[]);
-                }
+                if (typeof keys !== "string") {
+                    onStaffSelect((Array.from(keys) as string[])[0]);
+                } 
             }}
-            selectedKeys={selectedStaffIds}
+            selectedKeys={selectedStaffId ? [selectedStaffId] : undefined}
         >
             <TableHeader>
                 {headerTitle.map((title) => (
@@ -62,7 +59,7 @@ function StaffTable({
                 ))}
             </TableHeader>
             <TableBody isLoading={isLoading}>
-                {staffs.map(
+                {staffs?.map(
                     ({
                         _id,
                         authorities,
@@ -103,30 +100,57 @@ function StaffTable({
                                 </div>
                             </TableCell>
                             <TableCell key="WITH_ORDER">
-                                <div>
-                                    <Switch
-                                        isSwitch={authorities?.includes(
-                                            "WITH_ORDER",
-                                        )}
-                                    />
-                                </div>
+                                <Switch
+                                    isSwitch={authorities?.includes(
+                                        "WITH_ORDER",
+                                    )}
+                                    onSwitch={(value) => {
+                                        let cloned = [...authorities];
+                                        if (value) {
+                                            cloned.push("WITH_ORDER");
+                                        } else {
+                                            cloned = cloned.filter(
+                                                (auth) =>
+                                                    auth !== "WITH_ORDER",
+                                            );
+                                        }
+
+                                        onSelectedStaffValueChange({
+                                            _id,
+                                            authorities: cloned,
+                                        });
+                                    }}
+                                    isDisabled={selectedStaffId !== _id || isDisabled}
+                                />
                             </TableCell>
                             <TableCell key="WITH_INCOME">
-                                <div>
-                                    <Switch
-                                        isSwitch={authorities?.includes(
-                                            "WITH_INCOME",
-                                        )}
-                                        onSwitch={(value) => {
-                                        }}
-                                        isDisabled={selectedStaff?._id !== _id}
-                                    />
-                                </div>
+                                <Switch
+                                    isSwitch={authorities?.includes(
+                                        "WITH_INCOME",
+                                    )}
+                                    onSwitch={(value) => {
+                                        let cloned = [...authorities];
+                                        if (value) {
+                                            cloned.push("WITH_INCOME");
+                                        } else {
+                                            cloned = cloned.filter(
+                                                (auth) =>
+                                                    auth !== "WITH_INCOME",
+                                            );
+                                        }
+
+                                        onSelectedStaffValueChange({
+                                            _id,
+                                            authorities: cloned,
+                                        });
+                                    }}
+                                    isDisabled={selectedStaffId !== _id || isDisabled}
+                                />
                             </TableCell>
                             <TableCell key={createdAt}>
                                 <div className="">
                                     <p>
-                                        {moment(createdAt).format("dd/mm/yyyy")}
+                                        {moment(createdAt).format("DD/MM/YYYY")}
                                     </p>
                                 </div>
                             </TableCell>

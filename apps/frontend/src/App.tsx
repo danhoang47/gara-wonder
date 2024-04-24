@@ -18,7 +18,7 @@ function App() {
                 <ModalContextProvider>
                     <TrackingActivity>
                         <MessageListener>
-                            <div className=" relative light text-foreground bg-background h-full">
+                            <div className="relative light text-foreground bg-background h-full">
                                 <Outlet />
                             </div>
                         </MessageListener>
