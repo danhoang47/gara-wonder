@@ -107,6 +107,45 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                         </Chip>
                                     )
                                 }
+
+                                {
+                                    Number(order?.status) <= -2 && <Chip color="danger">
+                                    <p className="font-medium">
+                                        Đã hủy
+                                    </p>
+                                </Chip>
+                                }
+                                {/* {
+                                    //@ts-expect-error undefined Type
+                                    order?.status == -3 || order?.status == -2 ? (
+                                        <Chip color="danger">
+                                            <p className="font-medium">
+                                                Đã hủy
+                                            </p>
+                                        </Chip>
+                                    ) : (
+                                        <Chip color="primary">
+                                            <p className="font-medium">
+                                                Đã chấp nhận
+                                            </p>
+                                        </Chip>
+                                    )
+                                    order?.status == -1 (
+                                        <Chip color="default">
+                                            <p className="font-medium">
+                                                Đang xử lí
+                                            </p>
+                                        </Chip>
+                                    )
+                                    
+                                    order?.status == 4(
+                                        <Chip color="success">
+                                            <p className="font-medium">
+                                                Đã hoàn thành
+                                            </p>
+                                        </Chip>
+                                    )
+                                } */}
                                 {order?.evaluationRequired ? (
                                     ""
                                 ) : (
