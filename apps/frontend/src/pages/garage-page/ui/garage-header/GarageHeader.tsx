@@ -12,7 +12,7 @@ function GarageHeader({ name, address }: { name?: string; address?: string }) {
                 </div>
                 <span className="text-small font-medium">{address} </span>
             </div>
-            <GarageActionButton />
+            <GarageActionButton name={name}/>
         </div>
     );
 }
