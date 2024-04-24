@@ -78,10 +78,10 @@ function IncomePage() {
             <div className="px-10">
                 <div className="flex justify-between items-center">
                     <p className="text-2xl font-semibold">
-                        Here is your revenue
+                        Đây là thu nhập của garage
                     </p>
                     <Select
-                        label="Select a Year"
+                        label="Chọn năm"
                         className="w-[20rem] py-5"
                         size="sm"
                         isRequired
@@ -115,13 +115,11 @@ function IncomePage() {
                         <Chart
                             labels={labels}
                             label1="Đã thu"
-                            label2="Ước tính"
                             data1={chartArray.chart}
-                            data2={estimateData}
                         />
                         <div className="flex justify-between">
                             <div>
-                                {selectedYear[0] > 2018 && (
+             clear                   {selectedYear[0] > 2018 && (
                                     <div
                                         className="w-10 h-10 flex justify-center items-center rounded-full cursor-pointer hover:bg-default-200 transition-colors "
                                         onClick={() => changeButton("left")}
@@ -133,13 +131,13 @@ function IncomePage() {
 
                             {selectedYear[0] <
                                 Number(new Date().getFullYear()) && (
-                                <div
-                                    className="w-10 h-10 flex justify-center items-center rounded-full cursor-pointer hover:bg-default-200 transition-colors "
-                                    onClick={() => changeButton("right")}
-                                >
-                                    <FontAwesomeIcon icon={faArrowRight} />
-                                </div>
-                            )}
+                                    <div
+                                        className="w-10 h-10 flex justify-center items-center rounded-full cursor-pointer hover:bg-default-200 transition-colors "
+                                        onClick={() => changeButton("right")}
+                                    >
+                                        <FontAwesomeIcon icon={faArrowRight} />
+                                    </div>
+                                )}
                         </div>
                     </div>
                 </div>
