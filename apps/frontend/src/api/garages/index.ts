@@ -73,5 +73,6 @@ export { default as updateGarageLiscene } from "./updateLiscene";
 export { default as getStaffs } from "./getStaffs";
 export { default as updateStaffs } from "./updateStaffs";
 export { default as removeStaffs } from "./removeStaffs";
+export { default as getGarageIncome } from "./getGarageIncome";
 
 export default garageInstance;
