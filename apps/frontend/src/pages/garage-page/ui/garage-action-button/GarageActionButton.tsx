@@ -1,28 +1,41 @@
-import { useState } from "react";
-
+import { useMemo, useState } from "react";
+import { Button } from "@nextui-org/react";
+import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
 import { faHeart, faFlag } from "@fortawesome/free-solid-svg-icons";
-
 import clsx from "clsx";
-import { useNavigate, useParams } from "react-router-dom";
+
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { createNewRoom, selectRooms } from "@/features/chat/rooms.slice";
-import { FetchStatus, RoomType } from "@/core/types";
-import { Button } from "@nextui-org/react";
+import { FetchStatus, Report, RoomType } from "@/core/types";
+import { ReportModal } from "@/core/ui";
+import { createGarageReport } from "@/api";
 
-function GarageActionButton() {
+function GarageActionButton({ name = "" }: { name?: string }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const user = useAppSelector((state) => state.user);
+    const user = useAppSelector((state) => state.user.value);
     const fetchingStatus = useAppSelector(
         (state) => state.rooms.fetchingStatusCreate,
     );
-    const [isFavorite, setIsFavorite] = useState<boolean>(true);
-    const [isFlag, setIsFlag] = useState<boolean>(true);
-    const { garageId } = useParams();
-
     const rooms = useAppSelector((state) => selectRooms(state));
+    const { garageId } = useParams();
+    const [isReportModalOpen, setReportModalOpen] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const shouldHideReportButton = useMemo(() => {
+        return !user || user.garageId;
+    }, [user]);
+    const [disabledReportButton, setDisabledReportButton] =
+        useState<boolean>(false);
+
+    const onReportModalSubmit = async (report: Partial<Report>) => {
+        setLoading(true);
+        await createGarageReport(report);
+        setLoading(false);
+        setReportModalOpen(true)
+        setDisabledReportButton(true);
+    };
 
     return (
         <div className="flex gap-4 actionButtons">
@@ -31,7 +44,7 @@ function GarageActionButton() {
                 variant="light"
                 className={clsx(
                     "cursor-pointer px-0 data-[hover=true]:bg-transparent",
-                    user.garageId === garageId && "hidden",
+                    user?.garageId === garageId && "hidden",
                 )}
                 onPress={async () => {
                     const isExistRoom = rooms.find(
@@ -45,7 +58,7 @@ function GarageActionButton() {
                     if (fetchingStatus !== FetchStatus.Fetching) {
                         dispatch(
                             createNewRoom({
-                                userId: user.value?._id || "",
+                                userId: user?._id || "",
                                 entityId: garageId || "",
                                 type: RoomType.WithGarage,
                             }),
@@ -71,41 +84,46 @@ function GarageActionButton() {
                 variant="light"
                 className={clsx(
                     "cursor-pointer px-0 data-[hover=true]:bg-transparent",
-                    user.garageId === garageId && "hidden",
+                    user?.garageId === garageId && "hidden",
                 )}
                 startContent={
                     <FontAwesomeIcon
                         icon={faHeart}
-                        className={clsx(
-                            "cursor-pointer",
-                            isFavorite ? "text-red-500" : "text-black",
-                        )}
+                        className={clsx("cursor-pointer, text-danger")}
                     />
                 }
                 spinnerPlacement="end"
             >
                 <span className="font-medium">Yêu thích</span>
             </Button>
-            <Button
-                size="md"
-                variant="light"
-                className={clsx(
-                    "cursor-pointer px-0 data-[hover=true]:bg-transparent",
-                    user.garageId === garageId && "hidden",
-                )}
-                startContent={
-                    <FontAwesomeIcon
-                        icon={faFlag}
-                        className={clsx(
-                            "cursor-pointer",
-                            isFlag ? "text-primary" : "text-black",
-                        )}
-                    />
-                }
-                spinnerPlacement="end"
-            >
-                <span className="font-medium">Báo cáo</span>
-            </Button>
+            {(!shouldHideReportButton || disabledReportButton) && (
+                <Button
+                    size="md"
+                    variant="light"
+                    className={clsx(
+                        "cursor-pointer px-0 data-[hover=true]:bg-transparent",
+                        user?.garageId === garageId && "hidden",
+                    )}
+                    startContent={
+                        <FontAwesomeIcon
+                            icon={faFlag}
+                            className={clsx("cursor-pointer, text-primary")}
+                        />
+                    }
+                    onPress={() => setReportModalOpen(true)}
+                    spinnerPlacement="end"
+                >
+                    <span className="font-medium">Báo cáo</span>
+                </Button>
+            )}
+            <ReportModal
+                isOpen={isReportModalOpen}
+                entityId={garageId || ""}
+                entityName={name}
+                isLoading={isLoading}
+                onClose={() => setReportModalOpen(false)}
+                onSave={onReportModalSubmit}
+            />
         </div>
     );
 }

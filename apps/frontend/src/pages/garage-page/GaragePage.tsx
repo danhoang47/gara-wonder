@@ -19,6 +19,7 @@ import OrderContextProvider from "./context/OrderContext";
 import Review from "./ui/reviews/Review";
 
 import "./GaragePage.styles.scss"
+import { useAuthLoading } from "@/core/hooks";
 
 const GaragePage = () => {
     const { garageId } = useParams();
@@ -32,6 +33,8 @@ const GaragePage = () => {
         else unload("garage-detail");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInfoLoading]);
+
+    useAuthLoading(GaragePage.name)
 
     return (
         <OrderContextProvider>

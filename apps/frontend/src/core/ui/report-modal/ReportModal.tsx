@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     Button,
+    Input,
     Modal,
     ModalBody,
     ModalContent,
@@ -10,17 +11,18 @@ import {
     Textarea,
 } from "@nextui-org/react";
 import { useState } from "react";
-import { Report, Review } from "@/core/types";
+import { Report } from "@/core/types";
 import { faFlag } from "@fortawesome/free-regular-svg-icons";
 import { types } from "./constants";
 
 export type ReportModalProps = {
     onClose: () => void;
-    onSave: (review: Partial<Review>) => void;
+    onSave: (report: Partial<Report>) => void;
     isOpen: boolean;
     entityId: string;
     entityName: string;
     isLoading: boolean;
+    isReadonly?: boolean;
 };
 
 function ReportModal({
@@ -30,18 +32,19 @@ function ReportModal({
     entityId,
     entityName,
     isLoading,
+    isReadonly = false,
 }: ReportModalProps) {
-    const [review, setReview] = useState<Partial<Report>>({
+    const [report, setReport] = useState<Partial<Report>>({
         entityId,
         content: "",
-        type: 1
+        type: 1,
     });
 
-    const onReviewValueChange = <K extends keyof Review>(
+    const onReportValueChange = <K extends keyof Report>(
         k: K,
-        v: Review[K],
+        v: Report[K],
     ) => {
-        setReview((prev) => ({
+        setReport((prev) => ({
             ...prev,
             [k]: v,
         }));
@@ -74,18 +77,31 @@ function ReportModal({
                             Báo cáo của bạn về {entityName} thế nào?
                         </p>
                         <div className="flex flex-col gap-3 justify-center pt-6">
+                            <Input
+                                value={report.title}
+                                label={"Tiêu đề"}
+                                placeholder="Nhập vào tiêu đề"
+                                onValueChange={(value) => {
+                                    onReportValueChange("title", value);
+                                }}
+                                variant="bordered"
+                                classNames={{
+                                    inputWrapper: "border",
+                                }}
+                                isReadOnly={isReadonly}
+                            />
                             <Select
                                 variant="bordered"
                                 label="Hạng mục báo cáo"
                                 placeholder="Chọn hạng mục báo cáo"
                                 classNames={{
-                                    trigger: "border"
+                                    trigger: "border",
                                 }}
+                                disallowEmptySelection
+                                isDisabled={isReadonly}
                             >
                                 {types.map(({ code, title }) => (
-                                    <SelectItem key={code}>
-                                        <span>{title}</span>
-                                    </SelectItem>
+                                    <SelectItem key={code}>{title}</SelectItem>
                                 ))}
                             </Select>
                             <Textarea
@@ -97,10 +113,11 @@ function ReportModal({
                                 placeholder="Chia sẻ vài cảm nghĩ của bạn về dịch vụ..."
                                 description="Tối thiểu 10 từ"
                                 readOnly={isLoading}
-                                value={review.content}
+                                value={report.content}
                                 onValueChange={(content) =>
-                                    onReviewValueChange("content", content)
+                                    onReportValueChange("content", content)
                                 }
+                                isReadOnly={isReadonly}
                             />
                         </div>
                     </div>
@@ -111,20 +128,22 @@ function ReportModal({
                 <ModalFooter className="">
                     <Button
                         variant="light"
-                        onPress={() => onSave(review)}
-                        isLoading={isLoading}
+                        onPress={() => onSave(report)}
+                        isDisabled={isLoading}
                         className="data-[hover=true]:bg-transparent data-[hover=true]:opacity-60"
                     >
                         <span className="">Hủy bỏ</span>
                     </Button>
-                    <Button
-                        color="danger"
-                        onPress={() => onSave(review)}
-                        className=""
-                        isLoading={isLoading}
-                    >
-                        <span className="font-medium">Báo cáo</span>
-                    </Button>
+                    {!isReadonly && (
+                        <Button
+                            color="danger"
+                            onPress={() => onSave(report)}
+                            className=""
+                            isLoading={isLoading}
+                        >
+                            <span className="font-medium">Báo cáo</span>
+                        </Button>
+                    )}
                 </ModalFooter>
             </ModalContent>
         </Modal>

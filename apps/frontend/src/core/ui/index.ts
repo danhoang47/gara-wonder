@@ -16,3 +16,4 @@ export { default as Table } from "./table";
 export { default as ReviewModal } from "./review-modal";
 export { default as EmailOrPhonePicker } from "./email-or-phone-picker";
 export { default as Switch } from "./switch";
+export { default as ReportModal } from "./report-modal";
