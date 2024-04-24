@@ -13,11 +13,11 @@ export default function ReviewCard({
     review: Review & { userId: string };
 }) {
     const { data: user } = useSWRImmutable(review.userId, getUser);
-    const tagList = review.tags.split(",");
+    const tagList = review.tags?.split(",");
     const renderStar = (rating: number) => {
         return (
             <div className="flex gap-1">
-                {Array.from(new Array(rating as number)).map((_, index) => (
+                {Array.from(new Array(rating as number))?.map((_, index) => (
                     <FontAwesomeIcon icon={starSolid} key={index} size="xs" />
                 ))}
                 {Array.from(new Array((5 - rating) as number)).map(
@@ -51,7 +51,7 @@ export default function ReviewCard({
                 <p>{moment(review.createdAt).format("LL")}</p>
             </div>
             <div className="flex gap-2 flex-wrap pt-2 pb-1">
-                {tagList.map((tag, index) => (
+                {tagList?.map((tag, index) => (
                     <div key={index}>
                         <Chip variant="solid" color="primary">
                             {tag}

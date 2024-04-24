@@ -8,7 +8,7 @@ const DEFAULT_PAGING: Paging = {
     limit: 5,
 };
 
-export default function useOrders() {
+export default function useOrders(sort: string[]) {
     const userData = useAppSelector((state) => state.user);
     const [orders, setOrders] = useState<OrderListType[]>([]);
     const getKey = useCallback(() => {
@@ -25,7 +25,7 @@ export default function useOrders() {
     const { isReload, isLoading, onNext } = useAsyncList<OrderListType>(
         getKey,
         onOrderLoaded,
-        [userData],
+        [userData, sort],
         async (params) => {
             const paging = params[1];
             if (userData.token) {
@@ -33,6 +33,7 @@ export default function useOrders() {
                     userData.token,
                     paging.limit,
                     paging?.nextCursor,
+                    sort[0],
                 );
                 return results;
             }
