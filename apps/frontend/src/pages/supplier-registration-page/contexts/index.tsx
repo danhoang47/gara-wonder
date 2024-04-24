@@ -44,12 +44,12 @@ type SupplierRegistrationConstraints = {
 
 const supplierRegistrationConstraints: SupplierRegistrationConstraints = {
     name: {
-        required: "Tên Garage bắt buộc",
-        min: [3, "Tên Garage phải lớn hơn 3 ký tự"],
-        max: [100, "Tên Garage không được vượt quá 100 ký tự"],
+        required: "Tên nhà cung cấp bắt buộc",
+        min: [3, "Tên nhà cung cấp phải lớn hơn 3 ký tự"],
+        max: [100, "Tên nhà cung cấp không được vượt quá 100 ký tự"],
     },
     address: {
-        required: "Address is required",
+        required: "Bắt buộc phải có địa chỉ",
     },
     location: {
         required: "Required",

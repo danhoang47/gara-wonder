@@ -38,8 +38,8 @@ export default function BasicInformation() {
             <div className="flex flex-wrap gap-3">
                 <Input
                     variant="bordered"
-                    placeholder="Tên Garage..."
-                    label="Tên garage"
+                    placeholder="Tên nhà cung cấp..."
+                    label="Tên nhà cung cấp"
                     value={supplierRegistrationState.name}
                     onValueChange={(name) => {
                         setSupplierRegistrationStateValue("name", name);
