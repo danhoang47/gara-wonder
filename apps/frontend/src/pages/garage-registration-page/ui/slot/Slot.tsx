@@ -12,13 +12,13 @@ function Slot() {
 
     return (
         <RegistrationSection
-            header="Slot"
-            description="Config your slot you can serve per day"
+            header="Cài đặt số chỗ"
+            description="Tinh chỉnh số chỗ garage có thể phục vụ hằng ngày"
         >
             <div className="mb-2 flex justify-between items-center">
                 <div>
-                    <p className="font-medium">Insert your slot</p>
-                    <span className="text-small text-foreground-400">Don't worry, you can modify it later</span>
+                    <p className="font-medium">Nhập số chỗ</p>
+                    <span className="text-small text-foreground-400">Đừng lo, bạn có thể tinh chỉnh lại sau</span>
                 </div>
                 <div>
                     <Stepper
