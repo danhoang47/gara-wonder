@@ -39,7 +39,7 @@ export default function BrandInput() {
             <div className="flex justify-between items-center">
                 <div>
                     <p className="text-sm text-default-600 after:content-['*'] after:text-danger after:ml-0.5">
-                        Your Car
+                        Xe của bạn
                     </p>
                     <p className="">{getCarLabel()}</p>
                 </div>

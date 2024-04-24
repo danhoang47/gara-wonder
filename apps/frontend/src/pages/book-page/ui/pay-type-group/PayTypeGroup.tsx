@@ -17,10 +17,10 @@ export default function PayTypeGroup() {
             }}
         >
             <UniformRadio description="Pay by cash when you receive the car" value={PayType.PayAsReceive.toString()}>
-                <p className="font-medium">Pay at receive</p>
+                <p className="font-medium">Thanh toán lúc nhận lại xe</p>
             </UniformRadio>
             <UniformRadio description="Support multiple banking platforms" value={PayType.PayFirst.toString()}>
-                <p className="font-medium">Pay first</p>
+                <p className="font-medium">Thanh toán trước</p>
             </UniformRadio>
         </RadioGroup>
     )
