@@ -8,14 +8,16 @@ const ProgressButton = ({
     evaluationProvided,
     isProvideEvaluation,
     setOnAccept,
+    setOnDeleteModal,
 }: {
     status: number;
+    isProvideEvaluation: boolean;
+    evaluationProvided: boolean;
     setModalOpen: () => void;
     setNextModalOpen: () => void;
     setProvideOrder: () => void;
-    evaluationProvided: boolean;
-    isProvideEvaluation: boolean;
     setOnAccept: (str: string) => void;
+    setOnDeleteModal: () => void;
 }) => {
     if (status <= -2) return;
     if (status === -1)
@@ -32,7 +34,7 @@ const ProgressButton = ({
                 <Button
                     color="default"
                     className="w-[14rem]"
-                    onClick={() => setOnAccept("reject")}
+                    onClick={() => setOnDeleteModal()}
                 >
                     Từ chối đơn
                 </Button>
@@ -52,7 +54,7 @@ const ProgressButton = ({
                 <Button
                     color="default"
                     className="w-[14rem]"
-                    onClick={() => setOnAccept("reject")}
+                    onClick={() => setOnDeleteModal()}
                 >
                     Hủy đơn
                 </Button>
@@ -72,7 +74,7 @@ const ProgressButton = ({
                 <Button
                     color="default"
                     className="w-[14rem]"
-                    onClick={() => setOnAccept("reject")}
+                    onClick={() => setOnDeleteModal()}
                 >
                     Hủy đơn
                 </Button>
@@ -91,7 +93,7 @@ const ProgressButton = ({
                 <Button
                     color="default"
                     className="w-[14rem]"
-                    onClick={() => setOnAccept("reject")}
+                    onClick={() => setOnDeleteModal()}
                 >
                     Hủy đơn
                 </Button>

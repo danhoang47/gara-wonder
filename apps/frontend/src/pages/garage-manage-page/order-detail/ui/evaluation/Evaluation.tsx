@@ -46,6 +46,8 @@ function Evaluation({
     const [isEvaluationModalOpen, setIsEvaluationModalOpen] =
         useState<boolean>(false);
     const [isNextModalOpen, setIsNextModalOpen] = useState<boolean>(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+
     const [isConfirmModalOpen, setIsConfirmModalOpen] =
         useState<boolean>(false);
     const { garageId, orderId } = useParams();
@@ -287,6 +289,9 @@ function Evaluation({
                 setOnAccept={(str: string) => {
                     onAccept(str);
                 }}
+                setOnDeleteModal={() => {
+                    setIsDeleteModalOpen(true);
+                }}
                 evaluationProvided={evaluationProvided}
                 isProvideEvaluation={isHaveEvaluation}
             />
@@ -413,6 +418,47 @@ function Evaluation({
                                 <p className="text-background">
                                     Tới bước tiếp theo
                                 </p>
+                            </Button>
+                        </div>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+
+            <Modal
+                isOpen={isDeleteModalOpen}
+                onOpenChange={() => setIsDeleteModalOpen(false)}
+                classNames={{
+                    wrapper: "overflow-y-hidden",
+                }}
+                size="2xl"
+            >
+                <ModalContent className="max-w-[600px]">
+                    <ModalHeader>
+                        <p className="text-center text-lg font-bold">
+                            Xác nhận
+                        </p>
+                    </ModalHeader>
+                    <Divider />
+                    <ModalBody className="pb-4 overflow-auto text-lg">
+                        <p className="font-medium">Bạn có muốn hủy đơn này</p>
+                    </ModalBody>
+
+                    <ModalFooter className="flex items-center justify-end">
+                        <div className="flex gap-2 justify-end">
+                            <Button
+                                variant="light"
+                                onClick={() => setIsDeleteModalOpen(false)}
+                            >
+                                <p className="text-black">Đóng</p>
+                            </Button>
+                            <Button
+                                color="primary"
+                                onClick={() => {
+                                    onAccept("reject");
+                                    setIsDeleteModalOpen(false);
+                                }}
+                            >
+                                <p className="text-background">Hủy đơn</p>
                             </Button>
                         </div>
                     </ModalFooter>

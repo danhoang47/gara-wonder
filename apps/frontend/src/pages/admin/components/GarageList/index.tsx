@@ -87,7 +87,8 @@ const GarageList: React.FunctionComponent = () => {
                         aria-label="Example static collection table"
                         classNames={{
                             base: "max-h-[25rem] overflow-auto no-scrollbar",
-                            th: "bg-primary-500 text-white",
+                            wrapper: "no-scrollbar",
+                            td: "text-primary",
                         }}
                     >
                         <TableHeader>
@@ -121,6 +122,7 @@ const GarageList: React.FunctionComponent = () => {
                                         <Button
                                             color="primary"
                                             radius="sm"
+                                            variant="light"
                                             size="sm"
                                             className="text-white font-semibold w-[8rem]"
                                             onClick={() =>

@@ -8,6 +8,7 @@ export default async function getUserOrders(
     token: string | undefined,
     limit: number | undefined,
     cursor: string | undefined | null,
+    sort: string = "asc",
 ) {
     try {
         let queryParams: string = `/orders?`;
@@ -19,7 +20,7 @@ export default async function getUserOrders(
             queryParams += `&cursor=${cursor}`;
         }
         const result = await axios.get<Response<OrderListType[]>>(
-            baseUsersUrl + queryParams + `&status=0`,
+            baseUsersUrl + queryParams + `&sort${sort}`,
 
             {
                 withCredentials: true,

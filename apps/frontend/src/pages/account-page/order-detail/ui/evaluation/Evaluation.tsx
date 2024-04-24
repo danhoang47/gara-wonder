@@ -31,6 +31,7 @@ const ProgressButton = ({
     setConfirm,
     setReviewModal,
     isProvideEvaluation,
+    isReviewd: isReviewed,
 }: {
     status: number;
     setModalOpen: () => void;
@@ -38,6 +39,7 @@ const ProgressButton = ({
     setConfirm: () => void;
     setReviewModal: () => void;
     isProvideEvaluation: boolean;
+    isReviewd: boolean;
 }) => {
     if (status === 0 && isProvideEvaluation)
         return (
@@ -74,7 +76,7 @@ const ProgressButton = ({
             </>
         );
     }
-    if (status === 4) {
+    if (status === 4 && !isReviewed) {
         return (
             <>
                 <div className="w-full h-1 border-t-2" />
@@ -100,12 +102,14 @@ function Evaluation({
     refetch,
     evaluationId,
     garageId,
+    reviewId,
 }: {
     status?: number;
     handOverTime?: number;
     refetch: () => void;
     evaluationId?: string;
     garageId?: string;
+    reviewId: boolean;
 }) {
     const { orderId } = useParams();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -212,9 +216,14 @@ function Evaluation({
             }
         }
     };
-    const onSentReview = async (service: Partial<Service>) => {
+    const onSentReview = async (review: Partial<Review>) => {
         try {
-            const result = await addReview(service, garageId, user.token);
+            const result = await addReview(
+                // @ts-ignore this type error
+                { ...review, orderId: orderId },
+                garageId,
+                user.token,
+            );
 
             if (result.statusCode === 200) {
                 dispatch(
@@ -226,6 +235,7 @@ function Evaluation({
                     }),
                 );
                 setIsReviewOpen(false);
+                refetch();
             }
         } catch (error) {
             dispatch(
@@ -241,10 +251,6 @@ function Evaluation({
     return (
         <div className="border-2 rounded-lg">
             <ProgressBar status={status || 0} />
-            {(status as number) < 4 ||
-                ((status as number) > 0 && (
-                    <div className="w-full h-1 border-t-2" />
-                ))}
             <ProgressButton
                 status={status || 0}
                 isProvideEvaluation={evaluationId !== undefined}
@@ -258,6 +264,7 @@ function Evaluation({
                     setIsModalOpen(true);
                 }}
                 setReviewModal={() => setIsReviewOpen(true)}
+                isReviewd={reviewId}
             />
             <Modal
                 isOpen={isModalOpen}

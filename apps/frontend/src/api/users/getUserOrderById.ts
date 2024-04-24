@@ -9,7 +9,7 @@ export default async function getUserOrderById(
     token: string | undefined,
 ) {
     try {
-        const result = await axios.get<Response<OrderDetailType>>(
+        const result = await axios.get<Response<OrderDetailType&{reviewId:string}>>(
             baseUsersUrl + `/orders/${id}`,
             {
                 withCredentials: true,

@@ -58,6 +58,7 @@ function OrderDetail() {
                         refetch={refetch}
                         garageId={order?.garageId}
                         evaluationId={order?.evaluationId}
+                        reviewId={!!order?.reviewId}
                     />
                     {/* User Information */}
                     <UserInfo user={order?.user} />
@@ -172,7 +173,9 @@ function OrderDetail() {
                             <p className="text-sm text-default-400">
                                 Giá dịch vụ
                             </p>
-                            <p className="text-sm font-bold">USD 80</p>
+                            <p className="text-sm font-bold">
+                                {order?.totalPrice}
+                            </p>
                         </div>
                         <div className="flex justify-between">
                             <p className="text-sm text-default-400">
