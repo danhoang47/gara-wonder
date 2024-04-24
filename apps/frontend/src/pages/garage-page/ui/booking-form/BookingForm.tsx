@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, Tooltip } from "@nextui-org/react";
 import BrandInput from "./brand-input";
 import ServiceSelect from "./service-select";
 import SelectInput from "./date-input";
@@ -7,15 +7,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useOrderContext } from "../../hooks";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { orderAdded } from "@/features/cart/cart.slice";
-import { createPortal } from "react-dom";
-import { Overlay } from "@/core/ui";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useSWR from "swr";
 import { getScheduleSlot } from "@/api";
 import moment from "moment";
 import clsx from "clsx";
 import { DisabledDate } from "@/core/ui/calendar/Calendar";
+import { notify } from "@/features/toasts/toasts.slice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
+import { ObjectId } from "bson";
 
 function BookingForm() {
     const { garageId } = useParams();
@@ -23,7 +23,6 @@ function BookingForm() {
     const navigate = useNavigate();
     const { order } = useOrderContext();
     const user = useAppSelector((state) => state.user.value);
-    const [isDomReady, setDomReady] = useState<boolean>(false);
     const [hasAddedToCart, setAddedToCart] = useState<boolean>(false);
     const [urlSearchParams] = useSearchParams();
     const suggestionServices = useMemo(
@@ -47,24 +46,26 @@ function BookingForm() {
                     .getTime(),
             }),
         {
-            refreshInterval: 30000, 
+            refreshInterval: 30000,
             revalidateOnFocus: false,
             refreshWhenHidden: true,
         },
     );
+    const extraFee = schedule ? schedule[order.orderTime + ""]?.extraFee : 0;
+
     const disabledDates = useMemo(() => {
-        if (!schedule) return []
+        if (!schedule) return [];
 
         return Object.keys(schedule).reduce((acc, dateKey) => {
-            const config = schedule[dateKey]
+            const config = schedule[dateKey];
 
             if (config.disabled || config.actualSlot === config.maximumSlot) {
-                return [...acc, Number.parseInt(dateKey)]
+                return [...acc, Number.parseInt(dateKey)];
             }
 
-            return acc
-        }, [] as DisabledDate[])
-    }, [schedule])
+            return acc;
+        }, [] as DisabledDate[]);
+    }, [schedule]);
 
     const onBookPress = () => {
         navigate("/book", {
@@ -73,14 +74,19 @@ function BookingForm() {
     };
 
     const onAddToCart = () => {
-        dispatch(orderAdded(order));
+        dispatch(
+            orderAdded({
+                ...order,
+                _id: new ObjectId().toString(),
+            }),
+        );
         setAddedToCart(true);
     };
 
-    const validateForm = useMemo<boolean>(() => {
+    const disabledActionButton = useMemo<boolean>(() => {
         if (
-            order.car?.brandId &&
-            order.orderTime &&
+            order?.car?.brandId &&
+            order?.orderTime &&
             order?.serviceIds?.length
         ) {
             return false;
@@ -89,28 +95,27 @@ function BookingForm() {
     }, [order]);
 
     useEffect(() => {
-        setDomReady(true);
-    }, []);
-
-    useEffect(() => {
         if (hasAddedToCart) {
-            window.scroll({
-                top: 0,
-                behavior: "smooth",
-            });
+            dispatch(
+                notify({
+                    title: "Thêm vào giỏ hàng",
+                    description: "Thêm vào giỏ hàng thành công",
+                    type: "success",
+                }),
+            );
             setTimeout(() => {
                 setAddedToCart(false);
             }, 3000);
         }
-    }, [hasAddedToCart]);
+    }, [dispatch, hasAddedToCart]);
 
     useEffect(() => {
         if (formRef.current && suggestionServices) {
-            const { current } = formRef
+            const { current } = formRef;
             current.scrollIntoView({
                 block: "center",
-                behavior: "smooth"
-            })
+                behavior: "smooth",
+            });
         }
     }, [formRef, suggestionServices]);
 
@@ -122,28 +127,44 @@ function BookingForm() {
             <div className="flex flex-col gap-6 ">
                 <p className="font-bold text-xl leading-5">Đặt dịch vụ</p>
                 <div className="flex flex-col gap-3 relative">
-                    <SelectInput disabledDates={disabledDates}/>
+                    <SelectInput disabledDates={disabledDates} />
                     <BrandInput />
                     <ServiceSelect />
                 </div>
-                <div className="border-t-2 border-zync-400" />
-
+                <div className="border-t-2 border-zync-400 flex justify-between py-4">
+                    {Boolean(extraFee) && (
+                        <>
+                            <div className="flex gap-2 items-center">
+                                <p className="underline">Phụ phí</p>
+                                <Tooltip content="Phụ phí này được quản lý garage cài đặt dành cho những ngày đặc biệt">
+                                    <FontAwesomeIcon
+                                        icon={faQuestionCircle}
+                                        className="text-default-500"
+                                    />
+                                </Tooltip>
+                            </div>
+                            <p className="font-medium">{extraFee}%</p>
+                        </>
+                    )}
+                </div>
                 <div className="flex flex-col gap-3">
                     <Button
                         color="primary"
                         radius="sm"
-                        isDisabled={validateForm || disabledBook}
+                        isDisabled={disabledActionButton || disabledBook}
                         disableAnimation
                         onClick={onBookPress}
                         className="w-full"
                     >
-                        <span className="text-base font-medium">Đặt ngay</span>
+                        <span className="text-base font-semibold">
+                            Đặt ngay
+                        </span>
                     </Button>
                     <Button
                         color="default"
                         radius="sm"
                         variant="bordered"
-                        isDisabled={validateForm || disabledBook}
+                        isDisabled={disabledActionButton || disabledBook}
                         disableAnimation
                         onClick={onAddToCart}
                         className="w-full"
@@ -152,62 +173,6 @@ function BookingForm() {
                     </Button>
                 </div>
             </div>
-            {isDomReady &&
-                hasAddedToCart &&
-                createPortal(
-                    <Overlay>
-                        <div className="flex sticky container justify-end mx-auto">
-                            <div className="bg-white w-1/4 p-4 min-w-96 h-fit">
-                                <div className="flex items-center">
-                                    <FontAwesomeIcon
-                                        icon={faCheckCircle}
-                                        className="text-success"
-                                    />
-                                    <span className="ml-2 text-small">
-                                        Thêm vào giỏ hàng thành công
-                                    </span>
-                                    <Button
-                                        className="ml-auto"
-                                        isIconOnly
-                                        size="sm"
-                                        variant="light"
-                                        radius="full"
-                                        onPress={() => setAddedToCart(false)}
-                                    >
-                                        <FontAwesomeIcon icon={faXmark} />
-                                    </Button>
-                                </div>
-                                <div className="mt-4 flex gap-2">
-                                    <div className="w-20 h-20">
-                                        <img
-                                            alt=""
-                                            className="object-cover h-full w-full"
-                                            src="https://images.unsplash.com/photo-1551522435-a13afa10f103?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwZ2FyYWdlfGVufDB8fDB8fHww"
-                                        />
-                                    </div>
-                                    <div>Mercedes C200</div>
-                                </div>
-                                <div className="mt-4 flex gap-2">
-                                    <Button
-                                        variant="bordered"
-                                        radius="full"
-                                        className="grow"
-                                    >
-                                        Xem giỏ hàng
-                                    </Button>
-                                    <Button
-                                        color="primary"
-                                        radius="full"
-                                        className="grow"
-                                    >
-                                        Thanh toán ngay
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </Overlay>,
-                    document.getElementById("garage")!,
-                )}
         </div>
     );
 }

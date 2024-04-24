@@ -45,7 +45,7 @@ function Toast({ item }: ToastProps) {
                 <FontAwesomeIcon
                     icon={getIcon()}
                     size="lg"
-                    className={`text-${item.type}`}
+                    className={`text-${item.type === "failure" ? "danger" : item.type}`}
                 />
             </div>
             <div className="grow text-ellipsis overflow-x-hidden whitespace-nowrap flex flex-col justify-center">

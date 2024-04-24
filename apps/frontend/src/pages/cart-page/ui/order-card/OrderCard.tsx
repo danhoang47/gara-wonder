@@ -4,6 +4,8 @@ import useSWRImmutable from "swr/immutable";
 import { getBasicGarageInfo, getBrands, getGarageServices } from "@/api";
 import { Button, Card, Skeleton } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/core/hooks";
+import { orderRemoved } from "@/features/cart/cart.slice";
 
 export type OrderCardProps = {
     order: Order;
@@ -25,6 +27,7 @@ function OrderCard({ order }: OrderCardProps) {
         `brands`,
         getBrands,
     );
+    const dispatch = useAppDispatch();
 
     const garage = garages?.data[0];
     const selectedServices = useMemo(() => {
@@ -72,18 +75,28 @@ function OrderCard({ order }: OrderCardProps) {
                 <p>{garage?.name}</p>
                 <p>{`${selectedBrand?.name} ${car.model} ${car.releaseYear}`}</p>
             </div>
-            <Button
-                variant="bordered"
-                className="ml-auto mr-4 border"
-                radius="full"
-                onPress={() => {
-                    navigate("/book?type=edit", {
-                        state: order,
-                    });
-                }}
-            >
-                Edit
-            </Button>
+            <div className="flex gap-2 ml-auto mr-4">
+                <Button
+                    variant="bordered"
+                    className="border"
+                    radius="full"
+                    onPress={() => dispatch(orderRemoved(order._id))}
+                >
+                    Xóa
+                </Button>
+                <Button
+                    variant="bordered"
+                    className="border"
+                    radius="full"
+                    onPress={() => {
+                        navigate("/book?type=edit", {
+                            state: order,
+                        });
+                    }}
+                >
+                    Chỉnh sửa
+                </Button>
+            </div>
         </div>
     );
 }

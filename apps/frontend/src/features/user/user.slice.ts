@@ -62,7 +62,8 @@ const userSlice = createSlice({
         setRoleToGarageOwner(state, action) {
             return {
                 ...state,
-                role: action.payload,
+                role: action.payload.role,
+                garageId: action.payload._id,
             };
         },
     },

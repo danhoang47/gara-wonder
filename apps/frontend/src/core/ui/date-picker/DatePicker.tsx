@@ -46,7 +46,6 @@ function DatePicker({
     onSelectedChange,
     disabledDates = [],
     isLoading = false,
-    schedule = undefined
 }: DatePickerProps) {
     const [year, setYear] = useState<number>(defaultYear);
     const [month, setMonth] = useState<number>(defaultMonth);

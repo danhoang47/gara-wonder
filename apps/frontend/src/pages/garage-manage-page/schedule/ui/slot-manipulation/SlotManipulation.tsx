@@ -8,7 +8,7 @@ import { ScheduleType } from "@/api/garages/getScheduleSlot";
 import { configScheduleSlot } from "@/api";
 import { useParams } from "react-router-dom";
 import { notify } from "@/features/toasts/toasts.slice";
-import { useAppDispatch } from "@/core/hooks";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { mutate } from "swr";
 
 export type SlotManipulationProps = {
@@ -40,6 +40,7 @@ function SlotManipulation({
     );
     const [modifiedSlots, setModifiedSlot] = useState<SlotContentType>({});
     const dispatch = useAppDispatch();
+    const user = useAppSelector(state => state.user.value)
 
     useEffect(() => {
         if (calendarData) {
@@ -216,13 +217,13 @@ function SlotManipulation({
                 </div>
                 <div className="sticky bottom-0">
                     <div className="flex justify-end p-4 gap-2">
-                        <Button variant="light" radius="full">
+                        <Button variant="light" radius="full" isDisabled={!user?.authorities?.includes("WITH_SCHEDULE")}>
                             Hủy
                         </Button>
                         <Button
                             color="primary"
                             radius="full"
-                            isDisabled={disabledSaveButton}
+                            isDisabled={disabledSaveButton || !user?.authorities?.includes("WITH_SCHEDULE")}
                             onClick={() => onSave()}
                         >
                             <span className="font-medium">Lưu</span>

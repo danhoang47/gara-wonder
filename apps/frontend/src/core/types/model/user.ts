@@ -30,6 +30,7 @@ export type User = Model & {
     supplierId?: string;
     dob?: string;
     cars: PersonalCar[];
+    authorities?: Authority[];
 };
 
 export type PersonalCar = Model &
@@ -37,4 +38,4 @@ export type PersonalCar = Model &
         memo: string;
     };
 
-export type Authority = "WITH_ORDER" | "WITH_INCOME";
+export type Authority = "WITH_ORDER" | "WITH_INCOME" | "WITH_SCHEDULE";
