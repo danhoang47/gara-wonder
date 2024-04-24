@@ -48,6 +48,9 @@ const OrdersDetail = lazy(
     () => import("@/pages/garage-manage-page/order-detail"),
 );
 const Schedule = lazy(() => import("@/pages/garage-manage-page/schedule"));
+const BillingHistory = lazy(
+    () => import("@/pages/garage-manage-page/billing-history"),
+);
 const OrdersPage = lazy(() => import("@/pages/garage-manage-page/orders-page"));
 const StaffManagement = lazy(
     () => import("@/pages/garage-manage-page/staff-management"),
@@ -292,6 +295,14 @@ const router = createBrowserRouter(
                         element={
                             <Suspense fallback={<FullPageLoad />}>
                                 <IncomePage />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="billing-history"
+                        element={
+                            <Suspense fallback={<FullPageLoad />}>
+                                <BillingHistory />
                             </Suspense>
                         }
                     />

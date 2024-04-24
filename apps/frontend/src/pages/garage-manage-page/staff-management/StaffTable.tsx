@@ -32,7 +32,7 @@ const headerTitle = [
 ];
 
 function StaffTable({
-    staffs,
+    staffs = [],
     onStaffSelect,
     selectedStaffId,
     isLoading,

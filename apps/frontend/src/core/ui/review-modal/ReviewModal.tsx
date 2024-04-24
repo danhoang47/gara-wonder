@@ -110,6 +110,8 @@ function ReviewModal({
                         >
                             {Array.from(new Array(5)).map((_, index) => (
                                 <button
+                                    type="button"
+                                    title="rating star button"
                                     key={index}
                                     data-index={index}
                                     onMouseEnter={onRatingHover}

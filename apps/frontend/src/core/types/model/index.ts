@@ -10,3 +10,4 @@ export * from "./supplier";
 export * from "./review";
 export * from "./supplier";
 export * from "./invitation";
+export * from "./report"

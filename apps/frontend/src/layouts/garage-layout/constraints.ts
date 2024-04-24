@@ -16,6 +16,7 @@ export const navList: navType[] = [
             { title: "Review", link: "review" },
             { title: "Thu nhập", link: "income" },
             { title: "Nhân viên", link: "staff" },
+            { title: "Hóa đơn", link: "billing-history" },
         ],
     },
 ];
