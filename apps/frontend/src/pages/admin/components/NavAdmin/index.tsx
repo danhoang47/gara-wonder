@@ -11,7 +11,7 @@ const NavAdmin: React.FC = () => {
                 borderBottom: "1px solid #c3c2c2",
             }}
         >
-            <Button>Export CSV</Button>
+            <Button>Xuất CSV</Button>
         </div>
     );
 };
