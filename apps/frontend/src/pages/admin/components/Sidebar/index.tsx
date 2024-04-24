@@ -21,7 +21,7 @@ const Sidebar: React.FC = () => {
     return (
         <div className="sidebar">
             <div className="sidebar_logo">
-                <p>GaraWonder</p>
+                <p>GarageWonder</p>
             </div>
 
             <div className="sidebar_box">
@@ -31,8 +31,7 @@ const Sidebar: React.FC = () => {
                         className={activePage === "/admin/dashboard" ? "active" : ""}
                         onClick={() => setActivePage("dashboard")}
                     >
-                        <FontAwesomeIcon icon={faTableColumns} /> General
-                        Dashboard
+                        <FontAwesomeIcon icon={faTableColumns} /> Tổng quát
                     </Link>
                     <Link
                         to="/admin/garage-management"
@@ -41,15 +40,14 @@ const Sidebar: React.FC = () => {
                         }
                         onClick={() => setActivePage("garage-management")}
                     >
-                        <FontAwesomeIcon icon={faBarsProgress} /> Garage
-                        Management
+                        <FontAwesomeIcon icon={faBarsProgress} /> Quản lí garage
                     </Link>
                     <Link
                         to="/admin/report"
                         className={activePage === "/admin/report" ? "active" : ""}
                         onClick={() => setActivePage("report")}
                     >
-                        <FontAwesomeIcon icon={faChartLine} /> Customer Report
+                        <FontAwesomeIcon icon={faChartLine} /> Báo cáo từ người dùng
                     </Link>
                 </div>
 

@@ -161,6 +161,34 @@ function OrderCard({
                                             </p>
                                         </Chip>
                                     )}
+                                    {
+                                        Number(order?.status) <= -2 && <Chip color="danger">
+                                            <p className="font-medium">
+                                                Đã hủy
+                                            </p>
+                                        </Chip>
+                                    }
+                                    {
+                                        Number(order?.status) >= 1 && Number(order?.status) <= 2 && <Chip color="primary">
+                                            <p className="font-medium">
+                                                Đang xử lí
+                                            </p>
+                                        </Chip>
+                                    }
+                                    {
+                                        Number(order?.status) == 3 && <Chip color="warning">
+                                            <p className="font-medium">
+                                                Đang chờ thanh toán
+                                            </p>
+                                        </Chip>
+                                    }
+                                    {
+                                        Number(order?.status) == 4 && <Chip color="success">
+                                            <p className="font-medium">
+                                                Đã hoàn thành
+                                            </p>
+                                        </Chip>
+                                    }
                                     {order?.evaluationRequired ? (
                                         ""
                                     ) : (
