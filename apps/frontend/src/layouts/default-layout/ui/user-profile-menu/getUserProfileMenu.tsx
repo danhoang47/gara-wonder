@@ -12,6 +12,7 @@ const getUserProfileMenu = (
     openMenu: () => void,
     garageId?: string,
     supplierId?: string,
+    isAdmin?: boolean,
 ): Array<Record<"options", MenuItem[]>> => {
     const menuItems = [];
 
@@ -70,14 +71,33 @@ const getUserProfileMenu = (
                     },
                     {
                         key: "k5",
-                        component: <p className="py-2 px-3 w-full block">Giúp đỡ</p>,
+                        component: (
+                            <p className="py-2 px-3 w-full block">Giúp đỡ</p>
+                        ),
                         title: "Help Center",
                     },
                 ],
             },
         );
     }
-
+    if (isAdmin) {
+        menuItems.push({
+            options: [
+                {
+                    key: "k1",
+                    component: (
+                        <Link
+                            to={`/admin/dashboard`}
+                            className="text-foreground text-small py-2 px-3 w-full block"
+                        >
+                            Quản lý Admin
+                        </Link>
+                    ),
+                    title: "Page Admin",
+                },
+            ],
+        });
+    }
     if (garageId) {
         menuItems.push({
             options: [
@@ -182,7 +202,7 @@ const getUserProfileMenu = (
                 },
                 {
                     key: "k2",
-                    component: <SignOutTrigger className="py-2 px-3 w-full"/>,
+                    component: <SignOutTrigger className="py-2 px-3 w-full" />,
                     title: "Sign out",
                 },
             ],

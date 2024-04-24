@@ -23,6 +23,7 @@ function UserProfileMenu() {
         },
         user?.garageId,
         user?.supplierId,
+        user?.role === 6,
     );
 
     return (
