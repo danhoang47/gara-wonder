@@ -19,7 +19,7 @@ function InvitationCard({ invitation }: InvitationCardProps) {
         invitation.entityId,
         getBasicGarageInfo,
     );
-    const garage = result?.data[0];
+    const garage = result?.data?.length ? result?.data[0] : undefined;
     const updateStatus = useAppSelector((state) => state.user.updateStatus);
     const garageId = useAppSelector((state) => state.user.value?.garageId);
     const dispatch = useAppDispatch();

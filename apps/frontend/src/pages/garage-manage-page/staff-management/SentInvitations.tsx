@@ -55,7 +55,7 @@ function SentInvitations({ isOpen, onClose }: SentInvitationsProps) {
                 <ModalHeader>
                     <span>Lời mời đã gửi</span>
                 </ModalHeader>
-                <ModalBody>A
+                <ModalBody>
                     {invitations?.map((invitation) => (
                         <InvitationCard
                             invitation={invitation}
