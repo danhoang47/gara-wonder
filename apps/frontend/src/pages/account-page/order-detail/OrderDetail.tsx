@@ -123,8 +123,7 @@ function OrderDetail() {
                     {/* Report button */}
                     <div className="p-5 border-2 rounded-lg ">
                         <p className="text-sm font-bold">
-                            If you have any issues with the correct booking, you
-                            can report it to the admin here
+                            Nếu bạn có bất kì vấn đề gì với đơn hiện tại, có thể liên hệ với admin tại đây
                         </p>
                         <Button
                             className="mt-5 w-full"
@@ -135,7 +134,7 @@ function OrderDetail() {
                                 <FontAwesomeIcon icon={faFlag} size="lg" />
                             }
                         >
-                            Report
+                            Báo cáo
                         </Button>
                     </div>
                     {/* Summary */}
