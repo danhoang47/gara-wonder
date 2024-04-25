@@ -118,7 +118,10 @@ export default function ServiceTemplateModal({
     return (
         <Modal
             isOpen={isOpen}
-            onClose={onModalClose}
+            onClose={() => {
+                resetLocalService()
+                onModalClose()
+            }}
             size="lg"
             scrollBehavior="inside"
         >

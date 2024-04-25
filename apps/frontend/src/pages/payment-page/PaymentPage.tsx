@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import Lottie from "react-lottie";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import paymentSuccessAnimation from "@/assets/payment_success.json";
-import { Link } from "@nextui-org/react";
 import useSWRImmutable from "swr/immutable";
 import { persistPayment } from "@/api";
 import { useLoadingContext } from "@/core/hooks";
@@ -85,13 +85,13 @@ function PaymentPage() {
                     </p>
                 </div>
                 <div className="flex gap-4 mt-8">
-                    <Link href="/garages">
+                    <Link to="/garages">
                         <span className="font-medium text-foreground">
                             Trở lại trang chủ
                         </span>
                     </Link>
                     <Link
-                        href="/user/settings"
+                        to="/user/settings"
                         className="h-10 py-3 px-4 bg-primary rounded-large"
                     >
                         <span className="font-medium text-background">

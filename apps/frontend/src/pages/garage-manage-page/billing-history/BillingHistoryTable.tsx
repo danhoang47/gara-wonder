@@ -1,3 +1,4 @@
+import { WithUserBill } from "@/api/garages/getBillings";
 import {
     Avatar,
     Button,
@@ -22,10 +23,16 @@ const headerTitles = [
 ];
 
 export type BillingHistoryTableProps = {
-    
-}
+    onOpenModalPress: (bill: WithUserBill) => void;
+    bills: WithUserBill[];
+    isLoading: boolean;
+};
 
-function BillingHistoryTable() {
+function BillingHistoryTable({
+    onOpenModalPress,
+    bills,
+    isLoading
+}: BillingHistoryTableProps) {
     return (
         <Table removeWrapper selectionMode="none" isStriped>
             <TableHeader>
@@ -41,34 +48,48 @@ function BillingHistoryTable() {
                     </TableColumn>
                 ))}
             </TableHeader>
-            <TableBody>
-                <TableRow>
-                    <TableCell>1</TableCell>
-                    <TableCell>
-                        {moment(new Date()).format("DD/MM/YYYY HH:MM:SS")}
-                    </TableCell>
-                    <TableCell>
-                        <Chip color="primary">
-                            <span className="text-white font-medium">
-                                Đã thanh toán
-                            </span>
-                        </Chip>
-                    </TableCell>
-                    <TableCell>
-                        {moment(new Date()).format("DD/MM/YYYY HH:MM:SS")}
-                    </TableCell>
-                    <TableCell>
-                        <div className="flex gap-2 items-center">
-                            <Avatar />
-                            <p>Hoàng Nguyễn Quốc Đạt</p>
-                        </div>
-                    </TableCell>
-                    <TableCell>
-                        <Button size="sm" variant="light">
-                            <span className="font-medium">Thanh toán</span>
-                        </Button>
-                    </TableCell>
-                </TableRow>
+            <TableBody isLoading={isLoading}>
+                {bills.map((bill, index) => (
+                    <TableRow>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>
+                            {moment(new Date()).format("DD/MM/YYYY HH:MM:SS")}
+                        </TableCell>
+                        <TableCell>
+                            <Chip color="primary">
+                                <span className="text-white font-medium">
+                                    {bill.hasPaid
+                                        ? "Đã thanh toán"
+                                        : "Chưa thanh toán"}
+                                </span>
+                            </Chip>
+                        </TableCell>
+                        <TableCell>
+                            {moment(new Date()).format("DD/MM/YYYY HH:MM:SS")}
+                        </TableCell>
+                        <TableCell>
+                            <div className="flex gap-2 items-center">
+                                <Avatar src={bill.paidBy.photoURL} />
+                                <p>{bill.paidBy.displayName}</p>
+                            </div>
+                        </TableCell>
+                        <TableCell>
+                            <Button
+                                size="sm"
+                                variant="light"
+                                isDisabled={bill.hasPaid}
+                                color={bill.hasPaid ? "default" : "primary"}
+                                onPress={() => onOpenModalPress(bill)}
+                            >
+                                <span className="font-medium">
+                                    {bill.hasPaid
+                                        ? "Đã thanh toán"
+                                        : "Thanh toán"}
+                                </span>
+                            </Button>
+                        </TableCell>
+                    </TableRow>
+                ))}
             </TableBody>
         </Table>
     );

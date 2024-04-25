@@ -74,5 +74,6 @@ export { default as getStaffs } from "./getStaffs";
 export { default as updateStaffs } from "./updateStaffs";
 export { default as removeStaffs } from "./removeStaffs";
 export { default as getGarageIncome } from "./getGarageIncome";
+export { default as getBillings } from './getBillings'
 
 export default garageInstance;
