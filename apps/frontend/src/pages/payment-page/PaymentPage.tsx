@@ -94,7 +94,7 @@ function PaymentPage() {
                     </Link>
                     <Link
                         to={
-                            params.type
+                            params?.type
                                 ? `garages/${user?.garageId}/management/billing-history`
                                 : "/account/settings"
                         }

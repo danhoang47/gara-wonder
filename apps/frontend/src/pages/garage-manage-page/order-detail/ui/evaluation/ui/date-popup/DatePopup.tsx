@@ -11,12 +11,12 @@ function DatePopup({
     closeModal,
     setDate,
     pickDate,
-    disabledDates
+    disabledDates = []
 }: {
     closeModal: () => void;
     setDate: (date: DateRangeType) => void;
     pickDate: DateRangeType;
-    disabledDates: DisabledDate[]
+    disabledDates?: DisabledDate[]
 }) {
     const { evaluation, setEvaluationValue } = useContext(EvaluationContext);
 

@@ -20,15 +20,33 @@ export interface IButtonFilter<T> {
 }
 
 const ProductsFilter = () => {
-    const { data: brands } = useSWRImmutable("brands", getBrands)
+    const { data: brands } = useSWRImmutable("brands", getBrands);
 
     return (
         <div className="flex gap-3">
-            <ButtonFilter 
+            <ButtonFilter
+                filter={{
+                    filterName: "Loại sản phẩm",
+                    filterType: "category",
+                    filterValue: [
+                        ProductCategory.Exterior,
+                        ProductCategory.Interior,
+                    ],
+                }}
+                selectKey={(item) => item.toString()}
+                selectLabel={(item) => {
+                    if (item === ProductCategory.Exterior) {
+                        return "Nội thất";
+                    } else {
+                        return "Ngoại thất";
+                    }
+                }}
+            />
+            <ButtonFilter
                 filter={{
                     filterName: "Hãng xe",
                     filterType: "brandId",
-                    filterValue: brands || []
+                    filterValue: brands || [],
                 }}
                 selectKey={(item) => item._id}
                 selectLabel={(item) => item.name}

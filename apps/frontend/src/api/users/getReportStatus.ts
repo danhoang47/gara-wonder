@@ -6,7 +6,7 @@ export default async function getReportStatus(garageId: string) {
         const result = await userInstance.get<Response<boolean>>(
             "/report/" + garageId + "/status",
         );
-        return result.data;
+        return result.data.data;
     } catch (_error) {
         return Promise.reject;
     }

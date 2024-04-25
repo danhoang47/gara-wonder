@@ -1,10 +1,14 @@
-import getProducts, { ProductFilters, WithBrandProduct } from "@/api/supplier/getProducts";
+import getProducts, {
+    ProductFilters,
+    WithBrandProduct,
+} from "@/api/supplier/getProducts";
 import { FetchStatus, Paging } from "@/core/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export type ProductState = Partial<Paging> & {
     products: WithBrandProduct[];
     fetchingStatus: FetchStatus;
+    isReload: boolean;
 };
 
 const defaultPaging = {
@@ -15,12 +19,21 @@ const initialState: ProductState = {
     products: [],
     fetchingStatus: FetchStatus.None,
     ...defaultPaging,
+    isReload: false,
 };
 
 const productsSlice = createSlice({
     name: "products",
     initialState,
-    reducers: {},
+    reducers: {
+        reloadProducts(state) {
+            state.isReload = true;
+            state.products = [];
+        },
+        unloadProducts(state) {
+            state.isReload = false;
+        },
+    },
     extraReducers(builder) {
         builder
             .addCase(getListProducts.pending, (state) => {
@@ -49,5 +62,7 @@ export const getListProducts = createAsyncThunk(
         }
     },
 );
+
+export const { reloadProducts, unloadProducts } = productsSlice.actions;
 
 export default productsSlice.reducer;
