@@ -92,7 +92,7 @@ function OrderCard({ order }: { order?: OrderListType }) {
                             </div>
                             <div className="pt-3 flex gap-2">
                                 {
-                                    //@ts-expect-error undefined Type
+                                    
                                     order?.status == 0 &&
                                         order?.evaluationCheck && (
                                             <Chip color="primary">
@@ -138,6 +138,13 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                         </p>
                                     </Chip>
                                 )}
+                                {Number(order?.status) == 5 && (
+                                        <Chip color="danger">
+                                            <p className="font-medium">
+                                                Buộc hủy bởi hệ thống
+                                            </p>
+                                        </Chip>
+                                    )}
                                 {order?.evaluationRequired ? (
                                     ""
                                 ) : (
