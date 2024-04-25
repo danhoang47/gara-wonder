@@ -15,7 +15,6 @@ const keys: Array<keyof ProductFilter> = [
 ];
 
 const useDeserializeGarageParams = () => {
-    const token = useAppSelector((state) => state.user.token);
     const { filterParams } = useFilterParams();
     const [searchParams] = useSearchParams();
     const params = keys.reduce((acc, key) => {
@@ -34,9 +33,8 @@ const useDeserializeGarageParams = () => {
         () => ({
             ...filterParams,
             ...params,
-            token,
         }),
-        [filterParams, params, token],
+        [filterParams, params],
     );
 
     return memoizedParams;

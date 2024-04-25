@@ -333,7 +333,7 @@ const UpsertProductModal = ({
                                             keys,
                                         )[0] as string;
 
-                                        onChangeValue("series", [selectedId]);
+                                        onChangeValue("series", [Number(selectedId)]);
                                     }}
                                     classNames={{
                                         trigger: "border",
