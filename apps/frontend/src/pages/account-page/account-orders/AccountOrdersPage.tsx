@@ -20,7 +20,7 @@ export default function AccountOrdersPage() {
     const ref = useInfiniteScroll(onNext);
     return (
         <div className="p-10 overflow-auto">
-            <p className="text-2xl font-bold">Hiển thị lịch đặt</p>
+            <p className="text-2xl font-bold">Lịch đặt sửa chữa của bạn</p>
             <div className="pt-5 flex gap-2">
                 <Select
                     selectedKeys={status}

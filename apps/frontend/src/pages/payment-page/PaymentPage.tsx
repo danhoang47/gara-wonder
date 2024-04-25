@@ -85,8 +85,8 @@ function PaymentPage() {
                     </p>
                 </div>
                 <div className="flex gap-4 mt-8">
-                    <Link href="/garages">
-                        <span className="font-medium text-foreground">
+                    <Link href="/garages" className="display-flex justify-content-center align-items-center">
+                        <span className="font-medium text-foreground ">
                             Trở lại trang chủ
                         </span>
                     </Link>
