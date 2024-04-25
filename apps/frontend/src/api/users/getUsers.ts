@@ -10,6 +10,7 @@ export default async function getUsers(
         const results = await axios.get<Response<User[]>>(
             baseUsersUrl + `?text=${emailOrPhoneNumber}&role=${role}`,
         );
+        console.log(results.data.data)
         return results.data.data;
     } catch (error) {
         return Promise.reject(error);

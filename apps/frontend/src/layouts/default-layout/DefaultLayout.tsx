@@ -26,7 +26,11 @@ const DefaultLayout = () => {
 
         const { role } = user;
 
-        return role !== Role.GarageOwner;
+        if (role === Role.GarageOwner || role === Role.Staff) {
+            return false;
+        }
+
+        return true;
     }, [user]);
     const shouldShowSupplierRegistrationLink = useMemo(() => {
         if (!user) return true;

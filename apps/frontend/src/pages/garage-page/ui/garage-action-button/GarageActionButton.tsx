@@ -10,7 +10,8 @@ import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { createNewRoom, selectRooms } from "@/features/chat/rooms.slice";
 import { FetchStatus, Report, RoomType } from "@/core/types";
 import { ReportModal } from "@/core/ui";
-import { createGarageReport } from "@/api";
+import { createGarageReport, getReportStatus } from "@/api";
+import useSWR from "swr";
 
 function GarageActionButton({ name = "" }: { name?: string }) {
     const dispatch = useAppDispatch();
@@ -26,15 +27,18 @@ function GarageActionButton({ name = "" }: { name?: string }) {
     const shouldHideReportButton = useMemo(() => {
         return !user || user.garageId;
     }, [user]);
-    const [disabledReportButton, setDisabledReportButton] =
-        useState<boolean>(false);
+    const {
+        isLoading: isReportStatusLoading,
+        data: isReported,
+        mutate,
+    } = useSWR(user ? garageId : null, getReportStatus);
 
     const onReportModalSubmit = async (report: Partial<Report>) => {
         setLoading(true);
         await createGarageReport(report);
         setLoading(false);
-        setReportModalOpen(false)
-        setDisabledReportButton(true);
+        setReportModalOpen(false);
+        mutate();
     };
 
     return (
@@ -96,7 +100,9 @@ function GarageActionButton({ name = "" }: { name?: string }) {
             >
                 <span className="font-medium">Yêu thích</span>
             </Button>
-            {(!shouldHideReportButton || disabledReportButton) && (
+            {(!shouldHideReportButton ||
+                !isReportStatusLoading ||
+                !isReported) && (
                 <Button
                     size="md"
                     variant="light"
