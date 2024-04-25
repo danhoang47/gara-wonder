@@ -58,14 +58,14 @@ function LandingPage() {
                             </p>
                         </div>
                     </div>
-                    <div className="h-48 bg-cover bg-center bg-norepeat grow rounded-large bg-[url('https://thefastkey.com/wp-content/uploads/2022/02/rediger-un-ordre-de-reparation-2.jpg')]">
+                    <div className="h-48 bg-cover bg-center bg-norepeat grow rounded-large bg-[url('https://media.istockphoto.com/id/1349390515/photo/paperless-workplace-idea-e-signing-electronic-signature-document-management-businessman-signs.jpg?s=612x612&w=0&k=20&c=EyQl13diegNV5DVLnb0krcAcRDhL7NiSA7IEVImZs6Q=')]">
                         <div className="w-full h-full flex items-center px-4">
                             <p className="text-xl font-medium text-background">
                                 Quản lý garage
                             </p>
                         </div>
                     </div>
-                    <div className="h-48 bg-cover bg-center bg-norepeat grow rounded-large bg-[url('https://thefastkey.com/wp-content/uploads/2022/02/rediger-un-ordre-de-reparation-2.jpg')]">
+                    <div className="h-48 bg-cover bg-center bg-norepeat grow rounded-large bg-[url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/148f4aa1-d5bf-461a-9af9-54f616b04873/dea76d6-455bafa5-9c65-4e81-ac5f-61cffdfc846b.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzE0OGY0YWExLWQ1YmYtNDYxYS05YWY5LTU0ZjYxNmIwNDg3M1wvZGVhNzZkNi00NTViYWZhNS05YzY1LTRlODEtYWM1Zi02MWNmZmRmYzg0NmIuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.qG4Rq9IwTse7DKW-l48uD1MtpsXtctGLM9tqcUHH1T8')]">
                         <div className="w-full h-full flex items-center px-4">
                             <p className="text-xl font-medium text-background">
                                 Buôn bán, trao đổi

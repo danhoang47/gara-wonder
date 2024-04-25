@@ -12,12 +12,7 @@ export const accountMenus: AccountMenuType[] = [
         icon: "faUser",
         to: "profile",
     },
-    {
-        title: "Thông tin thẻ căn cước",
-        description: "Cập nhật hình ảnh thẻ căn cước công dân cá nhân",
-        icon: "faIdCard",
-        to: "",
-    },
+    
 
     {
         title: "Tra cứu đơn đặt hàng",
