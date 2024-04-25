@@ -1,6 +1,6 @@
 import { getGarageSetting, updateGarageSetting } from "@/api";
 import { LoadingContext } from "@/core/contexts/loading";
-import { useAppDispatch } from "@/core/hooks";
+import { useAppDispatch, useAppSelector, useAuthLoading } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
 import { faGem } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,7 +11,7 @@ import useSWRImmutable from "swr/immutable";
 
 export default function OrderAcceptModeSetting() {
     const navigate = useNavigate();
-    const { garageId } = useParams();
+    const garageId = useAppSelector(state => state.user.value?.garageId)
     const [mode, setMode] = useState<boolean>();
     const { load, unload } = useContext(LoadingContext);
     const dispatch = useAppDispatch();
@@ -20,7 +20,6 @@ export default function OrderAcceptModeSetting() {
         `${garageId}/management/mode`,
         getGarageSetting,
     );
-
     
     useEffect(() => {
         if (!isLoading) {

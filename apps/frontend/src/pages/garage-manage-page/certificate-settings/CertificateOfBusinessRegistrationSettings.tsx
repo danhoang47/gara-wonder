@@ -8,7 +8,7 @@ import { ImagePreview } from "./ui";
 import useSWRImmutable from "swr/immutable";
 import { getGarageLiscense, updateGarageLiscene } from "@/api";
 import { LoadingContext } from "@/core/contexts/loading";
-import { useAppDispatch } from "@/core/hooks";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
 
 type certImageType = {
@@ -21,7 +21,7 @@ type ProvidedImg = {
 };
 export default function CertificateOfBusinessRegistrationSettings() {
     const navigate = useNavigate();
-    const { garageId } = useParams();
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const { load, unload } = useContext(LoadingContext);
     const dispatch = useAppDispatch();
 

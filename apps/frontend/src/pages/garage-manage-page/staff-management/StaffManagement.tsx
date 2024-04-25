@@ -4,7 +4,6 @@ import { Button } from "@nextui-org/react";
 import { EmailOrPhonePicker } from "@/core/ui";
 import { FetchStatus, Staff, User } from "@/core/types";
 import { createInvitations, getStaffs, removeStaffs, updateStaffs } from "@/api";
-import { useParams } from "react-router-dom";
 import SentInvitations from "./SentInvitations";
 import useSWR from "swr";
 import StaffTable from "./StaffTable";
@@ -23,7 +22,7 @@ function StaffManagement() {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isSentInvitationsModalOpen, setIsSentInvitationsModalOpen] =
         useState<boolean>(false);
-    const { garageId } = useParams();
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const { isLoading: isStaffsLoading, data: staffs, mutate } = useSWR(
         user && garageId,
         getStaffs,

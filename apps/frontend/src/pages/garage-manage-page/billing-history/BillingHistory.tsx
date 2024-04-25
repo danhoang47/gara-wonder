@@ -1,13 +1,13 @@
-import { useParams } from "react-router-dom";
 import BillingHistoryTable from "./BillingHistoryTable";
 import BillingModal from "./BillingModal";
 import { useState } from "react";
 import { generatePaymentURL, getBillings } from "@/api";
 import useSWRImmutable from "swr/immutable";
 import { WithUserBill } from "@/api/garages/getBillings";
+import { useAppSelector } from "@/core/hooks";
 
 function BillingHistory() {
-    const { garageId } = useParams();
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const [isBillingModalOpen, setBillingModalOpen] = useState<boolean>(false);
     const { isLoading, data: bills } = useSWRImmutable(garageId, getBillings);
     const [selectedBill, setSelectedBill] = useState<WithUserBill>();

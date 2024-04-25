@@ -208,7 +208,7 @@ const router = createBrowserRouter(
                 <Route path="products/:productId" element={<ProductPage />} />
             </Route>
             <Route
-                path="garages/:garageId/management"
+                path="garages/management"
                 element={<GarageLayout />}
             >
                 <Route
