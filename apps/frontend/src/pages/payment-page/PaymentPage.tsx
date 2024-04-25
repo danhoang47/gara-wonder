@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Lottie from "react-lottie";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 import paymentSuccessAnimation from "@/assets/payment_success.json";
 import useSWRImmutable from "swr/immutable";
 import { persistPayment } from "@/api";
-import { useLoadingContext } from "@/core/hooks";
+import { useAppSelector, useLoadingContext } from "@/core/hooks";
 
 const title = (stt: string) => `Thanh toán ${stt}`;
 const description = (
@@ -17,7 +17,7 @@ Bạn có thể trở lại trang chủ hoặc vào xem danh sách đơn`;
 
 function PaymentPage() {
     const [urlSearchParams] = useSearchParams();
-    const navigate = useNavigate();
+    const user = useAppSelector((state) => state.user.value);
     const { load, unload } = useLoadingContext();
     const params = useMemo(() => {
         const orderId = urlSearchParams.get("orderId");
@@ -25,6 +25,7 @@ function PaymentPage() {
         const vnp_ResponseCode = urlSearchParams.get("vnp_ResponseCode");
         const vnp_PayDate = urlSearchParams.get("vnp_PayDate");
         const garageId = urlSearchParams.get("garageId");
+        const type = urlSearchParams.get("type");
 
         return {
             orderId,
@@ -32,6 +33,7 @@ function PaymentPage() {
             vnp_TxnRef,
             vnp_ResponseCode,
             garageId,
+            type,
         };
     }, [urlSearchParams]);
     const isSuccess = useMemo(() => params.vnp_ResponseCode === "00", [params]);
@@ -41,7 +43,7 @@ function PaymentPage() {
             Object.values(params).every((v) => v)
         );
     }, [params]);
-    const { isLoading, data } = useSWRImmutable(
+    const { isLoading } = useSWRImmutable(
         params.vnp_ResponseCode === "00" ? params : null,
         () => persistPayment(params),
     );
@@ -50,7 +52,7 @@ function PaymentPage() {
         if (!isValidURL) {
             unload("payment");
         }
-    }, [isValidURL]);
+    }, [isValidURL, unload]);
 
     useEffect(() => {
         if (isLoading) {
@@ -91,11 +93,17 @@ function PaymentPage() {
                         </span>
                     </Link>
                     <Link
-                        to="/user/settings"
+                        to={
+                            params.type
+                                ? `garages/${user?.garageId}/management/billing-history`
+                                : "/account/settings"
+                        }
                         className="h-10 py-3 px-4 bg-primary rounded-large"
                     >
                         <span className="font-medium text-background">
-                            Xem danh sách đơn
+                            {params.type
+                                ? "Xem lịch sử thanh toán"
+                                : "Xem danh sách đơn"}
                         </span>
                     </Link>
                 </div>

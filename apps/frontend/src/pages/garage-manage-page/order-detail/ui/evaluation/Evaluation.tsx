@@ -29,6 +29,7 @@ import {
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
+import { LoadingContext } from "@/core/contexts/loading";
 
 function Evaluation({
     status,
@@ -53,6 +54,7 @@ function Evaluation({
     const { garageId, orderId } = useParams();
     const { evaluation } = useContext(EvaluationContext);
     const dispatch = useAppDispatch();
+    const { load, unload } = useContext(LoadingContext)
 
     const evaluationValidate: boolean = useMemo(() => {
         const keys: string[] = Object.keys(evaluation as object);
@@ -71,8 +73,8 @@ function Evaluation({
                 services?.filter((s) => {
                     if (s._id === service.serviceId) {
                         if (
-                            service.price < Number(s?.highestPrice) &&
-                            service.price > 0
+                            service.price <= Number(s?.highestPrice) &&
+                            service.price >= Number(s?.lowestPrice)
                         ) {
                             return s;
                         }
@@ -92,6 +94,7 @@ function Evaluation({
     }, [services]);
 
     const onSubmit = async () => {
+        load("submit")
         if (evaluationValidate && priceValidate) {
             try {
                 const result = await handleEvaluation(
@@ -147,8 +150,10 @@ function Evaluation({
                 }),
             );
         }
+        unload("submit")
     };
     const onAccept = async (str: string) => {
+        load("accept")
         try {
             const result = await acceptOrder(str, garageId, orderId);
             if (result.statusCode === 200) {
@@ -172,7 +177,6 @@ function Evaluation({
                             delay: 2000,
                         }),
                     );
-
                 refetch();
             }
         } catch (error) {
@@ -185,9 +189,11 @@ function Evaluation({
                 }),
             );
         }
+        unload("accept")
     };
 
     const onMoveNext = async () => {
+        load("next");
         try {
             const result = await moveNextStep(
                 garageId,
@@ -222,9 +228,11 @@ function Evaluation({
                 }),
             );
         }
+        unload("next")
     };
 
     const onConfirmSubmit = async () => {
+        load("confirm");
         if (priceValidate) {
             try {
                 const result = await addOrderPrice(
@@ -264,8 +272,9 @@ function Evaluation({
                 }),
             );
         }
+        unload("confirm")
     };
-
+    
     return (
         <div className="border-2 rounded-lg">
             <ProgressBar
