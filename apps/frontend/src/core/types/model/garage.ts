@@ -111,10 +111,10 @@ export type Staff = Model & {
 };
 
 export type Bill = Model & {
-    garageId: string,
-    paidBy?: string,
-    hasPaid?: boolean,
-    paidTime: number,
-    totalIncome: number,
-    paidFee: number,
-}
+    garageId: string;
+    paidBy?: string;
+    hasPaid?: boolean;
+    paidAt: number;
+    totalIncome: number;
+    paidFee: number;
+};

@@ -51,3 +51,4 @@ export { default as removePersonalCars } from "./removePersonalCars";
 export { default as updatePersonalCars } from "./updatePersonalCars";
 export { default as acceptOrRejectInvitations } from "./acceptOrRejectInvitations";
 export { default as createGarageReport } from "./createGarageReport";
+export { default as getReportStatus } from "./getReportStatus";

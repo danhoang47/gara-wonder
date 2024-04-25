@@ -16,12 +16,12 @@ import {
 import useSWRImmutable from "swr/immutable";
 import { useNavigate, useParams } from "react-router-dom";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
-import { useAppDispatch } from "@/core/hooks";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { notify } from "@/features/toasts/toasts.slice";
 import deleteService from "@/api/garages/deleteService";
 
 export default function ServicesSetting() {
-    const { garageId } = useParams();
+    const garageId = useAppSelector(state => state.user.value?.garageId)
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 

@@ -8,6 +8,7 @@ const keys: Array<keyof ProductFilter> = [
     "series",
     "models",
     "category",
+    "cursor",
 ];
 
 function useFilterParams() {
@@ -20,11 +21,11 @@ function useFilterParams() {
             if (searchParam) {
                 return {
                     ...acc,
-                    [key]: JSON.parse(searchParam),
+                    [key]: searchParam,
                 };
             }
 
-            return { ...acc, [key]: "" };
+            return acc;
         }, {});
     }, [urlSearchParams]);
 
@@ -36,7 +37,7 @@ function useFilterParams() {
                 const filterValue = filters[key as keyof ProductFilter];
                 if (filterValue) {
                     valuableKeys.splice(valuableKeys.indexOf(key), 1);
-                    prev.set(key, JSON.stringify(filterValue));
+                    prev.set(key, filterValue);
                 }
             });
 

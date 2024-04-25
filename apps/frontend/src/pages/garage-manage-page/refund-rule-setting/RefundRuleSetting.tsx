@@ -7,9 +7,9 @@ import {
     RadioGroup,
 } from "@nextui-org/react";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CustomSelect } from "./ui";
-import { useAppDispatch } from "@/core/hooks";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { LoadingContext } from "@/core/contexts/loading";
 import { getGarageSetting, updateGarageSetting } from "@/api";
 import useSWRImmutable from "swr/immutable";
@@ -17,7 +17,7 @@ import { notify } from "@/features/toasts/toasts.slice";
 
 export default function RefundRuleSetting() {
     const navigate = useNavigate();
-    const { garageId } = useParams();
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const [mode, setMode] = useState<string>();
     const { load, unload } = useContext(LoadingContext);
     const dispatch = useAppDispatch();

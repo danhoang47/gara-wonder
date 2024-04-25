@@ -1,11 +1,9 @@
 import { Response, Staff } from "@/core/types";
-import garageInstance from ".";
+import axios from "axios";
 
 export default async function getStaffs(garageId: string) {
-    if (!garageId) return [];
-
     try {
-        const staffs = await garageInstance.get<Response<Staff[]>>(
+        const staffs = await axios.get<Response<Staff[]>>(
             `/${garageId}/management/staff`,
         );
 

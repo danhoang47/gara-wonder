@@ -105,7 +105,7 @@ const getUserProfileMenu = (
                     key: "k1",
                     component: (
                         <Link
-                            to={`/garages/${garageId}/management`}
+                            to={`/garages/management`}
                             className="text-foreground text-small py-2 px-3 w-full block"
                         >
                             Quản lý Garage

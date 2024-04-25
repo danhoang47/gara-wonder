@@ -3,7 +3,7 @@ import {
     getProductById,
     getReviewableStatus,
 } from "@/api/supplier";
-import { useAppDispatch } from "@/core/hooks";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { Product, Review, RoomType, Service } from "@/core/types";
 import { ReviewModal } from "@/core/ui";
 import { notify } from "@/features/toasts/toasts.slice";
@@ -47,6 +47,8 @@ function AttachEntity({
     );
     const [isReviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
     const [isReviewLoading, setReviewLoading] = useState<boolean>(false);
+    const user = useAppSelector(state => state.user.value);
+    const disableReviewButton = user?.supplierId === entityId
 
     const onReviewSubmit = async (review: Partial<Review>) => {
         setReviewLoading(true);
@@ -107,6 +109,7 @@ function AttachEntity({
                         color="primary"
                         onPress={() => setReviewModalOpen(true)}
                         isLoading={isLoading}
+                        isDisabled={disableReviewButton}
                     >
                         <span>Đánh giá</span>
                     </Button>

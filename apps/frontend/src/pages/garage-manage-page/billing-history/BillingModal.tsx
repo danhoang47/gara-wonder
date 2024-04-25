@@ -1,3 +1,4 @@
+import { WithUserBill } from "@/api/garages/getBillings";
 import { formatCurrency } from "@/utils";
 import {
     Button,
@@ -6,10 +7,19 @@ import {
     ModalContent,
     ModalFooter,
 } from "@nextui-org/react";
+import moment from "moment";
 
-function BillingModal() {
+export type BillingModalProps = {
+    isOpen: boolean;
+    onClose: () => void;
+    bill?: WithUserBill;
+    onSave: (_id?: string) => void;
+    isLoading?: boolean;
+};
+
+function BillingModal({ isOpen, onClose, bill = undefined, onSave, isLoading }: BillingModalProps) {
     return (
-        <Modal isOpen>
+        <Modal isOpen={isOpen} onClose={onClose}>
             <ModalContent>
                 <ModalBody className="pt-6">
                     <div className="flex flex-col items-center gap-4">
@@ -29,39 +39,47 @@ function BillingModal() {
                         </div>
                     </div>
                     <div className="flex flex-col gap-3 pb-6 border-b mt-6">
-                        <p className="font-medium text-large">Garage Wonder 29</p>
+                        <p className="font-medium text-large">
+                            {bill?.garageName}
+                        </p>
                         <div className="flex">
                             <p className="font-normal underline">
-                                Doanh thu T5/2024
+                                Doanh thu{" "}
+                                <span className="capitalize">
+                                    {moment(bill?.createdAt).format("MM/YYYY")}
+                                </span>
                             </p>
                             <p className="ml-auto font-semibold text-large">
-                                {formatCurrency(100000000, "standard")}
+                                {formatCurrency(bill?.totalIncome, "standard")}
                             </p>
                         </div>
                         <div className="flex">
                             <p className="font-normal underline">
-                                Phí dịch vụ T5/2024
+                                Phí dịch vụ{" "}
+                                <span className="capitalize">
+                                    {moment(bill?.createdAt).format("MM/YYYY")}
+                                </span>
                             </p>
                             <p className="ml-auto font-semibold text-large">
-                                {formatCurrency(1000000, "standard")}
+                                {formatCurrency(bill?.paidFee, "standard")}
                             </p>
                         </div>
                     </div>
                     <div>
                         <div className="flex">
-                            <p className="font-semibold">
-                                Cần thanh toán
-                            </p>
+                            <p className="font-semibold">Cần thanh toán</p>
                             <p className="ml-auto font-semibold text-large">
-                                {formatCurrency(1000000, "standard")}
+                                {formatCurrency(bill?.paidFee, "standard")}
                             </p>
                         </div>
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button className="w-full" color="primary">
-                        <span>Thanh toán ngay</span>
-                    </Button>
+                    {!bill?.hasPaid && (
+                        <Button isLoading={isLoading} className="w-full" color="primary" onPress={() => onSave(bill?._id)}>
+                            <span>Thanh toán ngay</span>
+                        </Button>
+                    )}
                 </ModalFooter>
             </ModalContent>
         </Modal>

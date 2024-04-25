@@ -100,68 +100,72 @@ function BrandInputModal({
                 Chọn xe của bạn
             </p>
             <div className="py-4">
-                <div className="flex flex-col gap-2 mb-4">
-                    <div className="px-4">
-                        <p className="font-medium text-small text-default-500">
-                            Xe đã lưu
-                        </p>
-                    </div>
-                    <div className="px-4 max-h-[152px] overflow-y-auto">
-                        {personalCars?.map((car) => {
-                            const isSelected = deepEqual(car, localCar);
+                {Boolean(personalCars?.length) && (
+                    <div className="flex flex-col gap-2 mb-4">
+                        <div className="px-4">
+                            <p className="font-medium text-small text-default-500">
+                                Xe đã lưu
+                            </p>
+                        </div>
+                        <div className="px-4 max-h-[152px] overflow-y-auto">
+                            {personalCars?.map((car) => {
+                                const isSelected = deepEqual(car, localCar);
 
-                            return (
-                                <Button
-                                    endContent={
-                                        <span
-                                            className={clsx(
-                                                "text-default-400",
-                                                isSelected && "text-foreground",
-                                            )}
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={
-                                                    isSelected
-                                                        ? faCircleDot
-                                                        : faCircle
-                                                }
-                                                size="lg"
-                                            />
-                                        </span>
-                                    }
-                                    className={clsx(
-                                        "w-full relative h-auto py-3 gap-3 justify-between mb-2",
-                                        isSelected && "border-2 border-black",
-                                    )}
-                                    variant="bordered"
-                                    onPress={() => {
-                                        if (localCar?._id === car?._id) {
-                                            setLocalCar({});
-                                        } else {
-                                            setLocalCar(car);
+                                return (
+                                    <Button
+                                        endContent={
+                                            <span
+                                                className={clsx(
+                                                    "text-default-400",
+                                                    isSelected &&
+                                                        "text-foreground",
+                                                )}
+                                            >
+                                                <FontAwesomeIcon
+                                                    icon={
+                                                        isSelected
+                                                            ? faCircleDot
+                                                            : faCircle
+                                                    }
+                                                    size="lg"
+                                                />
+                                            </span>
                                         }
-                                    }}
-                                    disableRipple
-                                >
-                                    <div className="">
-                                        <p className="text-left font-semibold">
-                                            {car.memo}
-                                        </p>
-                                        <p className="text-default-500">
-                                            {
-                                                brands?.find(
-                                                    ({ _id }) =>
-                                                        _id === car.brandId,
-                                                )?.name
+                                        className={clsx(
+                                            "w-full relative h-auto py-3 gap-3 justify-between mb-2",
+                                            isSelected &&
+                                                "border-2 border-black",
+                                        )}
+                                        variant="bordered"
+                                        onPress={() => {
+                                            if (localCar?._id === car?._id) {
+                                                setLocalCar({});
+                                            } else {
+                                                setLocalCar(car);
                                             }
-                                            , {car.model}, {car.releaseYear}
-                                        </p>
-                                    </div>
-                                </Button>
-                            );
-                        })}
+                                        }}
+                                        disableRipple
+                                    >
+                                        <div className="">
+                                            <p className="text-left font-semibold">
+                                                {car.memo}
+                                            </p>
+                                            <p className="text-default-500">
+                                                {
+                                                    brands?.find(
+                                                        ({ _id }) =>
+                                                            _id === car.brandId,
+                                                    )?.name
+                                                }
+                                                , {car.model}, {car.releaseYear}
+                                            </p>
+                                        </div>
+                                    </Button>
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
+                )}
                 <div className="flex flex-col gap-2 px-4">
                     <div>
                         <p className="font-medium text-small text-default-500">

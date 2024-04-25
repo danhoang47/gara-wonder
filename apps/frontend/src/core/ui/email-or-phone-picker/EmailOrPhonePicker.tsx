@@ -85,6 +85,7 @@ function EmailOrPhonePicker({
                 <div className="absolute top-10 w-full left-0 bg-background z-20 py-4 flex flex-col gap-2 max-h-80 shadow rounded-b-medium">
                     {entities?.map((entity) => (
                         <div
+                            key={entity._id}
                             className="p-2 flex gap-2 items-center cursor-pointer hover:bg-default-100"
                             onClick={() => {
                                 onValueChange([...pickedEntitis, entity]);

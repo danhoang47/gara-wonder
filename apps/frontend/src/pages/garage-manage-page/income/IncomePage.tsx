@@ -12,12 +12,9 @@ import { years } from "@/pages/admin/constants";
 import { formatCurrency } from "@/utils";
 
 const labels = months.map((month) => month.short);
-const estimateData = [
-    1301666, 13019662, 13019662, 13016666, 21569666, 5630166, 10196662,
-    21519666, 13019662, 5301966, 2156666, 5631966,
-];
+
 function IncomePage() {
-    const { garageId } = useParams();
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const user = useAppSelector((state) => state.user);
 
     const [selectedMonth, setSelectedMonth] = useState<number>(0);
@@ -72,16 +69,19 @@ function IncomePage() {
     useEffect(() => {
         refetch();
     }, [selectedYear]);
+    useEffect(() => {
+        document.title = "Admin";
+    }, []);
 
     if (!isLoading)
         return (
             <div className="px-10">
                 <div className="flex justify-between items-center">
                     <p className="text-2xl font-semibold">
-                        Here is your revenue
+                        Đây là thu nhập của garage
                     </p>
                     <Select
-                        label="Select a Year"
+                        label="Chọn năm"
                         className="w-[20rem] py-5"
                         size="sm"
                         isRequired
@@ -99,7 +99,7 @@ function IncomePage() {
                     </Select>
                 </div>
 
-                <div className="pt-5">
+                <div className="">
                     <p className="text-3xl text-black font-medium pt-5">
                         {formatCurrency(chartArray.sum)}
                     </p>
@@ -115,9 +115,7 @@ function IncomePage() {
                         <Chart
                             labels={labels}
                             label1="Đã thu"
-                            label2="Ước tính"
                             data1={chartArray.chart}
-                            data2={estimateData}
                         />
                         <div className="flex justify-between">
                             <div>

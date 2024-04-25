@@ -34,7 +34,7 @@ function BookingForm() {
         () => user?.garageId === garageId,
         [user?.garageId, garageId],
     );
-    const { isLoading, data: schedule } = useSWR(
+    const { data: schedule } = useSWR(
         `${garageId}/schedule`,
         () =>
             getScheduleSlot(garageId, {

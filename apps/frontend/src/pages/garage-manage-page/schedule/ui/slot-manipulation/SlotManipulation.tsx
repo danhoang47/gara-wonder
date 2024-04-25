@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { notify } from "@/features/toasts/toasts.slice";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
 import { mutate } from "swr";
+import { Role } from "@/core/types";
 
 export type SlotManipulationProps = {
     selectedDates: Date[];
@@ -33,14 +34,25 @@ function SlotManipulation({
     onRemoveAll,
     calendarData,
 }: SlotManipulationProps) {
-    const { garageId } = useParams();
-    const disabledSaveButton = useMemo(
-        () => selectedDates.length === 0,
-        [selectedDates],
-    );
+    const user = useAppSelector((state) => state.user.value);
+    const disabledSaveButton = useMemo(() => {
+        if (selectedDates.length === 0) return true;
+
+        if (
+            user?.role !== Role.GarageOwner &&
+            !user?.authorities?.includes("WITH_SCHEDULE")
+        ) {
+            return true;
+        }
+
+        if (user?.role !== Role.GarageOwner) {
+            return true;
+        }
+
+        return false;
+    }, [user, selectedDates.length]);
     const [modifiedSlots, setModifiedSlot] = useState<SlotContentType>({});
     const dispatch = useAppDispatch();
-    const user = useAppSelector(state => state.user.value)
 
     useEffect(() => {
         if (calendarData) {
@@ -82,7 +94,7 @@ function SlotManipulation({
                     extraFee: modifiedSlots[String(date.getTime())].extraFee,
                 };
             });
-            const result = await configScheduleSlot(garageId, body);
+            const result = await configScheduleSlot(user?.garageId, body);
             if (result.statusCode === 200) {
                 dispatch(
                     notify({
@@ -161,6 +173,11 @@ function SlotManipulation({
                                     key={index}
                                 >
                                     <SlotItem
+                                        min={
+                                            calendarData[
+                                                String(selectedDate.getTime())
+                                            ]?.actualSlot as number
+                                        }
                                         disabled={
                                             modifiedSlots[
                                                 String(selectedDate.getTime())
@@ -217,13 +234,19 @@ function SlotManipulation({
                 </div>
                 <div className="sticky bottom-0">
                     <div className="flex justify-end p-4 gap-2">
-                        <Button variant="light" radius="full" isDisabled={!user?.authorities?.includes("WITH_SCHEDULE")}>
+                        <Button
+                            variant="light"
+                            radius="full"
+                            isDisabled={
+                                !user?.authorities?.includes("WITH_SCHEDULE")
+                            }
+                        >
                             Hủy
                         </Button>
                         <Button
                             color="primary"
                             radius="full"
-                            isDisabled={disabledSaveButton || !user?.authorities?.includes("WITH_SCHEDULE")}
+                            isDisabled={disabledSaveButton}
                             onClick={() => onSave()}
                         >
                             <span className="font-medium">Lưu</span>
