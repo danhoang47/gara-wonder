@@ -4,7 +4,7 @@ export const enum ProcessStatus {
     Evaluate = 0,
     Prepare,
     Fixing,
-    Complete
+    Complete,
 }
 
 export enum PayType {
@@ -20,35 +20,38 @@ export enum OrderStatus {
     Preparing,
     Fixing,
     PaymentRequest,
-    Completed
+    Completed,
+    GarageRegister,
+    Review,
+    Report,
 }
 
 export type Order = Model & {
-    garageId: Garage["_id"],
-    userId: User["_id"],
-    evaluationId?: Evaluation["_id"],
-    car: Car,
-    isAccepted: boolean,
-    serviceIds: string[],
-    orderTime: number,
-    handOverTime?: number,
-    pickUpTime?: number,
-    totalPrice: number,
-    status?: ProcessStatus,
-    hasPaid?: boolean,
-    paymentId?: string,
-    payType?: PayType,
-    orderStatus?: OrderStatus 
-}
+    garageId: Garage["_id"];
+    userId: User["_id"];
+    evaluationId?: Evaluation["_id"];
+    car: Car;
+    isAccepted: boolean;
+    serviceIds: string[];
+    orderTime: number;
+    handOverTime?: number;
+    pickUpTime?: number;
+    totalPrice: number;
+    status?: ProcessStatus;
+    hasPaid?: boolean;
+    paymentId?: string;
+    payType?: PayType;
+    orderStatus?: OrderStatus;
+};
 
 export type Car = {
-    brandId: string,
-    model: string,
-    releaseYear: number,
-    plateNumber: string,
-}
+    brandId: string;
+    model: string;
+    releaseYear: number;
+    plateNumber: string;
+};
 
 export type Evaluation = Model & {
     estimationType: EstimateType;
     estimateDuration?: [number | null, number | null] | null;
-}
+};

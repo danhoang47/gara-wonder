@@ -12,35 +12,51 @@ import clsx from "clsx";
 import moment from "moment";
 import "moment/dist/locale/vi";
 import { memo, useMemo } from "react";
+import { Link } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 
-moment.locale("vi")
+moment.locale("vi");
 
 export type NotificationCardProps = {
     notification: Notification;
 };
 
 const getKey = (type: NotificationType, from: string) => {
-    switch (type) {
-        case NotificationType.Order:
-            return `users/${from}`;
-        case NotificationType.GarageOrder:
-            return `garages/${from}`;
+    if (
+        type === NotificationType.GarageOrder ||
+        type === NotificationType.EvaluationGarage
+    ) {
+        return `users/${from}`;
+    } else if (
+        type === NotificationType.Order ||
+        type === NotificationType.Evaluation ||
+        type === NotificationType.Admin ||
+        type === NotificationType.Debit
+    ) {
+        return `garages/${from}`;
     }
 };
 
 const fetchAvatar = async (
     type: NotificationType,
     from: string,
-): Promise<User | GarageBasicInfo | undefined> => {
-    if (type === NotificationType.GarageOrder) {
-        console.log("get user");
+): Promise<User | GarageBasicInfo | string | undefined> => {
+    if (
+        type === NotificationType.GarageOrder ||
+        type === NotificationType.EvaluationGarage
+    ) {
         return await getUser(from).then((user) => user.data);
-    } else if (type === NotificationType.Order) {
+    } else if (
+        type === NotificationType.Order ||
+        type === NotificationType.Evaluation ||
+        type === NotificationType.Admin
+    ) {
         const garage = await getBasicGarageInfo(from).then(
             (garage) => garage.data[0],
         );
         return garage;
+    } else if (type === NotificationType.Debit) {
+        return "/logo.png";
     }
 
     return undefined;
@@ -58,38 +74,76 @@ const getOrderStatusTitle = (orderStatus: OrderStatus) => {
             return "đã bị hủy";
         case OrderStatus.Completed:
             return "đã hoàn thành";
-        case OrderStatus.Fixing: 
+        case OrderStatus.Fixing:
             return "đang được sửa chữa";
-        case OrderStatus.PaymentRequest: 
+        case OrderStatus.PaymentRequest:
             return "đang chờ thanh toán";
         case OrderStatus.Preparing:
             return "đang chuẩn bị";
+        case OrderStatus.GarageRegister:
+            return "vừa được khởi tạo";
+        case OrderStatus.Review:
+            return "vừa được đánh giá";
+        case OrderStatus.Report:
+            return "vừa được báo cáo";
         default:
             throw new Error("INVALID orderStatus");
     }
 };
 
+const getNotificationRedirectHref = (
+    type: NotificationType,
+    to: string,
+    orderId?: string,
+) => {
+    if (
+        type === NotificationType.GarageOrder ||
+        type === NotificationType.EvaluationGarage
+    ) {
+        return `/garages/${to}/management/orders/${orderId}`;
+    } else if (
+        type === NotificationType.Order ||
+        type === NotificationType.Evaluation
+    ) {
+        return "/account/orders";
+    } else if (type === NotificationType.Debit && orderId) {
+        return `/garages/${orderId}/management/billing-history`;
+    }
+
+    return "";
+};
+
 // eslint-disable-next-line react-refresh/only-export-components
 function NotificationCard({ notification }: NotificationCardProps) {
-    const { from, type, hasRead, content, createdAt } = notification;
-    const { isLoading, data: subject } = useSWRImmutable(
-        getKey(type, from),
-        () => fetchAvatar(type, from),
+    const { from, type, hasRead, content, createdAt, to } = notification;
+    const { data: subject } = useSWRImmutable(getKey(type, from), () =>
+        fetchAvatar(type, from),
     );
     const subjectDisplayImageUrl = useMemo(() => {
         if (!subject) return undefined;
-        if (type === NotificationType.Order) {
+        if (
+            type === NotificationType.Order ||
+            type === NotificationType.Evaluation ||
+            type === NotificationType.Admin
+        ) {
             return (subject as unknown as Garage).backgroundImage.url;
-        } else if (type === NotificationType.GarageOrder) {
+        } else if (
+            type === NotificationType.GarageOrder ||
+            type === NotificationType.EvaluationGarage ||
+            type === NotificationType.Garage
+        ) {
             return (subject as unknown as User).photoURL;
         }
-        return undefined;
+        return subject as string;
     }, [subject, type]);
 
     const getNotificationTitle = () => {
         if (!subject) return undefined;
 
-        if (type === NotificationType.Order || type === NotificationType.Evaluation) {
+        if (
+            type === NotificationType.Order ||
+            type === NotificationType.Evaluation
+        ) {
             return (
                 <div>
                     <span>Đơn sửa chữa </span>
@@ -104,7 +158,11 @@ function NotificationCard({ notification }: NotificationCardProps) {
                     {getOrderStatusTitle(notification.content.status)}
                 </div>
             );
-        } else if (type === NotificationType.GarageOrder) {
+        } else if (
+            type === NotificationType.GarageOrder ||
+            type === NotificationType.EvaluationGarage ||
+            type === NotificationType.Garage
+        ) {
             return (
                 <div>
                     <span>Đơn sửa chữa </span>
@@ -119,11 +177,22 @@ function NotificationCard({ notification }: NotificationCardProps) {
                     {getOrderStatusTitle(notification.content.status)}
                 </div>
             );
+        } else if (type === NotificationType.Admin) {
+            return (
+                <div>
+                    <span>Garage </span>
+                    <span className="font-medium">
+                        {(subject as unknown as Garage).name}
+                    </span>{" "}
+                    {getOrderStatusTitle(notification.content.status)}
+                </div>
+            );
         }
     };
 
     return (
-        <div
+        <Link
+            to={getNotificationRedirectHref(type, to, content.orderId)}
             className={clsx(
                 "flex gap-2 px-6 py-4 justify-start cursor-pointer",
                 hasRead && "opacity-70",
@@ -138,7 +207,7 @@ function NotificationCard({ notification }: NotificationCardProps) {
                     {moment(createdAt).fromNow()}
                 </p>
             </div>
-        </div>
+        </Link>
     );
 }
 
