@@ -1,8 +1,7 @@
 import { getBasicGarageInfo } from "@/api";
-import { OrderDetailType } from "@/api/order/getOrderById";
 import useSWRImmutable from "swr/immutable";
 
-export default function UserInfo({ garageId }: { garageId: string }) {
+export default function UserInfo({ garageId }: { garageId?: string }) {
     const { isLoading, data: garageData } = useSWRImmutable(
         garageId,
         getBasicGarageInfo,

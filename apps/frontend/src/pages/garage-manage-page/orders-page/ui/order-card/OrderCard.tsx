@@ -148,7 +148,7 @@ function OrderCard({
                                         </Chip>
                                     )}
                                     {order?.status == 0 &&
-                                        !order.evaluationId && (
+                                        !order.evaluationCheck && (
                                             <Chip color="primary">
                                                 <p className="font-medium">
                                                     Cần đánh giá
@@ -156,7 +156,7 @@ function OrderCard({
                                             </Chip>
                                         )}
                                     {order?.status == 0 &&
-                                        order.evaluationId && (
+                                        order.evaluationCheck && (
                                             <Chip color="primary">
                                                 <p className="font-medium">
                                                     Đợi khách hàng chấp nhận

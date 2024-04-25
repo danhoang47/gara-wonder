@@ -9,13 +9,7 @@ const DashBoard: React.FC = () => {
             <Statistical />
             <div className="pt-10">
                 <h2 className="text-2xl font-semibold">Theo dõi doanh số</h2>
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(2,minmax(50%, 1fr))",
-                    }}
-                >
-                    <TrackSale />
+                <div style={{}}>
                     <TrackSale />
                 </div>
             </div>

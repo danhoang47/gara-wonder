@@ -31,7 +31,7 @@ export default function useOrders(sort: string[]) {
             if (userData.token) {
                 const results = await getUserOrders(
                     userData.token,
-                    paging.limit,
+                    100,
                     paging?.nextCursor,
                     sort[0],
                 );

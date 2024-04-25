@@ -1,19 +1,17 @@
 // import { faFileLines } from "@fortawesome/free-regular-svg-icons";
-import { faFlag } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Chip } from "@nextui-org/react";
-import { Evaluation, UserInfo } from "./ui";
-import { useParams } from "react-router-dom";
-import useSWRImmutable from "swr/immutable";
 import { getOrderById } from "@/api";
-import { useContext, useEffect } from "react";
 import { LoadingContext } from "@/core/contexts/loading";
+import { useAppSelector } from "@/core/hooks";
+import { formatCurrency } from "@/utils";
+import { Chip } from "@nextui-org/react";
 import moment from "moment";
 import "moment/locale/vi";
-import EvaluationContextProvider from "../contexts/EvaluationContext";
+import { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { mutate } from "swr";
-import { formatCurrency } from "@/utils";
-import { useAppSelector } from "@/core/hooks";
+import useSWRImmutable from "swr/immutable";
+import EvaluationContextProvider from "../contexts/EvaluationContext";
+import { Evaluation, UserInfo } from "./ui";
 moment.locale("vi");
 
 function OrderDetail() {
@@ -55,7 +53,7 @@ function OrderDetail() {
                                 evaluationProvided={Boolean(
                                     order?.evaluationId,
                                 )}
-                                handOverTime={order?.handOverTime}
+                                handOverTime={order?.orderTime}
                                 services={order?.services}
                                 refetch={refetch}
                             />

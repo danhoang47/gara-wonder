@@ -81,7 +81,7 @@ function OrderDetail() {
                     {/* Evaluation */}
                     <Evaluation
                         status={order?.status}
-                        handOverTime={order?.handOverTime}
+                        handOverTime={order?.orderTime}
                         refetch={refetch}
                         garageId={order?.garageId}
                         evaluationId={order?.evaluationId}

@@ -6,3 +6,4 @@ export { default as updateGarageStatus } from "./updateGarageStatus";
 export { default as getReport } from "./getReport";
 export { default as getGarageBills } from "./getGarageBills";
 export { default as getGarageStaff } from "./getGarageStaff";
+export { default as getStatictics } from "./getStatictics";

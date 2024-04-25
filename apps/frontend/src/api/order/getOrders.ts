@@ -19,6 +19,7 @@ export type OrderListType = Omit<Order, "car" | "userId" | "garageId"> & {
     evaluationRequired: boolean;
     handOverTime: number;
     status: number;
+    evaluationCheck: boolean;
     garageId: Omit<Garage, "backgroundImage"> & { backgroundImage: Image[] };
 };
 

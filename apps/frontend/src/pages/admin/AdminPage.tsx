@@ -24,7 +24,7 @@ const AdminLayout = () => {
     // }, [navigate, open, user, status]);
 
     useEffect(() => {
-        document.title = "Quản lý Garage";
+        document.title = "Quản lý Admin";
     }, []);
     return (
         <div style={{ width: "100%", display: "flex" }}>

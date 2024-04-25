@@ -9,7 +9,7 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useSWRImmutable from "swr/immutable";
 import { getCategoryById } from "@/api";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
@@ -26,7 +26,12 @@ export default function ServiceDetail({
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const { isLoading: isCategoryLoading, data: categoryData } =
         useSWRImmutable(`${service.categoryId}`, getCategoryById);
-
+    const dayValidate = useMemo(() => {
+        return (
+            service?.estimateDuration?.length !== 0 &&
+            service?.estimateDuration?.some((e) => e !== null)
+        );
+    }, [service]);
     return (
         <>
             <div className="flex justify-between w-full items-center">
@@ -87,7 +92,7 @@ export default function ServiceDetail({
                             VND
                         </p>
                         <p className="font-medium">Thời gian hoàn thành</p>
-                        {service?.estimateDuration?.length !== 0 ? (
+                        {dayValidate ? (
                             <p className="font-medium text-sm">
                                 <span className="text-xl font-semibold">
                                     {(service?.estimateDuration[0]
@@ -117,9 +122,8 @@ export default function ServiceDetail({
                         ) : (
                             <div className="flex gap-2 flex-wrap">
                                 {brands
-                                    ?.filter(
-                                        ({ _id }) =>
-                                            service.brandIds?.includes(_id),
+                                    ?.filter(({ _id }) =>
+                                        service.brandIds?.includes(_id),
                                     )
                                     .map((brand, key) => (
                                         <Chip

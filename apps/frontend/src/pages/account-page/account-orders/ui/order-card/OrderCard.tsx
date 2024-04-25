@@ -93,20 +93,23 @@ function OrderCard({ order }: { order?: OrderListType }) {
                             <div className="pt-3 flex gap-2">
                                 {
                                     //@ts-expect-error undefined Type
-                                    order?.status <= 0 ? (
-                                        <Chip color="primary">
-                                            <p className="font-medium">
-                                                Cần chấp nhận
-                                            </p>
-                                        </Chip>
-                                    ) : (
-                                        <Chip color="primary">
-                                            <p className="font-medium">
-                                                Đã chấp nhận
-                                            </p>
-                                        </Chip>
-                                    )
+                                    order?.status == 0 &&
+                                        order?.evaluationCheck && (
+                                            <Chip color="primary">
+                                                <p className="font-medium">
+                                                    Cần chấp nhận
+                                                </p>
+                                            </Chip>
+                                        )
                                 }
+                                {order?.status == 0 &&
+                                    !order?.evaluationCheck && (
+                                        <Chip color="primary">
+                                            <p className="font-medium">
+                                                Đợi garage đánh giá
+                                            </p>
+                                        </Chip>
+                                    )}
 
                                 {Number(order?.status) <= -2 && (
                                     <Chip color="danger">
