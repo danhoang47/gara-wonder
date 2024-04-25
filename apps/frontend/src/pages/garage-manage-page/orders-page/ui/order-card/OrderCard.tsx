@@ -140,7 +140,7 @@ function OrderCard({
                             </div>
                             <div className="pt-3 flex gap-2 justify-between items-center">
                                 <div className="flex gap-2">
-                                    {(order?.status as number) < 0 && (
+                                    {(order?.status as number) == -1 && (
                                         <Chip color="primary">
                                             <p className="font-medium">
                                                 Cần chấp nhận
@@ -154,41 +154,35 @@ function OrderCard({
                                             </p>
                                         </Chip>
                                     )}
-                                    {(order?.status as number) > 0 && (
-                                        <Chip color="primary">
-                                            <p className="font-medium">
-                                                Đã chấp nhận
-                                            </p>
-                                        </Chip>
-                                    )}
-                                    {
-                                        Number(order?.status) <= -2 && <Chip color="danger">
+                                    {Number(order?.status) <= -2 && (
+                                        <Chip color="danger">
                                             <p className="font-medium">
                                                 Đã hủy
                                             </p>
                                         </Chip>
-                                    }
-                                    {
-                                        Number(order?.status) >= 1 && Number(order?.status) <= 2 && <Chip color="primary">
-                                            <p className="font-medium">
-                                                Đang xử lí
-                                            </p>
-                                        </Chip>
-                                    }
-                                    {
-                                        Number(order?.status) == 3 && <Chip color="warning">
+                                    )}
+                                    {Number(order?.status) >= 1 &&
+                                        Number(order?.status) <= 2 && (
+                                            <Chip color="primary">
+                                                <p className="font-medium">
+                                                    Đang xử lí
+                                                </p>
+                                            </Chip>
+                                        )}
+                                    {Number(order?.status) == 3 && (
+                                        <Chip color="warning">
                                             <p className="font-medium">
                                                 Đang chờ thanh toán
                                             </p>
                                         </Chip>
-                                    }
-                                    {
-                                        Number(order?.status) == 4 && <Chip color="success">
+                                    )}
+                                    {Number(order?.status) == 4 && (
+                                        <Chip color="success">
                                             <p className="font-medium">
                                                 Đã hoàn thành
                                             </p>
                                         </Chip>
-                                    }
+                                    )}
                                     {order?.evaluationRequired ? (
                                         ""
                                     ) : (

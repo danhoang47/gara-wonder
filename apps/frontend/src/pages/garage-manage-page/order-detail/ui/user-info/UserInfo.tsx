@@ -2,7 +2,7 @@ import { OrderDetailType } from "@/api/order/getOrderById";
 
 export default function UserInfo({ user }: { user?: OrderDetailType["user"] }) {
     return (
-        <div className="px-5 py-5 border-2 rounded-lg flex flex-col gap-3">
+        <div className="px-5 py-5 border-2 rounded-lg flex flex-col justify-between">
             <p className="text-xl font-bold">Thông tin đơn hàng</p>
             <div className="w-full h-1 border-t-2" />
             <div className="flex  text-md">

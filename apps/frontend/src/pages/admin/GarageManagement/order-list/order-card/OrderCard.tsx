@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chip } from "@nextui-org/react";
 import moment from "moment";
 
-function OrderCard({ order }: { order?: OrderListType }) {
+function OrderCard({ order }: { order?: OrderListType; garageId?: string }) {
     return (
         <div className="max-w-[480px]">
             <div className="border-1 rounded-2xl p-5 shadow-sm">
@@ -30,7 +30,7 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                 </div>
                                 <div className="flex gap-2 ">
                                     <p className="text-sm">
-                                        {moment(order?.orderTime).format(
+                                        {moment(order?.handOverTime).format(
                                             "DD/MM/YYYY",
                                         )}
                                     </p>
@@ -90,7 +90,7 @@ function OrderCard({ order }: { order?: OrderListType }) {
                             </div>
                             <div className="pt-3 flex gap-2 justify-between items-center">
                                 <div className="flex gap-2">
-                                    {(order?.status as number) < 0 && (
+                                    {(order?.status as number) == -1 && (
                                         <Chip color="primary">
                                             <p className="font-medium">
                                                 Cần chấp nhận
@@ -104,41 +104,35 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                             </p>
                                         </Chip>
                                     )}
-                                    {(order?.status as number) > 0 && (
-                                        <Chip color="primary">
-                                            <p className="font-medium">
-                                                Đã chấp nhận
-                                            </p>
-                                        </Chip>
-                                    )}
-                                    {
-                                        Number(order?.status) <= -2 && <Chip color="danger">
+                                    {Number(order?.status) <= -2 && (
+                                        <Chip color="danger">
                                             <p className="font-medium">
                                                 Đã hủy
                                             </p>
                                         </Chip>
-                                    }
-                                    {
-                                        Number(order?.status) >= 1 && Number(order?.status) <= 2 && <Chip color="primary">
-                                            <p className="font-medium">
-                                                Đang xử lí
-                                            </p>
-                                        </Chip>
-                                    }
-                                    {
-                                        Number(order?.status) == 3 && <Chip color="warning">
+                                    )}
+                                    {Number(order?.status) >= 1 &&
+                                        Number(order?.status) <= 2 && (
+                                            <Chip color="primary">
+                                                <p className="font-medium">
+                                                    Đang xử lí
+                                                </p>
+                                            </Chip>
+                                        )}
+                                    {Number(order?.status) == 3 && (
+                                        <Chip color="warning">
                                             <p className="font-medium">
                                                 Đang chờ thanh toán
                                             </p>
                                         </Chip>
-                                    }
-                                    {
-                                        Number(order?.status) == 4 && <Chip color="success">
+                                    )}
+                                    {Number(order?.status) == 4 && (
+                                        <Chip color="success">
                                             <p className="font-medium">
                                                 Đã hoàn thành
                                             </p>
                                         </Chip>
-                                    }
+                                    )}
                                     {order?.evaluationRequired ? (
                                         ""
                                     ) : (

@@ -1,22 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-    Dropdown,
-    DropdownTrigger,
-    DropdownMenu,
-    DropdownItem,
-    Button,
-} from "@nextui-org/react";
-import "./statistical.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getCommonStatic } from "@/api/admin";
+import { StaticSection } from "@/api/admin/getCommonStatic";
+import { formatCurrency } from "@/utils";
 import {
     faCashRegister,
     faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
+} from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
-import { getCommonStatic } from "@/api/admin";
-import { LoadingContext } from "@/core/contexts/loading";
-import { StaticSection } from "@/api/admin/getCommonStatic";
-import { formatCurrency } from "@/utils";
+import "./statistical.scss";
 
 const months = [
     {
@@ -103,7 +102,6 @@ const years = [
 const Statistical: React.FC = () => {
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [year, setYear] = useState(new Date().getFullYear());
-    const { load, unload } = useContext(LoadingContext);
     const {
         isLoading,
         data: staticData,
@@ -111,14 +109,10 @@ const Statistical: React.FC = () => {
     } = useSWR("static", () => getCommonStatic(month, year));
 
     useEffect(() => {
-        if (isLoading) load("admin/dashboard");
-        else unload("admin/dashboard");
-    }, [isLoading]);
-    useEffect(() => {
         refetch();
     }, [month, year]);
 
-    if (staticData)
+    if (staticData && !isLoading)
         return (
             <div className="statis">
                 <h2 className="statis_h2 text-3xl font-semibold">
