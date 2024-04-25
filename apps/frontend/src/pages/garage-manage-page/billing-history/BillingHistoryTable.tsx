@@ -31,11 +31,14 @@ export type BillingHistoryTableProps = {
 function BillingHistoryTable({
     onOpenModalPress,
     bills,
-    isLoading
+    isLoading,
 }: BillingHistoryTableProps) {
     return (
-        <Table removeWrapper selectionMode="none" isStriped>
-            <TableHeader>
+        <Table removeWrapper selectionMode="none" isStriped classNames={{
+            table: "relative",
+            thead: "sticky top-0 z-10"
+        }} className="h-full overflow-auto">
+            <TableHeader className="">
                 {headerTitles.map((title) => (
                     <TableColumn key={title}>
                         <span
@@ -65,24 +68,34 @@ function BillingHistoryTable({
                             </Chip>
                         </TableCell>
                         <TableCell>
-                            {moment(new Date()).format("DD/MM/YYYY HH:MM:SS")}
+                            {bill?.paidTime
+                                ? moment(new Date()).format(
+                                      "DD/MM/YYYY HH:MM:SS",
+                                  )
+                                : "Chưa thanh toán"}
                         </TableCell>
                         <TableCell>
                             <div className="flex gap-2 items-center">
-                                <Avatar src={bill.paidBy.photoURL} />
-                                <p>{bill.paidBy.displayName}</p>
+                                {bill?.paidBy ? (
+                                    <>
+                                        <Avatar src={bill?.paidBy?.photoURL} />
+                                        <p>{bill?.paidBy?.displayName}</p>
+                                    </>
+                                ) : (
+                                    <p>Chưa thanh toán</p>
+                                )}
                             </div>
                         </TableCell>
                         <TableCell>
                             <Button
                                 size="sm"
                                 variant="light"
-                                isDisabled={bill.hasPaid}
-                                color={bill.hasPaid ? "default" : "primary"}
+                                isDisabled={bill?.hasPaid}
+                                color={bill?.hasPaid ? "default" : "primary"}
                                 onPress={() => onOpenModalPress(bill)}
                             >
                                 <span className="font-medium">
-                                    {bill.hasPaid
+                                    {bill?.hasPaid
                                         ? "Đã thanh toán"
                                         : "Thanh toán"}
                                 </span>

@@ -13,9 +13,11 @@ export type BillingModalProps = {
     isOpen: boolean;
     onClose: () => void;
     bill?: WithUserBill;
+    onSave: (_id?: string) => void;
+    isLoading?: boolean;
 };
 
-function BillingModal({ isOpen, onClose, bill = undefined }: BillingModalProps) {
+function BillingModal({ isOpen, onClose, bill = undefined, onSave, isLoading }: BillingModalProps) {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalContent>
@@ -74,7 +76,7 @@ function BillingModal({ isOpen, onClose, bill = undefined }: BillingModalProps) 
                 </ModalBody>
                 <ModalFooter>
                     {!bill?.hasPaid && (
-                        <Button className="w-full" color="primary">
+                        <Button isLoading={isLoading} className="w-full" color="primary" onPress={() => onSave(bill?._id)}>
                             <span>Thanh toán ngay</span>
                         </Button>
                     )}
