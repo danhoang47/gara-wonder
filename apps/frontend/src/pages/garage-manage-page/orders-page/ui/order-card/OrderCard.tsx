@@ -192,6 +192,13 @@ function OrderCard({
                                             </p>
                                         </Chip>
                                     )}
+                                    {Number(order?.status) == 5 && (
+                                        <Chip color="danger">
+                                            <p className="font-medium">
+                                                Buộc hủy bởi hệ thống
+                                            </p>
+                                        </Chip>
+                                    )}
                                     {order?.evaluationRequired ? (
                                         ""
                                     ) : (

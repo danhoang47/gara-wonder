@@ -45,8 +45,7 @@ function CartPage() {
             <div className="my-8">
                 <h1 className="font-semibold text-2xl">Giỏ Hàng</h1>
                 <span className="text-small text-default-400">
-                    Nostrud nisi tempor deserunt voluptate sint proident irure
-                    eiusmod anim ut nostrud aliquip.
+                    Những đơn chưa được đặt của bạn.
                 </span>
             </div>
             <div>

@@ -75,6 +75,13 @@ function OrderDetail() {
                         <p className="font-medium">Đã hoàn thành</p>
                     </Chip>
                 )}
+                {Number(order?.status) == 5 && (
+                    <Chip color="danger">
+                        <p className="font-medium">
+                            Buộc hủy bởi hệ thống
+                        </p>
+                    </Chip>
+                )}
             </div>
             <div className="md:grid grid-cols-12 gap-4 pt-10">
                 <div className="col-span-9 flex flex-col gap-5">
