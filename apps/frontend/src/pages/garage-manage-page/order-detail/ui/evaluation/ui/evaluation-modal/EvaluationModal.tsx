@@ -5,16 +5,13 @@ import {
     Textarea,
 } from "@nextui-org/react";
 import moment from "moment";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DatePopup } from "..";
 import ImagePreview from "./ImagePreview";
 import { FileInput, Stepper } from "@/core/ui";
 import { OrderDetailType, ServiceOrderType } from "@/api/order/getOrderById";
 import { EvaluationContext } from "@/pages/garage-manage-page/contexts/EvaluationContext";
 import { formatCurrency } from "@/utils";
-import useSWR from "swr";
-import { useAppSelector } from "@/core/hooks";
-import { getScheduleSlot } from "@/api";
 
 export type DateRangeType = {
     from?: number | null;
@@ -83,7 +80,6 @@ function EvaluationModal({
     handOverTime?: number;
     services?: OrderDetailType["services"];
 }) {
-    const garageId = useAppSelector(state => state.user.value?.garageId)
     const { evaluation, setEvaluationValue } = useContext(EvaluationContext);
     const [localOrderTime, setLocalOrderTime] = useState<DateRangeType>(
         evaluation?.estimateDuration
@@ -100,36 +96,6 @@ function EvaluationModal({
     const [images, setImages] = useState<File[]>(
         evaluation?.evaluationImages || [],
     );
-    const { isLoading, data: schedule } = useSWR(
-        `${garageId}/schedule`,
-        () =>
-            getScheduleSlot(garageId, {
-                startTime: moment().startOf("day").toDate().getTime(),
-                endTime: moment()
-                    .startOf("day")
-                    .add(1, "years")
-                    .toDate()
-                    .getTime(),
-            }),
-        {
-            refreshInterval: 30000,
-            revalidateOnFocus: false,
-            refreshWhenHidden: true,
-        },
-    );
-    const disabledDates = useMemo(() => {
-        if (!schedule) return [];
-
-        return Object.keys(schedule).reduce((acc, dateKey) => {
-            const config = schedule[dateKey];
-
-            if (config.disabled || config.actualSlot === config.maximumSlot) {
-                return [...acc, Number.parseInt(dateKey)];
-            }
-
-            return acc;
-        }, [] as DisabledDate[]);
-    }, [schedule]);
 
     useEffect(() => {
         setEvaluationValue("evaluationImages", images);
@@ -238,7 +204,6 @@ function EvaluationModal({
                                 }}
                                 pickDate={localOrderTime as DateRangeType}
                                 setDate={setDate}
-                                disabledDates={disabledDates}
                             />
                         </PopoverContent>
                     </Popover>

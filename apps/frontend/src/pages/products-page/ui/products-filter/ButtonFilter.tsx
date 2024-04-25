@@ -47,7 +47,7 @@ function ButtonFilter<T>({ filter, selectKey, selectLabel }: IButtonProps<T>) {
                 </Button>
             </DropdownTrigger>
             <DropdownMenu
-                aria-label="Single selection example"
+                aria-label="Dropdown menu with shortcut"
                 disallowEmptySelection
                 selectionMode="single"
                 selectedKeys={
@@ -57,6 +57,7 @@ function ButtonFilter<T>({ filter, selectKey, selectLabel }: IButtonProps<T>) {
                 }
                 onSelectionChange={(item) => {
                     const value = Array.from(item)[0];
+                    console.log(value)
                     setFilterParams({
                         ...filterParams,
                         [filter.filterType]: value,

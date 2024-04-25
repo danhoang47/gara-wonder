@@ -175,23 +175,25 @@ function ProductPage() {
                     </div>
                 </div>
                 <div className="py-4">
-                    <Button
-                        startContent={
-                            <FontAwesomeIcon
-                                icon={faComment}
-                                className="text-base"
-                            />
-                        }
-                        className="w-full h-auto py-3"
-                        color="primary"
-                        isLoading={fetchingStatus === FetchStatus.Fetching}
-                        onPress={onChatButtonPress}
-                        spinnerPlacement="end"
-                    >
-                        <span className="text-base">
-                            Nhắn tin với người bán
-                        </span>
-                    </Button>
+                    {user.value?.supplierId !== product?.supplier._id && (
+                        <Button
+                            startContent={
+                                <FontAwesomeIcon
+                                    icon={faComment}
+                                    className="text-base"
+                                />
+                            }
+                            className="w-full h-auto py-3"
+                            color="primary"
+                            isLoading={fetchingStatus === FetchStatus.Fetching}
+                            onPress={onChatButtonPress}
+                            spinnerPlacement="end"
+                        >
+                            <span className="text-base">
+                                Nhắn tin với người bán
+                            </span>
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>
