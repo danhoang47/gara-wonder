@@ -1,5 +1,4 @@
 import {
-    Input,
     Popover,
     PopoverContent,
     PopoverTrigger,
@@ -10,8 +9,6 @@ import { useContext, useEffect, useState } from "react";
 import { DatePopup } from "..";
 import ImagePreview from "./ImagePreview";
 import { FileInput, Stepper } from "@/core/ui";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { OrderDetailType, ServiceOrderType } from "@/api/order/getOrderById";
 import { EvaluationContext } from "@/pages/garage-manage-page/contexts/EvaluationContext";
 import { formatCurrency } from "@/utils";
