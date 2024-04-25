@@ -1,11 +1,3 @@
-import { BreadcrumbItem, Breadcrumbs, Button } from "@nextui-org/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import ServiceTemplateModal from "./ServiceTemplateModal";
-import { useEffect, useMemo, useState } from "react";
-import { Service } from "@/core/types";
-import ServiceCard from "./ServiceCard";
-import useSWR from "swr";
 import {
     addNewService,
     getBrands,
@@ -13,12 +5,20 @@ import {
     getGarageServices,
     updateService,
 } from "@/api";
-import useSWRImmutable from "swr/immutable";
-import { useNavigate, useParams } from "react-router-dom";
+import deleteService from "@/api/garages/deleteService";
 import { WithCategoryService } from "@/api/garages/getGarageServices";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { Service } from "@/core/types";
 import { notify } from "@/features/toasts/toasts.slice";
-import deleteService from "@/api/garages/deleteService";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { BreadcrumbItem, Breadcrumbs, Button } from "@nextui-org/react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
+import ServiceCard from "./ServiceCard";
+import ServiceTemplateModal from "./ServiceTemplateModal";
 
 export default function ServicesSetting() {
     const garageId = useAppSelector(state => state.user.value?.garageId)

@@ -124,7 +124,7 @@ const GarageList: React.FunctionComponent = () => {
                                             radius="sm"
                                             variant="light"
                                             size="sm"
-                                            className="text-white font-semibold w-[8rem]"
+                                            className="font-semibold w-[8rem]"
                                             onClick={() =>
                                                 navigate(
                                                     `../garage-management/${row._id}`,

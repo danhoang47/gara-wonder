@@ -1,16 +1,15 @@
-import { Accordion, AccordionItem, Button } from "@nextui-org/react";
-import { useEffect, useMemo, useState } from "react";
-import SlotItem from "./SlotItem";
-import moment from "moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { ScheduleType } from "@/api/garages/getScheduleSlot";
 import { configScheduleSlot } from "@/api";
-import { useParams } from "react-router-dom";
-import { notify } from "@/features/toasts/toasts.slice";
+import { ScheduleType } from "@/api/garages/getScheduleSlot";
 import { useAppDispatch, useAppSelector } from "@/core/hooks";
-import { mutate } from "swr";
 import { Role } from "@/core/types";
+import { notify } from "@/features/toasts/toasts.slice";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Accordion, AccordionItem, Button } from "@nextui-org/react";
+import moment from "moment";
+import { useEffect, useMemo, useState } from "react";
+import { mutate } from "swr";
+import SlotItem from "./SlotItem";
 
 export type SlotManipulationProps = {
     selectedDates: Date[];
@@ -173,11 +172,11 @@ function SlotManipulation({
                                     key={index}
                                 >
                                     <SlotItem
-                                        min={
+                                        min={Number(
                                             calendarData[
                                                 String(selectedDate.getTime())
-                                            ]?.actualSlot as number
-                                        }
+                                            ]?.actualSlot,
+                                        )}
                                         disabled={
                                             modifiedSlots[
                                                 String(selectedDate.getTime())

@@ -1,26 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import "./sidebar.scss";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-    User,
-} from "@nextui-org/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAppSelector, useModalContext } from "@/core/hooks";
+import getUserProfileMenu from "@/layouts/default-layout/ui/user-profile-menu/getUserProfileMenu";
 import {
     faBarsProgress,
     faChartLine,
     faEllipsisVertical,
     faTableColumns,
 } from "@fortawesome/free-solid-svg-icons";
-import { useAppSelector } from "@/core/hooks";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    User,
+} from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import "./sidebar.scss";
 
 const Sidebar: React.FC = () => {
     const [activePage, setActivePage] = useState("");
-    const user = useAppSelector((state) => state.user);
+    const user = useAppSelector((state) => state.user.value);
     const location = useLocation();
     const [isOpen, setOpen] = useState<boolean>(false);
+    const { open } = useModalContext();
+
+    const profileMenuOptions = getUserProfileMenu(
+        Boolean(user),
+        () => {
+            open("signIn");
+            setOpen(false);
+        },
+        user?.garageId,
+        user?.supplierId,
+        user?.role === 6,
+    );
 
     useEffect(() => {
         setActivePage(location.pathname);
@@ -70,10 +83,10 @@ const Sidebar: React.FC = () => {
 
                 <div className=" border-2 flex items-center  justify-between p-3 rounded-lg">
                     <User
-                        name={user.value?.displayName}
+                        name={user?.displayName}
                         description="Admin"
                         avatarProps={{
-                            src: user.value?.photoURL,
+                            src: user?.photoURL,
                         }}
                     />
                     <Popover
@@ -94,7 +107,22 @@ const Sidebar: React.FC = () => {
                             aria-label="User menu"
                             className="px-0 py-3"
                         >
-                            <div>Đăng xuất</div>
+                            {profileMenuOptions.map((section, index) => (
+                                <div key={index} className="w-full">
+                                    {section.options.map(
+                                        ({ component, key, title }) => (
+                                            <div
+                                                key={key}
+                                                aria-label={title}
+                                                onClick={() => setOpen(false)}
+                                                className="hover:bg-default-100 cursor-pointer min-w-44"
+                                            >
+                                                {component}
+                                            </div>
+                                        ),
+                                    )}
+                                </div>
+                            ))}
                         </PopoverContent>
                     </Popover>
                 </div>

@@ -119,7 +119,10 @@ export default function ServiceTemplateModal({
     return (
         <Modal
             isOpen={isOpen}
-            onClose={onModalClose}
+            onClose={() => {
+                resetLocalService();
+                onModalClose();
+            }}
             size="lg"
             scrollBehavior="inside"
         >
@@ -163,6 +166,7 @@ export default function ServiceTemplateModal({
                         )}
                     </Select>
                     <Select
+                        // @ts-expect-error type error
                         items={[
                             {
                                 _id: "all",

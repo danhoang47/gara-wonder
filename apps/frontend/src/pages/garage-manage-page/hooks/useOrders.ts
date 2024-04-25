@@ -31,7 +31,7 @@ export default function useOrders(sort: string[]) {
             const paging = params[1];
             const results = await getOrders(
                 garageId,
-                paging.limit,
+                100,
                 paging?.nextCursor,
                 sort[0],
             );
