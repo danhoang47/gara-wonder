@@ -11,27 +11,25 @@ import {
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useFilterParams } from "@/pages/products-page/hooks";
-import { IButtonFilter, IFilterValue } from "./ProductsFilter";
+import { IButtonFilter } from "./ProductsFilter";
 
-interface IButtonProps {
-    btn: IButtonFilter;
+interface IButtonProps<T> {
+    filter: IButtonFilter<T>;
+    selectKey: (item: T) => string;
+    selectLabel: (item: T) => string;
 }
 
-const ButtonFilter = ({ btn }: IButtonProps) => {
+function ButtonFilter<T>({ filter, selectKey, selectLabel }: IButtonProps<T>) {
     const [filterSearchParams] = useSearchParams();
     const { filterParams, setFilterParams } = useFilterParams();
 
     const selectedSortByOptionSet = useMemo(
-        () =>
-            new Set<string>([
-                JSON.parse(filterSearchParams.get(btn.filterType) as string) ||
-                    "",
-            ]),
+        () => filterSearchParams.get(filter.filterType),
         [filterSearchParams],
     );
 
     const selectedSortByOption = useMemo(() => {
-        const selectedKey = filterSearchParams.get(btn.filterType);
+        const selectedKey = filterSearchParams.get(filter.filterType);
         if (selectedKey) {
             return selectedKey;
         }
@@ -43,10 +41,8 @@ const ButtonFilter = ({ btn }: IButtonProps) => {
             <DropdownTrigger>
                 <Button className="border font-semibold bg-[#ebebed] rounded-full capitalize ">
                     {selectedSortByOption
-                        ? JSON.parse(
-                              filterSearchParams.get(btn.filterType) as string,
-                          )
-                        : btn.filterName}
+                        ? filterSearchParams.get(filter.filterType)
+                        : filter.filterName}
                     <FontAwesomeIcon icon={faChevronDown} />
                 </Button>
             </DropdownTrigger>
@@ -54,21 +50,27 @@ const ButtonFilter = ({ btn }: IButtonProps) => {
                 aria-label="Single selection example"
                 disallowEmptySelection
                 selectionMode="single"
-                selectedKeys={selectedSortByOptionSet}
+                selectedKeys={
+                    selectedSortByOptionSet
+                        ? [selectedSortByOptionSet]
+                        : undefined
+                }
                 onSelectionChange={(item) => {
                     const value = Array.from(item)[0];
                     setFilterParams({
                         ...filterParams,
-                        [btn.filterType]: value,
+                        [filter.filterType]: value,
                     });
                 }}
             >
-                {btn.filterValue.map((item: IFilterValue) => (
-                    <DropdownItem key={item.value}>{item.label}</DropdownItem>
+                {filter.filterValue.map((item) => (
+                    <DropdownItem key={selectKey(item)}>
+                        {selectLabel(item)}
+                    </DropdownItem>
                 ))}
             </DropdownMenu>
         </Dropdown>
     );
-};
+}
 
 export default ButtonFilter;

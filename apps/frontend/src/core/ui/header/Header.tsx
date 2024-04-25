@@ -39,7 +39,7 @@ function Header({
                     isGaragePage || isAccountPage
                         ? "garageHeader w-full max-w-[1024px] mx-auto px-0"
                         : "px-10",
-                    isGarageManagementPage && "max-w-full",
+                        isGarageManagementPage && "max-w-full px-10",
                 )}
             >
                 <div className="flex items-center justify-start h-full relative z-10">

@@ -17,16 +17,25 @@ export type WithBrandProduct = Product & {
     brand: Brand;
 };
 
+function serialize(obj: any) {
+    const str: string[] = [];
+    for (const p in obj)
+        if (obj.hasOwnProperty(p)) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+    return str.join("&");
+}
+
 export default async function getProducts(filters: ProductFilters) {
     try {
         if (filters?.series && Array.isArray(filters.series)) {
             filters.series = filters.series.join(",");
         }
-
-        const queryParams = new URLSearchParams(filters);
-        const url = baseSupplierUrl + "/product?" + queryParams.toString();
-
-        const results = await axios.get<Response<WithBrandProduct[]>>(url);
+        const url = baseSupplierUrl + "/product";
+        const queryParams = serialize(filters);
+        const results = await axios.get<Response<WithBrandProduct[]>>(
+            url + (queryParams.length ? `?${queryParams}` : ""),
+        );
         return results.data;
     } catch (error) {
         return Promise.reject(error);

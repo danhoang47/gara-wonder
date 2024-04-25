@@ -10,7 +10,7 @@ export type Product = Model & {
     name: string;
     type: number; // Loại sản phẩm
     brandId: string; // merc
-    series: string[]; // Dòng xe
+    series: number[]; // Dòng xe
     year: number;
     price: number;
     images: Image[];

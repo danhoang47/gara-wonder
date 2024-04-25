@@ -62,6 +62,7 @@ function GarageNotifications({
         );
     };
 
+    console.log(notifications)
     return (
         <div className="max-h-[70vh] overflow-y-auto">
             <div>{onRenderNotifications()}</div>

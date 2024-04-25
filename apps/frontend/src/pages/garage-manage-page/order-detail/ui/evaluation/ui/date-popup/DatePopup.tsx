@@ -5,15 +5,18 @@ import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import { DateRangeType } from "../evaluation-modal/EvaluationModal";
 import { EvaluationContext } from "@/pages/garage-manage-page/contexts/EvaluationContext";
+import { DisabledDate } from "@/core/ui/calendar/Calendar";
 
 function DatePopup({
     closeModal,
     setDate,
     pickDate,
+    disabledDates
 }: {
     closeModal: () => void;
     setDate: (date: DateRangeType) => void;
     pickDate: DateRangeType;
+    disabledDates: DisabledDate[]
 }) {
     const { evaluation, setEvaluationValue } = useContext(EvaluationContext);
 
@@ -106,6 +109,7 @@ function DatePopup({
                     defaultMonth={new Date().getMonth()}
                     selectedDate={dateRange}
                     show="double"
+                    disabledDates={disabledDates}
                 />
             </div>
             <div className="flex gap-2 py-2 justify-end px-4">
