@@ -35,13 +35,22 @@ function SlotManipulation({
     calendarData,
 }: SlotManipulationProps) {
     const { garageId } = useParams();
-    const disabledSaveButton = useMemo(
-        () => selectedDates.length === 0,
-        [selectedDates],
-    );
+    const user = useAppSelector((state) => state.user.value);
+    const disabledSaveButton = useMemo(() => {
+        if (selectedDates.length === 0) return true;
+
+        if (user?.role !== Role.GarageOwner && !user?.authorities?.includes("WITH_SCHEDULE")) {
+            return true;
+        }
+
+        if (user?.role !== Role.GarageOwner) {
+            return true;
+        }
+
+        return false;
+    }, [user, selectedDates.length]);
     const [modifiedSlots, setModifiedSlot] = useState<SlotContentType>({});
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.user.value);
 
     useEffect(() => {
         if (calendarData) {
@@ -230,12 +239,7 @@ function SlotManipulation({
                         <Button
                             color="primary"
                             radius="full"
-                            isDisabled={
-                                disabledSaveButton ||
-                                !user?.authorities?.includes("WITH_SCHEDULE") ||
-                                user?.role === Role.GarageOwner ||
-                                user?.role === Role.GarageOwnerAndSupplier
-                            }
+                            isDisabled={disabledSaveButton}
                             onClick={() => onSave()}
                         >
                             <span className="font-medium">Lưu</span>
