@@ -1,5 +1,5 @@
 import { FirebaseOptions, initializeApp } from 'firebase/app'
-import { FacebookAuthProvider, GoogleAuthProvider, getAuth } from 'firebase/auth';
+import { FacebookAuthProvider, GoogleAuthProvider, getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
 
 const firebaseConfig: FirebaseOptions = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,6 +13,7 @@ const firebaseConfig: FirebaseOptions = {
 
 const firebaseApp = initializeApp(firebaseConfig)
 const auth = getAuth(firebaseApp);
+setPersistence(auth, browserLocalPersistence)
 const googleAuthProvider = new GoogleAuthProvider();
 const fbAuthProvider = new FacebookAuthProvider();
 
