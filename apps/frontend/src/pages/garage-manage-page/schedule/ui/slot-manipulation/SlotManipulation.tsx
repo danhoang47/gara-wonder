@@ -34,7 +34,6 @@ function SlotManipulation({
     onRemoveAll,
     calendarData,
 }: SlotManipulationProps) {
-    const { garageId } = useParams();
     const user = useAppSelector((state) => state.user.value);
     const disabledSaveButton = useMemo(() => {
         if (selectedDates.length === 0) return true;
@@ -92,7 +91,7 @@ function SlotManipulation({
                     extraFee: modifiedSlots[String(date.getTime())].extraFee,
                 };
             });
-            const result = await configScheduleSlot(garageId, body);
+            const result = await configScheduleSlot(user?.garageId, body);
             if (result.statusCode === 200) {
                 dispatch(
                     notify({

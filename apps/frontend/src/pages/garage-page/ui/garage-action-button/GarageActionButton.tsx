@@ -33,7 +33,7 @@ function GarageActionButton({ name = "" }: { name?: string }) {
         setLoading(true);
         await createGarageReport(report);
         setLoading(false);
-        setReportModalOpen(true)
+        setReportModalOpen(false)
         setDisabledReportButton(true);
     };
 

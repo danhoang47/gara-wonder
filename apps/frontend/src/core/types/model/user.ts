@@ -1,4 +1,4 @@
-import { Image, Model, Status } from "./core";
+import { Image, Model } from "./core";
 import { Garage } from "./garage";
 import { Car } from "./order";
 
