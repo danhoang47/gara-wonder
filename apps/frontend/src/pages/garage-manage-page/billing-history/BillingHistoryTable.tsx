@@ -68,7 +68,7 @@ function BillingHistoryTable({
                             </Chip>
                         </TableCell>
                         <TableCell>
-                            {bill?.paidTime
+                            {bill?.paidAt
                                 ? moment(new Date()).format(
                                       "DD/MM/YYYY HH:MM:SS",
                                   )
