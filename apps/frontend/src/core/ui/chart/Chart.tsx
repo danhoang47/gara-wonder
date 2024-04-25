@@ -41,14 +41,11 @@ const plugin = {
 type ChartType = {
     labels: string[];
     label1: string;
-    label2: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data1: any[];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data2: any[];
 };
 
-function DualLineChart({ labels, label1, label2, data1, data2 }: ChartType) {
+function DualLineChart({ labels, label1, data1 }: ChartType) {
     return (
         <div className="chart-wrapper">
             <Line
@@ -64,14 +61,7 @@ function DualLineChart({ labels, label1, label2, data1, data2 }: ChartType) {
                             borderWidth: 1,
                             tension: 0.4,
                         },
-                        {
-                            label: label2,
-                            data: data2,
-                            backgroundColor: "#F72585",
-                            borderColor: "#F72585",
-                            borderWidth: 1,
-                            tension: 0.4,
-                        },
+                       
                     ],
                 }}
                 options={{
