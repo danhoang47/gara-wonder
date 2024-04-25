@@ -7,7 +7,7 @@ import moment from "moment";
 
 function OrderCard({ order }: { order?: OrderListType; garageId?: string }) {
     return (
-        <div className="max-w-[480px]">
+        <div className="w-[480px]">
             <div className="border-1 rounded-2xl p-5 shadow-sm">
                 <div className="relative flex flex-col gap-4">
                     <div className="flex justify-between">

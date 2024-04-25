@@ -2,6 +2,7 @@ import { Stepper } from "@/core/ui";
 import { Switch } from "@nextui-org/react";
 
 export type SlotItemProps = {
+    min: number;
     extraFee: number;
     slotValue?: number;
     disabled?: boolean;
@@ -11,6 +12,7 @@ export type SlotItemProps = {
 };
 
 function SlotItem({
+    min,
     slotValue,
     extraFee,
     disabled,
@@ -18,13 +20,15 @@ function SlotItem({
     changeFeeValue,
     changeDisabled,
 }: SlotItemProps) {
+    console.log(min);
+
     return (
         <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
                 <p>Số chỗ</p>
                 <Stepper
                     value={slotValue}
-                    min={0}
+                    min={min ?? 0}
                     onChange={(value: number) => changeSlotValue(value)}
                 />
             </div>
