@@ -128,8 +128,7 @@ function OrderDetail() {
                             {/* Report button */}
                             <div className="p-5 border-2 rounded-lg ">
                                 <p className="text-sm font-bold">
-                                    If you have any issues with the correct
-                                    booking, you can report it to the admin here
+                                    Nếu bạn có bất kì vấn đề gì với đơn hiện tại, có thể liên hệ với admin tại đây
                                 </p>
                                 <Button
                                     className="mt-5 w-full"
@@ -143,7 +142,7 @@ function OrderDetail() {
                                         />
                                     }
                                 >
-                                    Report
+                                    Báo cáo
                                 </Button>
                             </div>
                             {/* Summary */}
@@ -185,7 +184,9 @@ function OrderDetail() {
                                     <p className="text-sm text-default-400">
                                         Giá dịch vụ
                                     </p>
-                                    <p className="text-sm font-bold">USD 80</p>
+                                    <p className="text-sm font-bold">
+                                        {order?.totalPrice}
+                                        </p>
                                 </div>
                                 <div className="flex justify-between">
                                     <p className="text-sm text-default-400">
@@ -197,7 +198,7 @@ function OrderDetail() {
                                     <p className="text-sm text-default-400">
                                         Thuế
                                     </p>
-                                    <p className="text-sm font-bold">USD 0</p>
+                                    <p className="text-sm font-bold">VND 0</p>
                                 </div>
                                 <div className="w-full h-1 border-t-2" />
                                 <div className="flex justify-between">
