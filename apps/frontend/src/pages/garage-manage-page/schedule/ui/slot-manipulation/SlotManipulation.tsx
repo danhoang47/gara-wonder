@@ -38,7 +38,10 @@ function SlotManipulation({
     const disabledSaveButton = useMemo(() => {
         if (selectedDates.length === 0) return true;
 
-        if (user?.role !== Role.GarageOwner && !user?.authorities?.includes("WITH_SCHEDULE")) {
+        if (
+            user?.role !== Role.GarageOwner &&
+            !user?.authorities?.includes("WITH_SCHEDULE")
+        ) {
             return true;
         }
 
@@ -170,6 +173,11 @@ function SlotManipulation({
                                     key={index}
                                 >
                                     <SlotItem
+                                        min={
+                                            calendarData[
+                                                String(selectedDate.getTime())
+                                            ]?.actualSlot as number
+                                        }
                                         disabled={
                                             modifiedSlots[
                                                 String(selectedDate.getTime())
