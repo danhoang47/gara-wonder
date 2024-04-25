@@ -1,4 +1,4 @@
-import getProducts, { WithBrandProduct } from "@/api/supplier/getProducts";
+import getProducts, { ProductFilters, WithBrandProduct } from "@/api/supplier/getProducts";
 import { FetchStatus, Paging } from "@/core/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -40,7 +40,7 @@ const productsSlice = createSlice({
 
 export const getListProducts = createAsyncThunk(
     "products/getProducts",
-    async (params: any) => {
+    async (params: ProductFilters) => {
         try {
             const result = await getProducts({ ...params, limit: 20 });
             return result;

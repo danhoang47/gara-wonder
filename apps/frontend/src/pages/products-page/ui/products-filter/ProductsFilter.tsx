@@ -1,5 +1,7 @@
 import { ProductCategory } from "@/core/types";
 import ButtonFilter from "./ButtonFilter";
+import useSWRImmutable from "swr/immutable";
+import { getBrands } from "@/api";
 
 const getCategoryName: Record<ProductCategory, string> = {
     [ProductCategory.Exterior]: "Ngoại thất",
@@ -11,96 +13,26 @@ export interface IFilterValue {
     value: string | number;
 }
 
-export interface IButtonFilter {
+export interface IButtonFilter<T> {
     filterName: string;
     filterType: string;
-    filterValue: IFilterValue[];
+    filterValue: T[];
 }
 
 const ProductsFilter = () => {
-    const buttonFilter: IButtonFilter[] = [
-        {
-            filterName: "Loại",
-            filterType: "category",
-            filterValue: [
-                {
-                    label: "Tất cả",
-                    value: "",
-                },
-                {
-                    label: getCategoryName[ProductCategory.Exterior],
-                    value: ProductCategory.Exterior,
-                },
-                {
-                    label: getCategoryName[ProductCategory.Interior],
-                    value: ProductCategory.Interior,
-                },
-            ],
-        },
-        {
-            filterName: "Hãng",
-            filterType: "brandId",
-            filterValue: [
-                {
-                    label: "Tất cả",
-                    value: "",
-                },
-                {
-                    label: "Mercedes",
-                    value: "Mercedes",
-                },
-                {
-                    label: "Volvo",
-                    value: "Volvo",
-                },
-                {
-                    label: "Tesla",
-                    value: "Tesla",
-                },
-            ],
-        },
-        // {
-        //     filterName: "Series",
-        //     filterType: "series",
-        //     filterValue: [
-        //         {
-        //             label: "Tất cả",
-        //             value: "",
-        //         },
-        //         {
-        //             label: "A",
-        //             value: "A",
-        //         },
-        //         {
-        //             label: "B",
-        //             value: "B",
-        //         },
-        //     ],
-        // },
-        // {
-        //     filterName: "Models",
-        //     filterType: "models",
-        //     filterValue: [
-        //         {
-        //             label: "Tất cả",
-        //             value: "",
-        //         },
-        //         {
-        //             label: "C200",
-        //             value: "C200",
-        //         },
-        //         {
-        //             label: "C300",
-        //             value: "C300",
-        //         },
-        //     ],
-        // },
-    ];
+    const { data: brands } = useSWRImmutable("brands", getBrands)
+
     return (
         <div className="flex gap-3">
-            {buttonFilter.map((btn) => (
-                <ButtonFilter btn={btn} />
-            ))}
+            <ButtonFilter 
+                filter={{
+                    filterName: "Hãng xe",
+                    filterType: "brandId",
+                    filterValue: brands || []
+                }}
+                selectKey={(item) => item._id}
+                selectLabel={(item) => item.name}
+            />
         </div>
     );
 };
