@@ -17,7 +17,7 @@ const estimateData = [
     21519666, 13019662, 5301966, 2156666, 5631966,
 ];
 function IncomePage() {
-    const { garageId } = useParams();
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const user = useAppSelector((state) => state.user);
 
     const [selectedMonth, setSelectedMonth] = useState<number>(0);
