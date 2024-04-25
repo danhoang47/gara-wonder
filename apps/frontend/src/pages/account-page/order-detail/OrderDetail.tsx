@@ -185,7 +185,7 @@ function OrderDetail() {
                         </div>
                         <div className="flex justify-between">
                             <p className="text-sm text-default-400">Thuế</p>
-                            <p className="text-sm font-bold">USD 0</p>
+                            <p className="text-sm font-bold">VND 0</p>
                         </div>
                         <div className="w-full h-1 border-t-2" />
                         <div className="flex justify-between">
