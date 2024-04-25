@@ -88,7 +88,7 @@ function OrderDetail() {
                         reviewId={!!order?.reviewId}
                     />
                     {/* User Information */}
-                    <UserInfo user={order?.user} />
+                    <UserInfo garageId={order?.garageId} />
                     {/* Service Information */}
                     <div className="px-5 py-5 border-2 rounded-lg flex flex-col gap-3">
                         <p className="text-xl font-bold">Thông tin dịch vụ</p>
@@ -176,7 +176,7 @@ function OrderDetail() {
                                 Ngày lấy xe
                             </p>
                             <p className="text-sm font-bold">
-                                {moment(order?.handOverTime).format("dddd, L")}
+                                {moment(order?.orderTime).format("dddd, L")}
                             </p>
                         </div>
                         <div className="flex justify-between">
@@ -189,12 +189,7 @@ function OrderDetail() {
                                 )}
                             </p>
                         </div>
-                        <div className="flex justify-between">
-                            <p className="text-sm text-default-400">
-                                Tổng số lượng xe
-                            </p>
-                            <p className="text-sm font-bold">1</p>
-                        </div>
+
                         <div className="w-full h-1 border-t-2" />
                         <p className="text-lg font-bold">Giá chi tiết</p>
 
@@ -203,18 +198,8 @@ function OrderDetail() {
                                 Giá dịch vụ
                             </p>
                             <p className="text-sm font-bold">
-                                {order?.totalPrice}
+                                {formatCurrency(order?.totalPrice as number)}
                             </p>
-                        </div>
-                        <div className="flex justify-between">
-                            <p className="text-sm text-default-400">
-                                Thời gian kéo dài
-                            </p>
-                            <p className="text-sm font-bold">1 ngày</p>
-                        </div>
-                        <div className="flex justify-between">
-                            <p className="text-sm text-default-400">Thuế</p>
-                            <p className="text-sm font-bold">USD 0</p>
                         </div>
                         <div className="w-full h-1 border-t-2" />
                         <div className="flex justify-between">

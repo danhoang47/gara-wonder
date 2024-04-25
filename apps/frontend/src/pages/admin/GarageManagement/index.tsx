@@ -1,15 +1,16 @@
+import { getBasicGarageInfo } from "@/api";
+import { updateGarageStatus } from "@/api/admin";
+import { LoadingContext } from "@/core/contexts/loading";
+import { useAppDispatch } from "@/core/hooks";
+import { notify } from "@/features/toasts/toasts.slice";
+import { Button, Card, CardBody, Chip, Tab, Tabs } from "@nextui-org/react";
 import React, { useContext, useEffect, useState } from "react";
-import { Tabs, Tab, Card, CardBody, Chip, Button } from "@nextui-org/react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import useSWRImmutable from "swr/immutable";
 import Information from "./Information";
 import Order from "./Order";
 import Payment from "./Payment";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import useSWR from "swr";
-import { getBasicGarageInfo } from "@/api";
-import { LoadingContext } from "@/core/contexts/loading";
-import { useAppDispatch, useAppSelector } from "@/core/hooks";
-import { updateGarageStatus } from "@/api/admin";
-import { notify } from "@/features/toasts/toasts.slice";
+import StaffPage from "./Stafff";
 
 const GarageManagement: React.FC = () => {
     const location = useLocation();
@@ -17,16 +18,17 @@ const GarageManagement: React.FC = () => {
     const [status, setStatus] = useState(location.state.status);
     const { garageId } = useParams();
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.user);
     const { load, unload } = useContext(LoadingContext);
-    const { isLoading, data: garageData } = useSWR(
-        user.token ? garageId : null,
+    const { isLoading, data: garageData } = useSWRImmutable(
+        garageId,
         getBasicGarageInfo,
     );
     useEffect(() => {
-        if (!isLoading) unload("garageData");
-        else load("garageData");
+        if (!isLoading && garageData) {
+            unload("garageData");
+        } else load("garageData");
     }, [isLoading]);
+
     const onChangeStatus = async (value: number) => {
         try {
             const result = await updateGarageStatus(garageId, value);
@@ -53,6 +55,7 @@ const GarageManagement: React.FC = () => {
             );
         }
     };
+
     return (
         <div className="flex flex-col h-full">
             <div
@@ -63,7 +66,7 @@ const GarageManagement: React.FC = () => {
                     alignItems: "center",
                 }}
             >
-                <h2 style={{ fontSize: 25 }}>{garageData?.data[0].name}</h2>
+                <h2 style={{ fontSize: 25 }}>{garageData?.data[0]?.name}</h2>
                 {status === 0 && (
                     <Chip className="select-none" color="default">
                         <p className="font-semibold"> Đợi chấp nhận</p>
@@ -126,7 +129,7 @@ const GarageManagement: React.FC = () => {
                     <Tab title="Nhân viên">
                         <Card>
                             <CardBody>
-                                <Information />
+                                <StaffPage />
                             </CardBody>
                         </Card>
                     </Tab>

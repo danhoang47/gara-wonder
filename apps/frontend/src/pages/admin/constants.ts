@@ -13,10 +13,10 @@ export const fields = [
     },
 ];
 export const sorts = [
-    { key: "asc", label: "Duới lên" },
+    { key: "asc", label: "Cũ nhất" },
     {
         key: "desc",
-        label: "Trên xuống",
+        label: "Mới nhất",
     },
 ];
 

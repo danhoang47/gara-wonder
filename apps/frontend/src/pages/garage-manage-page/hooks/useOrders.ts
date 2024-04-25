@@ -23,7 +23,6 @@ export default function useOrders(sort: string[]) {
         }
     };
 
-    console.log(status, sort);
     const { isReload, isLoading, onNext } = useAsyncList<OrderListType>(
         getKey,
         onOrderLoaded,

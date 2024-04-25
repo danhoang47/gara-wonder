@@ -52,7 +52,7 @@ function DatePopup({
                 </div>
                 <div className="flex gap-2">
                     <Input
-                        label="Order From"
+                        label="Đặt từ ngày"
                         placeholder="YYYY/MM/dd"
                         variant="bordered"
                         value={moment(pickDate?.from).format("YYYY/MM/DD")}
@@ -73,10 +73,10 @@ function DatePopup({
                         isClearable
                     />
                     <Input
-                        label="Order To"
+                        label="Đến ngày"
                         placeholder="YYYY/MM/dd"
                         variant="bordered"
-                        value={moment(pickDate?.to).format("YYYY/MM/DD")}
+                        value={moment(pickDate?.to).format("YYYY/MM/DD") ?? ""}
                         classNames={{
                             base: "max-w-44",
                             inputWrapper: "border data-[focus=true]:border-2",

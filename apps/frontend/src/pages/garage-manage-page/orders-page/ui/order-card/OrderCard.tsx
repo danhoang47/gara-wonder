@@ -54,7 +54,7 @@ function OrderCard({
         }
     };
     return (
-        <div className="max-w-[480px]">
+        <div className="w-[480px]">
             <div className="border-1 rounded-2xl p-5 shadow-sm">
                 <div className="relative flex flex-col gap-4">
                     <div className="flex justify-between">
@@ -140,55 +140,58 @@ function OrderCard({
                             </div>
                             <div className="pt-3 flex gap-2 justify-between items-center">
                                 <div className="flex gap-2">
-                                    {(order?.status as number) < 0 && (
+                                    {(order?.status as number) == -1 && (
                                         <Chip color="primary">
                                             <p className="font-medium">
                                                 Cần chấp nhận
                                             </p>
                                         </Chip>
                                     )}
-                                    {order?.status == 0 && (
-                                        <Chip color="primary">
-                                            <p className="font-medium">
-                                                Cần đánh giá
-                                            </p>
-                                        </Chip>
-                                    )}
-                                    {(order?.status as number) > 0 && (
-                                        <Chip color="primary">
-                                            <p className="font-medium">
-                                                Đã chấp nhận
-                                            </p>
-                                        </Chip>
-                                    )}
-                                    {
-                                        Number(order?.status) <= -2 && <Chip color="danger">
+                                    {order?.status == 0 &&
+                                        !order.evaluationId && (
+                                            <Chip color="primary">
+                                                <p className="font-medium">
+                                                    Cần đánh giá
+                                                </p>
+                                            </Chip>
+                                        )}
+                                    {order?.status == 0 &&
+                                        order.evaluationId && (
+                                            <Chip color="primary">
+                                                <p className="font-medium">
+                                                    Đợi khách hàng chấp nhận
+                                                </p>
+                                            </Chip>
+                                        )}
+                                    {Number(order?.status) <= -2 && (
+                                        <Chip color="danger">
                                             <p className="font-medium">
                                                 Đã hủy
                                             </p>
                                         </Chip>
-                                    }
-                                    {
-                                        Number(order?.status) >= 1 && Number(order?.status) <= 2 && <Chip color="primary">
-                                            <p className="font-medium">
-                                                Đang xử lí
-                                            </p>
-                                        </Chip>
-                                    }
-                                    {
-                                        Number(order?.status) == 3 && <Chip color="warning">
+                                    )}
+                                    {Number(order?.status) >= 1 &&
+                                        Number(order?.status) <= 2 && (
+                                            <Chip color="primary">
+                                                <p className="font-medium">
+                                                    Đang xử lí
+                                                </p>
+                                            </Chip>
+                                        )}
+                                    {Number(order?.status) == 3 && (
+                                        <Chip color="warning">
                                             <p className="font-medium">
                                                 Đang chờ thanh toán
                                             </p>
                                         </Chip>
-                                    }
-                                    {
-                                        Number(order?.status) == 4 && <Chip color="success">
+                                    )}
+                                    {Number(order?.status) == 4 && (
+                                        <Chip color="success">
                                             <p className="font-medium">
                                                 Đã hoàn thành
                                             </p>
                                         </Chip>
-                                    }
+                                    )}
                                     {order?.evaluationRequired ? (
                                         ""
                                     ) : (

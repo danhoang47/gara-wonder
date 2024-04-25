@@ -11,12 +11,12 @@ function AdditionalServices() {
 
     return (
         <RegistrationSection
-            header="Additional Services"
-            description="Provide the services your garage will serves"
+            header="Dịch vụ đi kèm"
+            description="Những dịch vụ tiện ích kèm theo trong garage của bạn"
         >
             <CheckboxGroup
                 label={
-                    "Let us know if your garage have the following additional services"
+                    "Hãy chọn những dịch vụ đi kèm mà garage của bạn có"
                 }
                 classNames={{
                     label: "text-foreground font-bold text-lg",
@@ -37,12 +37,12 @@ function AdditionalServices() {
             </CheckboxGroup>
             <div className="mt-6 flex flex-col gap-0.5">
                 <p className="text-foreground font-bold text-lg">
-                    Provide some useful information for customers
+                    Cung cấp một số thông tin hữu ích cho khách hàng
                 </p>
                 <ul className="pl-8">
                     <li className="list-disc">
                         <div className="flex justify-between items-center">
-                            <p>Opening time</p>
+                            <p>Thời gian mở cửa</p>
                             <TimeInput
                                 className="font-semibold text-xl"
                                 onValueChange={(time) =>
@@ -56,7 +56,7 @@ function AdditionalServices() {
                     </li>
                     <li className="list-disc">
                         <div className="flex justify-between items-center">
-                            <p>Closing time</p>
+                            <p>Thời gian đóng cửa</p>
                             <TimeInput
                                 className="font-semibold text-xl"
                                 onValueChange={(time) =>
