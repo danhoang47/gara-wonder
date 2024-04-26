@@ -18,9 +18,10 @@ export default async function createOrder(
         );
         return result.data;
     } catch (error) {
-        const { response} = error as AxiosError;
+        const { response } = error as AxiosError;
 
-        if (response?.status !== 469) {
+        console.log(response?.status)
+        if (response?.status === 469) {
             return Promise.reject({
                 reason: 1
             });

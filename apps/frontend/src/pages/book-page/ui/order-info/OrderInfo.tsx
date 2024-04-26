@@ -53,7 +53,7 @@ function OrderInfo() {
                     open("orderSuccess");
                 }
             } catch (_error) {
-                if (error?.reason === 1) {
+                if (_error?.reason === 1) {
                     dispatch(notify({
                         title: "Đặt đơn sửa chữa",
                         description: "Bạn đã huỷ quá nhiều đơn sửa chữa, vui lòng liên hệ admin để được hỗ trợ",
