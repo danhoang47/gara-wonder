@@ -5,6 +5,16 @@ import useSWRImmutable from "swr/immutable";
 
 import "./LandingPage.styles.scss";
 
+const categoryImages = [
+    "https://i.pinimg.com/564x/f5/6e/a7/f56ea7fb99747e652ed6879aa6cbc844.jpg?fbclid=IwZXh0bgNhZW0CMTAAAR09kGBpZgNRuuL5a0PzE9IMZch2L2Ew9aBlRqSnLyY9jIaXwKudRhr4lCs_aem_ATmVFIKbo9vVeSIGNdx-GL11AHESz3jweECjwhnxc_9Jnq_Tnd1Z7uTlyy2udfZgErBbT2OFu6jMRi9KPJEXQcXj",
+    "https://i.pinimg.com/564x/70/15/fa/7015faf16205cda473ca455915c8f294.jpg?fbclid=IwZXh0bgNhZW0CMTAAAR3NgkzqazR1wDJBIShHorGMbpyfitpfhMQ5gLGunRM6mqek2aBVWRQrEGM_aem_ATm4o9TMh3RzJG_PSi_y9twfdbbaxxyiRS1-bhihZGhXdXWW0uxdLS0eJH1yV51vWVnvofKSD5WcjXB8bfcBbYRc",
+    "https://i.pinimg.com/564x/a6/c8/bd/a6c8bd3e03534e46411d3317ba9c7764.jpg?fbclid=IwZXh0bgNhZW0CMTAAAR1BA-tzMEYYHp4urs-hGm3xNjtOwgcV-UjjksHkfClwnjpPJAfg1WuT0jw_aem_ATmQ5SBlEa3H27nsiJUPPGWjRphdSE9lrZh5q6jb3wRuplgBiEsTBaUqKE6FEdxzdG5kg_DC26bsm3FF4sOJApPC",
+    "https://i.pinimg.com/564x/d5/9e/4e/d59e4ec0ce4d493440a472f09933d5eb.jpg?fbclid=IwZXh0bgNhZW0CMTAAAR0JcQ7tsO1z9lSe-Cwwhaf5dFeBdOpGAOD7a2Zu5gFrLF7B0e19pZANeXQ_aem_ATlJ_QFz81xkOI1QlDLssrOMj_05ytASM3DFcE92sU4DnnwjRYtKbFdSnFZP_4oDaRQ7atNXdYWu-FHprxRLXobI",
+    "https://i.pinimg.com/564x/0d/fc/14/0dfc14150532e4d47f579096bba79c8c.jpg?fbclid=IwZXh0bgNhZW0CMTAAAR1wGujCGqghEd9m6RgirUeT9YWWBT53kF6d7JpLuclNwVWXLEd3GXfyXxA_aem_ATlcuDKeP8FOxGnIVtCKhMUiIkiPSnkeA5M6ul6dFZI36PrZfu1joMMg7jBSWyPm2Gk4Jr8UfWbm3rQDcpQGDStw",
+    "https://i.pinimg.com/564x/44/dc/9e/44dc9ed4b89fc69dea1e2df290bf3e1d.jpg?fbclid=IwZXh0bgNhZW0CMTAAAR1wGujCGqghEd9m6RgirUeT9YWWBT53kF6d7JpLuclNwVWXLEd3GXfyXxA_aem_ATlcuDKeP8FOxGnIVtCKhMUiIkiPSnkeA5M6ul6dFZI36PrZfu1joMMg7jBSWyPm2Gk4Jr8UfWbm3rQDcpQGDStw",
+    "https://i.pinimg.com/564x/52/90/c8/5290c84098c422aad49bfa02ebcaed8a.jpg?fbclid=IwZXh0bgNhZW0CMTAAAR3gi9vYM50Z0q1tMr1fhiubVTz8h7j40A-cHcyxHO6oJ8OdJBIYkqd5pfQ_aem_ATmxSSh1JowvdLQRsjWfMbvzDt7_yKyBAt-O_b0uwQqNPDZuBW3Boztz9F10kLeKp8MntdjKPfYxWAenKnuE2N5E"
+]
+
 function LandingPage() {
     const navigate = useNavigate();
     const { data: categories } = useSWRImmutable("categories", getCategories);
@@ -79,7 +89,7 @@ function LandingPage() {
                     <h2 className="font-semibold text-2xl">Dịch vụ về xe</h2>
                 </div>
                 <div className="categories">
-                    {categories?.map((category) => (
+                    {categories?.map((category, index) => (
                         <div
                             key={category._id}
                             className="category grow basis-0 cursor-pointer"
@@ -88,7 +98,9 @@ function LandingPage() {
                                 className="block"
                                 href={`/garages?category=${category._id}`}
                             >
-                                <div className="h-32 bg-default-300 rounded-large"></div>
+                                <div className="h-32 bg-default-300 rounded-large overflow-hidden">
+                                    <img alt="" src={categoryImages[index]} className="w-full h-full object-cover object-center"/>
+                                </div>
                                 <p className="text-large font-medium text-default-foreground">
                                     {category.name}
                                 </p>
