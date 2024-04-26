@@ -117,6 +117,8 @@ function Evaluation({
     const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
     const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
     const [confirm, setConfirm] = useState<string>("");
+    const [isButtonLoading, setIsButtonLoading] = useState(false);
+
     const { data: evaluation } = useSWRImmutable(
         evaluationId ? evaluationId : null,
         () => getOrderEvaluation(evaluationId),
@@ -127,6 +129,7 @@ function Evaluation({
     const dispatch = useAppDispatch();
 
     const onSubmit = async () => {
+        setIsButtonLoading(true);
         if (confirm === "confirm") {
             try {
                 const result = await confirmEvaluation(
@@ -215,8 +218,11 @@ function Evaluation({
                 setConfirmModalOpen(false);
             }
         }
+        setIsButtonLoading(false);
     };
     const onSentReview = async (review: Partial<Review>) => {
+        setIsButtonLoading(false);
+
         try {
             const result = await addReview(
                 { ...review, orderId: orderId },
@@ -246,6 +252,7 @@ function Evaluation({
                 }),
             );
         }
+        setIsButtonLoading(false);
     };
     return (
         <div className="border-2 rounded-lg">
@@ -303,12 +310,14 @@ function Evaluation({
                         </div>
                         <div className="flex gap-2 py-2 justify-end ">
                             <Button
+                                isLoading={isButtonLoading}
                                 variant="light"
                                 onClick={() => setIsModalOpen(false)}
                             >
                                 <p className="text-black">Đóng</p>
                             </Button>
                             <Button
+                                isLoading={isButtonLoading}
                                 color="danger"
                                 onClick={() => {
                                     setConfirmModalOpen(true);
@@ -318,6 +327,7 @@ function Evaluation({
                                 <p className="text-background">Hủy bỏ</p>
                             </Button>
                             <Button
+                                isLoading={isButtonLoading}
                                 color="primary"
                                 onClick={() => {
                                     setConfirmModalOpen(true);
@@ -362,11 +372,16 @@ function Evaluation({
                         <div className="flex gap-2 justify-end">
                             <Button
                                 variant="light"
+                                isLoading={isButtonLoading}
                                 onClick={() => setConfirmModalOpen(false)}
                             >
                                 <p className="text-black">Đóng</p>
                             </Button>
-                            <Button color="primary" onClick={onSubmit}>
+                            <Button
+                                color="primary"
+                                isLoading={isButtonLoading}
+                                onClick={onSubmit}
+                            >
                                 <p className="text-background">Có</p>
                             </Button>
                         </div>
