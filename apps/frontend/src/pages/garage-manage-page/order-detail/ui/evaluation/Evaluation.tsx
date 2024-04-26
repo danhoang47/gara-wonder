@@ -1,4 +1,18 @@
 import {
+    acceptOrder,
+    addOrderPrice,
+    handleEvaluation,
+    moveNextStep,
+    uploadEvaluationImage,
+} from "@/api";
+import { OrderDetailType } from "@/api/order/getOrderById";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { notify } from "@/features/toasts/toasts.slice";
+import {
+    EvaluationContext,
+    EvaluationInfo,
+} from "@/pages/garage-manage-page/contexts/EvaluationContext";
+import {
     Button,
     Divider,
     Modal,
@@ -8,28 +22,13 @@ import {
     ModalHeader,
 } from "@nextui-org/react";
 import { useContext, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
     ConfirmModal,
     EvaluationModal,
     ProgressBar,
     ProgressButton,
 } from "./ui";
-import { OrderDetailType } from "@/api/order/getOrderById";
-import {
-    acceptOrder,
-    addOrderPrice,
-    handleEvaluation,
-    moveNextStep,
-    uploadEvaluationImage,
-} from "@/api";
-import {
-    EvaluationContext,
-    EvaluationInfo,
-} from "@/pages/garage-manage-page/contexts/EvaluationContext";
-import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/core/hooks";
-import { notify } from "@/features/toasts/toasts.slice";
-import { LoadingContext } from "@/core/contexts/loading";
 
 function Evaluation({
     status,
@@ -48,14 +47,13 @@ function Evaluation({
         useState<boolean>(false);
     const [isNextModalOpen, setIsNextModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-
+    const [isButtonLoading, setIsButtonLoading] = useState(false);
     const [isConfirmModalOpen, setIsConfirmModalOpen] =
         useState<boolean>(false);
     const garageId = useAppSelector((state) => state.user.value?.garageId);
     const { orderId } = useParams();
     const { evaluation } = useContext(EvaluationContext);
     const dispatch = useAppDispatch();
-    const { load, unload } = useContext(LoadingContext);
 
     const evaluationValidate: boolean = useMemo(() => {
         const keys: string[] = Object.keys(evaluation as object);
@@ -95,7 +93,7 @@ function Evaluation({
     }, [services]);
 
     const onSubmit = async () => {
-        load("submit");
+        setIsButtonLoading(true);
         if (evaluationValidate && priceValidate) {
             try {
                 const result = await handleEvaluation(
@@ -151,10 +149,10 @@ function Evaluation({
                 }),
             );
         }
-        unload("submit");
+        setIsButtonLoading(false);
     };
     const onAccept = async (str: string) => {
-        load("accept");
+        setIsButtonLoading(true);
         try {
             const result = await acceptOrder(str, garageId, orderId);
             if (result.statusCode === 200) {
@@ -190,11 +188,11 @@ function Evaluation({
                 }),
             );
         }
-        unload("accept");
+        setIsButtonLoading(false);
     };
 
     const onMoveNext = async () => {
-        load("next");
+        setIsButtonLoading(true);
         try {
             const result = await moveNextStep(
                 garageId,
@@ -229,11 +227,11 @@ function Evaluation({
                 }),
             );
         }
-        unload("next");
+        setIsButtonLoading(false);
     };
 
     const onConfirmSubmit = async () => {
-        load("confirm");
+        setIsButtonLoading(true);
         if (priceValidate) {
             try {
                 const result = await addOrderPrice(
@@ -273,7 +271,7 @@ function Evaluation({
                 }),
             );
         }
-        unload("confirm");
+        setIsButtonLoading(false);
     };
 
     return (
@@ -322,6 +320,7 @@ function Evaluation({
                     <Divider />
                     <ModalBody className="pb-4 overflow-auto">
                         <EvaluationModal
+                            isButtonLoading={isButtonLoading}
                             handOverTime={handOverTime}
                             services={services}
                         />
@@ -341,13 +340,18 @@ function Evaluation({
                         <div className="flex gap-2 py-2 justify-end ">
                             <Button
                                 variant="light"
+                                isLoading={isButtonLoading}
                                 onClick={() => {
                                     setIsEvaluationModalOpen(false);
                                 }}
                             >
                                 <p className="text-black">Đóng</p>
                             </Button>
-                            <Button color="primary" onClick={onSubmit}>
+                            <Button
+                                color="primary"
+                                isLoading={isButtonLoading}
+                                onClick={onSubmit}
+                            >
                                 <p className="text-background">
                                     Gửi tới khách hàng
                                 </p>
@@ -382,11 +386,16 @@ function Evaluation({
                         <div className="flex gap-2 justify-end">
                             <Button
                                 variant="light"
+                                isLoading={isButtonLoading}
                                 onClick={() => setIsNextModalOpen(false)}
                             >
                                 <p className="text-black">Đóng</p>
                             </Button>
-                            <Button color="primary" onClick={onMoveNext}>
+                            <Button
+                                color="primary"
+                                isLoading={isButtonLoading}
+                                onClick={onMoveNext}
+                            >
                                 <p className="text-background">
                                     Tới bước tiếp theo
                                 </p>
@@ -420,11 +429,16 @@ function Evaluation({
                         <div className="flex gap-2 justify-end">
                             <Button
                                 variant="light"
+                                isLoading={isButtonLoading}
                                 onClick={() => setIsConfirmModalOpen(false)}
                             >
                                 <p className="text-black">Đóng</p>
                             </Button>
-                            <Button color="primary" onClick={onConfirmSubmit}>
+                            <Button
+                                color="primary"
+                                isLoading={isButtonLoading}
+                                onClick={onConfirmSubmit}
+                            >
                                 <p className="text-background">
                                     Tới bước tiếp theo
                                 </p>

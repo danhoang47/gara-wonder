@@ -118,7 +118,7 @@ function Evaluation({
     const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
     const [confirm, setConfirm] = useState<string>("");
     const { data: evaluation } = useSWRImmutable(
-        evaluationId ? "evaluation" : null,
+        evaluationId ? evaluationId : null,
         () => getOrderEvaluation(evaluationId),
     );
     const { data: garage } = useSWRImmutable(garageId ? "garage" : null, () =>
