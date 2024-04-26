@@ -11,7 +11,6 @@ export default function AccountOrdersPage() {
     const { orders, isLoading, onNext } = useOrders(sort);
     const filteredOrders = useMemo(() => {
         const list = orders.filter((order) => {
-            console.log(status[0]);
             if (status[0] === "") return true;
             return order.status === Number(status[0]);
         });

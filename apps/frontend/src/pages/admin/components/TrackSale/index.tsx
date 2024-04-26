@@ -10,11 +10,6 @@ const TrackSale: React.FC = () => {
     );
     const chartRef = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
-        if (chartData) {
-            console.log(
-                Object.keys(chartData?.data).map((e) => chartData.data[e]),
-            );
-        }
 
         if (chartRef && chartRef.current && chartData) {
             const ctx = chartRef.current.getContext("2d");

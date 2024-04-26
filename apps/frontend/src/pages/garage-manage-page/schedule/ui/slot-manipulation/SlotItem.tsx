@@ -20,7 +20,6 @@ function SlotItem({
     changeFeeValue,
     changeDisabled,
 }: SlotItemProps) {
-    console.log(min);
 
     return (
         <div className="flex flex-col gap-2">

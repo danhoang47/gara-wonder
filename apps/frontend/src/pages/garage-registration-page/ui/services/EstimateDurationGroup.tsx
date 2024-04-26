@@ -128,7 +128,6 @@ function EstimateDurationGroup({
                 }
                 value={estimateType.toString()}
                 onValueChange={(value) => {
-                    console.log(value)
                     onEstimateTypeChange(Number.parseInt(value))
                 }}
             >
