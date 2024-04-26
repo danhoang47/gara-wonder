@@ -53,11 +53,19 @@ function OrderInfo() {
                     open("orderSuccess");
                 }
             } catch (_error) {
-                dispatch(notify({
-                    title: "Đặt đơn sửa chữa",
-                    description: "Có vấn đề xảy ra, vui lòng tải lại trang và thử lại",
-                    type: "failure"  
-                }))
+                if (error?.reason === 1) {
+                    dispatch(notify({
+                        title: "Đặt đơn sửa chữa",
+                        description: "Bạn đã huỷ quá nhiều đơn sửa chữa, vui lòng liên hệ admin để được hỗ trợ",
+                        type: "failure"  
+                    }))    
+                } else {
+                    dispatch(notify({
+                        title: "Đặt đơn sửa chữa",
+                        description: "Có vấn đề xảy ra, vui lòng tải lại trang và thử lại",
+                        type: "failure"  
+                    }))
+                }
             } finally {
                 setConfirmButtonLoading(false);
             }
