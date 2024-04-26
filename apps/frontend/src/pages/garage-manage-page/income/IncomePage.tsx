@@ -12,12 +12,9 @@ import { years } from "@/pages/admin/constants";
 import { formatCurrency } from "@/utils";
 
 const labels = months.map((month) => month.short);
-const estimateData = [
-    1301666, 13019662, 13019662, 13016666, 21569666, 5630166, 10196662,
-    21519666, 13019662, 5301966, 2156666, 5631966,
-];
+
 function IncomePage() {
-    const { garageId } = useParams();
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const user = useAppSelector((state) => state.user);
 
     const [selectedMonth, setSelectedMonth] = useState<number>(0);
@@ -72,6 +69,9 @@ function IncomePage() {
     useEffect(() => {
         refetch();
     }, [selectedYear]);
+    useEffect(() => {
+        document.title = "Admin";
+    }, []);
 
     if (!isLoading)
         return (
@@ -99,7 +99,7 @@ function IncomePage() {
                     </Select>
                 </div>
 
-                <div className="pt-5">
+                <div className="">
                     <p className="text-3xl text-black font-medium pt-5">
                         {formatCurrency(chartArray.sum)}
                     </p>
@@ -119,7 +119,7 @@ function IncomePage() {
                         />
                         <div className="flex justify-between">
                             <div>
-             clear                   {selectedYear[0] > 2018 && (
+                                {selectedYear[0] > 2018 && (
                                     <div
                                         className="w-10 h-10 flex justify-center items-center rounded-full cursor-pointer hover:bg-default-200 transition-colors "
                                         onClick={() => changeButton("left")}
@@ -131,13 +131,13 @@ function IncomePage() {
 
                             {selectedYear[0] <
                                 Number(new Date().getFullYear()) && (
-                                    <div
-                                        className="w-10 h-10 flex justify-center items-center rounded-full cursor-pointer hover:bg-default-200 transition-colors "
-                                        onClick={() => changeButton("right")}
-                                    >
-                                        <FontAwesomeIcon icon={faArrowRight} />
-                                    </div>
-                                )}
+                                <div
+                                    className="w-10 h-10 flex justify-center items-center rounded-full cursor-pointer hover:bg-default-200 transition-colors "
+                                    onClick={() => changeButton("right")}
+                                >
+                                    <FontAwesomeIcon icon={faArrowRight} />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

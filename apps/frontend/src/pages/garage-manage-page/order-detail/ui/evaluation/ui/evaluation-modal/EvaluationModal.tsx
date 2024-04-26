@@ -1,5 +1,4 @@
 import {
-    Input,
     Popover,
     PopoverContent,
     PopoverTrigger,
@@ -10,8 +9,6 @@ import { useContext, useEffect, useState } from "react";
 import { DatePopup } from "..";
 import ImagePreview from "./ImagePreview";
 import { FileInput, Stepper } from "@/core/ui";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { OrderDetailType, ServiceOrderType } from "@/api/order/getOrderById";
 import { EvaluationContext } from "@/pages/garage-manage-page/contexts/EvaluationContext";
 import { formatCurrency } from "@/utils";
@@ -63,14 +60,15 @@ export const ServiceInput = ({
             </div>
 
             <div className="flex items-center gap-2">
-                <Stepper value={servicePrice} onChange={(e) => {
-                    setPrice(Number(e));
-                    setServicePrice(Number(e));
-                }}
+                <Stepper
+                    value={servicePrice}
+                    onChange={(e) => {
+                        setPrice(Number(e));
+                        setServicePrice(Number(e));
+                    }}
                     step={10000}
                     allowKeyboard={true}
                 />
-
             </div>
         </div>
     );
@@ -87,13 +85,13 @@ function EvaluationModal({
     const [localOrderTime, setLocalOrderTime] = useState<DateRangeType>(
         evaluation?.estimateDuration
             ? {
-                from: evaluation?.estimateDuration[0],
-                to: evaluation?.estimateDuration[1],
-            }
+                  from: evaluation?.estimateDuration[0],
+                  to: evaluation?.estimateDuration[1],
+              }
             : {
-                from: null,
-                to: null,
-            },
+                  from: null,
+                  to: null,
+              },
     );
     const [isDatePickerOpen, setDatePickerOpen] = useState<boolean>(false);
     const [images, setImages] = useState<File[]>(
@@ -147,21 +145,21 @@ function EvaluationModal({
                                 "services",
                                 evaluation?.services
                                     ? [
-                                        ...evaluation["services"].filter(
-                                            (e) =>
-                                                e.serviceId !== service._id,
-                                        ),
-                                        {
-                                            serviceId: String(service._id),
-                                            price: price,
-                                        },
-                                    ]
+                                          ...evaluation["services"].filter(
+                                              (e) =>
+                                                  e.serviceId !== service._id,
+                                          ),
+                                          {
+                                              serviceId: String(service._id),
+                                              price: price,
+                                          },
+                                      ]
                                     : [
-                                        {
-                                            serviceId: String(service._id),
-                                            price: price,
-                                        },
-                                    ],
+                                          {
+                                              serviceId: String(service._id),
+                                              price: price,
+                                          },
+                                      ],
                             );
                         }}
                     />
@@ -180,10 +178,14 @@ function EvaluationModal({
                     Ước tính thời gian hoàn thành
                 </p>
                 <div className="flex justify-between">
-                    {(localOrderTime.from && localOrderTime.to) ? <p>
-                        {moment(localOrderTime?.from).format("YYYY/MM/DD")} -{" "}
-                        {moment(localOrderTime?.to).format("YYYY/MM/DD")}
-                    </p> : <p>Chọn ngày ước tính </p>}
+                    {localOrderTime.from && localOrderTime.to ? (
+                        <p>
+                            {moment(localOrderTime?.from).format("YYYY/MM/DD")}{" "}
+                            - {moment(localOrderTime?.to).format("YYYY/MM/DD")}
+                        </p>
+                    ) : (
+                        <p>Chọn ngày ước tính </p>
+                    )}
                     <Popover
                         placement="bottom-end"
                         triggerScaleOnOpen={false}
@@ -197,7 +199,7 @@ function EvaluationModal({
                     >
                         <PopoverTrigger onClick={() => setDatePickerOpen(true)}>
                             <p className="cursor-pointer font-bold text-md underline">
-                                Edit
+                                Chỉnh sửa
                             </p>
                         </PopoverTrigger>
                         <PopoverContent>

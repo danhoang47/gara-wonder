@@ -126,10 +126,9 @@ function OrderDetail() {
                         </div>
                         <div className="w-full col-span-3 flex flex-col gap-4">
                             {/* Report button */}
-                            <div className="p-5 border-2 rounded-lg ">
+                            {/* <div className="p-5 border-2 rounded-lg ">
                                 <p className="text-sm font-bold">
-                                    If you have any issues with the correct
-                                    booking, you can report it to the admin here
+                                    Nếu bạn có bất kì vấn đề gì với đơn hiện tại, có thể liên hệ với admin tại đây
                                 </p>
                                 <Button
                                     className="mt-5 w-full"
@@ -143,9 +142,9 @@ function OrderDetail() {
                                         />
                                     }
                                 >
-                                    Report
+                                    Báo cáo
                                 </Button>
-                            </div>
+                            </div> */}
                             {/* Summary */}
                             <div className="px-5 py-10 border-2 rounded-lg flex flex-col gap-4">
                                 <p className="text-xl font-bold">Tổng quát</p>
@@ -155,7 +154,7 @@ function OrderDetail() {
                                         Ngày lấy xe
                                     </p>
                                     <p className="text-sm font-bold">
-                                        {moment(order?.handOverTime).format(
+                                        {moment(order?.orderTime).format(
                                             "dddd, L",
                                         )}
                                     </p>
@@ -170,12 +169,6 @@ function OrderDetail() {
                                         ).format("dddd, L")}
                                     </p>
                                 </div>
-                                <div className="flex justify-between">
-                                    <p className="text-sm text-default-400">
-                                        Tổng số lượng xe
-                                    </p>
-                                    <p className="text-sm font-bold">1</p>
-                                </div>
                                 <div className="w-full h-1 border-t-2" />
                                 <p className="text-lg font-bold">
                                     Giá chi tiết
@@ -185,20 +178,19 @@ function OrderDetail() {
                                     <p className="text-sm text-default-400">
                                         Giá dịch vụ
                                     </p>
-                                    <p className="text-sm font-bold">USD 80</p>
-                                </div>
-                                <div className="flex justify-between">
-                                    <p className="text-sm text-default-400">
-                                        Thời gian kéo dài
+                                    <p className="text-sm font-bold">
+                                        {formatCurrency(
+                                            order?.totalPrice as number,
+                                        )}
                                     </p>
-                                    <p className="text-sm font-bold">1 ngày</p>
                                 </div>
-                                <div className="flex justify-between">
+                                {/* TODO- future develope */}
+                                {/* <div className="flex justify-between">
                                     <p className="text-sm text-default-400">
                                         Thuế
                                     </p>
                                     <p className="text-sm font-bold">USD 0</p>
-                                </div>
+                                </div> */}
                                 <div className="w-full h-1 border-t-2" />
                                 <div className="flex justify-between">
                                     <p className="font-bold text-xl">

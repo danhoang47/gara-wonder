@@ -10,13 +10,12 @@ import { useAppDispatch, useAppSelector, useModalContext } from "@/core/hooks";
 import { createNewRoom, selectRooms } from "@/features/chat/rooms.slice";
 import { FetchStatus, Report, RoomType } from "@/core/types";
 import { ReportModal } from "@/core/ui";
-import { addGarageToFavorites, createGarageReport } from "@/api";
+import { addGarageToFavorites, createGarageReport, getReportStatus } from "@/api";
 import { auth } from "@/components/firebase";
 
 function GarageActionButton({ name = "" }: { name?: string }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const user = useAppSelector((state) => state.user.value);
     const fetchingStatus = useAppSelector(
         (state) => state.rooms.fetchingStatusCreate,
     );
@@ -24,8 +23,9 @@ function GarageActionButton({ name = "" }: { name?: string }) {
     const { garageId } = useParams();
     const [isReportModalOpen, setReportModalOpen] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(false);
+    const user = useAppSelector((state) => state.user.value);
     const shouldHideReportButton = useMemo(() => {
-        return !user || user.garageId;
+        return !user || Boolean(user.garageId);
     }, [user]);
     const [disabledReportButton, setDisabledReportButton] =
         useState<boolean>(false);
@@ -38,12 +38,13 @@ function GarageActionButton({ name = "" }: { name?: string }) {
         return user.favoriteGarageIds?.includes(garageId || "");
     }, [user]);
     const [hasFavorite, setFavorite] = useState<boolean>();
+    const [isReported, setReported] = useState<boolean>(false);
 
     const onReportModalSubmit = async (report: Partial<Report>) => {
         setLoading(true);
         await createGarageReport(report);
         setLoading(false);
-        setReportModalOpen(true);
+        setReportModalOpen(false);
         setDisabledReportButton(true);
     };
 
@@ -61,6 +62,17 @@ function GarageActionButton({ name = "" }: { name?: string }) {
     useEffect(() => {
         setFavorite(hasFavoriteThisGarage);
     }, [hasFavoriteThisGarage]);
+
+    useEffect(() => {
+        const checkReportStatus = async () => {
+            if (user && garageId) {
+                const response = (await getReportStatus(garageId)) as boolean;
+                setReported(response);
+            }
+        };
+
+        checkReportStatus();
+    }, [user, garageId]);
 
     return (
         <div className="flex gap-4 actionButtons">
@@ -130,7 +142,9 @@ function GarageActionButton({ name = "" }: { name?: string }) {
                     Yêu thích
                 </span>
             </Button>
-            {(!shouldHideReportButton || disabledReportButton) && (
+            {(!shouldHideReportButton ||
+                !isReported || 
+                !disabledReportButton) && (
                 <Button
                     size="md"
                     variant="light"

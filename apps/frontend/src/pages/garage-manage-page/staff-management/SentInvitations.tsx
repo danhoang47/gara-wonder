@@ -1,4 +1,5 @@
 import { getInvitationsByGarageId, getUser } from "@/api";
+import { useAppSelector } from "@/core/hooks";
 import { Invitation } from "@/core/types";
 import {
     Avatar,
@@ -38,7 +39,7 @@ function InvitationCard({ invitation }: { invitation: Invitation }) {
 }
 
 function SentInvitations({ isOpen, onClose }: SentInvitationsProps) {
-    const { garageId } = useParams();
+    const garageId = useAppSelector(state => state.user.value?.garageId);
     const { isLoading, data: invitations } = useSWR(
         ["invitations", garageId],
         (params) => getInvitationsByGarageId(params[1]!),

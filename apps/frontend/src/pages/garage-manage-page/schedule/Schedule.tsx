@@ -3,14 +3,14 @@ import { ScheduleCalendar, SlotManipulation } from "./ui";
 import { useContext, useEffect, useState } from "react";
 import { mutate } from "swr";
 import { getScheduleSlot } from "@/api";
-import { useParams } from "react-router-dom";
 import { LoadingContext } from "@/core/contexts/loading";
 import useSWRImmutable from "swr/immutable";
 import moment from "moment";
 import { ScheduleType } from "@/api/garages/getScheduleSlot";
+import { useAppSelector } from "@/core/hooks";
 function Schedule() {
     const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-    const { garageId } = useParams();
+    const garageId = useAppSelector((state) => state.user.value?.garageId);
     const { load, unload } = useContext(LoadingContext);
     const [calendarData, setCalendarData] = useState<ScheduleType>({});
     const [year, setSelectedYear] = useState<number>(new Date().getFullYear());

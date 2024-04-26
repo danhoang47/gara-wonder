@@ -5,15 +5,18 @@ import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import { DateRangeType } from "../evaluation-modal/EvaluationModal";
 import { EvaluationContext } from "@/pages/garage-manage-page/contexts/EvaluationContext";
+import { DisabledDate } from "@/core/ui/calendar/Calendar";
 
 function DatePopup({
     closeModal,
     setDate,
     pickDate,
+    disabledDates = []
 }: {
     closeModal: () => void;
     setDate: (date: DateRangeType) => void;
     pickDate: DateRangeType;
+    disabledDates?: DisabledDate[]
 }) {
     const { evaluation, setEvaluationValue } = useContext(EvaluationContext);
 
@@ -49,7 +52,7 @@ function DatePopup({
                 </div>
                 <div className="flex gap-2">
                     <Input
-                        label="Order From"
+                        label="Đặt từ ngày"
                         placeholder="YYYY/MM/dd"
                         variant="bordered"
                         value={moment(pickDate?.from).format("YYYY/MM/DD")}
@@ -70,10 +73,10 @@ function DatePopup({
                         isClearable
                     />
                     <Input
-                        label="Order To"
+                        label="Đến ngày"
                         placeholder="YYYY/MM/dd"
                         variant="bordered"
-                        value={moment(pickDate?.to).format("YYYY/MM/DD")}
+                        value={moment(pickDate?.to).format("YYYY/MM/DD") ?? ""}
                         classNames={{
                             base: "max-w-44",
                             inputWrapper: "border data-[focus=true]:border-2",
@@ -106,6 +109,7 @@ function DatePopup({
                     defaultMonth={new Date().getMonth()}
                     selectedDate={dateRange}
                     show="double"
+                    disabledDates={disabledDates}
                 />
             </div>
             <div className="flex gap-2 py-2 justify-end px-4">

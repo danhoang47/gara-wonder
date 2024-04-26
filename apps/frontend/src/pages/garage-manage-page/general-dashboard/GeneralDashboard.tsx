@@ -4,17 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import "./grids.style.scss";
 import getDashboardInfo from "@/api/garages/getDashboardInfo";
-
-import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
 function GeneralDashboard() {
-    const { garageId } = useParams();
-    const userData = useAppSelector((state) => state.user);
+    const user = useAppSelector((state) => state.user.value);
 
     const { data: generalData } = useSWR(
-        userData.token ? "generalData" : null,
-        () => getDashboardInfo(garageId, userData.token),
+        user?.garageId ? "generalData" : null,
+        () => getDashboardInfo(user?.garageId),
     );
 
     return (
@@ -22,14 +19,14 @@ function GeneralDashboard() {
             <div className="pt-20 col-span-4 flex flex-col gap-[4rem] bg-default-100 px-10 overflow-hidden static ">
                 <div>
                     <img
-                        src={userData.value?.photoURL}
-                        alt={`${userData.value?.displayName} avatar`}
+                        src={user?.photoURL}
+                        alt={`${user?.displayName} avatar`}
                         className="w-[40px] rounded-full mb-4"
                     />
                     <p className="text-3xl font-semibold">
-                        Good Morning, <br />
+                        Chào mừng trở lại, <br />
                         <span className="font-bold">
-                            {userData.value?.displayName}
+                            {user?.displayName}
                         </span>
                     </p>
                     <div className="flex justify-between gap-3 pt-5">
@@ -73,7 +70,7 @@ function GeneralDashboard() {
             </div>
             <div className="col-span-8 overflow-auto h-full pt-[8.5rem]">
                 <div className="max-w-[40rem] h-full m-auto">
-                    <GeneralInfo garageId={garageId}  />
+                    <GeneralInfo garageId={user?.garageId}  />
                     <UpdateGarage />
                 </div>
             </div>

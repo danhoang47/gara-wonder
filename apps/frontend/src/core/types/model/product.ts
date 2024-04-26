@@ -30,4 +30,5 @@ export type ProductFilter = {
     series?: string;
     models?: string;
     category?: ProductCategory;
+    cursor?: string;
 };

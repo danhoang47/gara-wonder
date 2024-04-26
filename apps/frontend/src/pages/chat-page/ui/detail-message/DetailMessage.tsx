@@ -440,22 +440,6 @@ const DetailMessage = ({ room, setSelectedRoom }: IDetailMessageProps) => {
                             </div>
                         );
                     })}
-                    {room.isTyping && (
-                        <div className="flex items-center gap-1">
-                            <div className="w-[25px] h-[25px] shrink-0">
-                                <Avatar
-                                    src={room?.photoURL}
-                                    alt=""
-                                    className="h-full w-full"
-                                />
-                            </div>
-                            <div className="typing flex gap-0.5 bg-default-200 w-fit px-2.5 py-2 rounded-full">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
 

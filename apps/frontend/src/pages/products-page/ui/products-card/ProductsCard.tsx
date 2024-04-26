@@ -62,16 +62,6 @@ function ProductsCard({ product }: ProductProps) {
                     <p className="text-sm text-default-500">{`Loại xe: ${product.brand.name}`}</p>
                     <p className="text-sm text-default-500">{`Còn lại: ${product.quantity}`}</p>
                 </div>
-
-                <Button
-                    variant="bordered"
-                    color="default"
-                    className="border"
-                    radius="full"
-                    onPress={() => {}}
-                >
-                    <span className="font-medium">Thêm vào giỏ hàng</span>
-                </Button>
             </CardBody>
 
             <Button

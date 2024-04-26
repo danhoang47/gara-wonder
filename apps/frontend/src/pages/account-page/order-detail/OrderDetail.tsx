@@ -1,33 +1,60 @@
-// import { faFileLines } from "@fortawesome/free-regular-svg-icons";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Chip } from "@nextui-org/react";
 import { Evaluation, UserInfo } from "./ui";
 import { useParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
-import { getUserOrderById } from "@/api";
-import { useContext, useEffect } from "react";
+import { createGarageReport, getReportStatus, getUserOrderById } from "@/api";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { LoadingContext } from "@/core/contexts/loading";
 import moment from "moment";
 import "moment/locale/vi";
 import { useAppSelector } from "@/core/hooks";
 import { mutate } from "swr";
 import { formatCurrency } from "@/utils";
+import { ReportModal } from "@/core/ui";
+import { Report } from "@/core/types";
 moment.locale("vi");
 
 function OrderDetail() {
     const { orderId } = useParams();
-    const user = useAppSelector((state) => state.user);
-    moment.locale("es");
+    const token = useAppSelector((state) => state.user.token);
     const { load, unload } = useContext(LoadingContext);
 
     const { isLoading: isOrderLoading, data: order } = useSWRImmutable(
-        user.token ? `${orderId}` : null,
-        () => getUserOrderById(orderId, user.token),
+        token ? `${orderId}` : null,
+        () => getUserOrderById(orderId, token),
     );
     const refetch = () => {
         mutate(`${orderId}`);
     };
+    const user = useAppSelector((state) => state.user.value);
+    const shouldHideReportButton = useMemo(() => {
+        return !user || Boolean(user.garageId);
+    }, [user]);
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const [isReported, setReported] = useState<boolean>(false);
+    const [isReportModalOpen, setReportModalOpen] = useState<boolean>(false);
+
+    const onReportModalSubmit = async (report: Partial<Report>) => {
+        setLoading(true);
+        await createGarageReport(report);
+        setLoading(false);
+        setReportModalOpen(false);
+    };
+
+    useEffect(() => {
+        const checkReportStatus = async () => {
+            if (user && order?.garageId) {
+                const response = (await getReportStatus(
+                    order?.garageId,
+                )) as boolean;
+                setReported(response);
+            }
+        };
+
+        checkReportStatus();
+    }, [user, order?.garageId]);
 
     useEffect(() => {
         if (isOrderLoading) load("order-detail");
@@ -61,7 +88,7 @@ function OrderDetail() {
                         reviewId={!!order?.reviewId}
                     />
                     {/* User Information */}
-                    <UserInfo user={order?.user} />
+                    <UserInfo garageId={order?.garageId} />
                     {/* Service Information */}
                     <div className="px-5 py-5 border-2 rounded-lg flex flex-col gap-3">
                         <p className="text-xl font-bold">Thông tin dịch vụ</p>
@@ -123,8 +150,8 @@ function OrderDetail() {
                     {/* Report button */}
                     <div className="p-5 border-2 rounded-lg ">
                         <p className="text-sm font-bold">
-                            If you have any issues with the correct booking, you
-                            can report it to the admin here
+                            Nếu bạn có vấn đề về quá trình sửa chữa xe của mình
+                            tại garage, hãy báo cáo với chúng tôi
                         </p>
                         <Button
                             className="mt-5 w-full"
@@ -134,8 +161,10 @@ function OrderDetail() {
                             startContent={
                                 <FontAwesomeIcon icon={faFlag} size="lg" />
                             }
+                            onPress={() => setReportModalOpen(true)}
+                            isDisabled={shouldHideReportButton || isReported}
                         >
-                            Report
+                            <span>Báo cáo</span>
                         </Button>
                     </div>
                     {/* Summary */}
@@ -147,7 +176,7 @@ function OrderDetail() {
                                 Ngày lấy xe
                             </p>
                             <p className="text-sm font-bold">
-                                {moment(order?.handOverTime).format("dddd, L")}
+                                {moment(order?.orderTime).format("dddd, L")}
                             </p>
                         </div>
                         <div className="flex justify-between">
@@ -160,12 +189,7 @@ function OrderDetail() {
                                 )}
                             </p>
                         </div>
-                        <div className="flex justify-between">
-                            <p className="text-sm text-default-400">
-                                Tổng số lượng xe
-                            </p>
-                            <p className="text-sm font-bold">1</p>
-                        </div>
+
                         <div className="w-full h-1 border-t-2" />
                         <p className="text-lg font-bold">Giá chi tiết</p>
 
@@ -174,18 +198,8 @@ function OrderDetail() {
                                 Giá dịch vụ
                             </p>
                             <p className="text-sm font-bold">
-                                {order?.totalPrice}
+                                {formatCurrency(order?.totalPrice as number)}
                             </p>
-                        </div>
-                        <div className="flex justify-between">
-                            <p className="text-sm text-default-400">
-                                Thời gian kéo dài
-                            </p>
-                            <p className="text-sm font-bold">1 ngày</p>
-                        </div>
-                        <div className="flex justify-between">
-                            <p className="text-sm text-default-400">Thuế</p>
-                            <p className="text-sm font-bold">USD 0</p>
                         </div>
                         <div className="w-full h-1 border-t-2" />
                         <div className="flex justify-between">
@@ -197,6 +211,14 @@ function OrderDetail() {
                     </div>
                 </div>
             </div>
+            <ReportModal
+                isOpen={isReportModalOpen}
+                entityId={order?.garageId || ""}
+                entityName={order?._id || ""}
+                isLoading={isLoading}
+                onClose={() => setReportModalOpen(false)}
+                onSave={(report) => onReportModalSubmit(report)}
+            />
         </div>
     );
 }

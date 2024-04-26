@@ -10,7 +10,7 @@ export type ProductFilters = {
     series?: string[] | string;
     sortBy?: "priceDes" | "priceAsc" | "latest" | "newest";
     cursor?: string;
-    limit: number;
+    limit?: number;
 };
 
 export type WithBrandProduct = Product & {
@@ -20,7 +20,7 @@ export type WithBrandProduct = Product & {
 function serialize(obj: any) {
     const str: string[] = [];
     for (const p in obj)
-        if (obj.hasOwnProperty(p)) {
+        if (obj.hasOwnProperty(p) && obj[p]) {
             str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
         }
     return str.join("&");

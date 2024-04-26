@@ -1,5 +1,5 @@
 import { ContainerProps, Evaluation } from "@/core/types";
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export type EvaluationInfo = {
@@ -27,6 +27,7 @@ export default function EvaluationContextProvider({
     const { orderId } = useParams();
     const [evaluation, setEvaluation] = useState<Partial<EvaluationInfo>>({
         orderId: orderId,
+        estimateDuration: [new Date().getTime(), new Date().getTime()],
     });
 
     const setEvaluationValue = <K extends keyof EvaluationInfo>(

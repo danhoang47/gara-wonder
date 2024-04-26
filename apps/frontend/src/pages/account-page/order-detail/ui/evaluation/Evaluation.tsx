@@ -1,4 +1,16 @@
 import {
+    addReview,
+    cancelOrder,
+    confirmEvaluation,
+    createPayment,
+    getBasicGarageInfo,
+    getOrderEvaluation,
+} from "@/api";
+import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { Review } from "@/core/types";
+import { ReviewModal } from "@/core/ui";
+import { notify } from "@/features/toasts/toasts.slice";
+import {
     Button,
     Divider,
     Modal,
@@ -8,21 +20,9 @@ import {
     ModalHeader,
 } from "@nextui-org/react";
 import { useState } from "react";
-import { EvaluationModal, ProgressBar } from "./ui";
-import {
-    createPayment,
-    addReview,
-    cancelOrder,
-    confirmEvaluation,
-    getBasicGarageInfo,
-    getOrderEvaluation,
-} from "@/api";
-import useSWRImmutable from "swr/immutable";
-import { useAppDispatch, useAppSelector } from "@/core/hooks";
-import { notify } from "@/features/toasts/toasts.slice";
 import { useParams } from "react-router-dom";
-import { ReviewModal } from "@/core/ui";
-import { Review, Service } from "@/core/types";
+import useSWRImmutable from "swr/immutable";
+import { EvaluationModal, ProgressBar } from "./ui";
 
 const ProgressButton = ({
     status,
@@ -219,7 +219,6 @@ function Evaluation({
     const onSentReview = async (review: Partial<Review>) => {
         try {
             const result = await addReview(
-                // @ts-ignore this type error
                 { ...review, orderId: orderId },
                 garageId,
                 user.token,
@@ -287,9 +286,7 @@ function Evaluation({
                             services={evaluation?.services}
                             description={evaluation?.description}
                             images={evaluation?.evaluationImgs}
-                            // TODO- change typo when backend update
-                            // @ts-expect-error typo from backend
-                            estimateTime={evaluation?.estimationDuration}
+                            estimateTime={evaluation?.estimateDuration}
                         />
                     </ModalBody>
                     <Divider />

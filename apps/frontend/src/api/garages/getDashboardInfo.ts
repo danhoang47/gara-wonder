@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 import { Response } from "@/core/types";
-import { baseGaragesUrl } from ".";
+import garageInstance, { baseGaragesUrl } from ".";
 
 export type DashboardInfoType = {
     numberOdOrderNeedToEvaluate?: number;
@@ -13,18 +13,11 @@ export type DashboardInfoType = {
 
 export default async function getDashboardInfo(
     id: string | undefined,
-    token?: string,
     type: string = "today",
 ) {
     try {
-        const result = await axios.get<Response<DashboardInfoType>>(
+        const result = await garageInstance.get<Response<DashboardInfoType>>(
             baseGaragesUrl + `/${id}/management/general?type=${type}`,
-            {
-                withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            },
         );
         return result.data.data;
     } catch (error) {

@@ -7,7 +7,7 @@ import moment from "moment";
 
 function OrderCard({ order }: { order?: OrderListType }) {
     return (
-        <div className="max-w-[480px]">
+        <div className="w-[480px]">
             <div className="border-1 rounded-2xl p-5 shadow-sm">
                 <div className="relative flex flex-col gap-4">
                     <div className="flex justify-between">
@@ -108,34 +108,33 @@ function OrderCard({ order }: { order?: OrderListType }) {
                                     )
                                 }
 
-                                {
-                                    Number(order?.status) <= -2  && <Chip color="danger">
-                                    <p className="font-medium">
-                                        Đã hủy
-                                    </p>
-                                </Chip>
-                                }
-                                {
-                                    Number(order?.status) >= 1 &&  Number(order?.status) <= 2 && <Chip color="primary">
-                                    <p className="font-medium">
-                                        Đang xử lí
-                                    </p>
-                                </Chip>
-                                }
-                                {
-                                    Number(order?.status) == 3 && <Chip color="warning">
-                                    <p className="font-medium">
-                                        Cần thanh toán
-                                    </p>
-                                </Chip>
-                                }
-                                {
-                                    Number(order?.status) == 4 && <Chip color="success">
-                                    <p className="font-medium">
-                                        Đã hoàn thành
-                                    </p>
-                                </Chip>
-                                }
+                                {Number(order?.status) <= -2 && (
+                                    <Chip color="danger">
+                                        <p className="font-medium">Đã hủy</p>
+                                    </Chip>
+                                )}
+                                {Number(order?.status) >= 1 &&
+                                    Number(order?.status) <= 2 && (
+                                        <Chip color="primary">
+                                            <p className="font-medium">
+                                                Đang xử lí
+                                            </p>
+                                        </Chip>
+                                    )}
+                                {Number(order?.status) == 3 && (
+                                    <Chip color="warning">
+                                        <p className="font-medium">
+                                            Cần thanh toán
+                                        </p>
+                                    </Chip>
+                                )}
+                                {Number(order?.status) == 4 && (
+                                    <Chip color="success">
+                                        <p className="font-medium">
+                                            Đã hoàn thành
+                                        </p>
+                                    </Chip>
+                                )}
                                 {order?.evaluationRequired ? (
                                     ""
                                 ) : (
