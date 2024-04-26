@@ -31,7 +31,7 @@ function GoogleSignInButton({
                 className="absolute left-3"
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/24px-Google_%22G%22_logo.svg.png" 
             />
-            <span className="font-medium">Continue with Google</span>
+            <span className="font-medium">Tiếp tục với Google</span>
         </Button>
     );
 }

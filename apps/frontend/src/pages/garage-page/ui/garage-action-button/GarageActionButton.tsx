@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@nextui-org/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,11 +6,12 @@ import { faComment } from "@fortawesome/free-regular-svg-icons";
 import { faHeart, faFlag } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 
-import { useAppDispatch, useAppSelector } from "@/core/hooks";
+import { useAppDispatch, useAppSelector, useModalContext } from "@/core/hooks";
 import { createNewRoom, selectRooms } from "@/features/chat/rooms.slice";
 import { FetchStatus, Report, RoomType } from "@/core/types";
 import { ReportModal } from "@/core/ui";
-import { createGarageReport } from "@/api";
+import { addGarageToFavorites, createGarageReport } from "@/api";
+import { auth } from "@/components/firebase";
 
 function GarageActionButton({ name = "" }: { name?: string }) {
     const dispatch = useAppDispatch();
@@ -28,14 +29,38 @@ function GarageActionButton({ name = "" }: { name?: string }) {
     }, [user]);
     const [disabledReportButton, setDisabledReportButton] =
         useState<boolean>(false);
+    const { open } = useModalContext();
+    const hasFavoriteThisGarage = useMemo(() => {
+        if (!user) {
+            return false;
+        }
+
+        return user.favoriteGarageIds?.includes(garageId || "");
+    }, [user]);
+    const [hasFavorite, setFavorite] = useState<boolean>();
 
     const onReportModalSubmit = async (report: Partial<Report>) => {
         setLoading(true);
         await createGarageReport(report);
         setLoading(false);
-        setReportModalOpen(true)
+        setReportModalOpen(true);
         setDisabledReportButton(true);
     };
+
+    const onFavoriteButtonPress = async () => {
+        if (!user) {
+            open("signIn");
+            return;
+        }
+
+        const token = await auth.currentUser?.getIdToken(true);
+        await addGarageToFavorites(garageId || "", token || "");
+        setFavorite((prev) => !prev);
+    };
+
+    useEffect(() => {
+        setFavorite(hasFavoriteThisGarage);
+    }, [hasFavoriteThisGarage]);
 
     return (
         <div className="flex gap-4 actionButtons">
@@ -92,9 +117,18 @@ function GarageActionButton({ name = "" }: { name?: string }) {
                         className={clsx("cursor-pointer, text-danger")}
                     />
                 }
+                radius="full"
                 spinnerPlacement="end"
+                onPress={onFavoriteButtonPress}
             >
-                <span className="font-medium">Yêu thích</span>
+                <span
+                    className={clsx(
+                        "font-medium",
+                        hasFavorite && "text-danger",
+                    )}
+                >
+                    Yêu thích
+                </span>
             </Button>
             {(!shouldHideReportButton || disabledReportButton) && (
                 <Button
