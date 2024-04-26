@@ -52,7 +52,6 @@ function MessageListener({ children }: ContainerProps) {
                     roomId: currentRoom?.roomId,
                 } as Partial<Room>,
                 (res: Response<RoomEntry>) => {
-                    console.log(res)
                     dispatch(markRoomAsRead(res.data));
                 },
             );
@@ -60,6 +59,7 @@ function MessageListener({ children }: ContainerProps) {
 
         const receivedMessageSocket = (message: Message) => {
             dispatch(receivedMessage(message));
+            console.log(roomId && message.roomId === roomId && currentRoom)
             if (roomId && message.roomId === roomId && currentRoom) {
                 markRoomAsReadSocket();
             }

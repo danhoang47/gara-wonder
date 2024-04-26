@@ -88,6 +88,7 @@ const SendMessage = ({
                             ...message.data,
                             isLoading: false,
                             replyFrom,
+                            hasRead: true
                         }),
                     );
                 },

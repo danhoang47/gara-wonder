@@ -99,8 +99,8 @@ function SignInForm({
                                 shouldShowInputError && "border-danger",
                             ),
                         }}
-                        label="Phone Number"
-                        placeholder="Enter your Phone number"
+                        label="Số điện thoại"
+                        placeholder="Nhập vào số điện thoại"
                         variant="flat"
                         value={phoneNumber}
                         onValueChange={onPhoneNumberChange}
