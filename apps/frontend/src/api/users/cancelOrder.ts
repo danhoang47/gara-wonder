@@ -13,7 +13,7 @@ export default async function cancelOrder(
             import.meta.env.VITE_API_URL + `/order/cancel`,
             {
                 garageId: garageId,
-                orderId: orderId, q
+                orderId: orderId, 
             },
             {
                 headers: {
