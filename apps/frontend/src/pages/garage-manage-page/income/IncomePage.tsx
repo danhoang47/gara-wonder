@@ -87,7 +87,6 @@ function IncomePage() {
                         isRequired
                         value={String(selectedYear)}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            console.log(e.target.value);
                             setSelectedYear([Number(e.target.value)]);
                         }}
                     >

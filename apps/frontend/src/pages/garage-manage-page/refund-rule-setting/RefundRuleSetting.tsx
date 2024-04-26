@@ -115,9 +115,6 @@ export default function RefundRuleSetting() {
                             <CustomSelect
                                 value="2"
                                 className="max-w-full"
-                                onValueChange={(isSelected: boolean) => {
-                                    console.log(isSelected);
-                                }}
                                 variant="danger"
                             >
                                 <p className="text-sm font-medium text-red-600">
