@@ -95,7 +95,7 @@ function PaymentPage() {
                     <Link
                         to={
                             params?.type
-                                ? `/garages/${user?.garageId}/management/billing-history`
+                                ? `/garages/management/billing-history`
                                 : "/account/orders"
                         }
                         className="h-10 py-3 px-4 bg-primary rounded-large flex items-center"
