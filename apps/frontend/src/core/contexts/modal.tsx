@@ -61,7 +61,7 @@ export default function ModalContextProvider({ children }: ContainerProps) {
                     <Dialog
                         isOpen={isModalOpen}
                         onClose={onModalClose}
-                        title="Đặt đơn sửa chữa thành công"
+                        title="Đơn sửa chữa đã được gửi tới garage"
                         description="Đặt đơn sửa chữa thành công. Hãy theo dõi tiến độ đơn trong danh sách đơn hàng của bạn."
                         icon
                         IconComponent={
