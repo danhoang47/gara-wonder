@@ -86,11 +86,9 @@ function PaymentPage() {
                         )}
                     </p>
                 </div>
-                <div className="flex gap-4 mt-8">
-
+                <div className="flex gap-4 mt-8 items-center">
                     <Link to="/garages" className="display-flex justify-content-center align-items-center">
                         <span className="font-medium text-foreground ">
-
                             Trở lại trang chủ
                         </span>
                     </Link>
@@ -100,7 +98,7 @@ function PaymentPage() {
                                 ? `/garages/${user?.garageId}/management/billing-history`
                                 : "/account/settings"
                         }
-                        className="h-10 py-3 px-4 bg-primary rounded-large"
+                        className="h-10 py-3 px-4 bg-primary rounded-large flex items-center"
                     >
                         <span className="font-medium text-background">
                             {params.type
