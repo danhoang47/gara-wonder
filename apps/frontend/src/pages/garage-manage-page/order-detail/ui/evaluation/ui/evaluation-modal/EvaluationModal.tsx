@@ -75,9 +75,11 @@ export const ServiceInput = ({
 };
 
 function EvaluationModal({
+    isButtonLoading,
     handOverTime,
     services,
 }: {
+    isButtonLoading: boolean;
     handOverTime?: number;
     services?: OrderDetailType["services"];
 }) {
