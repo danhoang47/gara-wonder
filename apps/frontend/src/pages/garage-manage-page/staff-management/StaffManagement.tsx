@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@nextui-org/react";
 
 import { EmailOrPhonePicker } from "@/core/ui";
-import { FetchStatus, Staff, User } from "@/core/types";
+import { FetchStatus, Role, Staff, User } from "@/core/types";
 import {
     createInvitations,
     getStaffs,
@@ -40,6 +40,9 @@ function StaffManagement() {
     const [updateState, setUpdateStatus] = useState<FetchStatus>(
         FetchStatus.None,
     );
+    const isAllowToEdit = useMemo(() => {
+        return user?.role === Role.GarageOwner || user?.authorities?.includes("WITH_ORDER")
+    }, [user])
 
     const onInvite = async () => {
         setLoading(true);
@@ -124,7 +127,7 @@ function StaffManagement() {
                             className="bg-default-200"
                             disableRipple
                             isLoading={isLoading}
-                            isDisabled={!pickedEntities.length}
+                            isDisabled={!pickedEntities.length || !isAllowToEdit}
                             onPress={onInvite}
                         >
                             <span className="px-1 text-default-600 font-medium">
@@ -136,6 +139,7 @@ function StaffManagement() {
                             disableRipple
                             variant="light"
                             onPress={() => setIsSentInvitationsModalOpen(true)}
+                            isDisabled={!isAllowToEdit}
                         >
                             <p>Danh sách đã mời</p>
                         </Button>
@@ -150,12 +154,14 @@ function StaffManagement() {
                                 <Button
                                     variant="bordered"
                                     onPress={onUpdateStaffAuthorities}
+                                    isDisabled={!isAllowToEdit}
                                 >
                                     Cập nhật quyền
                                 </Button>
                                 <Button
                                     variant="bordered"
                                     onPress={onRemoveStaff}
+                                    isDisabled={!isAllowToEdit}
                                 >
                                     Xóa nhân viên
                                 </Button>
