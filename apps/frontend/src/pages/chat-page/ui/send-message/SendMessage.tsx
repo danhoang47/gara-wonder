@@ -49,7 +49,7 @@ const SendMessage = ({
     const handleSubmit = (e: any, replyFrom?: Message) => {
         if (e.key === "Enter" || e.type === "click") {
             e.preventDefault();
-            if (!content && !pasteImage.length && !selectedServices) {
+            if (!content && !pasteImage.length && !selectedServices.length) {
                 return;
             }
 
